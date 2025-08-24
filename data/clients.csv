@@ -1,0 +1,301 @@
+id,client_id,first_name,last_name,email,phone,client_type,nationality,preferred_areas,budget_range,property_preferences,source,status,assigned_agent,created_date,last_contact
+1,CLT0001,سموح,Rice,zdavis@example.com,001-448-997-3450x1032,Tenant,Germany,['Business Bay'],1M-2M,['Townhouse'],Referral,Active,54,2025-01-29,2025-08-09
+2,CLT0002,شامل,Martin,leecarrie@example.org,(534)597-5475x78455,Developer,India,"['Business Bay', 'Dubai Hills Estate']",2M-5M,"['Villa', 'Apartment', 'Penthouse']",Advertisement,Converted,2,2025-07-21,2025-08-03
+3,CLT0003,صدر الدّين,آل محمد بن علي بن جماز,weavercory@example.com,+1-945-889-4357,Developer,India,"['Downtown Dubai', 'Dubai Marina']",1M-2M,['Villa'],Referral,Active,24,2025-05-27,2025-08-05
+4,CLT0004,شدّاد,أبا الخيل,brookenichols@example.com,+1-977-945-1203,Tenant,UK,['Palm Jumeirah'],5M-10M,['Townhouse'],Social Media,Converted,80,2025-02-10,2025-08-20
+5,CLT0005,سعدي,Stone,sdqy38@example.com,(913)334-1918,Tenant,USA,"['Business Bay', 'Palm Jumeirah']",1M-2M,"['Penthouse', 'Townhouse', 'Apartment']",Social Media,Active,4,2024-12-29,2025-07-27
+6,CLT0006,ثامر,الدباغ,georgekelly@example.org,001-257-626-4701x612,Seller,Germany,"['Dubai Hills Estate', 'Dubai Marina', 'Palm Jumeirah']",10M+,"['Apartment', 'Villa']",Direct Contact,Lost,76,2025-07-25,2025-08-06
+7,CLT0007,راوي,Baker,hzr55@example.com,001-846-715-3177x894,Developer,UAE,['Dubai Marina'],1M-2M,['Townhouse'],Referral,Converted,32,2025-06-14,2025-08-09
+8,CLT0008,Lisa,Brewer,dljfly@example.net,(402)554-8726,Investor,China,"['Business Bay', 'Dubai Hills Estate']",Under 1M,['Townhouse'],Advertisement,Inactive,22,2025-02-23,2025-08-09
+9,CLT0009,Robyn,Hammond,yqwtal-sfwn@example.net,897.440.7496x42696,Landlord,Germany,"['Business Bay', 'Dubai Marina']",1M-2M,['Villa'],Referral,Active,1,2024-08-31,2025-08-08
+10,CLT0010,Mary,آل بن لافي,lqylshhb@example.org,928-688-6235x25608,Seller,France,"['Dubai Hills Estate', 'Dubai Marina']",Under 1M,['Penthouse'],Referral,Active,22,2025-02-06,2025-08-17
+11,CLT0011,Seth,Flynn,hljfly@example.com,3463912689,Seller,Pakistan,"['Dubai Marina', 'Palm Jumeirah', 'Dubai Hills Estate']",5M-10M,['Townhouse'],Advertisement,Inactive,5,2024-12-07,2025-08-05
+12,CLT0012,Jeremy,آل سعود,hal-qsyr@example.org,619-709-6905,Investor,Australia,"['Business Bay', 'Dubai Marina']",10M+,"['Villa', 'Penthouse']",Social Media,Lost,21,2024-09-22,2025-08-13
+13,CLT0013,قصي,Gillespie,hsnyn27@example.com,+1-998-357-2149,Tenant,Germany,"['Downtown Dubai', 'Dubai Marina', 'Dubai Hills Estate']",2M-5M,['Townhouse'],Direct Contact,Converted,92,2025-01-28,2025-08-14
+14,CLT0014,Lisa,Diaz,nsrljfly@example.com,436.429.5279,Investor,India,"['Palm Jumeirah', 'Dubai Hills Estate']",10M+,['Apartment'],Social Media,Active,52,2024-10-04,2025-08-23
+15,CLT0015,Nancy,Evans,brittanykelley@example.com,(741)776-2419x81709,Developer,India,"['Palm Jumeirah', 'Business Bay']",2M-5M,"['Apartment', 'Townhouse']",Advertisement,Active,53,2025-01-02,2025-08-14
+16,CLT0016,Tyler,Smith,llqyl@example.com,(416)900-6392,Landlord,France,['Dubai Marina'],5M-10M,"['Apartment', 'Townhouse']",Direct Contact,Lost,39,2025-04-22,2025-08-04
+17,CLT0017,Colleen,Thompson,david99@example.com,+1-616-884-6825,Tenant,Australia,['Palm Jumeirah'],10M+,"['Townhouse', 'Penthouse']",Direct Contact,Lost,91,2025-07-22,2025-08-17
+18,CLT0018,Ethan,Wilson,fnn24@example.com,2816564715,Seller,Canada,"['Palm Jumeirah', 'Downtown Dubai', 'Business Bay']",Under 1M,"['Villa', 'Townhouse']",Website,Lost,63,2025-02-14,2025-08-15
+19,CLT0019,عمران,الشايع,oal-lskry@example.com,(819)581-1427,Tenant,Pakistan,"['Dubai Hills Estate', 'Downtown Dubai']",5M-10M,"['Villa', 'Penthouse']",Website,Active,67,2025-03-09,2025-08-03
+20,CLT0020,بتول,آل جعفر,zsanchez@example.net,(940)513-2351x4914,Developer,Pakistan,"['Dubai Marina', 'Business Bay']",5M-10M,"['Townhouse', 'Apartment']",Referral,Active,87,2025-06-27,2025-08-13
+21,CLT0021,زهير,Cooper,michaelsimpson@example.org,469.381.5432,Seller,Australia,"['Dubai Marina', 'Business Bay', 'Dubai Hills Estate']",2M-5M,"['Villa', 'Penthouse']",Advertisement,Inactive,12,2024-10-16,2025-08-21
+22,CLT0022,Alexander,Ross,robertmartinez@example.net,368-641-4964x7094,Tenant,Australia,"['Dubai Marina', 'Downtown Dubai']",10M+,['Townhouse'],Advertisement,Lost,13,2024-10-04,2025-08-02
+23,CLT0023,عاصم,Anderson,xhansen@example.com,540-833-3095x5736,Seller,USA,"['Business Bay', 'Dubai Hills Estate']",1M-2M,"['Apartment', 'Townhouse']",Social Media,Lost,59,2024-09-14,2025-08-08
+24,CLT0024,Lori,Taylor,xwall@example.com,001-764-211-1446x9444,Developer,Canada,['Palm Jumeirah'],Under 1M,"['Villa', 'Apartment']",Social Media,Lost,21,2025-01-30,2025-08-05
+25,CLT0025,Michael,Ponce,atkinsonanthony@example.org,998-724-9641x012,Investor,USA,['Business Bay'],5M-10M,"['Townhouse', 'Villa']",Referral,Converted,51,2024-12-13,2025-08-04
+26,CLT0026,شهاب,Case,tylersarah@example.net,665-322-3271x98829,Investor,UK,"['Dubai Marina', 'Dubai Hills Estate', 'Downtown Dubai']",1M-2M,"['Penthouse', 'Townhouse']",Direct Contact,Inactive,94,2025-02-21,2025-08-16
+27,CLT0027,Joseph,Moreno,frwqldbg@example.org,(887)591-8274x590,Tenant,Australia,['Dubai Marina'],1M-2M,"['Apartment', 'Townhouse', 'Penthouse']",Website,Inactive,30,2025-04-03,2025-08-10
+28,CLT0028,ترف,Wilson,bd-lqdr55@example.net,(747)339-6757x725,Landlord,Canada,"['Business Bay', 'Downtown Dubai', 'Dubai Hills Estate']",1M-2M,"['Townhouse', 'Penthouse', 'Villa']",Advertisement,Lost,95,2024-12-07,2025-08-04
+29,CLT0029,Charlene,Graves,mnyal-wd@example.org,676.313.8219x82168,Investor,UAE,"['Downtown Dubai', 'Dubai Marina', 'Palm Jumeirah']",5M-10M,['Townhouse'],Referral,Lost,42,2025-02-12,2025-08-05
+30,CLT0030,نبهان,الراشد,frank07@example.com,(686)445-9549x32254,Developer,Australia,['Business Bay'],Under 1M,"['Townhouse', 'Villa']",Referral,Inactive,53,2024-11-02,2025-08-14
+31,CLT0031,Christopher,Norton,lalexander@example.net,806.294.4180,Landlord,USA,['Business Bay'],1M-2M,"['Townhouse', 'Villa']",Website,Inactive,67,2025-02-24,2025-08-07
+32,CLT0032,عبد السّلام,آل صفوان,robertsmith@example.net,001-838-920-2322,Landlord,China,['Business Bay'],1M-2M,['Penthouse'],Social Media,Converted,89,2025-02-19,2025-07-31
+33,CLT0033,دؤوب,Bailey,hy91@example.net,+1-310-537-9835x095,Tenant,Pakistan,['Downtown Dubai'],2M-5M,"['Apartment', 'Villa', 'Penthouse']",Social Media,Active,39,2025-03-15,2025-08-10
+34,CLT0034,Peter,Lynn,hal-wd@example.org,789.420.7313x0036,Buyer,India,"['Dubai Hills Estate', 'Downtown Dubai']",Under 1M,['Villa'],Website,Converted,38,2024-09-20,2025-08-15
+35,CLT0035,Marcus,العقيل,wfyy48@example.com,445-254-2536x72205,Buyer,India,['Dubai Hills Estate'],5M-10M,"['Townhouse', 'Penthouse']",Social Media,Inactive,97,2025-03-31,2025-07-29
+36,CLT0036,Shannon,أبو داوود,bn-ldnhfyz@example.org,211-717-8581x465,Seller,China,['Palm Jumeirah'],1M-2M,['Townhouse'],Advertisement,Converted,48,2025-03-11,2025-07-29
+37,CLT0037,عاطف,المشاولة,vmorris@example.org,412.675.3831x2055,Buyer,Pakistan,['Business Bay'],10M+,"['Penthouse', 'Apartment', 'Townhouse']",Website,Converted,44,2025-05-30,2025-08-04
+38,CLT0038,بوران,Andrews,nolanthomas@example.net,353-708-5693x955,Buyer,Pakistan,"['Dubai Marina', 'Palm Jumeirah', 'Business Bay']",5M-10M,['Penthouse'],Social Media,Inactive,4,2025-08-01,2025-08-01
+39,CLT0039,Emily,آل صفوان,frhhjr@example.net,317-684-8519x37105,Developer,Germany,"['Palm Jumeirah', 'Business Bay', 'Dubai Hills Estate']",Under 1M,['Penthouse'],Social Media,Inactive,32,2025-02-22,2025-08-14
+40,CLT0040,Cynthia,Horton,bd-lltyfljbr@example.net,(897)989-5565,Developer,Canada,"['Dubai Marina', 'Business Bay']",2M-5M,"['Penthouse', 'Villa', 'Apartment']",Direct Contact,Converted,87,2025-03-19,2025-07-29
+41,CLT0041,رجب,مهنا,elmhn@example.com,+1-531-529-2611x28632,Buyer,Australia,"['Downtown Dubai', 'Palm Jumeirah', 'Business Bay']",5M-10M,"['Penthouse', 'Townhouse']",Advertisement,Lost,1,2025-07-09,2025-08-17
+42,CLT0042,Richard,آل عطفة,maria38@example.org,(579)806-9860,Developer,UK,"['Dubai Marina', 'Downtown Dubai', 'Palm Jumeirah']",5M-10M,"['Penthouse', 'Apartment', 'Villa']",Website,Converted,67,2025-05-16,2025-08-09
+43,CLT0043,مؤمن,آل بن ظافر,llmshwl@example.org,4918273523,Investor,India,"['Dubai Hills Estate', 'Dubai Marina', 'Business Bay']",5M-10M,"['Apartment', 'Penthouse']",Advertisement,Inactive,33,2025-07-29,2025-07-26
+44,CLT0044,Rhonda,آل الشيخ,bd-llym57@example.com,(802)372-1393x562,Investor,China,"['Palm Jumeirah', 'Dubai Hills Estate']",1M-2M,"['Apartment', 'Villa', 'Townhouse']",Referral,Lost,51,2024-09-27,2025-08-19
+45,CLT0045,صلاح,آل عواض,myr47@example.org,001-988-697-4609x2658,Landlord,UAE,['Dubai Marina'],2M-5M,"['Apartment', 'Villa', 'Penthouse']",Referral,Inactive,78,2025-07-16,2025-07-29
+46,CLT0046,Joy,حجار,baxterhunter@example.net,(792)747-1625x564,Landlord,USA,['Palm Jumeirah'],1M-2M,"['Townhouse', 'Apartment', 'Villa']",Website,Lost,81,2025-01-07,2025-08-10
+47,CLT0047,رهيف,Orozco,hubbardmichelle@example.org,+1-681-786-7854,Developer,France,"['Palm Jumeirah', 'Dubai Marina']",Under 1M,"['Apartment', 'Villa', 'Townhouse']",Website,Inactive,40,2024-12-19,2025-07-31
+48,CLT0048,Ann,آل مقطة,thal-jfr@example.net,001-255-392-1771x3315,Seller,UAE,['Downtown Dubai'],1M-2M,"['Penthouse', 'Apartment', 'Villa']",Website,Lost,52,2025-02-21,2025-08-06
+49,CLT0049,نشأت,آل حسين,emiddleton@example.com,228-554-0308,Developer,France,"['Dubai Hills Estate', 'Business Bay']",Under 1M,"['Penthouse', 'Apartment']",Referral,Lost,53,2024-10-03,2025-07-31
+50,CLT0050,Edward,Thomas,thomas82@example.net,(822)206-5824x3537,Buyer,Canada,['Dubai Hills Estate'],5M-10M,['Penthouse'],Referral,Inactive,53,2025-03-14,2025-08-03
+51,CLT0051,Michelle,أبا الخيل,sdymal-sfwn@example.net,001-823-895-3569x85840,Seller,China,"['Business Bay', 'Downtown Dubai', 'Dubai Marina']",5M-10M,"['Penthouse', 'Apartment', 'Townhouse']",Social Media,Active,83,2025-03-29,2025-07-29
+52,CLT0052,مياس,المهيدب,qlal-tf@example.com,001-292-201-6466x520,Tenant,France,"['Palm Jumeirah', 'Dubai Hills Estate']",5M-10M,['Penthouse'],Direct Contact,Active,89,2024-10-31,2025-08-20
+53,CLT0053,Anne,المهنا,khernandez@example.net,535.322.5652x18355,Landlord,UAE,"['Dubai Marina', 'Dubai Hills Estate', 'Business Bay']",5M-10M,"['Apartment', 'Townhouse']",Direct Contact,Converted,79,2024-11-25,2025-07-31
+54,CLT0054,Steven,الخرافي,smithabigail@example.org,001-623-853-9580x6681,Developer,UAE,"['Dubai Hills Estate', 'Business Bay', 'Downtown Dubai']",1M-2M,['Townhouse'],Referral,Inactive,8,2024-12-18,2025-07-30
+55,CLT0055,عرفان,آل خضير,rjybn-ldn@example.com,+1-377-584-3821,Investor,USA,"['Dubai Marina', 'Dubai Hills Estate']",5M-10M,['Villa'],Website,Converted,50,2025-01-22,2025-08-22
+56,CLT0056,Luis,Brooks,matthewsjennifer@example.org,760-704-1261x4762,Investor,UK,['Downtown Dubai'],Under 1M,"['Townhouse', 'Apartment', 'Penthouse']",Advertisement,Active,65,2025-03-21,2025-08-21
+57,CLT0057,Amber,Curtis,kal-rfy@example.com,+1-237-661-3052x3355,Landlord,Australia,['Dubai Marina'],1M-2M,['Villa'],Direct Contact,Inactive,71,2025-08-15,2025-08-11
+58,CLT0058,رافع,Farley,eallen@example.net,+1-648-660-7133,Buyer,USA,"['Dubai Hills Estate', 'Dubai Marina']",Under 1M,"['Penthouse', 'Apartment']",Social Media,Lost,34,2025-08-13,2025-07-26
+59,CLT0059,قيس,آل عطفة,al-jfrshyl@example.com,8687596016,Seller,USA,"['Dubai Marina', 'Downtown Dubai', 'Business Bay']",5M-10M,"['Apartment', 'Villa', 'Penthouse']",Website,Converted,31,2025-03-22,2025-07-29
+60,CLT0060,نجوان,الدباغ,nal-jfr@example.com,001-497-316-1606x586,Buyer,China,['Downtown Dubai'],10M+,"['Townhouse', 'Penthouse']",Advertisement,Converted,96,2025-06-26,2025-08-20
+61,CLT0061,رافع,Morales,sblmshwl@example.net,001-289-211-4016x071,Seller,China,"['Palm Jumeirah', 'Dubai Hills Estate']",2M-5M,"['Villa', 'Townhouse']",Direct Contact,Active,34,2025-08-21,2025-08-23
+62,CLT0062,Christopher,Marks,ehart@example.org,987-996-4345x800,Developer,USA,['Palm Jumeirah'],Under 1M,"['Villa', 'Penthouse', 'Apartment']",Referral,Converted,45,2025-02-09,2025-08-19
+63,CLT0063,Kimberly,الشايع,mariawilliams@example.net,(630)679-4480x918,Tenant,Australia,['Downtown Dubai'],10M+,"['Apartment', 'Penthouse', 'Villa']",Social Media,Inactive,16,2024-10-22,2025-08-18
+64,CLT0064,Lauren,العجلان,fal-lskry@example.net,229-648-4964x099,Buyer,UAE,"['Business Bay', 'Dubai Marina', 'Downtown Dubai']",1M-2M,"['Townhouse', 'Apartment', 'Penthouse']",Advertisement,Inactive,51,2024-12-15,2025-08-08
+65,CLT0065,ابتسام,Brooks,mkhtr67@example.com,4758973672,Buyer,France,['Business Bay'],10M+,['Townhouse'],Direct Contact,Inactive,5,2025-06-25,2025-08-04
+66,CLT0066,Jessica,Johnson,nmrljln@example.org,436-260-8249x9886,Buyer,India,"['Dubai Marina', 'Business Bay']",2M-5M,"['Villa', 'Penthouse']",Advertisement,Lost,61,2025-06-06,2025-07-29
+67,CLT0067,Chelsea,أبو داوود,dhwkal-lskry@example.com,+1-771-320-0594x151,Tenant,France,"['Business Bay', 'Downtown Dubai']",5M-10M,"['Villa', 'Penthouse']",Advertisement,Converted,89,2024-11-22,2025-08-11
+68,CLT0068,جلاء,آل بن لافي,mwmnal-mhmd-bn-ly-bn-jmz@example.com,(312)666-2450x8278,Tenant,India,"['Business Bay', 'Dubai Hills Estate', 'Dubai Marina']",10M+,"['Townhouse', 'Penthouse', 'Villa']",Website,Inactive,34,2024-12-07,2025-08-19
+69,CLT0069,ميار,أبا الخيل,bowengerald@example.com,266.581.7794x777,Buyer,UK,"['Downtown Dubai', 'Dubai Marina', 'Business Bay']",2M-5M,"['Apartment', 'Villa', 'Penthouse']",Website,Inactive,66,2025-04-02,2025-08-22
+70,CLT0070,Jessica,المهيدب,srmal-sfwn@example.org,476.755.3221,Buyer,Australia,['Dubai Hills Estate'],Under 1M,"['Villa', 'Apartment']",Referral,Lost,60,2024-11-03,2025-08-13
+71,CLT0071,شفيع,Woodward,tryslmshwl@example.net,2105474165,Landlord,Germany,['Palm Jumeirah'],1M-2M,['Apartment'],Direct Contact,Lost,59,2025-08-09,2025-08-02
+72,CLT0072,قصيد,آل معيض,sbbw-dwwd@example.net,001-772-711-1989x36618,Developer,USA,"['Business Bay', 'Dubai Marina', 'Downtown Dubai']",2M-5M,"['Villa', 'Apartment', 'Townhouse']",Website,Active,34,2025-03-21,2025-08-22
+73,CLT0073,تالا,المغاولة,paynebrett@example.com,(802)989-1692x0872,Buyer,Germany,"['Dubai Hills Estate', 'Dubai Marina']",Under 1M,"['Townhouse', 'Penthouse', 'Apartment']",Advertisement,Lost,45,2024-11-09,2025-08-10
+74,CLT0074,Jacqueline,آل مقطة,doylejamie@example.org,001-625-285-3283x908,Investor,Australia,['Dubai Hills Estate'],1M-2M,['Villa'],Referral,Lost,55,2025-04-07,2025-08-10
+75,CLT0075,مَجدي,Kaufman,dljbr@example.net,(584)389-6675,Tenant,UK,"['Palm Jumeirah', 'Business Bay', 'Dubai Hills Estate']",5M-10M,"['Townhouse', 'Penthouse']",Advertisement,Active,17,2025-06-09,2025-08-22
+76,CLT0076,Blake,آل جعفر,matthewrobertson@example.com,935.291.3487x96462,Tenant,Pakistan,"['Business Bay', 'Dubai Hills Estate']",1M-2M,"['Townhouse', 'Penthouse', 'Apartment']",Website,Converted,25,2024-10-27,2025-07-25
+77,CLT0077,عبد العليم,آل بن لافي,al-mydzz@example.com,8746184890,Landlord,India,['Dubai Marina'],1M-2M,"['Villa', 'Townhouse', 'Penthouse']",Advertisement,Converted,69,2024-12-30,2025-07-25
+78,CLT0078,ميسور,آل خضير,maxwelldavid@example.org,+1-585-657-1727x585,Investor,India,"['Business Bay', 'Palm Jumeirah']",5M-10M,"['Apartment', 'Townhouse']",Advertisement,Converted,12,2025-07-15,2025-08-11
+79,CLT0079,غسّان,أبا الخيل,manuel74@example.net,778-892-5991x4483,Investor,Pakistan,"['Palm Jumeirah', 'Downtown Dubai']",5M-10M,"['Townhouse', 'Penthouse', 'Villa']",Website,Active,6,2025-01-16,2025-08-23
+80,CLT0080,عبد الواحد,بقشان,uramirez@example.net,001-910-729-2765,Landlord,UAE,['Business Bay'],2M-5M,"['Penthouse', 'Villa']",Social Media,Converted,47,2025-08-13,2025-08-01
+81,CLT0081,Omar,آل عطفة,blqys56@example.net,(995)754-1661,Landlord,Australia,['Business Bay'],10M+,"['Villa', 'Penthouse', 'Townhouse']",Website,Lost,34,2025-04-05,2025-07-26
+82,CLT0082,Casey,Burke,april02@example.com,001-256-334-3069x81430,Landlord,Pakistan,"['Business Bay', 'Dubai Hills Estate']",2M-5M,"['Townhouse', 'Apartment']",Advertisement,Active,5,2025-06-19,2025-08-01
+83,CLT0083,صخر,Barrett,mymwn63@example.org,854.231.7293x5293,Buyer,UAE,"['Palm Jumeirah', 'Downtown Dubai']",1M-2M,"['Apartment', 'Villa', 'Penthouse']",Referral,Lost,77,2025-01-21,2025-08-09
+84,CLT0084,Jon,Wolfe,sanderskathryn@example.com,453-416-1040x4606,Investor,Canada,"['Dubai Marina', 'Business Bay', 'Downtown Dubai']",10M+,['Townhouse'],Website,Converted,93,2025-04-30,2025-08-13
+85,CLT0085,ضياء,Griffin,usutton@example.com,(720)555-2646x624,Investor,UK,"['Downtown Dubai', 'Palm Jumeirah', 'Dubai Hills Estate']",Under 1M,"['Villa', 'Penthouse']",Social Media,Inactive,26,2024-12-26,2025-08-22
+86,CLT0086,ليم,آل الشيخ,bqshnbd-lhlym@example.org,+1-554-411-2164,Seller,UK,"['Dubai Marina', 'Dubai Hills Estate', 'Downtown Dubai']",1M-2M,['Penthouse'],Direct Contact,Converted,41,2024-12-25,2025-08-23
+87,CLT0087,روحي,الراشد,gamblechristian@example.com,+1-394-797-8723,Developer,Australia,['Business Bay'],1M-2M,"['Villa', 'Penthouse']",Advertisement,Active,74,2025-07-07,2025-08-05
+88,CLT0088,غانم,آل سعود,amberreed@example.net,(738)809-4837x550,Buyer,Australia,"['Dubai Marina', 'Dubai Hills Estate']",5M-10M,"['Penthouse', 'Townhouse', 'Apartment']",Referral,Inactive,98,2025-07-15,2025-08-14
+89,CLT0089,Barry,Hurley,sanchezpaula@example.org,974-707-2818,Landlord,India,['Dubai Hills Estate'],5M-10M,"['Townhouse', 'Apartment']",Advertisement,Inactive,77,2024-08-27,2025-08-06
+90,CLT0090,وسام,Wood,bergtaylor@example.com,803.742.6700,Investor,UK,['Dubai Marina'],5M-10M,"['Penthouse', 'Townhouse']",Website,Active,8,2024-09-04,2025-08-18
+91,CLT0091,كافور,آل صفوان,hollandkaren@example.org,001-336-813-6998x258,Seller,UK,"['Dubai Hills Estate', 'Business Bay', 'Dubai Marina']",2M-5M,"['Apartment', 'Villa', 'Penthouse']",Social Media,Converted,19,2025-02-07,2025-07-27
+92,CLT0092,Karen,الجفالي,srm03@example.net,+1-717-679-4477,Landlord,Germany,"['Dubai Marina', 'Downtown Dubai']",2M-5M,"['Apartment', 'Townhouse', 'Penthouse']",Referral,Inactive,63,2025-05-18,2025-08-19
+93,CLT0093,Michael,Page,dal-hsyn@example.org,(492)809-5889,Tenant,India,"['Downtown Dubai', 'Business Bay']",2M-5M,['Apartment'],Advertisement,Lost,36,2024-11-13,2025-08-01
+94,CLT0094,Adam,Hall,jal-qsyr@example.org,694-205-6235x617,Developer,India,['Palm Jumeirah'],10M+,"['Apartment', 'Penthouse']",Advertisement,Lost,99,2025-02-01,2025-08-22
+95,CLT0095,Jennifer,آل خضير,cherrymichael@example.org,(887)749-0346,Seller,Germany,"['Business Bay', 'Dubai Marina', 'Palm Jumeirah']",10M+,"['Apartment', 'Villa']",Social Media,Active,17,2024-09-03,2025-08-15
+96,CLT0096,Ruben,آل عواض,mercadoanna@example.net,(257)287-0642x59556,Tenant,Australia,"['Dubai Hills Estate', 'Downtown Dubai', 'Business Bay']",10M+,"['Apartment', 'Penthouse']",Website,Converted,82,2024-11-04,2025-08-20
+97,CLT0097,Jennifer,آل محمد بن علي بن جماز,awatkins@example.net,261.564.5778,Landlord,Germany,"['Downtown Dubai', 'Dubai Marina', 'Dubai Hills Estate']",Under 1M,"['Apartment', 'Penthouse', 'Villa']",Advertisement,Lost,2,2025-06-19,2025-07-29
+98,CLT0098,حليم,Wright,emily24@example.net,922.623.2898,Buyer,USA,"['Business Bay', 'Downtown Dubai']",1M-2M,"['Villa', 'Townhouse', 'Apartment']",Referral,Inactive,66,2025-06-15,2025-08-14
+99,CLT0099,عابد,Shannon,shaunhuff@example.net,+1-960-600-7971x599,Developer,Pakistan,"['Business Bay', 'Dubai Hills Estate', 'Palm Jumeirah']",2M-5M,"['Villa', 'Apartment']",Social Media,Inactive,53,2025-06-19,2025-08-17
+100,CLT0100,محفوظ,آل العسكري,madison29@example.org,(648)834-0432x12677,Landlord,Pakistan,"['Dubai Marina', 'Palm Jumeirah', 'Business Bay']",2M-5M,"['Penthouse', 'Townhouse', 'Villa']",Referral,Inactive,12,2025-02-07,2025-07-31
+101,CLT0101,Veronica,Vega,maria74@example.net,244.625.6585,Seller,Pakistan,"['Palm Jumeirah', 'Downtown Dubai']",1M-2M,"['Apartment', 'Penthouse']",Website,Active,32,2024-09-23,2025-08-14
+102,CLT0102,فادي,آل محمد بن علي بن جماز,wsmal-lskry@example.com,850.318.0753x365,Landlord,Germany,"['Business Bay', 'Dubai Hills Estate', 'Dubai Marina']",5M-10M,['Townhouse'],Website,Inactive,51,2025-04-29,2025-08-18
+103,CLT0103,إباء,Riggs,ofleming@example.org,414-215-2161x43307,Landlord,France,['Palm Jumeirah'],5M-10M,['Penthouse'],Website,Converted,50,2025-06-17,2025-07-30
+104,CLT0104,Shelby,أبا الخيل,samantha19@example.net,270-689-8762,Developer,China,"['Palm Jumeirah', 'Business Bay']",1M-2M,['Penthouse'],Social Media,Inactive,53,2025-03-23,2025-08-06
+105,CLT0105,شجاع,Vasquez,obaldwin@example.com,8164977214,Investor,India,"['Downtown Dubai', 'Dubai Marina']",10M+,['Penthouse'],Advertisement,Inactive,76,2025-01-20,2025-08-13
+106,CLT0106,Willie,Mcfarland,zhuerta@example.com,+1-414-639-8407x695,Investor,Germany,['Dubai Marina'],2M-5M,['Apartment'],Referral,Inactive,33,2024-09-24,2025-08-06
+107,CLT0107,رابح,Trujillo,lyn58@example.com,752-377-8218,Seller,Pakistan,"['Downtown Dubai', 'Dubai Hills Estate']",1M-2M,['Apartment'],Website,Lost,75,2024-09-20,2025-07-29
+108,CLT0108,رئيس,Bass,nylal-bn-zfr@example.com,001-548-484-4395x6239,Buyer,Germany,['Downtown Dubai'],1M-2M,['Villa'],Social Media,Inactive,21,2024-09-02,2025-08-17
+109,CLT0109,Kelly,آل العسكري,ronald25@example.org,556.768.0082x139,Seller,Pakistan,"['Downtown Dubai', 'Dubai Hills Estate', 'Palm Jumeirah']",1M-2M,"['Villa', 'Townhouse']",Social Media,Inactive,49,2025-08-04,2025-08-16
+110,CLT0110,نعمان,آل عايض,bn-ldnmshfq@example.net,7793257969,Investor,Australia,"['Dubai Marina', 'Downtown Dubai']",Under 1M,"['Townhouse', 'Villa']",Advertisement,Converted,81,2024-12-05,2025-07-27
+111,CLT0111,Jose,Rosario,xschmidt@example.com,001-589-565-3034x9934,Buyer,Canada,"['Business Bay', 'Dubai Hills Estate']",2M-5M,"['Penthouse', 'Apartment', 'Townhouse']",Website,Inactive,55,2025-08-16,2025-08-07
+112,CLT0112,صلاح الدّين,Martinez,wandafletcher@example.org,+1-693-654-4428x66335,Seller,UK,"['Business Bay', 'Downtown Dubai', 'Dubai Hills Estate']",Under 1M,"['Penthouse', 'Apartment', 'Villa']",Social Media,Active,86,2025-02-02,2025-08-13
+113,CLT0113,ضحى,الراشد,qsmal-sltn@example.org,6045965391,Seller,Pakistan,"['Dubai Hills Estate', 'Business Bay']",Under 1M,['Apartment'],Website,Inactive,100,2025-03-13,2025-07-27
+114,CLT0114,رمحي,الدباغ,aal-yd@example.com,(515)614-4054x50730,Developer,Canada,"['Palm Jumeirah', 'Dubai Marina']",2M-5M,['Penthouse'],Direct Contact,Active,66,2024-12-11,2025-08-09
+115,CLT0115,Michael,Simpson,zhr15@example.net,+1-604-704-0519x92520,Landlord,India,['Dubai Hills Estate'],2M-5M,"['Penthouse', 'Villa', 'Townhouse']",Direct Contact,Active,44,2025-04-12,2025-08-10
+116,CLT0116,Darren,Hoover,myrknw@example.org,789-478-6957x092,Landlord,Pakistan,"['Downtown Dubai', 'Palm Jumeirah']",5M-10M,['Penthouse'],Social Media,Converted,99,2024-09-30,2025-08-21
+117,CLT0117,John,Rivera,sylhjr@example.com,912-982-2982x961,Seller,China,['Downtown Dubai'],1M-2M,"['Penthouse', 'Apartment', 'Villa']",Advertisement,Lost,44,2024-12-19,2025-08-13
+118,CLT0118,Robert,Knight,jenniferespinoza@example.com,267-352-1998x747,Buyer,Germany,"['Palm Jumeirah', 'Business Bay', 'Downtown Dubai']",10M+,"['Apartment', 'Penthouse', 'Villa']",Social Media,Converted,84,2024-11-16,2025-08-03
+119,CLT0119,James,Butler,hqwy27@example.org,(859)694-9161x7600,Seller,Australia,['Downtown Dubai'],5M-10M,"['Penthouse', 'Townhouse', 'Apartment']",Website,Inactive,82,2025-04-28,2025-08-11
+120,CLT0120,غالي,Austin,val-jfr@example.org,+1-750-228-5839,Developer,USA,"['Dubai Marina', 'Business Bay']",5M-10M,"['Apartment', 'Villa']",Referral,Lost,91,2025-04-28,2025-08-13
+121,CLT0121,غالب,Stokes,cal-hsyn@example.net,+1-659-358-6852x48523,Landlord,Pakistan,"['Palm Jumeirah', 'Business Bay']",Under 1M,['Penthouse'],Social Media,Converted,96,2025-05-03,2025-08-09
+122,CLT0122,زغلول,آل بن ظافر,blakebentley@example.org,+1-961-900-5679x138,Investor,Pakistan,"['Dubai Hills Estate', 'Downtown Dubai', 'Business Bay']",10M+,"['Penthouse', 'Villa', 'Apartment']",Referral,Lost,26,2024-08-29,2025-07-26
+123,CLT0123,Cheryl,أبا الخيل,srm41@example.net,2876425406,Buyer,Canada,"['Dubai Marina', 'Dubai Hills Estate', 'Palm Jumeirah']",Under 1M,['Penthouse'],Website,Inactive,88,2024-10-12,2025-07-29
+124,CLT0124,ابتهال,Torres,smithbrian@example.com,(394)651-8586x21709,Investor,USA,['Business Bay'],Under 1M,"['Villa', 'Townhouse', 'Penthouse']",Social Media,Inactive,41,2024-10-18,2025-08-22
+125,CLT0125,لوليا,Richard,michael86@example.net,354-826-2394,Buyer,USA,['Palm Jumeirah'],Under 1M,"['Townhouse', 'Penthouse']",Advertisement,Lost,77,2024-12-19,2025-08-10
+126,CLT0126,عرفه,آل عطفة,fbenton@example.net,288-511-9734x6353,Investor,Australia,"['Dubai Hills Estate', 'Palm Jumeirah', 'Business Bay']",5M-10M,"['Villa', 'Townhouse', 'Apartment']",Social Media,Lost,41,2025-05-01,2025-08-06
+127,CLT0127,Zachary,Richardson,fllyn@example.com,420-947-4184x342,Developer,India,['Dubai Hills Estate'],10M+,['Townhouse'],Direct Contact,Lost,64,2025-03-06,2025-07-28
+128,CLT0128,آيات,أبا الخيل,nicolasaustin@example.com,921-295-6719,Tenant,China,"['Downtown Dubai', 'Dubai Hills Estate', 'Business Bay']",2M-5M,['Penthouse'],Direct Contact,Converted,39,2025-08-14,2025-08-17
+129,CLT0129,بلسم,الحجار,mpadilla@example.org,001-581-364-7910x02890,Investor,UAE,"['Palm Jumeirah', 'Dubai Marina']",5M-10M,"['Apartment', 'Townhouse']",Social Media,Active,64,2025-08-05,2025-07-29
+130,CLT0130,رامي,Gutierrez,christopheryoung@example.com,+1-955-810-9572x932,Investor,Germany,['Downtown Dubai'],5M-10M,"['Villa', 'Penthouse', 'Apartment']",Social Media,Active,41,2025-03-15,2025-08-12
+131,CLT0131,Brittany,Fisher,hmdnal-ly@example.com,4628679083,Buyer,France,"['Business Bay', 'Dubai Marina']",10M+,"['Apartment', 'Townhouse']",Social Media,Active,3,2025-06-12,2025-08-22
+132,CLT0132,Terrence,Butler,al-mydrkh@example.org,(589)326-3070,Seller,India,['Dubai Marina'],1M-2M,"['Apartment', 'Villa']",Advertisement,Active,66,2024-09-19,2025-07-27
+133,CLT0133,فخر الدّين,المهيدب,jknw@example.org,723.324.9520x80962,Seller,Canada,['Dubai Marina'],1M-2M,"['Townhouse', 'Villa']",Social Media,Lost,67,2025-05-07,2025-07-26
+134,CLT0134,هلالي,Molina,rothmadison@example.net,(908)872-7541x7151,Developer,USA,"['Business Bay', 'Palm Jumeirah']",1M-2M,['Villa'],Direct Contact,Inactive,66,2024-12-27,2025-08-05
+135,CLT0135,Hannah,Conrad,blqys48@example.com,+1-578-508-2814x3206,Investor,Germany,"['Dubai Marina', 'Business Bay', 'Dubai Hills Estate']",Under 1M,"['Apartment', 'Villa']",Social Media,Inactive,31,2025-04-10,2025-08-20
+136,CLT0136,Jennifer,Kemp,dlhkyr@example.com,5012685698,Developer,Pakistan,"['Downtown Dubai', 'Business Bay', 'Dubai Hills Estate']",10M+,"['Penthouse', 'Townhouse', 'Villa']",Direct Contact,Active,80,2025-04-16,2025-08-06
+137,CLT0137,شبلي,فصيل,lknw@example.org,001-783-724-0873,Seller,Germany,"['Downtown Dubai', 'Business Bay', 'Dubai Hills Estate']",10M+,"['Villa', 'Townhouse']",Website,Converted,57,2025-03-31,2025-07-25
+138,CLT0138,خالدي,Moore,jessica09@example.com,001-426-659-5045x269,Investor,India,"['Business Bay', 'Dubai Marina']",10M+,['Penthouse'],Direct Contact,Lost,94,2025-07-16,2025-08-01
+139,CLT0139,Bryan,العجلان,ual-rfy@example.com,511.232.4272,Seller,Pakistan,"['Downtown Dubai', 'Palm Jumeirah', 'Business Bay']",2M-5M,"['Villa', 'Penthouse']",Referral,Lost,88,2025-04-20,2025-07-30
+140,CLT0140,Brandy,Howell,elliottjulie@example.net,732-931-9906x5855,Investor,Germany,"['Palm Jumeirah', 'Dubai Hills Estate', 'Dubai Marina']",Under 1M,"['Townhouse', 'Villa', 'Penthouse']",Direct Contact,Inactive,52,2024-11-01,2025-07-27
+141,CLT0141,John,Pena,annettehester@example.net,744.583.4989x31220,Landlord,UK,"['Business Bay', 'Downtown Dubai']",Under 1M,['Penthouse'],Direct Contact,Active,47,2024-10-25,2025-08-02
+142,CLT0142,Jasmine,Parker,lynnbecky@example.net,477.411.6407,Landlord,UK,"['Business Bay', 'Palm Jumeirah', 'Dubai Hills Estate']",10M+,"['Townhouse', 'Penthouse']",Social Media,Active,73,2024-11-07,2025-08-19
+143,CLT0143,Kevin,الحجار,bondwendy@example.net,(318)783-6228,Investor,France,['Dubai Marina'],5M-10M,['Townhouse'],Social Media,Converted,51,2025-01-12,2025-08-08
+144,CLT0144,Wendy,Reid,bmason@example.net,001-534-911-3275,Landlord,UK,['Downtown Dubai'],2M-5M,"['Villa', 'Townhouse', 'Penthouse']",Social Media,Active,23,2024-12-08,2025-08-02
+145,CLT0145,مُتوكّل,العليان,mhyy-ldwynhjr@example.org,001-482-551-1486x7715,Investor,USA,"['Downtown Dubai', 'Palm Jumeirah', 'Business Bay']",1M-2M,['Apartment'],Advertisement,Inactive,26,2025-06-09,2025-08-22
+146,CLT0146,رؤوف,الراشد,mkhls27@example.net,+1-241-488-5158x152,Seller,Pakistan,['Downtown Dubai'],1M-2M,['Penthouse'],Referral,Lost,76,2024-12-26,2025-08-01
+147,CLT0147,Bradley,آل جعفر,bal-lshykh@example.com,(825)559-0731,Developer,Canada,"['Palm Jumeirah', 'Dubai Marina', 'Downtown Dubai']",2M-5M,"['Villa', 'Penthouse']",Social Media,Active,49,2025-07-24,2025-07-26
+148,CLT0148,Hector,Flores,garnersheila@example.net,(964)856-9538x4411,Landlord,China,"['Business Bay', 'Palm Jumeirah']",2M-5M,['Villa'],Referral,Active,100,2025-04-17,2025-08-18
+149,CLT0149,سعدي,فصيل,deannatorres@example.org,+1-956-979-6699x595,Seller,France,"['Business Bay', 'Dubai Marina']",10M+,"['Townhouse', 'Apartment', 'Penthouse']",Direct Contact,Inactive,55,2025-01-18,2025-08-14
+150,CLT0150,ماجد,أبا الخيل,lqylsdwm@example.net,+1-788-602-2380x1850,Landlord,China,"['Palm Jumeirah', 'Dubai Hills Estate']",2M-5M,"['Villa', 'Townhouse', 'Apartment']",Referral,Lost,70,2025-03-25,2025-08-12
+151,CLT0151,لقاء,Roy,twelch@example.com,378.951.1835x2909,Investor,UK,"['Palm Jumeirah', 'Business Bay']",2M-5M,['Apartment'],Website,Active,11,2025-03-21,2025-07-27
+152,CLT0152,هدى,كانو,james73@example.org,480-820-7758,Buyer,UAE,"['Dubai Marina', 'Dubai Hills Estate', 'Business Bay']",Under 1M,['Villa'],Advertisement,Inactive,36,2025-01-30,2025-07-31
+153,CLT0153,Melissa,Soto,hmz40@example.com,(785)721-4632x0254,Buyer,Australia,"['Downtown Dubai', 'Dubai Marina', 'Business Bay']",2M-5M,"['Villa', 'Townhouse']",Direct Contact,Converted,26,2025-02-08,2025-08-16
+154,CLT0154,Monica,آل بن ظافر,rwal-lskry@example.org,001-501-518-4111,Investor,China,['Dubai Marina'],5M-10M,['Villa'],Direct Contact,Active,1,2025-06-05,2025-08-07
+155,CLT0155,Anthony,Hicks,baileysonya@example.org,001-946-738-8649x437,Landlord,USA,"['Business Bay', 'Dubai Marina', 'Downtown Dubai']",5M-10M,"['Apartment', 'Townhouse']",Social Media,Converted,10,2025-01-14,2025-07-27
+156,CLT0156,Drew,Harrington,franciscorosario@example.com,+1-293-319-7627x755,Landlord,Australia,"['Dubai Hills Estate', 'Downtown Dubai', 'Dubai Marina']",1M-2M,"['Penthouse', 'Townhouse', 'Apartment']",Social Media,Active,68,2025-03-03,2025-08-12
+157,CLT0157,Norma,Wang,heathervaldez@example.com,853.953.5353x268,Seller,Pakistan,"['Palm Jumeirah', 'Dubai Marina', 'Dubai Hills Estate']",1M-2M,['Penthouse'],Social Media,Lost,17,2024-11-05,2025-08-03
+158,CLT0158,نوّاف,Campbell,joseph76@example.com,+1-341-586-2466x22789,Developer,India,"['Palm Jumeirah', 'Dubai Hills Estate', 'Downtown Dubai']",Under 1M,"['Townhouse', 'Villa']",Social Media,Active,92,2025-01-22,2025-08-02
+159,CLT0159,Jessica,آل العسكري,rw23@example.net,(302)239-7372,Investor,Pakistan,"['Downtown Dubai', 'Dubai Marina']",2M-5M,"['Villa', 'Penthouse']",Direct Contact,Lost,9,2025-02-08,2025-08-18
+160,CLT0160,فائق,Martinez,ortizjustin@example.org,7979690892,Investor,France,"['Dubai Hills Estate', 'Dubai Marina', 'Palm Jumeirah']",Under 1M,"['Townhouse', 'Villa', 'Apartment']",Direct Contact,Inactive,25,2024-11-27,2025-08-18
+161,CLT0161,آيات,Ritter,smhn@example.net,+1-729-736-2446x428,Landlord,UAE,['Dubai Hills Estate'],Under 1M,"['Apartment', 'Villa']",Referral,Converted,15,2025-07-27,2025-08-08
+162,CLT0162,سعيد,المشاولة,coxmichael@example.org,895-528-6881,Buyer,India,['Business Bay'],5M-10M,"['Townhouse', 'Villa', 'Penthouse']",Advertisement,Lost,47,2025-08-08,2025-08-03
+163,CLT0163,زيدان,آل محمد بن علي بن جماز,darrell36@example.org,843.923.4282,Seller,Pakistan,['Downtown Dubai'],Under 1M,['Apartment'],Advertisement,Inactive,60,2024-10-22,2025-08-22
+164,CLT0164,Caleb,المغاولة,timothy14@example.com,(614)393-2084x969,Investor,UK,"['Business Bay', 'Downtown Dubai', 'Palm Jumeirah']",5M-10M,"['Villa', 'Townhouse']",Advertisement,Converted,75,2024-08-24,2025-08-19
+165,CLT0165,شامل,Scott,pricemartin@example.org,(447)798-9108x3115,Buyer,France,"['Dubai Marina', 'Business Bay', 'Dubai Hills Estate']",Under 1M,"['Penthouse', 'Apartment', 'Townhouse']",Referral,Active,31,2024-12-25,2025-08-18
+166,CLT0166,Erin,Holder,al-bn-zfrmhyb@example.org,6903939180,Landlord,Canada,"['Palm Jumeirah', 'Dubai Hills Estate', 'Business Bay']",2M-5M,"['Villa', 'Apartment']",Advertisement,Active,45,2025-02-28,2025-08-07
+167,CLT0167,Anthony,Harris,thmn48@example.org,232.556.8100,Tenant,Australia,"['Palm Jumeirah', 'Dubai Hills Estate']",5M-10M,['Apartment'],Website,Inactive,36,2025-04-29,2025-08-08
+168,CLT0168,Michelle,Benjamin,bal-swd@example.org,+1-772-671-6962x3772,Buyer,Australia,"['Dubai Hills Estate', 'Dubai Marina', 'Palm Jumeirah']",5M-10M,"['Penthouse', 'Apartment', 'Villa']",Referral,Inactive,58,2025-07-01,2025-08-14
+169,CLT0169,هيا,Brown,fyd54@example.net,001-705-735-4697x869,Investor,China,"['Business Bay', 'Downtown Dubai']",2M-5M,"['Villa', 'Townhouse']",Social Media,Inactive,28,2025-05-21,2025-08-19
+170,CLT0170,Mark,Adams,tracy18@example.net,9633934053,Tenant,Germany,"['Dubai Hills Estate', 'Downtown Dubai', 'Palm Jumeirah']",2M-5M,['Townhouse'],Website,Inactive,64,2024-11-18,2025-08-20
+171,CLT0171,Kim,حجار,xknw@example.org,+1-737-697-6444x3578,Landlord,Germany,"['Business Bay', 'Palm Jumeirah', 'Downtown Dubai']",2M-5M,"['Penthouse', 'Apartment', 'Townhouse']",Advertisement,Lost,38,2025-06-14,2025-08-22
+172,CLT0172,منيع,Rodriguez,oal-bn-zfr@example.net,232-465-9069,Developer,UAE,['Dubai Hills Estate'],5M-10M,"['Villa', 'Penthouse', 'Apartment']",Website,Inactive,33,2025-01-02,2025-08-04
+173,CLT0173,صلاح الدّين,Love,tyq15@example.net,561.248.9575x8487,Landlord,Pakistan,['Business Bay'],1M-2M,"['Apartment', 'Villa']",Website,Lost,55,2025-04-09,2025-08-01
+174,CLT0174,Stephanie,آل رفيع,fordbridget@example.net,001-775-654-0075x92945,Landlord,UAE,['Downtown Dubai'],5M-10M,['Townhouse'],Social Media,Active,62,2025-05-05,2025-08-06
+175,CLT0175,روبا,الراشد,rbhal-lskry@example.org,(904)468-0605x2189,Investor,Germany,['Business Bay'],5M-10M,"['Apartment', 'Villa', 'Townhouse']",Referral,Converted,97,2025-02-26,2025-08-16
+176,CLT0176,Jennifer,Lee,mrdylhkyr@example.net,(741)778-9511,Investor,Germany,"['Palm Jumeirah', 'Business Bay', 'Dubai Marina']",10M+,"['Apartment', 'Penthouse']",Direct Contact,Inactive,91,2024-10-25,2025-08-05
+177,CLT0177,Krystal,Logan,pmoody@example.com,925.564.9013x38810,Developer,Australia,"['Dubai Hills Estate', 'Business Bay']",1M-2M,"['Villa', 'Apartment', 'Penthouse']",Advertisement,Lost,32,2024-12-31,2025-08-20
+178,CLT0178,بلماء,آل قصير,rfljln@example.org,836-348-2184,Tenant,Canada,['Palm Jumeirah'],Under 1M,"['Penthouse', 'Villa', 'Townhouse']",Social Media,Converted,73,2025-08-17,2025-08-01
+179,CLT0179,Pamela,Krause,patrick03@example.com,001-742-727-6934,Developer,India,"['Palm Jumeirah', 'Dubai Hills Estate', 'Business Bay']",Under 1M,['Apartment'],Referral,Active,56,2024-09-20,2025-08-05
+180,CLT0180,تولين,Waller,asmith@example.net,001-382-292-7173x17514,Seller,China,"['Dubai Hills Estate', 'Dubai Marina', 'Business Bay']",2M-5M,"['Apartment', 'Villa']",Direct Contact,Active,12,2024-11-10,2025-08-14
+181,CLT0181,Diana,الحجار,smithzachary@example.net,(525)518-1204x27605,Developer,China,"['Dubai Marina', 'Downtown Dubai', 'Palm Jumeirah']",5M-10M,"['Villa', 'Townhouse', 'Penthouse']",Website,Inactive,75,2025-07-16,2025-07-29
+182,CLT0182,Antonio,Thompson,laurenmaynard@example.org,001-340-547-7148x58721,Tenant,India,['Dubai Marina'],5M-10M,"['Penthouse', 'Townhouse']",Website,Lost,93,2024-08-30,2025-08-10
+183,CLT0183,Kaitlin,الجفالي,sdh19@example.org,367.960.6306x44701,Buyer,UK,['Palm Jumeirah'],5M-10M,"['Townhouse', 'Apartment']",Social Media,Converted,2,2025-08-19,2025-08-10
+184,CLT0184,يمام,Lucas,qsydbn-ldn@example.com,(898)637-9399x85697,Landlord,Canada,"['Dubai Marina', 'Business Bay']",2M-5M,['Apartment'],Referral,Converted,78,2025-05-25,2025-08-20
+185,CLT0185,Javier,Phillips,wscott@example.net,942.582.6135x656,Landlord,China,"['Palm Jumeirah', 'Downtown Dubai']",2M-5M,"['Villa', 'Townhouse', 'Apartment']",Direct Contact,Converted,69,2024-11-22,2025-07-27
+186,CLT0186,فردوس,آل صفوان,frt74@example.com,669.419.9319,Seller,Canada,['Dubai Hills Estate'],2M-5M,['Penthouse'],Advertisement,Active,26,2025-05-01,2025-08-02
+187,CLT0187,نادر,Rodgers,b-lkhylnbyl@example.com,9629054465,Seller,India,['Business Bay'],10M+,['Apartment'],Referral,Lost,77,2024-12-21,2025-08-13
+188,CLT0188,طبّاع,Wheeler,jonesjustin@example.net,001-692-578-3239x8888,Buyer,China,['Palm Jumeirah'],2M-5M,['Townhouse'],Website,Converted,3,2025-01-04,2025-07-29
+189,CLT0189,لارا,Arnold,lal-bn-zfr@example.net,299-262-8772,Investor,UAE,"['Dubai Hills Estate', 'Dubai Marina']",10M+,"['Apartment', 'Penthouse', 'Townhouse']",Social Media,Inactive,84,2025-02-13,2025-08-21
+190,CLT0190,غطفان,شربتلي,fhayes@example.org,986-892-6758,Tenant,UAE,"['Business Bay', 'Palm Jumeirah']",1M-2M,"['Apartment', 'Villa']",Social Media,Inactive,84,2025-04-22,2025-08-18
+191,CLT0191,مَجدي,الجفالي,randy96@example.net,489.904.6847x391,Tenant,Canada,"['Palm Jumeirah', 'Dubai Hills Estate']",10M+,"['Villa', 'Townhouse']",Social Media,Lost,1,2025-02-03,2025-08-04
+192,CLT0192,James,آل سعود,yzyd74@example.org,3299217271,Seller,France,"['Downtown Dubai', 'Dubai Hills Estate', 'Palm Jumeirah']",1M-2M,['Villa'],Website,Active,29,2025-07-05,2025-08-10
+193,CLT0193,نشأت,Jensen,jbr07@example.org,683.261.4780,Investor,USA,['Business Bay'],Under 1M,"['Apartment', 'Penthouse']",Social Media,Active,37,2025-03-06,2025-08-07
+194,CLT0194,كنان,King,dhkal-rfy@example.net,902-648-3655x718,Tenant,France,"['Business Bay', 'Downtown Dubai']",1M-2M,"['Villa', 'Penthouse']",Direct Contact,Lost,20,2024-09-28,2025-08-17
+195,CLT0195,عماد,شربتلي,bd-lswlmal-myd@example.com,826.384.4674,Tenant,China,['Dubai Hills Estate'],2M-5M,"['Apartment', 'Penthouse']",Referral,Converted,32,2025-05-03,2025-08-09
+196,CLT0196,سهيل,الدباغ,njwnhnbwly@example.com,001-316-385-5916x99569,Seller,Canada,"['Palm Jumeirah', 'Downtown Dubai', 'Business Bay']",1M-2M,['Penthouse'],Advertisement,Lost,71,2025-01-21,2025-08-05
+197,CLT0197,عقيل,Forbes,bshr51@example.net,(729)639-9895x11938,Tenant,China,"['Palm Jumeirah', 'Business Bay', 'Dubai Hills Estate']",1M-2M,"['Apartment', 'Penthouse']",Advertisement,Lost,56,2024-11-28,2025-08-20
+198,CLT0198,مايا,Burke,alqyl@example.net,675.804.8889,Buyer,USA,"['Dubai Hills Estate', 'Dubai Marina', 'Business Bay']",2M-5M,"['Apartment', 'Penthouse']",Advertisement,Lost,35,2024-12-03,2025-08-23
+199,CLT0199,عبد الباقي,كانو,charvey@example.com,302.563.9128,Developer,UAE,"['Downtown Dubai', 'Dubai Hills Estate', 'Business Bay']",5M-10M,"['Penthouse', 'Apartment']",Website,Lost,95,2024-08-30,2025-08-11
+200,CLT0200,جالا,الحكير,douglas76@example.com,(230)825-4246x88258,Seller,Germany,"['Palm Jumeirah', 'Dubai Marina', 'Downtown Dubai']",2M-5M,['Villa'],Referral,Lost,80,2025-08-14,2025-08-08
+201,CLT0201,نبهان,Pittman,lqylnshwn@example.com,+1-427-705-4499x43428,Investor,Australia,['Business Bay'],10M+,"['Townhouse', 'Apartment']",Website,Inactive,4,2024-11-08,2025-07-25
+202,CLT0202,هلال,Ramos,glhjr@example.net,+1-332-270-5278x975,Seller,Canada,['Dubai Hills Estate'],5M-10M,"['Penthouse', 'Villa']",Referral,Inactive,97,2024-09-04,2025-08-18
+203,CLT0203,Jesus,الدباغ,peckerin@example.org,001-782-842-0549,Developer,Australia,"['Downtown Dubai', 'Dubai Hills Estate', 'Palm Jumeirah']",1M-2M,"['Apartment', 'Townhouse']",Website,Converted,88,2025-08-12,2025-08-01
+204,CLT0204,يسار,Ryan,carterbrady@example.org,(910)719-8158,Tenant,USA,"['Dubai Marina', 'Downtown Dubai']",2M-5M,"['Villa', 'Penthouse', 'Apartment']",Direct Contact,Active,75,2024-09-11,2025-08-15
+205,CLT0205,حسيب,المشاولة,bd-ltwwbal-lskry@example.org,(512)574-6404x7987,Seller,UK,"['Palm Jumeirah', 'Dubai Hills Estate', 'Business Bay']",2M-5M,"['Penthouse', 'Villa', 'Townhouse']",Advertisement,Converted,80,2025-02-10,2025-08-10
+206,CLT0206,ناعم,الراشد,znicholson@example.com,001-521-886-6142x5537,Seller,Australia,"['Palm Jumeirah', 'Dubai Marina']",10M+,['Apartment'],Direct Contact,Converted,71,2024-10-12,2025-08-05
+207,CLT0207,جوليا,Terry,woodtiffany@example.org,(635)913-7227,Buyer,Canada,"['Downtown Dubai', 'Dubai Marina']",10M+,"['Apartment', 'Townhouse']",Referral,Active,94,2025-01-28,2025-08-20
+208,CLT0208,Jared,Henderson,glbal-myd@example.net,+1-642-817-8543,Investor,France,['Downtown Dubai'],10M+,"['Townhouse', 'Villa']",Direct Contact,Active,40,2024-09-04,2025-08-01
+209,CLT0209,Wesley,Richardson,jwnbn-ldn@example.com,+1-485-540-9361x0391,Seller,China,['Business Bay'],2M-5M,"['Villa', 'Apartment', 'Townhouse']",Referral,Inactive,57,2024-10-13,2025-08-12
+210,CLT0210,Susan,المغاولة,brianhernandez@example.net,(767)820-0405x6209,Tenant,UAE,"['Downtown Dubai', 'Dubai Hills Estate', 'Business Bay']",5M-10M,"['Townhouse', 'Villa', 'Apartment']",Direct Contact,Converted,24,2025-07-31,2025-07-31
+211,CLT0211,صهيب,Moore,al-lshykhmjd@example.net,(793)938-6921x981,Landlord,Germany,"['Dubai Hills Estate', 'Downtown Dubai', 'Business Bay']",10M+,"['Villa', 'Townhouse']",Website,Inactive,57,2025-07-31,2025-08-21
+212,CLT0212,طموح,الجابر,rlmshwl@example.com,549.688.8781,Investor,Canada,"['Business Bay', 'Palm Jumeirah', 'Dubai Marina']",1M-2M,['Apartment'],Website,Active,40,2024-12-04,2025-08-01
+213,CLT0213,Robert,آل حسين,nhdal-qsyr@example.org,585.681.0272,Developer,USA,"['Dubai Marina', 'Business Bay']",Under 1M,"['Townhouse', 'Apartment']",Website,Lost,81,2025-05-14,2025-08-08
+214,CLT0214,معن,Powell,ljbrqsy@example.com,001-767-765-8759x516,Developer,China,['Palm Jumeirah'],10M+,['Villa'],Direct Contact,Converted,13,2024-12-23,2025-08-06
+215,CLT0215,كايد,Patterson,hshm48@example.net,962.740.7053x44979,Buyer,Australia,"['Dubai Marina', 'Downtown Dubai', 'Dubai Hills Estate']",1M-2M,"['Apartment', 'Villa']",Referral,Inactive,96,2025-08-20,2025-08-14
+216,CLT0216,مهنّد,Kent,morganthompson@example.net,+1-860-795-1299x3995,Seller,France,"['Downtown Dubai', 'Dubai Marina']",1M-2M,['Townhouse'],Direct Contact,Active,52,2025-02-22,2025-07-29
+217,CLT0217,كرمة,Hicks,hnbwlyayt@example.com,353.925.8743,Investor,Germany,['Palm Jumeirah'],5M-10M,"['Villa', 'Townhouse']",Advertisement,Converted,43,2025-08-09,2025-08-11
+218,CLT0218,عائد,Becker,zz76@example.org,(876)666-6988x764,Developer,France,"['Palm Jumeirah', 'Dubai Hills Estate']",Under 1M,"['Apartment', 'Villa']",Advertisement,Converted,81,2024-08-27,2025-08-13
+219,CLT0219,غسّان,العقيل,serranolisa@example.net,001-412-551-6154x804,Investor,Germany,"['Business Bay', 'Downtown Dubai']",1M-2M,"['Penthouse', 'Townhouse']",Advertisement,Lost,8,2025-08-09,2025-08-08
+220,CLT0220,حسيب,آل عواض,bd-lbqylmshwl@example.com,001-627-295-5356,Buyer,France,['Dubai Marina'],1M-2M,"['Penthouse', 'Townhouse']",Social Media,Lost,64,2025-02-15,2025-08-15
+221,CLT0221,ربيع,الشايع,ljflynmn@example.org,322.981.4913x817,Investor,UAE,"['Dubai Marina', 'Downtown Dubai', 'Business Bay']",1M-2M,"['Townhouse', 'Villa', 'Penthouse']",Advertisement,Active,84,2024-09-13,2025-08-11
+222,CLT0222,Gary,آل عطفة,ortizstephen@example.org,(258)285-5465,Investor,Germany,"['Business Bay', 'Dubai Marina', 'Downtown Dubai']",5M-10M,"['Penthouse', 'Villa']",Social Media,Inactive,100,2025-07-14,2025-08-14
+223,CLT0223,Leah,آل العسكري,washingtonkimberly@example.net,(582)949-7439,Landlord,Pakistan,['Business Bay'],10M+,"['Apartment', 'Penthouse']",Direct Contact,Active,21,2025-07-23,2025-08-02
+224,CLT0224,قبس,Willis,crystal15@example.net,232.274.7842x63163,Investor,India,"['Dubai Marina', 'Downtown Dubai', 'Palm Jumeirah']",1M-2M,"['Villa', 'Townhouse', 'Penthouse']",Advertisement,Converted,22,2024-11-05,2025-08-14
+225,CLT0225,Kimberly,Matthews,sandrakim@example.org,6503396031,Landlord,China,"['Dubai Hills Estate', 'Palm Jumeirah']",Under 1M,['Penthouse'],Advertisement,Lost,42,2024-09-18,2025-08-03
+226,CLT0226,جوليا,الدباغ,jamesphelps@example.net,615.285.8244,Landlord,USA,"['Palm Jumeirah', 'Dubai Hills Estate', 'Downtown Dubai']",5M-10M,"['Villa', 'Penthouse', 'Townhouse']",Website,Inactive,33,2025-06-19,2025-08-02
+227,CLT0227,Jason,Taylor,blhjr@example.org,(463)234-8707x07157,Developer,UK,"['Downtown Dubai', 'Palm Jumeirah']",Under 1M,['Penthouse'],Website,Converted,75,2025-02-09,2025-08-12
+228,CLT0228,Ricky,Daniels,ricetyler@example.org,536-282-0443x6996,Investor,UK,"['Business Bay', 'Dubai Marina']",5M-10M,"['Apartment', 'Penthouse', 'Townhouse']",Website,Inactive,62,2024-09-03,2025-08-22
+229,CLT0229,Stephanie,آل بن ظافر,hsnyal-sltn@example.com,869-699-3990x03746,Developer,UAE,"['Downtown Dubai', 'Dubai Hills Estate', 'Palm Jumeirah']",2M-5M,"['Villa', 'Apartment']",Referral,Active,57,2025-06-12,2025-08-19
+230,CLT0230,Stephanie,آل جعفر,hny01@example.org,352.829.9190x3103,Landlord,UAE,"['Palm Jumeirah', 'Dubai Marina', 'Downtown Dubai']",2M-5M,['Apartment'],Referral,Lost,7,2025-03-19,2025-07-26
+231,CLT0231,Barbara,آل عايض,marissabishop@example.net,001-429-756-2552x91315,Investor,Germany,"['Dubai Hills Estate', 'Dubai Marina', 'Business Bay']",10M+,"['Penthouse', 'Apartment']",Website,Lost,90,2025-07-20,2025-08-09
+232,CLT0232,Tara,Jones,al-ydrhyb@example.org,708-207-7425x91968,Investor,India,"['Palm Jumeirah', 'Business Bay', 'Downtown Dubai']",2M-5M,['Apartment'],Direct Contact,Inactive,86,2025-05-09,2025-07-26
+233,CLT0233,عبد الغفّار,كانو,richardsheather@example.net,905-822-5586,Investor,China,['Dubai Marina'],5M-10M,"['Penthouse', 'Apartment']",Advertisement,Active,35,2025-04-27,2025-07-31
+234,CLT0234,Justin,Reese,myrlbn-ldn@example.com,8942625852,Buyer,China,['Downtown Dubai'],5M-10M,['Penthouse'],Advertisement,Active,26,2024-09-15,2025-08-23
+235,CLT0235,صخر,Martinez,hnbwlyltyn@example.net,(907)938-8958x293,Buyer,Canada,"['Downtown Dubai', 'Dubai Marina', 'Palm Jumeirah']",Under 1M,['Townhouse'],Advertisement,Lost,83,2025-02-16,2025-08-22
+236,CLT0236,نعمان,Martinez,ral-rfy@example.com,(586)267-3928,Investor,China,"['Dubai Marina', 'Palm Jumeirah']",1M-2M,"['Apartment', 'Penthouse', 'Villa']",Direct Contact,Lost,82,2024-09-18,2025-08-04
+237,CLT0237,ثائر,Morse,zhdyal-hsyn@example.com,276-448-6075x453,Tenant,USA,"['Downtown Dubai', 'Business Bay']",Under 1M,"['Apartment', 'Penthouse', 'Townhouse']",Referral,Inactive,8,2024-09-01,2025-07-29
+238,CLT0238,حاتم,آل خضير,lmhnzhr@example.org,+1-487-485-0292x9426,Investor,China,"['Dubai Hills Estate', 'Dubai Marina']",10M+,['Apartment'],Website,Active,8,2025-02-16,2025-08-18
+239,CLT0239,Jack,Clark,hsnyldbg@example.com,+1-719-431-7422x34896,Developer,Australia,"['Downtown Dubai', 'Dubai Hills Estate']",Under 1M,"['Villa', 'Apartment']",Direct Contact,Lost,15,2024-09-05,2025-08-11
+240,CLT0240,مسلم,آل سعود,bthlal-tf@example.org,001-806-294-1944x03970,Developer,USA,"['Dubai Marina', 'Dubai Hills Estate']",1M-2M,"['Villa', 'Townhouse', 'Apartment']",Website,Inactive,41,2024-11-15,2025-08-06
+241,CLT0241,صالح,آل صفوان,elizabeth26@example.net,001-459-977-0086x64984,Developer,India,"['Dubai Hills Estate', 'Dubai Marina', 'Palm Jumeirah']",1M-2M,['Townhouse'],Referral,Inactive,69,2025-03-20,2025-08-13
+242,CLT0242,محسن,آل خضير,lhfnal-hsyn@example.net,529-338-6699x311,Buyer,France,"['Downtown Dubai', 'Dubai Hills Estate']",1M-2M,"['Apartment', 'Townhouse']",Direct Contact,Lost,31,2025-04-14,2025-08-15
+243,CLT0243,رشدي,Smith,njyal-hsyn@example.net,+1-998-518-8463,Investor,UAE,"['Business Bay', 'Downtown Dubai', 'Dubai Hills Estate']",Under 1M,"['Villa', 'Apartment', 'Townhouse']",Direct Contact,Converted,59,2024-10-25,2025-07-29
+244,CLT0244,جوان,Santos,rwb49@example.com,224.848.4426x5768,Developer,France,['Dubai Hills Estate'],10M+,['Townhouse'],Advertisement,Converted,92,2024-08-25,2025-08-13
+245,CLT0245,راني,Coleman,ndym62@example.org,365-966-2769x9133,Seller,Canada,"['Business Bay', 'Dubai Marina', 'Downtown Dubai']",1M-2M,['Townhouse'],Social Media,Active,32,2025-06-06,2025-08-07
+246,CLT0246,Rebecca,العقيل,nlmgwl@example.com,(413)899-7246x46107,Buyer,India,"['Downtown Dubai', 'Business Bay', 'Palm Jumeirah']",Under 1M,"['Penthouse', 'Apartment']",Advertisement,Lost,5,2024-08-29,2025-08-11
+247,CLT0247,فيّاض,Smith,jacquelineclark@example.com,001-519-801-7489,Seller,UK,"['Palm Jumeirah', 'Dubai Marina']",1M-2M,['Townhouse'],Direct Contact,Converted,65,2025-06-21,2025-07-30
+248,CLT0248,رباح,العليان,vstewart@example.net,+1-628-675-8899x28393,Investor,Pakistan,['Palm Jumeirah'],2M-5M,"['Penthouse', 'Apartment']",Referral,Converted,75,2024-09-01,2025-08-16
+249,CLT0249,شاطر,آل حسين,irodriguez@example.com,576.257.4057,Tenant,Australia,"['Dubai Hills Estate', 'Palm Jumeirah', 'Downtown Dubai']",2M-5M,"['Villa', 'Penthouse']",Direct Contact,Active,91,2025-03-04,2025-07-25
+250,CLT0250,سليم,آل عايض,ljlnknn@example.org,853-893-4380,Developer,Germany,"['Downtown Dubai', 'Palm Jumeirah', 'Business Bay']",1M-2M,"['Townhouse', 'Apartment', 'Villa']",Website,Inactive,47,2024-12-28,2025-08-05
+251,CLT0251,هايل,Grant,zacharyevans@example.com,(383)641-4651,Investor,Pakistan,['Dubai Hills Estate'],5M-10M,"['Townhouse', 'Villa']",Social Media,Lost,69,2025-03-29,2025-08-13
+252,CLT0252,تولين,Gutierrez,brian75@example.net,741.485.8614x1079,Investor,Pakistan,"['Dubai Marina', 'Dubai Hills Estate', 'Downtown Dubai']",1M-2M,"['Villa', 'Penthouse', 'Apartment']",Website,Inactive,52,2025-01-27,2025-08-12
+253,CLT0253,نبهان,الجفالي,dsnyder@example.net,473.485.7228x759,Buyer,China,"['Dubai Marina', 'Downtown Dubai', 'Palm Jumeirah']",1M-2M,['Villa'],Social Media,Inactive,89,2024-09-13,2025-07-27
+254,CLT0254,Elizabeth,Burgess,mshrfal-tf@example.com,(618)654-0256,Landlord,Pakistan,"['Dubai Marina', 'Dubai Hills Estate', 'Palm Jumeirah']",2M-5M,"['Townhouse', 'Penthouse']",Direct Contact,Active,22,2024-10-23,2025-08-17
+255,CLT0255,نوّار,آل الشيخ,martinbarbara@example.net,996.394.6166x7446,Developer,Australia,"['Palm Jumeirah', 'Dubai Marina']",10M+,"['Penthouse', 'Villa', 'Townhouse']",Website,Inactive,48,2025-01-15,2025-08-22
+256,CLT0256,Roger,Nash,hriley@example.org,6045893370,Seller,Australia,"['Dubai Hills Estate', 'Downtown Dubai', 'Dubai Marina']",10M+,['Penthouse'],Social Media,Active,10,2024-09-27,2025-08-23
+257,CLT0257,لينا,Lane,beth05@example.org,001-296-285-6307x7302,Developer,Germany,"['Dubai Marina', 'Dubai Hills Estate', 'Downtown Dubai']",2M-5M,['Penthouse'],Website,Active,47,2025-02-01,2025-08-03
+258,CLT0258,Shawn,Andrews,bd-lqdwwshnbwly@example.com,(467)598-8894x860,Seller,USA,['Dubai Marina'],10M+,['Townhouse'],Website,Inactive,47,2025-03-16,2025-08-03
+259,CLT0259,ايمان,Montgomery,al-mydhy@example.com,001-304-886-1977,Developer,Pakistan,"['Business Bay', 'Palm Jumeirah']",10M+,['Townhouse'],Direct Contact,Converted,14,2024-10-22,2025-08-15
+260,CLT0260,Kayla,Kirby,kal-rfy@example.net,838-206-6499,Tenant,France,"['Dubai Marina', 'Downtown Dubai']",Under 1M,"['Apartment', 'Townhouse']",Social Media,Inactive,14,2024-09-12,2025-08-12
+261,CLT0261,Joel,Garcia,mhnbwly@example.com,(787)610-8124,Landlord,China,['Downtown Dubai'],5M-10M,['Townhouse'],Direct Contact,Converted,34,2025-08-13,2025-08-08
+262,CLT0262,Erin,آل محمد بن علي بن جماز,rbyal-rfy@example.net,548-878-4048x25680,Investor,France,"['Business Bay', 'Palm Jumeirah']",2M-5M,"['Penthouse', 'Apartment']",Advertisement,Converted,100,2025-01-27,2025-08-15
+263,CLT0263,Ralph,Wright,baileymisty@example.net,001-309-981-8643x58844,Seller,China,['Dubai Marina'],1M-2M,"['Villa', 'Penthouse']",Website,Converted,89,2025-05-06,2025-08-17
+264,CLT0264,Devin,Hayes,carriejohnston@example.net,001-448-547-5773x8916,Tenant,USA,"['Downtown Dubai', 'Dubai Marina']",5M-10M,['Villa'],Referral,Active,82,2025-03-06,2025-08-12
+265,CLT0265,Anthony,الراشد,sm80@example.net,+1-800-961-5293x8262,Tenant,Australia,"['Business Bay', 'Downtown Dubai']",5M-10M,"['Penthouse', 'Apartment', 'Townhouse']",Social Media,Lost,10,2025-01-07,2025-07-28
+266,CLT0266,صافي,الدباغ,ral-bn-zfr@example.com,636-911-4221,Investor,UK,"['Dubai Marina', 'Downtown Dubai']",5M-10M,['Penthouse'],Referral,Converted,17,2024-10-17,2025-08-15
+267,CLT0267,نضال,أبو داوود,nyzy26@example.org,7642804781,Developer,France,"['Dubai Marina', 'Downtown Dubai', 'Dubai Hills Estate']",10M+,['Villa'],Direct Contact,Active,40,2025-08-02,2025-07-31
+268,CLT0268,Kendra,Wiggins,lmgwlglb@example.org,001-940-501-9856x9176,Investor,UAE,['Dubai Hills Estate'],5M-10M,"['Apartment', 'Townhouse', 'Penthouse']",Referral,Converted,85,2024-09-26,2025-08-18
+269,CLT0269,Jessica,الراشد,rynd23@example.com,001-894-757-0934x792,Investor,Australia,"['Dubai Hills Estate', 'Dubai Marina']",2M-5M,"['Penthouse', 'Apartment', 'Villa']",Direct Contact,Converted,9,2025-06-30,2025-08-15
+270,CLT0270,مُنجد,آل رفيع,msmith@example.org,413-995-0552x0753,Landlord,Canada,['Dubai Hills Estate'],1M-2M,['Townhouse'],Direct Contact,Lost,100,2025-03-24,2025-07-26
+271,CLT0271,حلا,آل محمد بن علي بن جماز,lal-rfy@example.com,(491)899-4639x9666,Buyer,UK,['Business Bay'],Under 1M,"['Townhouse', 'Penthouse']",Website,Lost,31,2024-09-28,2025-08-10
+272,CLT0272,Richard,آل حسين,paul55@example.org,001-403-283-8245x530,Developer,UAE,['Business Bay'],5M-10M,"['Penthouse', 'Apartment', 'Townhouse']",Social Media,Inactive,90,2024-10-16,2025-08-06
+273,CLT0273,رشاد,العقيل,scott60@example.net,9319323103,Landlord,UK,['Downtown Dubai'],10M+,"['Townhouse', 'Villa', 'Apartment']",Advertisement,Converted,88,2024-12-31,2025-08-15
+274,CLT0274,رشاد,آل سلطان,burnslarry@example.org,(536)693-5671x650,Landlord,Canada,"['Palm Jumeirah', 'Downtown Dubai', 'Dubai Marina']",Under 1M,"['Apartment', 'Villa', 'Penthouse']",Referral,Inactive,95,2025-07-04,2025-07-30
+275,CLT0275,Lisa,Clark,zyd67@example.org,570.567.2178x7211,Developer,Australia,"['Dubai Hills Estate', 'Dubai Marina']",10M+,"['Townhouse', 'Penthouse', 'Villa']",Direct Contact,Lost,36,2024-08-23,2025-07-29
+276,CLT0276,حسام,Cummings,richard67@example.net,590-794-6729,Investor,UK,['Dubai Hills Estate'],2M-5M,"['Apartment', 'Townhouse']",Direct Contact,Inactive,45,2025-07-10,2025-08-01
+277,CLT0277,Jessica,آل بن ظافر,ann01@example.com,436.700.4755,Developer,UAE,"['Palm Jumeirah', 'Downtown Dubai', 'Dubai Hills Estate']",5M-10M,"['Penthouse', 'Villa']",Referral,Lost,24,2024-11-06,2025-07-25
+278,CLT0278,هاجر,حنبولي,kimmelanie@example.com,773.995.8685,Developer,UK,['Downtown Dubai'],2M-5M,"['Townhouse', 'Villa']",Social Media,Converted,54,2025-05-18,2025-08-18
+279,CLT0279,فلاح,آل معيض,btlljbr@example.net,+1-566-439-5414x635,Tenant,Australia,"['Dubai Marina', 'Dubai Hills Estate', 'Downtown Dubai']",1M-2M,"['Apartment', 'Penthouse', 'Villa']",Direct Contact,Inactive,51,2025-06-24,2025-08-19
+280,CLT0280,مهيب,الخرافي,lfyfbw-dwwd@example.org,796-351-9543,Seller,France,"['Dubai Marina', 'Palm Jumeirah']",2M-5M,['Townhouse'],Website,Lost,64,2025-07-15,2025-08-15
+281,CLT0281,مرادي,Schmidt,bd-lrwwwf56@example.net,(525)421-0653x49190,Landlord,Canada,"['Dubai Hills Estate', 'Business Bay']",2M-5M,"['Apartment', 'Villa', 'Townhouse']",Website,Lost,69,2025-01-17,2025-08-23
+282,CLT0282,زكي,الحجار,emhn@example.org,6135944551,Investor,France,"['Downtown Dubai', 'Dubai Hills Estate', 'Dubai Marina']",2M-5M,"['Penthouse', 'Townhouse']",Advertisement,Lost,29,2024-10-12,2025-08-08
+283,CLT0283,عقيل,Kline,shrbtlydysm@example.net,(885)668-5287x810,Seller,Pakistan,['Dubai Hills Estate'],2M-5M,"['Townhouse', 'Villa', 'Apartment']",Direct Contact,Lost,10,2024-10-19,2025-08-04
+284,CLT0284,بلماء,الدباغ,bhral-sltn@example.com,+1-688-590-7810x1902,Landlord,USA,"['Dubai Marina', 'Dubai Hills Estate']",Under 1M,"['Penthouse', 'Apartment', 'Villa']",Social Media,Inactive,4,2025-08-05,2025-08-05
+285,CLT0285,رئيس,Glass,coletina@example.net,3442801236,Developer,Pakistan,"['Dubai Hills Estate', 'Business Bay', 'Palm Jumeirah']",Under 1M,['Villa'],Direct Contact,Inactive,13,2025-01-14,2025-08-10
+286,CLT0286,عالية,Jones,richardsonjose@example.org,695-872-0200,Landlord,UAE,"['Palm Jumeirah', 'Downtown Dubai', 'Dubai Hills Estate']",1M-2M,"['Penthouse', 'Apartment', 'Townhouse']",Direct Contact,Active,72,2024-10-06,2025-08-06
+287,CLT0287,شعبان,Ortiz,margaretortiz@example.com,984-715-8947,Landlord,Germany,"['Business Bay', 'Dubai Hills Estate', 'Dubai Marina']",2M-5M,"['Townhouse', 'Apartment', 'Penthouse']",Referral,Active,4,2024-09-29,2025-08-04
+288,CLT0288,Elizabeth,آل خضير,patrickgonzales@example.org,(991)727-4098,Investor,Pakistan,"['Business Bay', 'Palm Jumeirah']",2M-5M,"['Apartment', 'Townhouse']",Website,Inactive,65,2025-07-20,2025-08-23
+289,CLT0289,Savannah,آل صفوان,tfritz@example.org,+1-708-422-3362x90275,Landlord,UK,"['Downtown Dubai', 'Dubai Hills Estate']",2M-5M,['Villa'],Advertisement,Inactive,97,2024-09-13,2025-07-31
+290,CLT0290,أفنان,كانو,tmwm19@example.com,851.244.7512x2359,Developer,USA,['Downtown Dubai'],1M-2M,"['Villa', 'Apartment', 'Penthouse']",Advertisement,Inactive,35,2025-07-12,2025-08-15
+291,CLT0291,Eric,Jones,maureenhall@example.net,(505)986-3425,Seller,Pakistan,"['Dubai Hills Estate', 'Dubai Marina', 'Business Bay']",10M+,"['Apartment', 'Townhouse', 'Villa']",Social Media,Inactive,63,2024-10-24,2025-08-11
+292,CLT0292,Hannah,آل خضير,ldbgslymn@example.net,001-223-390-0875,Seller,UAE,['Dubai Marina'],5M-10M,['Penthouse'],Referral,Active,34,2025-07-26,2025-07-28
+293,CLT0293,Tammy,آل حسين,ljlnhmwd@example.net,674.833.9634x855,Tenant,Australia,"['Dubai Marina', 'Dubai Hills Estate', 'Palm Jumeirah']",Under 1M,"['Townhouse', 'Apartment']",Advertisement,Converted,100,2025-08-01,2025-07-28
+294,CLT0294,Jamie,آل عواض,dhwkknw@example.net,+1-981-720-9309x81197,Landlord,France,"['Downtown Dubai', 'Business Bay', 'Dubai Hills Estate']",5M-10M,['Apartment'],Advertisement,Active,80,2024-10-24,2025-08-16
+295,CLT0295,Linda,أبو داوود,mntsr76@example.org,778.848.5061x6829,Landlord,Germany,"['Palm Jumeirah', 'Downtown Dubai', 'Dubai Hills Estate']",5M-10M,['Apartment'],Direct Contact,Converted,40,2024-10-14,2025-08-16
+296,CLT0296,سالم,كانو,christy62@example.net,001-584-398-5996,Developer,Germany,"['Downtown Dubai', 'Palm Jumeirah']",1M-2M,"['Townhouse', 'Villa']",Direct Contact,Converted,78,2025-08-18,2025-07-28
+297,CLT0297,Timothy,Webb,hhoffman@example.com,558-722-7768x56800,Seller,Canada,"['Downtown Dubai', 'Dubai Hills Estate', 'Business Bay']",1M-2M,"['Penthouse', 'Villa', 'Townhouse']",Referral,Converted,47,2024-12-17,2025-07-25
+298,CLT0298,Ruth,Fernandez,thomaslawson@example.net,694.611.1596x9731,Seller,Canada,['Palm Jumeirah'],Under 1M,"['Penthouse', 'Townhouse']",Referral,Active,47,2024-08-26,2025-08-17
+299,CLT0299,Bryan,أبو داوود,leslie15@example.org,9182245560,Landlord,UK,['Dubai Marina'],10M+,['Apartment'],Advertisement,Active,36,2025-01-21,2025-08-07
+300,CLT0300,يعرب,آل عواض,ladams@example.net,(784)427-7480x5834,Developer,Australia,['Dubai Marina'],Under 1M,"['Penthouse', 'Townhouse']",Referral,Inactive,44,2025-01-15,2025-08-08

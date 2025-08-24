@@ -1,0 +1,151 @@
+id,category,neighborhood,avg_price_per_sqft,price_change_3m,price_change_6m,price_change_1y,transaction_volume,days_on_market,supply_level,demand_level,report_date,source
+1,Hospitality,Al Satwa,2990,-4.38,-3.46,-24.17,299,29,Low,Low,2025-08-23,Property Monitor
+2,Healthcare,Al Marmoom,1363,-12.18,11.41,-21.32,89,59,Low,High,2025-08-23,RERA
+3,Commercial,Dubai Media City,2853,-14.45,21.18,-9.68,271,146,Medium,Low,2025-08-23,Chestertons
+4,Commercial,Al Qusais,2365,19.74,-12.75,1.26,335,40,Medium,Low,2025-08-23,Chestertons
+5,Retail,Al Ghadeer,2855,8.83,20.99,-17.19,182,167,Low,Medium,2025-08-23,Property Monitor
+6,Education,Al Aweer,2189,18.93,-15.28,10.06,146,21,Low,Low,2025-08-23,Property Monitor
+7,Education,Dubai Internet City,2526,11.25,-1.45,27.03,118,45,Medium,Low,2025-08-23,Chestertons
+8,Commercial,Al Faqa,2869,16.31,-5.79,-8.65,447,25,High,High,2025-08-23,Knight Frank
+9,Commercial,Al Jafiliya,2680,22.45,-3.74,2.49,332,108,Low,Medium,2025-08-23,Knight Frank
+10,Residential,Al Awir,1755,17.48,26.53,-12.47,348,137,Medium,High,2025-08-23,RERA
+11,Hospitality,Al Marmoom,1680,12.19,21.43,-5.87,77,73,Medium,High,2025-08-23,DLD
+12,Hospitality,Al Sufouh,1188,-12.54,19.57,10.3,213,77,Low,Medium,2025-08-23,Property Monitor
+13,Residential,Al Mankhool,2529,13.74,-16.94,-14.68,376,43,High,Low,2025-08-23,RERA
+14,Education,Al Qusais,1398,-4.44,4.83,21.05,126,174,Low,Medium,2025-08-23,Chestertons
+15,Hospitality,Al Nahda,1629,-3.94,20.15,19.46,386,103,Low,Low,2025-08-23,DLD
+16,Land,Dubai Knowledge Park,1297,-11.22,4.41,-23.45,328,137,Low,High,2025-08-23,Property Monitor
+17,Mixed-use,Dubai Healthcare City,1234,21.81,27.93,10.37,58,28,Low,Low,2025-08-23,Knight Frank
+18,Commercial,Arabian Ranches,1065,22.15,2.5,3.48,323,15,Medium,Medium,2025-08-23,Knight Frank
+19,Industrial,Al Wasl,2654,19.74,25.47,-9.68,69,33,High,High,2025-08-23,RERA
+20,Education,Al Hudaiba,890,2.59,3.49,30.24,97,35,Medium,Medium,2025-08-23,Knight Frank
+21,Off-plan,Al Aweer,1649,-7.89,14.77,-20.51,477,59,Low,Low,2025-08-23,Property Monitor
+22,Mixed-use,The Springs,1887,-0.27,-5.58,35.48,128,25,Medium,Low,2025-08-23,Knight Frank
+23,Industrial,Al Yalayis,828,2.77,-11.28,-24.91,278,137,Low,Medium,2025-08-23,Knight Frank
+24,Hospitality,Al Hudaiba,1233,20.88,9.24,-21.96,127,177,High,Low,2025-08-23,RERA
+25,Retail,Al Ruwayyah,1262,-14.79,23.33,15.41,16,169,Medium,Medium,2025-08-23,Property Monitor
+26,Education,Al Raffa,2922,-14.93,24.91,-16.68,469,159,Low,Low,2025-08-23,DLD
+27,Off-plan,Al Ghadeer,2694,-14.05,-14.33,37.11,176,175,Low,High,2025-08-23,Chestertons
+28,Off-plan,Al Lisaili,2352,-9.03,-16.52,-9.97,193,114,High,Low,2025-08-23,DLD
+29,Off-plan,Dubai Hills Estate,1810,-13.6,-10.4,-8.99,313,118,Low,Medium,2025-08-23,Property Monitor
+30,Residential,Dubai Production City,1017,19.12,19.92,16.29,294,132,High,Medium,2025-08-23,RERA
+31,Commercial,Dubai Media City,1289,23.52,10.24,34.2,364,20,Medium,Medium,2025-08-23,Knight Frank
+32,Commercial,Dubai Hills Estate,2903,18.54,-3.97,0.45,101,74,High,Medium,2025-08-23,Property Monitor
+33,Hospitality,Arabian Ranches,1707,5.57,-11.6,-5.41,162,132,Low,Low,2025-08-23,DLD
+34,Off-plan,Arabian Ranches,1497,23.16,18.61,17.03,458,152,High,High,2025-08-23,Property Monitor
+35,Residential,Jumeirah Beach Residence,2188,-0.97,22.25,-2.71,240,131,Medium,High,2025-08-23,RERA
+36,Hospitality,Dubai Media City,2990,1.78,-11.83,18.27,283,19,Medium,High,2025-08-23,DLD
+37,Off-plan,Al Warqa,1076,7.35,5.03,-15.08,109,168,Medium,Low,2025-08-23,Knight Frank
+38,Healthcare,Al Sufouh,2192,3.48,26.47,-12.47,214,93,Low,High,2025-08-23,Property Monitor
+39,Residential,Al Barsha,1593,0.93,26.4,32.19,367,18,High,High,2025-08-23,DLD
+40,Land,Business Bay,1947,-0.58,-19.03,33.02,364,97,High,High,2025-08-23,Chestertons
+41,Off-plan,Al Warqa,2609,19.95,19.95,-2.99,352,169,High,Medium,2025-08-23,DLD
+42,Education,Umm Suqeim,984,10.1,4.1,28.07,184,167,Low,High,2025-08-23,Knight Frank
+43,Retail,Jumeirah Beach Residence,1275,-8.41,-12.12,-6.94,355,131,Medium,High,2025-08-23,Property Monitor
+44,Industrial,Al Qusais Industrial,2201,-6.71,15.24,26.21,415,168,Low,High,2025-08-23,DLD
+45,Industrial,Al Raffa,2324,22.46,-4.9,0.92,87,104,Medium,Low,2025-08-23,Property Monitor
+46,Commercial,Al Karama,2550,-5.32,-13.01,-1.21,18,30,Low,Low,2025-08-23,RERA
+47,Industrial,Dubai Media City,1923,10.22,27.99,6.42,318,33,Low,Low,2025-08-23,Property Monitor
+48,Mixed-use,Business Bay,2066,-12.42,27.22,-14.55,249,54,Medium,High,2025-08-23,Chestertons
+49,Land,Al Hudaiba,2797,22.81,-4.59,37.51,19,111,High,Low,2025-08-23,RERA
+50,Commercial,Umm Suqeim,2492,-4.82,-17.02,-19.84,419,70,Medium,Medium,2025-08-23,RERA
+51,Land,Al Raffa,1826,3.98,-11.83,29.33,382,39,High,Medium,2025-08-23,Knight Frank
+52,Healthcare,Al Ruwayyah,1212,4.13,13.15,1.85,445,53,Low,Low,2025-08-23,Property Monitor
+53,Healthcare,Al Warqa,1436,-6.34,16.45,28.42,471,113,Low,Low,2025-08-23,Property Monitor
+54,Commercial,Jumeirah Park,1915,19.92,-19.71,-13.32,193,106,Medium,Low,2025-08-23,Chestertons
+55,Residential,Al Satwa,2894,23.44,-12.66,23.55,273,143,Low,Medium,2025-08-23,Property Monitor
+56,Land,Dubai Marina,983,-12.15,-13.36,-4.44,147,80,Medium,High,2025-08-23,Chestertons
+57,Commercial,Al Ruwayyah,1270,-14.69,-3.95,-5.18,108,101,High,Medium,2025-08-23,DLD
+58,Residential,Al Nahda,2404,2.59,19.55,-22.34,489,63,Low,High,2025-08-23,RERA
+59,Healthcare,Al Quoz,2186,23.74,13.58,38.47,99,81,High,High,2025-08-23,Chestertons
+60,Off-plan,Al Barsha,2193,6.09,26.64,18.53,123,55,High,Medium,2025-08-23,Knight Frank
+61,Land,Al Jafiliya,1550,-13.9,0.4,-11.39,430,18,High,Low,2025-08-23,DLD
+62,Education,Al Manara,2188,22.61,24.12,10.39,285,162,Low,Medium,2025-08-23,Property Monitor
+63,Healthcare,Dubai Internet City,1129,-0.07,-1.66,17.58,239,59,Medium,Low,2025-08-23,RERA
+64,Off-plan,Dubai Silicon Oasis,1445,14.57,28.0,11.89,46,160,Low,High,2025-08-23,Property Monitor
+65,Off-plan,Dubai Healthcare City,1248,-5.41,-3.34,-2.73,106,171,Low,High,2025-08-23,DLD
+66,Mixed-use,Al Barsha,1445,5.42,-11.5,-11.0,196,66,Medium,Low,2025-08-23,RERA
+67,Commercial,Al Aweer,1334,23.0,-14.17,3.99,266,64,High,High,2025-08-23,Knight Frank
+68,Off-plan,Dubai Hills Estate,1662,1.14,-9.97,28.13,106,129,High,High,2025-08-23,Property Monitor
+69,Residential,Dubai Internet City,951,19.22,10.09,-21.84,209,106,Low,Medium,2025-08-23,RERA
+70,Industrial,Al Mankhool,1803,14.31,12.43,1.03,280,22,High,Medium,2025-08-23,Knight Frank
+71,Healthcare,Al Thanyah,1197,19.09,27.64,-9.02,350,94,Medium,Medium,2025-08-23,Property Monitor
+72,Land,Al Karama,2160,-12.22,2.89,14.64,149,166,Medium,Low,2025-08-23,Knight Frank
+73,Commercial,Downtown Dubai,1782,7.35,-7.36,-13.9,464,89,Low,High,2025-08-23,RERA
+74,Retail,Emirates Hills,1466,-14.48,28.85,-0.3,80,153,Low,Medium,2025-08-23,DLD
+75,Commercial,Jumeirah Islands,1297,-9.45,-14.46,-5.79,317,111,High,Medium,2025-08-23,Property Monitor
+76,Residential,Jumeirah Park,2099,9.84,-1.97,19.34,413,91,Low,Low,2025-08-23,Knight Frank
+77,Land,Al Awir,2143,21.44,1.75,8.38,279,17,Medium,High,2025-08-23,Property Monitor
+78,Off-plan,Al Qusais Industrial,1017,-0.59,8.11,17.1,147,63,High,High,2025-08-23,RERA
+79,Commercial,Arabian Ranches,827,15.67,7.33,24.04,339,102,Low,Medium,2025-08-23,DLD
+80,Healthcare,Al Safa,1706,22.48,28.69,29.87,244,95,Low,Low,2025-08-23,DLD
+81,Commercial,Al Yalayis,2725,9.76,29.53,-19.73,38,86,Medium,Low,2025-08-23,RERA
+82,Commercial,Dubai Internet City,2121,11.55,-6.86,-24.0,455,96,Medium,Low,2025-08-23,Chestertons
+83,Retail,Al Warqa,1081,-14.75,19.01,9.82,377,33,High,High,2025-08-23,RERA
+84,Healthcare,Palm Jumeirah,2041,9.34,19.03,-8.31,45,110,Low,High,2025-08-23,DLD
+85,Education,Al Thanyah,1276,0.1,20.79,28.9,372,78,High,High,2025-08-23,Knight Frank
+86,Education,Al Faqa,2697,-0.13,16.18,-2.59,162,168,Medium,Medium,2025-08-23,RERA
+87,Residential,Jumeirah Park,1944,23.89,18.39,-18.06,238,163,High,High,2025-08-23,DLD
+88,Healthcare,Al Yalayis,869,18.0,3.35,-19.06,481,47,Medium,Medium,2025-08-23,RERA
+89,Off-plan,Al Ghadeer,1417,14.74,9.22,35.89,94,149,High,Low,2025-08-23,Property Monitor
+90,Residential,Downtown Dubai,1768,7.58,27.7,-8.25,142,107,High,Medium,2025-08-23,Chestertons
+91,Residential,Al Nahda,2127,-3.21,-12.91,22.56,178,113,High,High,2025-08-23,Chestertons
+92,Industrial,Al Warqa,2154,11.75,-0.66,20.57,423,24,High,Low,2025-08-23,Property Monitor
+93,Healthcare,Al Raffa,2938,10.3,7.4,8.56,404,87,Low,Low,2025-08-23,RERA
+94,Land,Al Qusais,1506,20.88,-9.19,-7.13,164,45,Medium,Low,2025-08-23,DLD
+95,Commercial,Dubai Production City,883,13.26,18.7,1.73,159,27,High,Low,2025-08-23,RERA
+96,Retail,Umm Suqeim,1154,-4.98,20.4,37.55,279,17,Medium,High,2025-08-23,Knight Frank
+97,Land,Mirdif,1390,-2.04,26.92,-6.3,347,145,Medium,Medium,2025-08-23,DLD
+98,Retail,Dubai Sports City,2801,17.13,9.44,4.23,492,56,Medium,High,2025-08-23,DLD
+99,Healthcare,Dubai Marina,1910,21.55,0.24,-13.61,431,133,High,Medium,2025-08-23,Knight Frank
+100,Commercial,Dubai Hills Estate,1582,-0.05,24.72,-19.87,379,23,Medium,Low,2025-08-23,Property Monitor
+101,Off-plan,Al Ghadeer,2273,-1.84,-10.03,-4.4,251,155,High,Low,2025-08-23,RERA
+102,Healthcare,Dubai Knowledge Park,1275,19.98,-15.54,-9.4,377,135,Medium,Low,2025-08-23,RERA
+103,Off-plan,Umm Suqeim,2181,15.49,14.1,29.8,166,141,Medium,Low,2025-08-23,Chestertons
+104,Industrial,Dubai Healthcare City,1107,-11.9,1.0,27.47,359,69,High,Medium,2025-08-23,Property Monitor
+105,Industrial,Al Awir,2735,-4.37,-8.26,31.05,147,72,Medium,Low,2025-08-23,Property Monitor
+106,Off-plan,Downtown Dubai,2156,3.76,-0.38,33.75,133,79,Low,High,2025-08-23,Knight Frank
+107,Education,Dubai Media City,1009,13.26,-15.14,21.71,450,109,Medium,Low,2025-08-23,Chestertons
+108,Education,Al Yalayis,1234,-0.35,0.16,-20.34,12,126,Medium,Low,2025-08-23,Knight Frank
+109,Commercial,Al Satwa,2561,3.9,-2.66,-15.51,236,78,High,Low,2025-08-23,Property Monitor
+110,Hospitality,Al Lisaili,1116,4.29,13.93,18.49,48,126,Low,High,2025-08-23,Chestertons
+111,Residential,Al Mankhool,1883,-2.27,-2.09,-14.23,361,65,Low,Medium,2025-08-23,Property Monitor
+112,Residential,Al Satwa,850,20.02,-15.29,-24.68,457,76,High,Low,2025-08-23,DLD
+113,Land,Dubai Knowledge Park,1492,12.39,10.91,-21.43,108,165,Medium,Medium,2025-08-23,RERA
+114,Off-plan,Palm Jumeirah,1450,14.18,21.59,11.0,239,83,High,Low,2025-08-23,Knight Frank
+115,Land,Al Marmoom,1452,10.11,11.02,-1.58,296,62,Medium,Medium,2025-08-23,RERA
+116,Retail,Jumeirah Beach Residence,2337,3.52,13.57,28.6,317,69,Low,High,2025-08-23,RERA
+117,Mixed-use,Umm Suqeim,2168,7.66,-8.96,11.84,245,132,High,High,2025-08-23,Chestertons
+118,Industrial,Emirates Hills,2932,4.7,12.28,-6.81,36,83,Low,High,2025-08-23,Knight Frank
+119,Healthcare,Jumeirah Beach Residence,2968,6.01,7.79,31.65,144,48,Low,Medium,2025-08-23,DLD
+120,Education,Al Barsha,2715,16.34,-8.81,34.92,30,151,Low,Medium,2025-08-23,DLD
+121,Healthcare,Al Safa,2599,11.29,-14.24,-16.66,157,120,Medium,High,2025-08-23,Property Monitor
+122,Mixed-use,Al Qusais Industrial,1163,-1.27,16.18,23.98,75,24,High,High,2025-08-23,Knight Frank
+123,Residential,Al Qusais,1518,-11.86,13.17,35.76,354,100,Low,Low,2025-08-23,RERA
+124,Industrial,Al Yalayis,2243,11.82,-2.94,27.69,95,17,Low,Low,2025-08-23,DLD
+125,Retail,Arabian Ranches,2534,14.6,-16.92,-15.87,296,177,Medium,High,2025-08-23,RERA
+126,Mixed-use,Dubai Healthcare City,814,-0.53,0.12,27.53,225,165,High,High,2025-08-23,Property Monitor
+127,Healthcare,Mirdif,1067,10.99,-14.98,20.95,256,69,Low,Medium,2025-08-23,Property Monitor
+128,Healthcare,Al Yalayis,1730,1.23,14.55,-9.1,447,15,High,High,2025-08-23,Chestertons
+129,Education,Dubai Knowledge Park,1443,14.83,4.82,-9.14,258,59,Medium,Medium,2025-08-23,Chestertons
+130,Healthcare,Dubai International Financial Centre,1770,-7.18,29.16,5.73,435,83,High,Low,2025-08-23,Property Monitor
+131,Industrial,Mirdif,2811,16.12,17.42,39.03,310,97,Low,Low,2025-08-23,Knight Frank
+132,Hospitality,Jumeirah,1906,13.22,28.32,1.01,185,59,Medium,Low,2025-08-23,Property Monitor
+133,Off-plan,Dubai Knowledge Park,968,18.1,-1.05,-2.63,191,135,High,Low,2025-08-23,Chestertons
+134,Industrial,Al Safa,2312,19.79,-13.23,-10.7,471,123,Low,High,2025-08-23,Chestertons
+135,Mixed-use,Al Ruwayyah,941,-1.23,-2.39,38.27,320,134,Medium,Low,2025-08-23,Property Monitor
+136,Healthcare,Emirates Hills,1930,0.53,-6.61,9.79,195,55,Low,Medium,2025-08-23,DLD
+137,Residential,Al Safa,1375,-2.95,8.3,-17.64,294,165,Medium,High,2025-08-23,DLD
+138,Hospitality,Al Qusais,2742,-1.25,-12.82,17.24,134,34,High,Low,2025-08-23,Knight Frank
+139,Retail,Dubai Media City,2954,0.55,27.97,31.22,367,129,High,Low,2025-08-23,Knight Frank
+140,Education,Al Warqa,2045,-8.33,0.65,-2.85,439,155,High,High,2025-08-23,Chestertons
+141,Education,Al Ruwayyah,2518,-13.25,12.86,3.98,34,67,Medium,Low,2025-08-23,Chestertons
+142,Hospitality,Al Warqa,1547,-13.42,-15.34,13.05,323,133,High,Medium,2025-08-23,RERA
+143,Hospitality,Jumeirah,887,-8.0,-7.74,5.9,256,36,Medium,High,2025-08-23,DLD
+144,Education,Dubai Healthcare City,2650,10.47,19.25,16.37,155,42,Medium,High,2025-08-23,RERA
+145,Land,Al Jafiliya,1245,-6.44,-6.36,-15.84,372,125,Medium,Medium,2025-08-23,DLD
+146,Industrial,Al Aweer,2465,0.36,2.83,-17.52,132,79,High,Medium,2025-08-23,Knight Frank
+147,Off-plan,Dubai Silicon Oasis,2128,0.29,11.64,26.02,227,58,High,Low,2025-08-23,Chestertons
+148,Commercial,Al Nahda,1644,-10.35,-11.39,39.08,159,48,Medium,High,2025-08-23,RERA
+149,Off-plan,Dubai Marina,2328,11.33,2.29,20.11,259,128,Medium,Medium,2025-08-23,Knight Frank
+150,Retail,Al Ruwayyah,2105,-11.09,-19.5,-24.9,413,174,High,High,2025-08-23,DLD

@@ -1,0 +1,301 @@
+id,vendor_name,vendor_type,contact_person,email,phone,address,license_number,rating,specializations,contract_start_date,contract_end_date,status,total_projects,average_rating
+1,"Stewart, Wilson and Spencer",Maintenance,المهندس ماجد آل رفيع,al-ydzwt@example.org,617-259-3366x0700,"3359 آل رفيع Creek Suite 115
+آل بن لافيport, OK 00735",LIC-61666,3.6,['Residential'],2024-11-10,2025-12-14,Active,95,4.7
+2,"Smith, Mcknight and Contreras",HVAC,Amanda Watson,ibauer@example.com,5323442850,"199 Rachel Glens Suite 344
+New Brittneyhaven, PA 19722",LIC-72480,3.7,"['Renovation', 'Residential']",2025-01-25,2026-01-28,Inactive,181,3.9
+3,آل جعفر-آل خضير,Painting,دليل آل مقطة,zlkhrfy@example.com,(622)966-8453,"30426 الجفالي Corners Apt. 071
+عادلside, IL 54800",LIC-24027,4.2,"['Maintenance', 'Commercial', 'Luxury']",2025-03-26,2027-04-24,Active,132,4.9
+4,آل قصير Group,Plumbing,Billy Smith DVM,ljbrkswb@example.net,+1-415-216-9439x803,"18786 الراشد Passage
+West ساطعbury, WY 64366",LIC-89340,4.8,"['Maintenance', 'Residential', 'Luxury']",2024-06-06,2027-10-10,Inactive,113,4.2
+5,Gonzalez-Cox,Security,Jeremy Brennan Jr.,shdwd82@example.org,4276852774,"206 Branch Square
+Wrightborough, GA 83079",LIC-62579,4.0,"['Residential', 'Renovation', 'Maintenance']",2023-10-05,2026-10-07,Suspended,162,3.0
+6,المشاولة-العقيل,Security,ضحى آل الشيخ,hzrlmhydb@example.net,(999)467-6123x980,"03174 James Bypass Apt. 052
+Guerrastad, DC 63041",LIC-98745,3.9,"['Renovation', 'Luxury', 'Maintenance']",2024-12-20,2028-08-08,Suspended,167,3.1
+7,"Barry, Williams and Johnston",HVAC,بلقيس شربتلي,baldwindavid@example.com,(766)611-6837,"51991 Erik Fall
+Lake Rogerville, GA 45319",LIC-86377,1.8,['Renovation'],2025-08-19,2026-08-05,Inactive,159,4.0
+8,آل عواض and Sons,Contractor,دليل المهنا,hjrzhr@example.net,945-959-1697,"27185 Debra Dale Suite 629
+West Jeffreyfort, NE 47378",LIC-92166,1.9,['Maintenance'],2024-03-25,2025-12-15,Inactive,191,3.0
+9,Miller-Acosta,Security,نوري آل صفوان,lmhydbrwfyd@example.net,+1-748-599-6018,"56944 أبو داوود Courts
+East سليمfort, FM 79029",LIC-43264,4.0,"['Commercial', 'Renovation', 'Luxury']",2024-08-14,2027-06-24,Suspended,160,3.5
+10,Mcmahon-Lopez,Landscaping,الدكتورة أسرار أبو داوود,mark62@example.org,376-278-8399,"076 بن لادن Turnpike Apt. 211
+South نظميtown, AR 29344",LIC-58365,2.4,"['Maintenance', 'Renovation']",2024-02-22,2026-07-02,Inactive,75,4.8
+11,آل قصير Ltd,Electrical,الآنسة إخلاص الخرافي,rsmyal-yd@example.org,(525)347-3353x11219,"326 نصور Track Apt. 481
+New طاهرbury, IL 55968",LIC-50394,2.4,['Luxury'],2023-09-03,2028-04-06,Active,102,3.9
+12,"Hartman, Donovan and Robertson",Cleaning,رستم حجار,al-khdyrkrm@example.org,(432)468-9369x54985,"Unit 3870 Box 5860
+DPO AP 23471",LIC-62785,4.0,"['Commercial', 'Maintenance', 'Renovation']",2024-01-26,2025-11-27,Suspended,164,3.5
+13,Rocha-Holt,Maintenance,كاظم شربتلي,al-bn-lfyrjh@example.com,220.663.8924x2288,"554 Michael Overpass Apt. 605
+Stevenmouth, LA 66231",LIC-82590,4.8,"['Luxury', 'Residential']",2024-12-23,2027-12-05,Inactive,174,3.1
+14,"آل عايض, آل معيض and المهنا",Plumbing,جلال الدّين مهنا,phillipsmary@example.net,5374830460,"162 Black Mission
+East Dalton, GU 33545",LIC-41886,2.3,['Commercial'],2023-11-08,2027-11-07,Inactive,74,4.8
+15,المهنا PLC,Landscaping,روحي آل سعود,nf14@example.net,625.843.5679,"Unit 5918 Box 1001
+DPO AE 28918",LIC-65326,2.4,"['Renovation', 'Maintenance']",2024-04-25,2026-10-12,Active,158,3.3
+16,"Beard, Huerta and Swanson",Landscaping,الدكتور روحي حجار,jonesjacob@example.org,325-374-7192x3053,"406 Richard Knoll
+Ramoschester, MA 40210",LIC-59753,3.5,['Luxury'],2025-03-03,2027-10-11,Active,161,3.3
+17,الجابر-كانو,Contractor,الأستاذة جيلان آل الشيخ,jeffrey44@example.org,(281)404-0709x7719,"081 Pennington Spurs
+North Charlene, MO 20989",LIC-65924,4.2,"['Residential', 'Commercial']",2024-11-18,2026-08-08,Active,56,4.2
+18,Dean-Hunter,Painting,Michael Sanchez,al-rfyzmy@example.com,(677)251-4430x2226,"4936 منصور Alley Apt. 733
+آل محمد بن علي بن جمازburgh, MO 57556",LIC-89696,2.7,"['Luxury', 'Renovation', 'Residential']",2023-08-24,2027-01-03,Inactive,116,4.4
+19,"Wood, Conner and Fisher",Maintenance,Ryan Shaw,ljflybtkr@example.com,(431)275-7040,"4188 Tate Avenue Apt. 234
+East Ashley, MI 94672",LIC-11311,2.9,['Luxury'],2025-03-26,2026-05-09,Suspended,11,4.5
+20,Steele-Mcdaniel,Landscaping,الدكتور عائد المهنا,blhjr@example.net,001-811-313-4740x09934,"074 العليان Flats Suite 815
+East صلاح, MN 29468",LIC-21274,2.8,"['Luxury', 'Maintenance']",2023-12-01,2027-01-19,Active,80,3.5
+21,"Lopez, Hayes and Manning",Security,Andrea Moran,hrichardson@example.org,933.493.0353,"390 Branch Turnpike
+Lake Kenneth, AS 43350",LIC-86203,1.9,['Residential'],2024-03-24,2026-02-09,Active,196,4.9
+22,Juarez-Flores,Plumbing,Mrs. Amanda Williams,edixon@example.com,278-646-2469,"011 بتلاء Corner
+South ساطعmouth, VA 18141",LIC-34914,1.6,['Renovation'],2023-12-20,2026-05-01,Active,136,4.4
+23,آل علي-آل سلطان,Contractor,مايا العقيل,mnyljln@example.net,6415723342,"75441 ابتهاج Harbors Apt. 280
+New دهمان, ND 25347",LIC-25820,1.2,"['Luxury', 'Commercial']",2023-10-16,2027-07-06,Suspended,86,4.8
+24,Anderson-Wang,Landscaping,Michaela Mcdaniel,pricepatricia@example.org,001-727-745-7057x265,"58276 مجد Hill Apt. 563
+West ضاحك, KY 33547",LIC-51749,1.2,"['Commercial', 'Maintenance']",2023-08-24,2028-05-04,Suspended,60,3.7
+25,"أبا الخيل, آل صفوان and العجلان",Painting,الآنسة ريتال الجابر,rjy81@example.com,280.943.5732,"78207 الشايع Spur
+سميرland, DC 82827",LIC-43071,3.6,"['Maintenance', 'Renovation', 'Commercial']",2023-11-07,2028-04-30,Active,116,3.3
+26,Barker-Robinson,Maintenance,ريتال آل علي,rburns@example.com,(867)925-1800x577,"601 الجابر Parks
+الحجارville, AZ 98212",LIC-86192,4.0,"['Renovation', 'Commercial', 'Residential']",2024-08-27,2026-01-08,Active,84,3.2
+27,"Villanueva, Flores and Smith",Landscaping,الدكتورة نغم آل جعفر,crivas@example.net,(980)284-1789,"695 Marie Port
+Jenniferburgh, MP 36349",LIC-75545,3.3,"['Commercial', 'Renovation', 'Residential']",2024-05-08,2027-05-10,Active,167,4.1
+28,آل معيض-شربتلي,Security,ريم آل قصير,todd06@example.org,457.339.2440,"580 Erin Vista
+Alyssaburgh, NV 08807",LIC-47521,2.2,"['Maintenance', 'Commercial']",2025-03-26,2028-06-06,Suspended,92,4.1
+29,"Harris, Brewer and Kemp",Electrical,Bobby Fernandez,kellymorgan@example.net,+1-468-935-0100x8828,"2744 آل رفيع Spurs
+دليلfort, MI 81355",LIC-74899,1.8,"['Residential', 'Commercial', 'Renovation']",2025-06-07,2026-06-16,Inactive,160,4.7
+30,المغاولة Group,Maintenance,Sean Chan,njyb14@example.com,+1-805-637-6304x434,"84018 Smith Shoals Suite 623
+Aguirrefort, OR 09368",LIC-92836,1.1,"['Maintenance', 'Commercial']",2025-05-18,2026-06-06,Inactive,94,4.9
+31,Neal Ltd,Maintenance,Justin Martinez,snm69@example.com,001-592-385-1452,"630 آل خضير Avenue Apt. 903
+Lake هيمانburgh, VI 70978",LIC-30424,1.1,"['Residential', 'Luxury', 'Maintenance']",2024-05-27,2027-08-16,Suspended,83,4.2
+32,العقيل PLC,Landscaping,Jordan Mccoy,nlawson@example.net,+1-774-286-8762x53307,"1337 هيمان Freeway Suite 449
+آل قصيرshire, OH 51604",LIC-99863,4.0,['Maintenance'],2025-03-02,2026-01-05,Inactive,88,3.3
+33,آل علي and Sons,Security,ماذى المغاولة,hymal-yd@example.org,+1-328-999-3355x322,"5469 Melissa Views Suite 098
+Hernandezton, MP 91920",LIC-19517,3.7,['Commercial'],2024-06-13,2026-03-24,Suspended,55,3.1
+34,"Peterson, Lamb and Munoz",Plumbing,الأستاذ مُناضل آل معيض,jonathanberry@example.net,001-231-846-9894x7096,"41518 Morris Terrace
+South Josephburgh, HI 67392",LIC-44680,4.9,"['Luxury', 'Maintenance', 'Residential']",2023-08-27,2026-05-02,Suspended,56,4.6
+35,Wise-Daniel,Carpentry,شبلي شربتلي,al-hsynfr@example.com,+1-240-427-3865x540,"915 Devin Shore Apt. 896
+East Dakota, SD 75714",LIC-95664,2.8,"['Residential', 'Maintenance']",2024-06-26,2027-11-19,Suspended,94,4.3
+36,Huber-Roberts,Contractor,Melissa Hall,tqy00@example.com,876.844.2566x15429,"381 فصيل Rapid
+New عليfort, NE 79295",LIC-90262,3.2,"['Renovation', 'Commercial']",2023-11-09,2026-10-04,Suspended,85,3.3
+37,المشاولة PLC,Painting,الدكتورة جميلة آل بن ظافر,taylormichael@example.org,7614857394,"225 Thompson Port Suite 495
+South Sheena, SC 83473",LIC-98349,2.1,"['Commercial', 'Luxury', 'Residential']",2024-11-05,2027-09-06,Active,56,3.5
+38,White-Gray,Security,Susan Hodges PhD,srm02@example.com,465.353.4127x674,"568 Washington Terrace
+Freychester, PA 54529",LIC-34970,3.6,['Luxury'],2024-02-29,2027-09-15,Suspended,50,4.7
+39,Williams Ltd,Security,Mr. Devon Scott,al-bn-zfrmrtdy@example.net,540-975-0377x688,"675 John Ports
+Port Caitlynville, MP 33579",LIC-88051,2.6,['Maintenance'],2025-02-06,2025-09-01,Active,17,3.9
+40,"King, Saunders and Vargas",Electrical,الدكتور لقمان آل سلطان,qsdal-tf@example.net,(818)219-3701,"944 الدباغ Spring Apt. 544
+آل محمد بن علي بن جمازhaven, SC 06503",LIC-78857,3.4,"['Residential', 'Luxury']",2023-09-12,2027-03-12,Active,97,4.4
+41,"Rodriguez, Huber and Miller",Painting,لانا أبا الخيل,bd-lzyzbn-ldn@example.org,652.646.6498x586,"503 Martin Village Suite 505
+South Erikaport, VI 74218",LIC-90244,2.8,"['Commercial', 'Maintenance', 'Residential']",2024-02-05,2027-02-05,Suspended,161,4.8
+42,"Byrd, Adams and Gregory",Electrical,Alicia Cox,nlrshd@example.net,001-370-700-1035x58268,"Unit 4731 Box 5475
+DPO AA 18365",LIC-37715,3.7,['Maintenance'],2025-07-27,2027-08-22,Active,65,4.4
+43,"المهيدب, مهنا and فصيل",Cleaning,Katie Ochoa,jocelyn90@example.com,647-370-9139,"13797 عدوي Springs Suite 783
+فرزدقville, CA 30300",LIC-88732,5.0,"['Commercial', 'Renovation', 'Luxury']",2023-09-13,2025-10-11,Inactive,31,4.0
+44,"مهنا, مهنا and آل محمد بن علي بن جماز",Cleaning,Marie Pitts,ual-bn-zfr@example.net,607-775-5758,"783 آل علي Square
+رابحland, MN 93685",LIC-28912,2.9,"['Luxury', 'Commercial', 'Residential']",2024-10-04,2027-12-05,Suspended,16,4.2
+45,Holmes-Norman,Painting,Jacqueline Nelson,lyn32@example.com,(828)633-4173x94855,"559 الحكير Wells Suite 987
+Lake شيّق, PA 93004",LIC-79740,4.1,['Residential'],2023-10-15,2026-11-09,Suspended,51,3.8
+46,Barr-Carpenter,Electrical,ناصر الدّين آل مقطة,nwr-lhqw62@example.com,001-458-592-8644,"24488 Crystal Motorway
+Kruegerfort, NJ 49339",LIC-80099,1.8,"['Residential', 'Luxury']",2024-02-11,2027-09-17,Inactive,29,4.6
+47,Jackson-Nguyen,Carpentry,Rickey Pope,rstm91@example.org,+1-862-287-2465x47578,"41572 Brandon Way
+Richardhaven, TN 41264",LIC-58871,3.8,['Renovation'],2023-12-16,2027-01-16,Active,52,4.1
+48,"Jacobs, Sherman and Bradley",Security,Peggy Clark,antoniobell@example.com,+1-442-723-3432,"87104 آل سلطان Crest
+Port عبّاسfurt, FM 93319",LIC-86180,1.6,['Maintenance'],2023-09-18,2025-12-18,Inactive,46,4.1
+49,العليان Group,HVAC,Monica Johnson,ub-lkhyl@example.com,+1-786-935-2015x02028,"PSC 0834, Box 0159
+APO AA 38399",LIC-48411,2.2,['Renovation'],2024-10-13,2027-09-09,Suspended,37,3.0
+50,"آل عطفة, آل سعود and حجار",Contractor,Casey Shannon,rayronald@example.org,323.592.4279,"64575 Frazier View
+Clarkchester, NJ 85490",LIC-50253,2.1,['Commercial'],2025-06-10,2027-05-25,Active,129,3.6
+51,آل قصير-آل علي,Cleaning,Jose Williams,jlmhn@example.net,(580)833-4044x91521,"30767 بتلاء Garden Suite 770
+Lake قيسborough, OH 35933",LIC-61214,1.9,['Renovation'],2023-11-11,2027-03-10,Suspended,27,3.6
+52,الخرافي LLC,Contractor,الدكتورة زهرة آل جعفر,qmaldonado@example.org,001-666-385-0161,"51211 الحجار Fort Suite 812
+آل سلطانland, MS 88164",LIC-82409,3.2,['Maintenance'],2024-07-02,2026-06-29,Inactive,114,4.8
+53,Hernandez-Martinez,HVAC,جوانا الجفالي,lqylmsb@example.org,+1-423-917-2072x544,"036 آل معيض Well Apt. 664
+South سنان, PW 42349",LIC-70959,3.0,['Luxury'],2025-07-04,2027-09-14,Inactive,59,3.4
+54,"آل رفيع, العجلان and الحكير",Landscaping,Joseph Gallagher,fyslal-sltn@example.org,966.820.2267x6900,"60439 بهية Ranch Suite 056
+Lake سمير, IA 08761",LIC-24361,2.0,"['Residential', 'Maintenance']",2024-07-07,2026-02-02,Active,170,4.0
+55,العليان-كانو,Painting,David Pugh,zmy24@example.com,(447)809-8360x73034,"928 Amy Isle
+Port Michael, NE 21845",LIC-23732,4.2,"['Residential', 'Luxury']",2024-05-28,2028-06-14,Active,113,3.8
+56,آل حسين LLC,HVAC,Adam Vazquez,pjones@example.org,+1-894-322-5577x39570,"530 العقيل Crescent
+Port شامخmouth, ME 28233",LIC-76368,2.7,"['Renovation', 'Commercial']",2025-06-26,2025-09-12,Suspended,46,4.0
+57,أبا الخيل Group,Security,الدكتورة بوران الحكير,al-jfrftwh@example.org,778-764-8173x902,"22992 Griffin Well
+Thomasland, FL 13293",LIC-57590,3.0,['Residential'],2024-08-23,2028-01-06,Active,27,4.9
+58,"Long, Riley and Sanchez",Electrical,Juan Mays,mznbw-dwwd@example.org,+1-996-579-4671x07337,"391 Barry Club
+West Kimberlyview, CA 13340",LIC-57522,1.0,"['Commercial', 'Maintenance']",2024-03-13,2027-06-29,Suspended,27,4.6
+59,"Weber, Reyes and Brown",Maintenance,تالا العليان,shhd45@example.net,001-261-303-3328x31460,"Unit 4256 Box 8324
+DPO AE 49855",LIC-79537,1.4,"['Luxury', 'Maintenance', 'Renovation']",2024-07-28,2025-10-05,Inactive,196,3.2
+60,"آل علي, الخرافي and فصيل",Contractor,غامد المغاولة,krivera@example.net,417.452.7784,"99486 العقيل Canyon Suite 126
+Lake ذيب, NM 06601",LIC-24529,4.2,"['Residential', 'Maintenance']",2025-07-01,2028-07-19,Active,196,3.7
+61,Dixon-Henderson,Plumbing,Daniel Brown,stephanieross@example.org,591.395.5825x41012,"849 Hodges Terrace Suite 026
+Calvinstad, AR 07906",LIC-94978,4.6,"['Luxury', 'Renovation', 'Residential']",2025-04-06,2026-08-25,Active,87,3.9
+62,"العجلان, أبو داوود and آل قصير",Painting,Sarah Ford,tyl88@example.org,+1-444-457-0944x1771,"5115 آل رفيع Plaza
+Lake لهفان, PW 69781",LIC-62883,1.9,"['Renovation', 'Residential']",2025-02-06,2027-05-14,Inactive,15,3.8
+63,"Nguyen, Ford and Harrington",Security,عاكف الدباغ,joshua25@example.net,(499)557-0918x08338,"5747 مجد Plains Suite 472
+Port معتوق, PA 13282",LIC-82482,4.3,['Maintenance'],2023-09-15,2025-12-19,Suspended,109,3.6
+64,المهيدب LLC,Carpentry,ابتسام آل عايض,jillianobrien@example.net,001-555-555-5467x4023,"39893 Lynch Tunnel Suite 864
+Johnstad, WA 69778",LIC-59311,4.7,['Renovation'],2024-01-30,2026-04-14,Active,26,4.6
+65,Robles and Sons,Cleaning,Martin Miller,emhn@example.net,611.573.7237x5620,"630 آل محمد بن علي بن جماز Station
+Port صادق, AL 06597",LIC-66458,3.6,"['Luxury', 'Renovation']",2025-02-28,2025-12-05,Active,10,4.2
+66,Marshall-Rivera,HVAC,نور آل خضير,chavezdonna@example.org,(743)505-0594x759,"83190 حاتم Circle
+آل صفوانstad, WY 12832",LIC-92741,2.8,"['Maintenance', 'Renovation']",2025-08-14,2028-03-27,Inactive,125,3.2
+67,Mitchell-Henry,Painting,Lonnie Crawford,al-bn-zfrwsf@example.com,631-411-3341x276,"740 بشرى Harbors Apt. 221
+Port سديم, VA 01200",LIC-33336,4.0,"['Renovation', 'Residential', 'Commercial']",2023-11-19,2028-02-02,Active,70,3.2
+68,"آل محمد بن علي بن جماز, آل سعود and أبو داوود",Cleaning,Janice Manning,sbh54@example.net,001-391-396-6241x454,"6434 علوان Glen
+الحجارfort, RI 16226",LIC-65494,4.8,"['Renovation', 'Luxury']",2025-03-20,2028-01-04,Suspended,56,4.2
+69,"Hudson, Green and Higgins",Contractor,الدكتورة باهرة آل جعفر,sarahsimpson@example.net,807-278-4844x43464,"7685 Hill Well Suite 977
+Myersland, MD 95459",LIC-37497,1.6,"['Renovation', 'Residential']",2023-11-04,2026-05-21,Suspended,27,4.2
+70,أبا الخيل Group,Contractor,الدكتور مقدام آل عواض,troysharp@example.net,(474)847-9523x8962,"1060 Hurley Rapids
+North Seanchester, AZ 49183",LIC-40504,1.0,['Renovation'],2024-09-21,2025-12-04,Suspended,103,3.7
+71,"شربتلي, بقشان and آل محمد بن علي بن جماز",Plumbing,Gina Allen,ljbrfrs@example.com,936-485-9688x03159,"422 فوزي Crossroad
+عبداللهport, ME 59066",LIC-55935,2.9,"['Maintenance', 'Luxury', 'Commercial']",2024-10-16,2027-04-29,Inactive,15,4.5
+72,العليان Ltd,Contractor,ساجد الدباغ,hal-ly@example.net,7223461645,"991 الدباغ Mission Suite 143
+East ليمmouth, FM 67494",LIC-66508,3.8,"['Commercial', 'Luxury', 'Residential']",2025-06-03,2026-06-27,Active,59,3.2
+73,"Lee, Parrish and Lowe",Contractor,الدكتورة ميسون آل معيض,munyral-sltn@example.org,207-648-7808,"0846 Deborah Glen
+Ashleyhaven, AK 47301",LIC-28052,1.4,"['Commercial', 'Renovation', 'Luxury']",2024-10-15,2028-03-19,Active,130,3.4
+74,الشايع Ltd,Cleaning,Chris Krueger,sbrylhjr@example.net,421-220-3165x402,"41047 نادي Trail Suite 497
+سائدmouth, DC 06770",LIC-67122,4.7,"['Commercial', 'Residential']",2024-07-08,2026-09-13,Suspended,167,3.2
+75,Combs LLC,Contractor,Hunter Mcclain,vickiedavis@example.org,4547728520,"PSC 6080, Box 5799
+APO AA 86096",LIC-16754,1.3,"['Luxury', 'Commercial', 'Maintenance']",2025-02-20,2028-03-28,Suspended,5,4.8
+76,بقشان PLC,Electrical,Stephanie Clayton,ghicks@example.org,001-919-670-8451,"03837 Barbara Plains
+East Nicolasfort, IN 70372",LIC-52665,1.0,['Maintenance'],2024-05-11,2028-05-31,Active,51,4.3
+77,آل بن لافي and Sons,Plumbing,ملهم أبا الخيل,josephlopez@example.com,303-583-8621,"7013 Mayo Lodge
+Nicolestad, TN 99035",LIC-16550,1.3,"['Maintenance', 'Luxury', 'Commercial']",2024-05-02,2025-12-05,Active,176,4.4
+78,آل رفيع-آل العسكري,Landscaping,الآنسة ضحى آل بن لافي,al-rfyhy@example.org,(709)256-6806x55149,"6002 Scott Lock Apt. 503
+Lisaland, MP 26172",LIC-58364,3.2,"['Renovation', 'Luxury', 'Residential']",2025-02-21,2026-06-26,Active,147,4.4
+79,"Burns, Marks and Young",Electrical,Hannah Morris,martinrichard@example.org,(233)693-3485x60884,"490 وفاء Walk Suite 570
+آل محمد بن علي بن جمازview, GU 37199",LIC-72845,2.3,"['Maintenance', 'Renovation']",2025-08-19,2026-12-29,Active,42,3.8
+80,آل حسين Ltd,Maintenance,Adam Washington,yzydhjr@example.net,+1-416-421-1814x27829,"USCGC Orozco
+FPO AE 85001",LIC-32079,3.3,['Residential'],2024-04-15,2025-11-14,Inactive,146,4.7
+81,Vasquez Inc,Carpentry,Jasmine Gonzalez,ryd15@example.org,(802)929-6962x623,"USCGC آل سلطان
+FPO AP 13650",LIC-70336,2.5,"['Maintenance', 'Luxury']",2024-01-01,2026-02-26,Active,51,4.5
+82,Jones-Schmidt,Landscaping,Kathy Phillips,bhernandez@example.org,6957645758,"7918 Christopher Drive
+Grahamburgh, DC 88476",LIC-42940,1.8,"['Maintenance', 'Commercial']",2024-05-22,2026-07-01,Inactive,20,4.4
+83,Bell-Watson,Landscaping,السيدة اعتماد بن لادن,rmy60@example.com,383.325.1520x2160,"484 أبا الخيل Route
+المشاولةstad, MN 48846",LIC-48233,1.9,"['Residential', 'Commercial']",2024-11-14,2026-10-29,Active,94,3.9
+84,"Price, Santiago and Jones",Cleaning,Patricia Taylor,ljflydnn@example.net,692-890-3618,"544 حازم Views Suite 365
+Lake هاديborough, KS 99740",LIC-69897,2.7,['Luxury'],2025-04-06,2027-03-24,Suspended,177,4.3
+85,Oneill and Sons,Security,الأستاذة بثينة آل مقطة,rpotts@example.com,+1-521-935-9222,"098 هاني Centers
+West عدوي, MH 28521",LIC-83145,2.5,"['Maintenance', 'Renovation']",2025-06-26,2028-02-13,Suspended,14,5.0
+86,Parker LLC,Maintenance,المهندس فطين بقشان,uramirez@example.net,001-471-725-3712x501,"69046 Dodson Turnpike
+Lake Staceymouth, ID 63197",LIC-29091,1.0,['Renovation'],2025-02-09,2026-06-04,Suspended,69,3.4
+87,"Garcia, Ruiz and Dudley",Electrical,رئيس بقشان,carrjennifer@example.com,643.349.7449,"8520 مظهر Summit Suite 480
+East سلمان, MT 02981",LIC-90833,2.6,"['Commercial', 'Maintenance']",2023-11-25,2026-04-20,Inactive,33,3.4
+88,Hill Inc,Plumbing,الأستاذ محيي الدّين المغاولة,blkhrfy@example.com,997.432.1608x0599,"707 آل عواض Path Apt. 582
+North تامر, GA 90913",LIC-28791,3.5,['Luxury'],2025-04-13,2028-04-22,Inactive,48,4.1
+89,George PLC,Electrical,كرمة آل عايض,ral-sltn@example.org,510.862.0744x0185,"USS فصيل
+FPO AE 50905",LIC-14875,2.7,['Commercial'],2025-07-01,2027-09-23,Inactive,25,4.9
+90,"أبا الخيل, كانو and فصيل",Painting,Colleen Peterson,obn-ldn@example.net,904-661-9547x20007,"6703 آل محمد بن علي بن جماز Manors
+West صدقي, IL 33157",LIC-31509,2.6,['Luxury'],2024-08-08,2027-11-03,Suspended,123,4.5
+91,"حجار, العليان and آل خضير",Security,Jose Keller,rym93@example.net,001-448-438-6410x5318,"4533 Sandoval Key
+East Jamie, AS 60979",LIC-15599,3.7,['Renovation'],2025-07-26,2028-01-16,Active,93,4.6
+92,"المغاولة, بن لادن and بقشان",Security,ميرا العليان,schmidtkevin@example.net,001-258-357-0108,"0447 آل معيض Camp Apt. 474
+Lake طبّاع, NC 03788",LIC-76700,4.6,['Commercial'],2025-04-21,2026-12-11,Suspended,127,3.8
+93,أبو داوود LLC,Landscaping,John Haley,ldbgrymn@example.com,(729)750-6281x1694,"863 Anthony Way Apt. 267
+West Branditown, ID 38440",LIC-99283,2.2,"['Luxury', 'Residential', 'Commercial']",2024-06-02,2027-07-23,Inactive,79,4.3
+94,"آل جعفر, الحكير and المغاولة",Carpentry,Albert George,wyattcarlson@example.org,690-646-1474x919,"1367 آل علي Underpass Suite 117
+كنارton, CA 96740",LIC-17401,2.8,"['Maintenance', 'Luxury']",2024-02-13,2027-11-29,Inactive,181,4.2
+95,الخرافي-كانو,Painting,ليم أبا الخيل,al-jfrwsf@example.org,+1-965-950-9136x61660,"4458 Theresa Circles Apt. 823
+West Rodneyville, KY 97821",LIC-10830,4.4,"['Maintenance', 'Commercial']",2024-01-26,2026-04-08,Suspended,159,3.3
+96,آل سلطان Inc,Electrical,Steven Stewart,pal-bn-lfy@example.org,455-367-6283,"9301 Ryan Village
+Lake Albert, TX 84970",LIC-64760,1.1,"['Renovation', 'Residential', 'Commercial']",2025-02-22,2025-09-16,Inactive,83,3.1
+97,"Villegas, Valentine and Oconnell",Landscaping,صنديد حجار,jcollier@example.net,411.696.8164x86607,"2980 بن لادن Summit
+East حسنينshire, FL 86749",LIC-51413,1.4,"['Commercial', 'Luxury', 'Residential']",2024-02-10,2027-11-14,Inactive,64,4.1
+98,آل معيض and Sons,Plumbing,Karina Smith,fwwz66@example.net,964-497-9744x8344,"826 آل خضير Junction Apt. 769
+الجابرbury, MS 83178",LIC-93907,2.6,"['Maintenance', 'Commercial']",2025-08-01,2026-04-18,Active,21,4.2
+99,"أبا الخيل, الحكير and آل عواض",Security,السيد علم الدّين آل العسكري,barbararowland@example.net,731-758-4603x638,"4569 Benjamin Glen Apt. 543
+Yvonneville, ND 34957",LIC-34003,1.1,['Commercial'],2024-08-13,2026-08-01,Active,72,3.8
+100,الشايع-العجلان,HVAC,الأستاذ زايد مهنا,vspencer@example.net,280.774.5139x23328,"894 Donovan Heights
+Walkerville, MD 55398",LIC-26225,2.6,['Commercial'],2024-05-29,2026-05-07,Active,101,4.7
+101,"آل الشيخ, الراشد and الحكير",HVAC,Amy Lopez,jsm18@example.com,001-206-252-9443x0823,"Unit 7068 Box 7347
+DPO AE 72638",LIC-99168,3.5,"['Maintenance', 'Commercial']",2025-04-17,2027-12-24,Inactive,141,4.4
+102,"Harris, Carlson and Parker",Security,Richard Tran,brownkaren@example.com,649.214.3791x638,"2279 Peterson Greens Apt. 758
+New Courtney, NY 86169",LIC-24008,4.9,"['Residential', 'Maintenance']",2024-08-15,2028-02-18,Active,196,4.6
+103,"المهيدب, آل العسكري and حجار",Security,Thomas Williams,kathrynlopez@example.net,(745)729-3171,"867 Collins Mountains
+Wilsonberg, VA 38831",LIC-20477,2.3,"['Renovation', 'Residential', 'Commercial']",2024-08-31,2027-08-10,Inactive,93,4.6
+104,أبو داوود-آل العسكري,Landscaping,السيدة راما الجفالي,yd36@example.com,720.551.7808x3664,"82251 العليان Course
+آل سلطانside, FL 02055",LIC-69664,2.9,"['Commercial', 'Maintenance', 'Renovation']",2025-02-14,2027-11-05,Inactive,63,3.6
+105,Lopez-Parks,Plumbing,الدكتورة أحلام آل بن ظافر,ndy23@example.org,5077947666,"67622 Kendra Village Suite 466
+Trevorberg, OK 26538",LIC-21864,3.6,"['Residential', 'Luxury', 'Maintenance']",2024-02-08,2026-12-27,Suspended,149,3.4
+106,Lin-Gonzalez,Contractor,Hannah Powell,ljlnyqwt@example.org,980.939.5275x254,"695 Smith Points Suite 446
+Smithview, MI 68232",LIC-86708,4.0,"['Luxury', 'Commercial', 'Renovation']",2024-04-04,2027-03-05,Active,147,4.4
+107,"آل صفوان, آل صفوان and آل خضير",Contractor,الأستاذ مازن آل عطفة,mhnmhjwb@example.net,(507)322-5183,"0668 المهيدب Rapid
+South رازي, WI 31121",LIC-23876,4.2,"['Renovation', 'Commercial', 'Residential']",2023-12-03,2026-12-14,Inactive,90,4.1
+108,آل جعفر-آل رفيع,Plumbing,هيا آل محمد بن علي بن جماز,jennifer87@example.org,+1-414-325-5328x040,"8525 عزّت Drive
+مرشدshire, SC 89819",LIC-61878,3.9,"['Commercial', 'Luxury']",2025-01-14,2027-09-17,Inactive,198,3.8
+109,Benson PLC,Electrical,ريم آل قصير,bakeralyssa@example.com,001-352-559-8805,"66898 Cheyenne Union
+Kaitlinburgh, AL 99468",LIC-85825,2.5,"['Renovation', 'Maintenance', 'Commercial']",2025-08-15,2027-02-08,Active,156,4.5
+110,Cordova Group,HVAC,Joel Freeman,saunderskatherine@example.org,(797)287-1636,"85732 Hall Lights
+Walkerchester, PA 94424",LIC-93756,2.2,['Residential'],2024-03-23,2025-11-27,Active,119,3.5
+111,"آل حسين, آل محمد بن علي بن جماز and الشايع",Painting,Danielle Bennett,ral-ly@example.net,611-704-4037x29024,"75870 William Crossing
+West Deannaville, PR 68247",LIC-18940,3.8,['Maintenance'],2024-10-27,2028-06-05,Inactive,38,3.7
+112,"المغاولة, آل سلطان and آل العسكري",Cleaning,السيد غازي أبو داوود,nal-qsyr@example.com,(968)969-4132,"65466 وصاف Skyway
+جابرburgh, MP 67666",LIC-61772,3.5,['Residential'],2024-11-13,2028-01-25,Inactive,61,4.7
+113,آل عواض LLC,Painting,Debra Grimes,mrtdy13@example.com,+1-488-258-8081x8011,"2543 Mark Wells
+North Cheryl, NM 96384",LIC-38042,2.3,['Renovation'],2025-08-06,2027-04-26,Suspended,151,3.2
+114,"شربتلي, آل رفيع and شربتلي",Plumbing,رمضان آل جعفر,rydlqyl@example.net,(935)979-3067,"Unit 4348 Box 9186
+DPO AP 31326",LIC-23762,2.9,"['Maintenance', 'Renovation']",2023-10-22,2026-06-23,Suspended,124,4.6
+115,الراشد-الدباغ,Electrical,Lisa Jones,alexander85@example.com,(973)267-3928,"837 Andrew Greens
+East James, AR 87852",LIC-70288,3.1,"['Maintenance', 'Renovation']",2025-03-11,2028-02-19,Active,71,3.5
+116,المهيدب-آل حسين,Electrical,لبيب آل محمد بن علي بن جماز,james75@example.com,001-485-229-1493x6194,"9404 العجلان Orchard
+Port جابر, LA 49753",LIC-16854,2.9,"['Renovation', 'Residential', 'Commercial']",2024-03-09,2027-02-08,Inactive,72,3.8
+117,"Moore, Fitzgerald and Young",Carpentry,السيد همام آل الشيخ,fredwright@example.org,(823)728-1458,"4547 Tanner Stravenue Apt. 111
+Hollyfurt, PA 21836",LIC-54834,4.1,['Commercial'],2025-05-21,2027-11-05,Active,22,3.8
+118,آل خضير Group,Security,Jeffrey Lee,matthewbailey@example.net,(378)761-1467x4443,"00679 Brown Passage
+Ruthhaven, KS 09455",LIC-50785,3.0,"['Commercial', 'Luxury', 'Renovation']",2024-07-03,2028-04-30,Suspended,88,4.6
+119,آل بن ظافر PLC,Security,Brady Moody,val-lskry@example.net,+1-480-964-9113x85802,"09714 Cooper Squares
+Chadmouth, AL 82148",LIC-10758,2.9,['Commercial'],2024-09-20,2027-03-21,Active,12,3.6
+120,Green LLC,Maintenance,المهندس غزير الراشد,xanderson@example.org,595.397.8425x601,"USCGC Olsen
+FPO AP 54229",LIC-86718,2.0,"['Renovation', 'Residential', 'Maintenance']",2024-06-08,2025-12-13,Suspended,56,3.9
+121,فصيل Ltd,Contractor,Jacob Barry,ucook@example.net,(471)797-2584x836,"PSC 9311, Box 2032
+APO AE 53082",LIC-73704,2.6,"['Renovation', 'Residential', 'Luxury']",2024-06-08,2026-02-28,Inactive,109,3.6
+122,"Lopez, Lewis and Oconnor",Contractor,السيد شامل الحكير,robert07@example.com,688.497.7136x9134,"671 لطفي Trafficway Suite 506
+Lake وفاءshire, PA 46212",LIC-37117,2.7,['Residential'],2024-05-02,2026-05-06,Active,142,3.2
+123,المهنا Inc,Landscaping,الآنسة مادلين آل العسكري,paulharvey@example.com,679-659-0738,"65812 Watson Ville
+Christopherbury, SC 49881",LIC-78720,4.5,"['Residential', 'Commercial', 'Renovation']",2024-06-16,2028-08-04,Suspended,74,3.5
+124,Rowe-Howard,Painting,Olivia Wood,jamesgreen@example.org,(472)920-2138,"9652 Nguyen Court
+Lake Kevinhaven, ME 48690",LIC-14200,3.1,"['Residential', 'Luxury', 'Renovation']",2023-12-28,2027-12-31,Active,200,3.2
+125,Jones and Sons,Painting,ميلاء آل صفوان,jennifer07@example.org,001-680-792-7564x8422,"705 Angel Orchard
+Morrisburgh, NE 37147",LIC-88169,1.8,['Commercial'],2025-05-09,2027-02-22,Inactive,59,3.9
+126,"Smith, Schmidt and Harper",Painting,الآنسة ابتسام حجار,paul93@example.org,4117934048,"20947 Bell Via
+Robertview, CO 26077",LIC-15571,1.8,"['Residential', 'Commercial', 'Renovation']",2024-04-28,2026-04-06,Suspended,31,4.5
+127,Bradley PLC,Painting,هيام حنبولي,trflrshd@example.com,929-987-9466,"049 عتريس Via Suite 103
+أريجbury, DE 59354",LIC-28551,4.7,"['Maintenance', 'Luxury', 'Commercial']",2024-10-25,2026-12-02,Inactive,42,4.3
+128,Kemp-Roberts,Cleaning,السيدة بلقيس المشاولة,paige63@example.net,(236)585-7360,"PSC 0244, Box 5795
+APO AP 28473",LIC-80289,3.8,"['Residential', 'Commercial']",2025-03-15,2028-04-27,Inactive,168,4.9
+129,"Rush, Walker and Taylor",Security,Seth Melendez,al-mydmkhtr@example.com,+1-604-677-4744x73575,"2612 آل بن ظافر Village Apt. 040
+آل عايضmouth, AZ 60318",LIC-89819,4.6,"['Residential', 'Luxury']",2024-01-06,2026-10-23,Inactive,112,3.4
+130,آل العسكري and Sons,Security,Erin Porter,sabrinaaguilar@example.org,7009765940,"81531 George Meadows Apt. 915
+Allenchester, MH 36684",LIC-37533,4.6,"['Residential', 'Renovation', 'Maintenance']",2024-04-17,2026-08-02,Active,47,3.7
+131,"بقشان, بن لادن and آل سلطان",Painting,شادن آل عايض,al-lskryslmn@example.com,(392)734-4909,"177 وسيم Valleys Suite 817
+حجارport, MA 60160",LIC-34956,3.3,['Renovation'],2024-10-17,2025-11-14,Active,90,3.8
+132,"آل مقطة, آل عطفة and آل رفيع",Security,الدكتور عزّ الدّين بقشان,bdllh84@example.com,+1-604-248-6090x87444,"3585 آل الشيخ Ports Apt. 849
+Port فاتحchester, ID 25719",LIC-12042,3.1,"['Renovation', 'Residential', 'Luxury']",2023-09-21,2027-06-30,Suspended,52,3.3
+133,آل خضير-آل خضير,Carpentry,ترانيم آل محمد بن علي بن جماز,carollam@example.org,270.265.8358,"8723 شاطر Park
+West كاملةtown, ND 18279",LIC-57357,5.0,"['Maintenance', 'Residential', 'Commercial']",2025-01-23,2027-08-23,Inactive,126,4.7
+134,Escobar-Richard,Maintenance,Daisy Rowland DDS,bw-dwwdfrt@example.net,478.869.5504x6727,"1721 Belinda Route
+Bakerville, PW 13850",LIC-88602,4.1,"['Luxury', 'Renovation']",2025-02-14,2025-10-06,Inactive,150,4.8
+135,"Stevenson, Clark and Rose",Painting,مشفق شربتلي,htmal-qsyr@example.com,001-991-947-6385x6588,"8635 مهنا Extensions
+East عبد التّواب, SD 18753",LIC-86953,4.9,['Residential'],2024-06-06,2028-07-29,Inactive,72,3.8
+136,"Gutierrez, Underwood and Williams",Carpentry,السيدة ليساء آل سعود,nwf30@example.net,001-244-895-1088x20355,"3540 Nathan Plaza
+Collinsshire, LA 29206",LIC-70983,1.6,"['Commercial', 'Luxury', 'Maintenance']",2025-04-12,2027-09-22,Inactive,30,4.7
+137,"الراشد, شربتلي and الشايع",Contractor,كرمة آل عطفة,lshepherd@example.net,782-590-2046x561,"359 الحكير Rue Suite 906
+Port معين, AK 43770",LIC-77413,2.1,['Commercial'],2023-10-17,2026-08-25,Inactive,140,3.9
+138,"آل مقطة, بن لادن and آل معيض",Maintenance,نشأت الجفالي,jonathanriddle@example.com,+1-344-438-4033,"60155 Crystal Estates Apt. 609
+New Matthew, AK 49307",LIC-84026,1.4,"['Renovation', 'Commercial']",2024-04-29,2027-06-27,Active,16,4.1
+139,"آل عطفة, آل عايض and المهنا",Landscaping,Jeffery Brown,bn-ldnmys@example.com,452-543-9046,"10293 Jones Point Suite 597
+Lake Kelly, TX 32449",LIC-18145,1.5,['Luxury'],2024-06-14,2028-02-14,Suspended,85,3.6
+140,Walker Group,Plumbing,Dr. Tracy Vargas MD,jennifer90@example.com,9929497094,"257 Deborah Port Suite 342
+Anthonyton, DE 72969",LIC-72886,2.5,"['Residential', 'Maintenance', 'Commercial']",2025-05-09,2028-04-12,Suspended,94,4.7
+141,آل خضير Ltd,Landscaping,Katie Trevino,mzn31@example.org,233.994.6938,"890 Madison Ferry
+Hancocktown, MH 62568",LIC-51131,3.9,['Renovation'],2025-07-17,2026-02-05,Suspended,147,4.9
+142,أبا الخيل-العجلان,Painting,ابتهاج الخرافي,fwzy32@example.org,642-563-9798,"1726 Emily Isle Suite 018
+Jennifermouth, SD 65394",LIC-40063,3.7,['Commercial'],2024-06-18,2025-12-03,Active,158,4.4
+143,العجلان and Sons,Carpentry,Amanda Dyer,mhnjlnr@example.net,+1-876-666-8801,"642 Christopher Path
+Lindafort, PR 04814",LIC-64550,2.2,"['Residential', 'Commercial']",2025-03-06,2025-09-23,Active,64,4.4
+144,العقيل-آل معيض,Landscaping,Christopher Foster,ilmgwl@example.net,879.869.6394,"245 آل خضير Drives Apt. 272
+آل معيضshire, IA 80252",LIC-93002,4.1,['Residential'],2023-09-10,2026-09-11,Suspended,86,4.8
+145,"آل سعود, حجار and فصيل",HVAC,Kimberly Rowe,rogersrobert@example.net,(481)610-3243,"031 آل خضير Light
+بورانville, MN 16413",LIC-58892,2.6,"['Residential', 'Renovation']",2025-06-23,2025-09-17,Inactive,102,3.2
+146,Goodman Group,Maintenance,ترف آل سعود,zwhite@example.org,001-727-347-6221x9614,"7135 قدري Ford Apt. 320
+West مشرف, NH 25505",LIC-20296,3.3,['Commercial'],2023-12-14,2025-10-28,Suspended,162,3.3
+147,كانو-بن لادن,Carpentry,Robert Howard,wdwh54@example.com,+1-703-679-8974x20960,"69020 Nelson Mission
+Matthewchester, OK 60650",LIC-23886,1.7,"['Luxury', 'Residential', 'Maintenance']",2024-01-30,2028-05-18,Suspended,113,3.3
+148,"Campbell, Henry and Strickland",Carpentry,هيثم المشاولة,mwywd29@example.net,001-827-852-8043x53634,"234 المهيدب Manors Suite 912
+West عاتب, VT 02555",LIC-99642,1.3,"['Maintenance', 'Commercial', 'Renovation']",2023-12-20,2027-09-29,Inactive,108,3.2
+149,"الجفالي, آل قصير and آل قصير",Carpentry,السيد علاء الدّين الدباغ,sbr79@example.org,997-928-6070x004,"04235 آل بن ظافر Junctions
+المشاولةfort, RI 35464",LIC-98412,4.6,['Commercial'],2024-04-15,2026-12-20,Inactive,200,3.6
+150,"Wilson, Ferguson and Glover",Carpentry,ريتاج آل عايض,bw-dwwdfdl@example.net,(200)555-7432,"USNS Garcia
+FPO AE 87011",LIC-36374,3.3,['Luxury'],2023-12-07,2027-08-14,Active,67,3.8

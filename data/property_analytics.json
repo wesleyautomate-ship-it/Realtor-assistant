@@ -1,0 +1,2402 @@
+[
+  {
+    "property_id": 1,
+    "views_last_30_days": 328,
+    "inquiries_last_30_days": 10,
+    "favorites_count": 20,
+    "shares_count": 23,
+    "avg_time_on_page": 106,
+    "bounce_rate": 0.22,
+    "conversion_rate": 0.032,
+    "price_history": [
+      {
+        "date": "2024-01-01",
+        "price": 4531994
+      },
+      {
+        "date": "2024-02-01",
+        "price": 3903614
+      },
+      {
+        "date": "2024-03-01",
+        "price": 3632247
+      }
+    ]
+  },
+  {
+    "property_id": 2,
+    "views_last_30_days": 143,
+    "inquiries_last_30_days": 15,
+    "favorites_count": 50,
+    "shares_count": 26,
+    "avg_time_on_page": 124,
+    "bounce_rate": 0.5,
+    "conversion_rate": 0.031,
+    "price_history": [
+      {
+        "date": "2024-01-01",
+        "price": 1352794
+      },
+      {
+        "date": "2024-02-01",
+        "price": 2287401
+      },
+      {
+        "date": "2024-03-01",
+        "price": 1149418
+      }
+    ]
+  },
+  {
+    "property_id": 3,
+    "views_last_30_days": 451,
+    "inquiries_last_30_days": 8,
+    "favorites_count": 43,
+    "shares_count": 8,
+    "avg_time_on_page": 146,
+    "bounce_rate": 0.1,
+    "conversion_rate": 0.099,
+    "price_history": [
+      {
+        "date": "2024-01-01",
+        "price": 1592470
+      },
+      {
+        "date": "2024-02-01",
+        "price": 544723
+      },
+      {
+        "date": "2024-03-01",
+        "price": 509617
+      }
+    ]
+  },
+  {
+    "property_id": 4,
+    "views_last_30_days": 94,
+    "inquiries_last_30_days": 1,
+    "favorites_count": 31,
+    "shares_count": 7,
+    "avg_time_on_page": 41,
+    "bounce_rate": 0.21,
+    "conversion_rate": 0.053,
+    "price_history": [
+      {
+        "date": "2024-01-01",
+        "price": 2481263
+      },
+      {
+        "date": "2024-02-01",
+        "price": 4890178
+      },
+      {
+        "date": "2024-03-01",
+        "price": 2151314
+      }
+    ]
+  },
+  {
+    "property_id": 5,
+    "views_last_30_days": 38,
+    "inquiries_last_30_days": 8,
+    "favorites_count": 20,
+    "shares_count": 6,
+    "avg_time_on_page": 62,
+    "bounce_rate": 0.27,
+    "conversion_rate": 0.028,
+    "price_history": [
+      {
+        "date": "2024-01-01",
+        "price": 1523957
+      },
+      {
+        "date": "2024-02-01",
+        "price": 3791742
+      },
+      {
+        "date": "2024-03-01",
+        "price": 2332468
+      }
+    ]
+  },
+  {
+    "property_id": 6,
+    "views_last_30_days": 407,
+    "inquiries_last_30_days": 15,
+    "favorites_count": 35,
+    "shares_count": 7,
+    "avg_time_on_page": 237,
+    "bounce_rate": 0.61,
+    "conversion_rate": 0.061,
+    "price_history": [
+      {
+        "date": "2024-01-01",
+        "price": 1905870
+      },
+      {
+        "date": "2024-02-01",
+        "price": 2221046
+      },
+      {
+        "date": "2024-03-01",
+        "price": 2665820
+      }
+    ]
+  },
+  {
+    "property_id": 7,
+    "views_last_30_days": 373,
+    "inquiries_last_30_days": 17,
+    "favorites_count": 44,
+    "shares_count": 16,
+    "avg_time_on_page": 259,
+    "bounce_rate": 0.43,
+    "conversion_rate": 0.049,
+    "price_history": [
+      {
+        "date": "2024-01-01",
+        "price": 4368284
+      },
+      {
+        "date": "2024-02-01",
+        "price": 3670173
+      },
+      {
+        "date": "2024-03-01",
+        "price": 1660062
+      }
+    ]
+  },
+  {
+    "property_id": 8,
+    "views_last_30_days": 190,
+    "inquiries_last_30_days": 11,
+    "favorites_count": 26,
+    "shares_count": 17,
+    "avg_time_on_page": 260,
+    "bounce_rate": 0.46,
+    "conversion_rate": 0.038,
+    "price_history": [
+      {
+        "date": "2024-01-01",
+        "price": 2194506
+      },
+      {
+        "date": "2024-02-01",
+        "price": 663484
+      },
+      {
+        "date": "2024-03-01",
+        "price": 3737009
+      }
+    ]
+  },
+  {
+    "property_id": 9,
+    "views_last_30_days": 268,
+    "inquiries_last_30_days": 3,
+    "favorites_count": 29,
+    "shares_count": 26,
+    "avg_time_on_page": 109,
+    "bounce_rate": 0.34,
+    "conversion_rate": 0.015,
+    "price_history": [
+      {
+        "date": "2024-01-01",
+        "price": 4163430
+      },
+      {
+        "date": "2024-02-01",
+        "price": 2405364
+      },
+      {
+        "date": "2024-03-01",
+        "price": 3117025
+      }
+    ]
+  },
+  {
+    "property_id": 10,
+    "views_last_30_days": 161,
+    "inquiries_last_30_days": 18,
+    "favorites_count": 41,
+    "shares_count": 21,
+    "avg_time_on_page": 242,
+    "bounce_rate": 0.28,
+    "conversion_rate": 0.025,
+    "price_history": [
+      {
+        "date": "2024-01-01",
+        "price": 2864648
+      },
+      {
+        "date": "2024-02-01",
+        "price": 2741803
+      },
+      {
+        "date": "2024-03-01",
+        "price": 4029384
+      }
+    ]
+  },
+  {
+    "property_id": 11,
+    "views_last_30_days": 259,
+    "inquiries_last_30_days": 15,
+    "favorites_count": 40,
+    "shares_count": 19,
+    "avg_time_on_page": 245,
+    "bounce_rate": 0.18,
+    "conversion_rate": 0.063,
+    "price_history": [
+      {
+        "date": "2024-01-01",
+        "price": 2835813
+      },
+      {
+        "date": "2024-02-01",
+        "price": 4540551
+      },
+      {
+        "date": "2024-03-01",
+        "price": 841813
+      }
+    ]
+  },
+  {
+    "property_id": 12,
+    "views_last_30_days": 18,
+    "inquiries_last_30_days": 0,
+    "favorites_count": 38,
+    "shares_count": 29,
+    "avg_time_on_page": 207,
+    "bounce_rate": 0.64,
+    "conversion_rate": 0.097,
+    "price_history": [
+      {
+        "date": "2024-01-01",
+        "price": 4557727
+      },
+      {
+        "date": "2024-02-01",
+        "price": 3839048
+      },
+      {
+        "date": "2024-03-01",
+        "price": 3560349
+      }
+    ]
+  },
+  {
+    "property_id": 13,
+    "views_last_30_days": 11,
+    "inquiries_last_30_days": 14,
+    "favorites_count": 46,
+    "shares_count": 11,
+    "avg_time_on_page": 121,
+    "bounce_rate": 0.71,
+    "conversion_rate": 0.087,
+    "price_history": [
+      {
+        "date": "2024-01-01",
+        "price": 2322867
+      },
+      {
+        "date": "2024-02-01",
+        "price": 577277
+      },
+      {
+        "date": "2024-03-01",
+        "price": 1272427
+      }
+    ]
+  },
+  {
+    "property_id": 14,
+    "views_last_30_days": 98,
+    "inquiries_last_30_days": 14,
+    "favorites_count": 33,
+    "shares_count": 23,
+    "avg_time_on_page": 46,
+    "bounce_rate": 0.63,
+    "conversion_rate": 0.054,
+    "price_history": [
+      {
+        "date": "2024-01-01",
+        "price": 2221482
+      },
+      {
+        "date": "2024-02-01",
+        "price": 591170
+      },
+      {
+        "date": "2024-03-01",
+        "price": 3204156
+      }
+    ]
+  },
+  {
+    "property_id": 15,
+    "views_last_30_days": 319,
+    "inquiries_last_30_days": 5,
+    "favorites_count": 43,
+    "shares_count": 9,
+    "avg_time_on_page": 62,
+    "bounce_rate": 0.54,
+    "conversion_rate": 0.064,
+    "price_history": [
+      {
+        "date": "2024-01-01",
+        "price": 4423889
+      },
+      {
+        "date": "2024-02-01",
+        "price": 2489534
+      },
+      {
+        "date": "2024-03-01",
+        "price": 4097395
+      }
+    ]
+  },
+  {
+    "property_id": 16,
+    "views_last_30_days": 487,
+    "inquiries_last_30_days": 7,
+    "favorites_count": 9,
+    "shares_count": 6,
+    "avg_time_on_page": 188,
+    "bounce_rate": 0.21,
+    "conversion_rate": 0.091,
+    "price_history": [
+      {
+        "date": "2024-01-01",
+        "price": 3362195
+      },
+      {
+        "date": "2024-02-01",
+        "price": 2449925
+      },
+      {
+        "date": "2024-03-01",
+        "price": 3868892
+      }
+    ]
+  },
+  {
+    "property_id": 17,
+    "views_last_30_days": 456,
+    "inquiries_last_30_days": 4,
+    "favorites_count": 41,
+    "shares_count": 5,
+    "avg_time_on_page": 51,
+    "bounce_rate": 0.61,
+    "conversion_rate": 0.062,
+    "price_history": [
+      {
+        "date": "2024-01-01",
+        "price": 2572595
+      },
+      {
+        "date": "2024-02-01",
+        "price": 1395678
+      },
+      {
+        "date": "2024-03-01",
+        "price": 3183461
+      }
+    ]
+  },
+  {
+    "property_id": 18,
+    "views_last_30_days": 47,
+    "inquiries_last_30_days": 0,
+    "favorites_count": 32,
+    "shares_count": 6,
+    "avg_time_on_page": 284,
+    "bounce_rate": 0.12,
+    "conversion_rate": 0.046,
+    "price_history": [
+      {
+        "date": "2024-01-01",
+        "price": 3704946
+      },
+      {
+        "date": "2024-02-01",
+        "price": 3923334
+      },
+      {
+        "date": "2024-03-01",
+        "price": 1219109
+      }
+    ]
+  },
+  {
+    "property_id": 19,
+    "views_last_30_days": 262,
+    "inquiries_last_30_days": 12,
+    "favorites_count": 26,
+    "shares_count": 27,
+    "avg_time_on_page": 134,
+    "bounce_rate": 0.2,
+    "conversion_rate": 0.054,
+    "price_history": [
+      {
+        "date": "2024-01-01",
+        "price": 1149462
+      },
+      {
+        "date": "2024-02-01",
+        "price": 2834751
+      },
+      {
+        "date": "2024-03-01",
+        "price": 1023462
+      }
+    ]
+  },
+  {
+    "property_id": 20,
+    "views_last_30_days": 57,
+    "inquiries_last_30_days": 8,
+    "favorites_count": 17,
+    "shares_count": 23,
+    "avg_time_on_page": 168,
+    "bounce_rate": 0.44,
+    "conversion_rate": 0.061,
+    "price_history": [
+      {
+        "date": "2024-01-01",
+        "price": 4287714
+      },
+      {
+        "date": "2024-02-01",
+        "price": 1228196
+      },
+      {
+        "date": "2024-03-01",
+        "price": 927857
+      }
+    ]
+  },
+  {
+    "property_id": 21,
+    "views_last_30_days": 286,
+    "inquiries_last_30_days": 5,
+    "favorites_count": 49,
+    "shares_count": 28,
+    "avg_time_on_page": 256,
+    "bounce_rate": 0.56,
+    "conversion_rate": 0.058,
+    "price_history": [
+      {
+        "date": "2024-01-01",
+        "price": 1398441
+      },
+      {
+        "date": "2024-02-01",
+        "price": 3033879
+      },
+      {
+        "date": "2024-03-01",
+        "price": 2945621
+      }
+    ]
+  },
+  {
+    "property_id": 22,
+    "views_last_30_days": 465,
+    "inquiries_last_30_days": 4,
+    "favorites_count": 25,
+    "shares_count": 6,
+    "avg_time_on_page": 191,
+    "bounce_rate": 0.1,
+    "conversion_rate": 0.054,
+    "price_history": [
+      {
+        "date": "2024-01-01",
+        "price": 949726
+      },
+      {
+        "date": "2024-02-01",
+        "price": 4055682
+      },
+      {
+        "date": "2024-03-01",
+        "price": 3344998
+      }
+    ]
+  },
+  {
+    "property_id": 23,
+    "views_last_30_days": 55,
+    "inquiries_last_30_days": 5,
+    "favorites_count": 42,
+    "shares_count": 5,
+    "avg_time_on_page": 172,
+    "bounce_rate": 0.54,
+    "conversion_rate": 0.079,
+    "price_history": [
+      {
+        "date": "2024-01-01",
+        "price": 2304190
+      },
+      {
+        "date": "2024-02-01",
+        "price": 1396766
+      },
+      {
+        "date": "2024-03-01",
+        "price": 3986684
+      }
+    ]
+  },
+  {
+    "property_id": 24,
+    "views_last_30_days": 237,
+    "inquiries_last_30_days": 10,
+    "favorites_count": 29,
+    "shares_count": 29,
+    "avg_time_on_page": 108,
+    "bounce_rate": 0.24,
+    "conversion_rate": 0.021,
+    "price_history": [
+      {
+        "date": "2024-01-01",
+        "price": 2191776
+      },
+      {
+        "date": "2024-02-01",
+        "price": 3846387
+      },
+      {
+        "date": "2024-03-01",
+        "price": 2161925
+      }
+    ]
+  },
+  {
+    "property_id": 25,
+    "views_last_30_days": 89,
+    "inquiries_last_30_days": 6,
+    "favorites_count": 6,
+    "shares_count": 19,
+    "avg_time_on_page": 227,
+    "bounce_rate": 0.67,
+    "conversion_rate": 0.066,
+    "price_history": [
+      {
+        "date": "2024-01-01",
+        "price": 3989994
+      },
+      {
+        "date": "2024-02-01",
+        "price": 1535428
+      },
+      {
+        "date": "2024-03-01",
+        "price": 4251264
+      }
+    ]
+  },
+  {
+    "property_id": 26,
+    "views_last_30_days": 69,
+    "inquiries_last_30_days": 0,
+    "favorites_count": 5,
+    "shares_count": 18,
+    "avg_time_on_page": 149,
+    "bounce_rate": 0.28,
+    "conversion_rate": 0.07,
+    "price_history": [
+      {
+        "date": "2024-01-01",
+        "price": 3320858
+      },
+      {
+        "date": "2024-02-01",
+        "price": 3512795
+      },
+      {
+        "date": "2024-03-01",
+        "price": 3952508
+      }
+    ]
+  },
+  {
+    "property_id": 27,
+    "views_last_30_days": 32,
+    "inquiries_last_30_days": 1,
+    "favorites_count": 44,
+    "shares_count": 27,
+    "avg_time_on_page": 234,
+    "bounce_rate": 0.38,
+    "conversion_rate": 0.081,
+    "price_history": [
+      {
+        "date": "2024-01-01",
+        "price": 3649809
+      },
+      {
+        "date": "2024-02-01",
+        "price": 2641105
+      },
+      {
+        "date": "2024-03-01",
+        "price": 4135162
+      }
+    ]
+  },
+  {
+    "property_id": 28,
+    "views_last_30_days": 384,
+    "inquiries_last_30_days": 2,
+    "favorites_count": 24,
+    "shares_count": 5,
+    "avg_time_on_page": 100,
+    "bounce_rate": 0.67,
+    "conversion_rate": 0.011,
+    "price_history": [
+      {
+        "date": "2024-01-01",
+        "price": 4425259
+      },
+      {
+        "date": "2024-02-01",
+        "price": 3262255
+      },
+      {
+        "date": "2024-03-01",
+        "price": 3765281
+      }
+    ]
+  },
+  {
+    "property_id": 29,
+    "views_last_30_days": 143,
+    "inquiries_last_30_days": 12,
+    "favorites_count": 32,
+    "shares_count": 23,
+    "avg_time_on_page": 213,
+    "bounce_rate": 0.19,
+    "conversion_rate": 0.045,
+    "price_history": [
+      {
+        "date": "2024-01-01",
+        "price": 2671619
+      },
+      {
+        "date": "2024-02-01",
+        "price": 2839095
+      },
+      {
+        "date": "2024-03-01",
+        "price": 1422346
+      }
+    ]
+  },
+  {
+    "property_id": 30,
+    "views_last_30_days": 233,
+    "inquiries_last_30_days": 0,
+    "favorites_count": 50,
+    "shares_count": 10,
+    "avg_time_on_page": 160,
+    "bounce_rate": 0.33,
+    "conversion_rate": 0.079,
+    "price_history": [
+      {
+        "date": "2024-01-01",
+        "price": 1545424
+      },
+      {
+        "date": "2024-02-01",
+        "price": 2201632
+      },
+      {
+        "date": "2024-03-01",
+        "price": 2320183
+      }
+    ]
+  },
+  {
+    "property_id": 31,
+    "views_last_30_days": 20,
+    "inquiries_last_30_days": 11,
+    "favorites_count": 16,
+    "shares_count": 25,
+    "avg_time_on_page": 197,
+    "bounce_rate": 0.48,
+    "conversion_rate": 0.099,
+    "price_history": [
+      {
+        "date": "2024-01-01",
+        "price": 2829797
+      },
+      {
+        "date": "2024-02-01",
+        "price": 4700787
+      },
+      {
+        "date": "2024-03-01",
+        "price": 3370915
+      }
+    ]
+  },
+  {
+    "property_id": 32,
+    "views_last_30_days": 18,
+    "inquiries_last_30_days": 16,
+    "favorites_count": 14,
+    "shares_count": 24,
+    "avg_time_on_page": 237,
+    "bounce_rate": 0.38,
+    "conversion_rate": 0.088,
+    "price_history": [
+      {
+        "date": "2024-01-01",
+        "price": 4686181
+      },
+      {
+        "date": "2024-02-01",
+        "price": 1986196
+      },
+      {
+        "date": "2024-03-01",
+        "price": 1833502
+      }
+    ]
+  },
+  {
+    "property_id": 33,
+    "views_last_30_days": 241,
+    "inquiries_last_30_days": 0,
+    "favorites_count": 32,
+    "shares_count": 24,
+    "avg_time_on_page": 35,
+    "bounce_rate": 0.57,
+    "conversion_rate": 0.039,
+    "price_history": [
+      {
+        "date": "2024-01-01",
+        "price": 4358324
+      },
+      {
+        "date": "2024-02-01",
+        "price": 4924367
+      },
+      {
+        "date": "2024-03-01",
+        "price": 2948068
+      }
+    ]
+  },
+  {
+    "property_id": 34,
+    "views_last_30_days": 373,
+    "inquiries_last_30_days": 18,
+    "favorites_count": 4,
+    "shares_count": 10,
+    "avg_time_on_page": 32,
+    "bounce_rate": 0.2,
+    "conversion_rate": 0.06,
+    "price_history": [
+      {
+        "date": "2024-01-01",
+        "price": 4728378
+      },
+      {
+        "date": "2024-02-01",
+        "price": 4353413
+      },
+      {
+        "date": "2024-03-01",
+        "price": 3695308
+      }
+    ]
+  },
+  {
+    "property_id": 35,
+    "views_last_30_days": 27,
+    "inquiries_last_30_days": 4,
+    "favorites_count": 41,
+    "shares_count": 9,
+    "avg_time_on_page": 40,
+    "bounce_rate": 0.16,
+    "conversion_rate": 0.076,
+    "price_history": [
+      {
+        "date": "2024-01-01",
+        "price": 1036934
+      },
+      {
+        "date": "2024-02-01",
+        "price": 3292237
+      },
+      {
+        "date": "2024-03-01",
+        "price": 4780430
+      }
+    ]
+  },
+  {
+    "property_id": 36,
+    "views_last_30_days": 391,
+    "inquiries_last_30_days": 17,
+    "favorites_count": 2,
+    "shares_count": 14,
+    "avg_time_on_page": 86,
+    "bounce_rate": 0.16,
+    "conversion_rate": 0.059,
+    "price_history": [
+      {
+        "date": "2024-01-01",
+        "price": 3830515
+      },
+      {
+        "date": "2024-02-01",
+        "price": 2920985
+      },
+      {
+        "date": "2024-03-01",
+        "price": 2470903
+      }
+    ]
+  },
+  {
+    "property_id": 37,
+    "views_last_30_days": 112,
+    "inquiries_last_30_days": 8,
+    "favorites_count": 20,
+    "shares_count": 23,
+    "avg_time_on_page": 100,
+    "bounce_rate": 0.11,
+    "conversion_rate": 0.076,
+    "price_history": [
+      {
+        "date": "2024-01-01",
+        "price": 764930
+      },
+      {
+        "date": "2024-02-01",
+        "price": 2419881
+      },
+      {
+        "date": "2024-03-01",
+        "price": 3124041
+      }
+    ]
+  },
+  {
+    "property_id": 38,
+    "views_last_30_days": 430,
+    "inquiries_last_30_days": 5,
+    "favorites_count": 5,
+    "shares_count": 30,
+    "avg_time_on_page": 239,
+    "bounce_rate": 0.13,
+    "conversion_rate": 0.066,
+    "price_history": [
+      {
+        "date": "2024-01-01",
+        "price": 1004737
+      },
+      {
+        "date": "2024-02-01",
+        "price": 2406462
+      },
+      {
+        "date": "2024-03-01",
+        "price": 1340169
+      }
+    ]
+  },
+  {
+    "property_id": 39,
+    "views_last_30_days": 222,
+    "inquiries_last_30_days": 2,
+    "favorites_count": 33,
+    "shares_count": 9,
+    "avg_time_on_page": 207,
+    "bounce_rate": 0.3,
+    "conversion_rate": 0.082,
+    "price_history": [
+      {
+        "date": "2024-01-01",
+        "price": 2348236
+      },
+      {
+        "date": "2024-02-01",
+        "price": 1874720
+      },
+      {
+        "date": "2024-03-01",
+        "price": 2681990
+      }
+    ]
+  },
+  {
+    "property_id": 40,
+    "views_last_30_days": 27,
+    "inquiries_last_30_days": 8,
+    "favorites_count": 42,
+    "shares_count": 24,
+    "avg_time_on_page": 140,
+    "bounce_rate": 0.13,
+    "conversion_rate": 0.047,
+    "price_history": [
+      {
+        "date": "2024-01-01",
+        "price": 1342207
+      },
+      {
+        "date": "2024-02-01",
+        "price": 1032419
+      },
+      {
+        "date": "2024-03-01",
+        "price": 1650666
+      }
+    ]
+  },
+  {
+    "property_id": 41,
+    "views_last_30_days": 31,
+    "inquiries_last_30_days": 15,
+    "favorites_count": 39,
+    "shares_count": 5,
+    "avg_time_on_page": 226,
+    "bounce_rate": 0.66,
+    "conversion_rate": 0.04,
+    "price_history": [
+      {
+        "date": "2024-01-01",
+        "price": 2380160
+      },
+      {
+        "date": "2024-02-01",
+        "price": 3220712
+      },
+      {
+        "date": "2024-03-01",
+        "price": 1283455
+      }
+    ]
+  },
+  {
+    "property_id": 42,
+    "views_last_30_days": 258,
+    "inquiries_last_30_days": 1,
+    "favorites_count": 33,
+    "shares_count": 30,
+    "avg_time_on_page": 252,
+    "bounce_rate": 0.55,
+    "conversion_rate": 0.083,
+    "price_history": [
+      {
+        "date": "2024-01-01",
+        "price": 2986718
+      },
+      {
+        "date": "2024-02-01",
+        "price": 1581012
+      },
+      {
+        "date": "2024-03-01",
+        "price": 2358832
+      }
+    ]
+  },
+  {
+    "property_id": 43,
+    "views_last_30_days": 22,
+    "inquiries_last_30_days": 11,
+    "favorites_count": 47,
+    "shares_count": 6,
+    "avg_time_on_page": 260,
+    "bounce_rate": 0.47,
+    "conversion_rate": 0.039,
+    "price_history": [
+      {
+        "date": "2024-01-01",
+        "price": 1942388
+      },
+      {
+        "date": "2024-02-01",
+        "price": 4682707
+      },
+      {
+        "date": "2024-03-01",
+        "price": 4629051
+      }
+    ]
+  },
+  {
+    "property_id": 44,
+    "views_last_30_days": 243,
+    "inquiries_last_30_days": 10,
+    "favorites_count": 10,
+    "shares_count": 9,
+    "avg_time_on_page": 235,
+    "bounce_rate": 0.75,
+    "conversion_rate": 0.016,
+    "price_history": [
+      {
+        "date": "2024-01-01",
+        "price": 3184728
+      },
+      {
+        "date": "2024-02-01",
+        "price": 4138815
+      },
+      {
+        "date": "2024-03-01",
+        "price": 4420732
+      }
+    ]
+  },
+  {
+    "property_id": 45,
+    "views_last_30_days": 58,
+    "inquiries_last_30_days": 12,
+    "favorites_count": 48,
+    "shares_count": 10,
+    "avg_time_on_page": 245,
+    "bounce_rate": 0.46,
+    "conversion_rate": 0.073,
+    "price_history": [
+      {
+        "date": "2024-01-01",
+        "price": 4895599
+      },
+      {
+        "date": "2024-02-01",
+        "price": 2328069
+      },
+      {
+        "date": "2024-03-01",
+        "price": 4548965
+      }
+    ]
+  },
+  {
+    "property_id": 46,
+    "views_last_30_days": 284,
+    "inquiries_last_30_days": 2,
+    "favorites_count": 38,
+    "shares_count": 8,
+    "avg_time_on_page": 293,
+    "bounce_rate": 0.64,
+    "conversion_rate": 0.097,
+    "price_history": [
+      {
+        "date": "2024-01-01",
+        "price": 1446721
+      },
+      {
+        "date": "2024-02-01",
+        "price": 505993
+      },
+      {
+        "date": "2024-03-01",
+        "price": 1066531
+      }
+    ]
+  },
+  {
+    "property_id": 47,
+    "views_last_30_days": 221,
+    "inquiries_last_30_days": 0,
+    "favorites_count": 6,
+    "shares_count": 5,
+    "avg_time_on_page": 217,
+    "bounce_rate": 0.58,
+    "conversion_rate": 0.054,
+    "price_history": [
+      {
+        "date": "2024-01-01",
+        "price": 2179608
+      },
+      {
+        "date": "2024-02-01",
+        "price": 4954572
+      },
+      {
+        "date": "2024-03-01",
+        "price": 4489213
+      }
+    ]
+  },
+  {
+    "property_id": 48,
+    "views_last_30_days": 349,
+    "inquiries_last_30_days": 11,
+    "favorites_count": 37,
+    "shares_count": 5,
+    "avg_time_on_page": 150,
+    "bounce_rate": 0.44,
+    "conversion_rate": 0.053,
+    "price_history": [
+      {
+        "date": "2024-01-01",
+        "price": 4961510
+      },
+      {
+        "date": "2024-02-01",
+        "price": 1810983
+      },
+      {
+        "date": "2024-03-01",
+        "price": 1298235
+      }
+    ]
+  },
+  {
+    "property_id": 49,
+    "views_last_30_days": 31,
+    "inquiries_last_30_days": 11,
+    "favorites_count": 41,
+    "shares_count": 23,
+    "avg_time_on_page": 150,
+    "bounce_rate": 0.3,
+    "conversion_rate": 0.065,
+    "price_history": [
+      {
+        "date": "2024-01-01",
+        "price": 2083934
+      },
+      {
+        "date": "2024-02-01",
+        "price": 1944151
+      },
+      {
+        "date": "2024-03-01",
+        "price": 4785180
+      }
+    ]
+  },
+  {
+    "property_id": 50,
+    "views_last_30_days": 363,
+    "inquiries_last_30_days": 4,
+    "favorites_count": 40,
+    "shares_count": 27,
+    "avg_time_on_page": 56,
+    "bounce_rate": 0.63,
+    "conversion_rate": 0.083,
+    "price_history": [
+      {
+        "date": "2024-01-01",
+        "price": 3423231
+      },
+      {
+        "date": "2024-02-01",
+        "price": 2502693
+      },
+      {
+        "date": "2024-03-01",
+        "price": 3109157
+      }
+    ]
+  },
+  {
+    "property_id": 51,
+    "views_last_30_days": 374,
+    "inquiries_last_30_days": 8,
+    "favorites_count": 47,
+    "shares_count": 24,
+    "avg_time_on_page": 49,
+    "bounce_rate": 0.68,
+    "conversion_rate": 0.021,
+    "price_history": [
+      {
+        "date": "2024-01-01",
+        "price": 2053042
+      },
+      {
+        "date": "2024-02-01",
+        "price": 3911632
+      },
+      {
+        "date": "2024-03-01",
+        "price": 3586874
+      }
+    ]
+  },
+  {
+    "property_id": 52,
+    "views_last_30_days": 65,
+    "inquiries_last_30_days": 6,
+    "favorites_count": 39,
+    "shares_count": 12,
+    "avg_time_on_page": 112,
+    "bounce_rate": 0.19,
+    "conversion_rate": 0.097,
+    "price_history": [
+      {
+        "date": "2024-01-01",
+        "price": 1064594
+      },
+      {
+        "date": "2024-02-01",
+        "price": 3706351
+      },
+      {
+        "date": "2024-03-01",
+        "price": 971110
+      }
+    ]
+  },
+  {
+    "property_id": 53,
+    "views_last_30_days": 340,
+    "inquiries_last_30_days": 11,
+    "favorites_count": 26,
+    "shares_count": 7,
+    "avg_time_on_page": 47,
+    "bounce_rate": 0.64,
+    "conversion_rate": 0.079,
+    "price_history": [
+      {
+        "date": "2024-01-01",
+        "price": 4408783
+      },
+      {
+        "date": "2024-02-01",
+        "price": 2606737
+      },
+      {
+        "date": "2024-03-01",
+        "price": 966376
+      }
+    ]
+  },
+  {
+    "property_id": 54,
+    "views_last_30_days": 357,
+    "inquiries_last_30_days": 17,
+    "favorites_count": 32,
+    "shares_count": 17,
+    "avg_time_on_page": 116,
+    "bounce_rate": 0.25,
+    "conversion_rate": 0.066,
+    "price_history": [
+      {
+        "date": "2024-01-01",
+        "price": 1013034
+      },
+      {
+        "date": "2024-02-01",
+        "price": 3820706
+      },
+      {
+        "date": "2024-03-01",
+        "price": 4538836
+      }
+    ]
+  },
+  {
+    "property_id": 55,
+    "views_last_30_days": 352,
+    "inquiries_last_30_days": 18,
+    "favorites_count": 47,
+    "shares_count": 11,
+    "avg_time_on_page": 262,
+    "bounce_rate": 0.46,
+    "conversion_rate": 0.023,
+    "price_history": [
+      {
+        "date": "2024-01-01",
+        "price": 3779088
+      },
+      {
+        "date": "2024-02-01",
+        "price": 4893654
+      },
+      {
+        "date": "2024-03-01",
+        "price": 696954
+      }
+    ]
+  },
+  {
+    "property_id": 56,
+    "views_last_30_days": 315,
+    "inquiries_last_30_days": 10,
+    "favorites_count": 13,
+    "shares_count": 17,
+    "avg_time_on_page": 271,
+    "bounce_rate": 0.18,
+    "conversion_rate": 0.041,
+    "price_history": [
+      {
+        "date": "2024-01-01",
+        "price": 2215103
+      },
+      {
+        "date": "2024-02-01",
+        "price": 4210585
+      },
+      {
+        "date": "2024-03-01",
+        "price": 1516337
+      }
+    ]
+  },
+  {
+    "property_id": 57,
+    "views_last_30_days": 80,
+    "inquiries_last_30_days": 19,
+    "favorites_count": 20,
+    "shares_count": 23,
+    "avg_time_on_page": 285,
+    "bounce_rate": 0.48,
+    "conversion_rate": 0.028,
+    "price_history": [
+      {
+        "date": "2024-01-01",
+        "price": 1559033
+      },
+      {
+        "date": "2024-02-01",
+        "price": 740384
+      },
+      {
+        "date": "2024-03-01",
+        "price": 1617169
+      }
+    ]
+  },
+  {
+    "property_id": 58,
+    "views_last_30_days": 496,
+    "inquiries_last_30_days": 4,
+    "favorites_count": 27,
+    "shares_count": 28,
+    "avg_time_on_page": 67,
+    "bounce_rate": 0.36,
+    "conversion_rate": 0.022,
+    "price_history": [
+      {
+        "date": "2024-01-01",
+        "price": 1315865
+      },
+      {
+        "date": "2024-02-01",
+        "price": 1889217
+      },
+      {
+        "date": "2024-03-01",
+        "price": 3588634
+      }
+    ]
+  },
+  {
+    "property_id": 59,
+    "views_last_30_days": 171,
+    "inquiries_last_30_days": 3,
+    "favorites_count": 5,
+    "shares_count": 7,
+    "avg_time_on_page": 95,
+    "bounce_rate": 0.39,
+    "conversion_rate": 0.096,
+    "price_history": [
+      {
+        "date": "2024-01-01",
+        "price": 4715912
+      },
+      {
+        "date": "2024-02-01",
+        "price": 928858
+      },
+      {
+        "date": "2024-03-01",
+        "price": 893664
+      }
+    ]
+  },
+  {
+    "property_id": 60,
+    "views_last_30_days": 218,
+    "inquiries_last_30_days": 9,
+    "favorites_count": 38,
+    "shares_count": 23,
+    "avg_time_on_page": 74,
+    "bounce_rate": 0.7,
+    "conversion_rate": 0.042,
+    "price_history": [
+      {
+        "date": "2024-01-01",
+        "price": 3356714
+      },
+      {
+        "date": "2024-02-01",
+        "price": 2181189
+      },
+      {
+        "date": "2024-03-01",
+        "price": 803305
+      }
+    ]
+  },
+  {
+    "property_id": 61,
+    "views_last_30_days": 225,
+    "inquiries_last_30_days": 17,
+    "favorites_count": 34,
+    "shares_count": 18,
+    "avg_time_on_page": 105,
+    "bounce_rate": 0.79,
+    "conversion_rate": 0.089,
+    "price_history": [
+      {
+        "date": "2024-01-01",
+        "price": 2394938
+      },
+      {
+        "date": "2024-02-01",
+        "price": 3568269
+      },
+      {
+        "date": "2024-03-01",
+        "price": 1545375
+      }
+    ]
+  },
+  {
+    "property_id": 62,
+    "views_last_30_days": 123,
+    "inquiries_last_30_days": 16,
+    "favorites_count": 16,
+    "shares_count": 30,
+    "avg_time_on_page": 241,
+    "bounce_rate": 0.16,
+    "conversion_rate": 0.082,
+    "price_history": [
+      {
+        "date": "2024-01-01",
+        "price": 4942466
+      },
+      {
+        "date": "2024-02-01",
+        "price": 812171
+      },
+      {
+        "date": "2024-03-01",
+        "price": 2071018
+      }
+    ]
+  },
+  {
+    "property_id": 63,
+    "views_last_30_days": 229,
+    "inquiries_last_30_days": 5,
+    "favorites_count": 28,
+    "shares_count": 11,
+    "avg_time_on_page": 75,
+    "bounce_rate": 0.37,
+    "conversion_rate": 0.028,
+    "price_history": [
+      {
+        "date": "2024-01-01",
+        "price": 3258084
+      },
+      {
+        "date": "2024-02-01",
+        "price": 2257380
+      },
+      {
+        "date": "2024-03-01",
+        "price": 4938698
+      }
+    ]
+  },
+  {
+    "property_id": 64,
+    "views_last_30_days": 19,
+    "inquiries_last_30_days": 14,
+    "favorites_count": 1,
+    "shares_count": 0,
+    "avg_time_on_page": 166,
+    "bounce_rate": 0.37,
+    "conversion_rate": 0.018,
+    "price_history": [
+      {
+        "date": "2024-01-01",
+        "price": 2830784
+      },
+      {
+        "date": "2024-02-01",
+        "price": 4144244
+      },
+      {
+        "date": "2024-03-01",
+        "price": 1773236
+      }
+    ]
+  },
+  {
+    "property_id": 65,
+    "views_last_30_days": 79,
+    "inquiries_last_30_days": 3,
+    "favorites_count": 11,
+    "shares_count": 10,
+    "avg_time_on_page": 46,
+    "bounce_rate": 0.31,
+    "conversion_rate": 0.079,
+    "price_history": [
+      {
+        "date": "2024-01-01",
+        "price": 2058519
+      },
+      {
+        "date": "2024-02-01",
+        "price": 3489695
+      },
+      {
+        "date": "2024-03-01",
+        "price": 1262334
+      }
+    ]
+  },
+  {
+    "property_id": 66,
+    "views_last_30_days": 280,
+    "inquiries_last_30_days": 15,
+    "favorites_count": 28,
+    "shares_count": 13,
+    "avg_time_on_page": 99,
+    "bounce_rate": 0.2,
+    "conversion_rate": 0.097,
+    "price_history": [
+      {
+        "date": "2024-01-01",
+        "price": 3149660
+      },
+      {
+        "date": "2024-02-01",
+        "price": 4168458
+      },
+      {
+        "date": "2024-03-01",
+        "price": 2715574
+      }
+    ]
+  },
+  {
+    "property_id": 67,
+    "views_last_30_days": 314,
+    "inquiries_last_30_days": 16,
+    "favorites_count": 40,
+    "shares_count": 7,
+    "avg_time_on_page": 192,
+    "bounce_rate": 0.13,
+    "conversion_rate": 0.039,
+    "price_history": [
+      {
+        "date": "2024-01-01",
+        "price": 1790480
+      },
+      {
+        "date": "2024-02-01",
+        "price": 3138211
+      },
+      {
+        "date": "2024-03-01",
+        "price": 3828821
+      }
+    ]
+  },
+  {
+    "property_id": 68,
+    "views_last_30_days": 89,
+    "inquiries_last_30_days": 13,
+    "favorites_count": 8,
+    "shares_count": 21,
+    "avg_time_on_page": 193,
+    "bounce_rate": 0.15,
+    "conversion_rate": 0.061,
+    "price_history": [
+      {
+        "date": "2024-01-01",
+        "price": 2768711
+      },
+      {
+        "date": "2024-02-01",
+        "price": 2042654
+      },
+      {
+        "date": "2024-03-01",
+        "price": 1910480
+      }
+    ]
+  },
+  {
+    "property_id": 69,
+    "views_last_30_days": 494,
+    "inquiries_last_30_days": 11,
+    "favorites_count": 15,
+    "shares_count": 26,
+    "avg_time_on_page": 84,
+    "bounce_rate": 0.64,
+    "conversion_rate": 0.022,
+    "price_history": [
+      {
+        "date": "2024-01-01",
+        "price": 1228852
+      },
+      {
+        "date": "2024-02-01",
+        "price": 4909288
+      },
+      {
+        "date": "2024-03-01",
+        "price": 1250819
+      }
+    ]
+  },
+  {
+    "property_id": 70,
+    "views_last_30_days": 5,
+    "inquiries_last_30_days": 5,
+    "favorites_count": 6,
+    "shares_count": 30,
+    "avg_time_on_page": 260,
+    "bounce_rate": 0.22,
+    "conversion_rate": 0.052,
+    "price_history": [
+      {
+        "date": "2024-01-01",
+        "price": 1506583
+      },
+      {
+        "date": "2024-02-01",
+        "price": 1296327
+      },
+      {
+        "date": "2024-03-01",
+        "price": 1258833
+      }
+    ]
+  },
+  {
+    "property_id": 71,
+    "views_last_30_days": 219,
+    "inquiries_last_30_days": 0,
+    "favorites_count": 20,
+    "shares_count": 25,
+    "avg_time_on_page": 101,
+    "bounce_rate": 0.3,
+    "conversion_rate": 0.083,
+    "price_history": [
+      {
+        "date": "2024-01-01",
+        "price": 560968
+      },
+      {
+        "date": "2024-02-01",
+        "price": 2421457
+      },
+      {
+        "date": "2024-03-01",
+        "price": 1786482
+      }
+    ]
+  },
+  {
+    "property_id": 72,
+    "views_last_30_days": 139,
+    "inquiries_last_30_days": 14,
+    "favorites_count": 12,
+    "shares_count": 25,
+    "avg_time_on_page": 47,
+    "bounce_rate": 0.32,
+    "conversion_rate": 0.087,
+    "price_history": [
+      {
+        "date": "2024-01-01",
+        "price": 1919656
+      },
+      {
+        "date": "2024-02-01",
+        "price": 790964
+      },
+      {
+        "date": "2024-03-01",
+        "price": 3857098
+      }
+    ]
+  },
+  {
+    "property_id": 73,
+    "views_last_30_days": 423,
+    "inquiries_last_30_days": 15,
+    "favorites_count": 1,
+    "shares_count": 21,
+    "avg_time_on_page": 196,
+    "bounce_rate": 0.64,
+    "conversion_rate": 0.049,
+    "price_history": [
+      {
+        "date": "2024-01-01",
+        "price": 4788038
+      },
+      {
+        "date": "2024-02-01",
+        "price": 3507941
+      },
+      {
+        "date": "2024-03-01",
+        "price": 4231827
+      }
+    ]
+  },
+  {
+    "property_id": 74,
+    "views_last_30_days": 287,
+    "inquiries_last_30_days": 16,
+    "favorites_count": 24,
+    "shares_count": 21,
+    "avg_time_on_page": 98,
+    "bounce_rate": 0.58,
+    "conversion_rate": 0.077,
+    "price_history": [
+      {
+        "date": "2024-01-01",
+        "price": 4394906
+      },
+      {
+        "date": "2024-02-01",
+        "price": 3643295
+      },
+      {
+        "date": "2024-03-01",
+        "price": 2116767
+      }
+    ]
+  },
+  {
+    "property_id": 75,
+    "views_last_30_days": 500,
+    "inquiries_last_30_days": 9,
+    "favorites_count": 12,
+    "shares_count": 19,
+    "avg_time_on_page": 201,
+    "bounce_rate": 0.24,
+    "conversion_rate": 0.096,
+    "price_history": [
+      {
+        "date": "2024-01-01",
+        "price": 1999273
+      },
+      {
+        "date": "2024-02-01",
+        "price": 4384881
+      },
+      {
+        "date": "2024-03-01",
+        "price": 3501154
+      }
+    ]
+  },
+  {
+    "property_id": 76,
+    "views_last_30_days": 249,
+    "inquiries_last_30_days": 9,
+    "favorites_count": 3,
+    "shares_count": 7,
+    "avg_time_on_page": 80,
+    "bounce_rate": 0.6,
+    "conversion_rate": 0.099,
+    "price_history": [
+      {
+        "date": "2024-01-01",
+        "price": 2161640
+      },
+      {
+        "date": "2024-02-01",
+        "price": 2980862
+      },
+      {
+        "date": "2024-03-01",
+        "price": 1462296
+      }
+    ]
+  },
+  {
+    "property_id": 77,
+    "views_last_30_days": 99,
+    "inquiries_last_30_days": 4,
+    "favorites_count": 18,
+    "shares_count": 8,
+    "avg_time_on_page": 42,
+    "bounce_rate": 0.46,
+    "conversion_rate": 0.081,
+    "price_history": [
+      {
+        "date": "2024-01-01",
+        "price": 4717740
+      },
+      {
+        "date": "2024-02-01",
+        "price": 3627713
+      },
+      {
+        "date": "2024-03-01",
+        "price": 3444266
+      }
+    ]
+  },
+  {
+    "property_id": 78,
+    "views_last_30_days": 33,
+    "inquiries_last_30_days": 19,
+    "favorites_count": 1,
+    "shares_count": 22,
+    "avg_time_on_page": 138,
+    "bounce_rate": 0.46,
+    "conversion_rate": 0.099,
+    "price_history": [
+      {
+        "date": "2024-01-01",
+        "price": 2564541
+      },
+      {
+        "date": "2024-02-01",
+        "price": 3091214
+      },
+      {
+        "date": "2024-03-01",
+        "price": 1358552
+      }
+    ]
+  },
+  {
+    "property_id": 79,
+    "views_last_30_days": 444,
+    "inquiries_last_30_days": 1,
+    "favorites_count": 12,
+    "shares_count": 1,
+    "avg_time_on_page": 271,
+    "bounce_rate": 0.35,
+    "conversion_rate": 0.093,
+    "price_history": [
+      {
+        "date": "2024-01-01",
+        "price": 925254
+      },
+      {
+        "date": "2024-02-01",
+        "price": 4625413
+      },
+      {
+        "date": "2024-03-01",
+        "price": 3168963
+      }
+    ]
+  },
+  {
+    "property_id": 80,
+    "views_last_30_days": 464,
+    "inquiries_last_30_days": 13,
+    "favorites_count": 43,
+    "shares_count": 4,
+    "avg_time_on_page": 49,
+    "bounce_rate": 0.18,
+    "conversion_rate": 0.029,
+    "price_history": [
+      {
+        "date": "2024-01-01",
+        "price": 2126575
+      },
+      {
+        "date": "2024-02-01",
+        "price": 3239959
+      },
+      {
+        "date": "2024-03-01",
+        "price": 1749552
+      }
+    ]
+  },
+  {
+    "property_id": 81,
+    "views_last_30_days": 178,
+    "inquiries_last_30_days": 5,
+    "favorites_count": 44,
+    "shares_count": 21,
+    "avg_time_on_page": 33,
+    "bounce_rate": 0.64,
+    "conversion_rate": 0.047,
+    "price_history": [
+      {
+        "date": "2024-01-01",
+        "price": 3504232
+      },
+      {
+        "date": "2024-02-01",
+        "price": 1264530
+      },
+      {
+        "date": "2024-03-01",
+        "price": 2724432
+      }
+    ]
+  },
+  {
+    "property_id": 82,
+    "views_last_30_days": 56,
+    "inquiries_last_30_days": 2,
+    "favorites_count": 6,
+    "shares_count": 10,
+    "avg_time_on_page": 231,
+    "bounce_rate": 0.49,
+    "conversion_rate": 0.034,
+    "price_history": [
+      {
+        "date": "2024-01-01",
+        "price": 3036580
+      },
+      {
+        "date": "2024-02-01",
+        "price": 2915377
+      },
+      {
+        "date": "2024-03-01",
+        "price": 1025781
+      }
+    ]
+  },
+  {
+    "property_id": 83,
+    "views_last_30_days": 202,
+    "inquiries_last_30_days": 10,
+    "favorites_count": 29,
+    "shares_count": 24,
+    "avg_time_on_page": 276,
+    "bounce_rate": 0.2,
+    "conversion_rate": 0.02,
+    "price_history": [
+      {
+        "date": "2024-01-01",
+        "price": 2447287
+      },
+      {
+        "date": "2024-02-01",
+        "price": 3152397
+      },
+      {
+        "date": "2024-03-01",
+        "price": 4527156
+      }
+    ]
+  },
+  {
+    "property_id": 84,
+    "views_last_30_days": 99,
+    "inquiries_last_30_days": 12,
+    "favorites_count": 29,
+    "shares_count": 1,
+    "avg_time_on_page": 113,
+    "bounce_rate": 0.68,
+    "conversion_rate": 0.03,
+    "price_history": [
+      {
+        "date": "2024-01-01",
+        "price": 1001450
+      },
+      {
+        "date": "2024-02-01",
+        "price": 2529017
+      },
+      {
+        "date": "2024-03-01",
+        "price": 3636028
+      }
+    ]
+  },
+  {
+    "property_id": 85,
+    "views_last_30_days": 382,
+    "inquiries_last_30_days": 13,
+    "favorites_count": 22,
+    "shares_count": 17,
+    "avg_time_on_page": 298,
+    "bounce_rate": 0.14,
+    "conversion_rate": 0.01,
+    "price_history": [
+      {
+        "date": "2024-01-01",
+        "price": 631047
+      },
+      {
+        "date": "2024-02-01",
+        "price": 4168248
+      },
+      {
+        "date": "2024-03-01",
+        "price": 4941352
+      }
+    ]
+  },
+  {
+    "property_id": 86,
+    "views_last_30_days": 297,
+    "inquiries_last_30_days": 18,
+    "favorites_count": 4,
+    "shares_count": 18,
+    "avg_time_on_page": 193,
+    "bounce_rate": 0.13,
+    "conversion_rate": 0.017,
+    "price_history": [
+      {
+        "date": "2024-01-01",
+        "price": 1307321
+      },
+      {
+        "date": "2024-02-01",
+        "price": 2184061
+      },
+      {
+        "date": "2024-03-01",
+        "price": 4565421
+      }
+    ]
+  },
+  {
+    "property_id": 87,
+    "views_last_30_days": 278,
+    "inquiries_last_30_days": 4,
+    "favorites_count": 16,
+    "shares_count": 16,
+    "avg_time_on_page": 153,
+    "bounce_rate": 0.68,
+    "conversion_rate": 0.054,
+    "price_history": [
+      {
+        "date": "2024-01-01",
+        "price": 4958969
+      },
+      {
+        "date": "2024-02-01",
+        "price": 4222021
+      },
+      {
+        "date": "2024-03-01",
+        "price": 753928
+      }
+    ]
+  },
+  {
+    "property_id": 88,
+    "views_last_30_days": 343,
+    "inquiries_last_30_days": 14,
+    "favorites_count": 2,
+    "shares_count": 26,
+    "avg_time_on_page": 211,
+    "bounce_rate": 0.44,
+    "conversion_rate": 0.098,
+    "price_history": [
+      {
+        "date": "2024-01-01",
+        "price": 4722413
+      },
+      {
+        "date": "2024-02-01",
+        "price": 2610445
+      },
+      {
+        "date": "2024-03-01",
+        "price": 4673545
+      }
+    ]
+  },
+  {
+    "property_id": 89,
+    "views_last_30_days": 479,
+    "inquiries_last_30_days": 12,
+    "favorites_count": 45,
+    "shares_count": 10,
+    "avg_time_on_page": 33,
+    "bounce_rate": 0.56,
+    "conversion_rate": 0.035,
+    "price_history": [
+      {
+        "date": "2024-01-01",
+        "price": 4546775
+      },
+      {
+        "date": "2024-02-01",
+        "price": 761393
+      },
+      {
+        "date": "2024-03-01",
+        "price": 1033188
+      }
+    ]
+  },
+  {
+    "property_id": 90,
+    "views_last_30_days": 384,
+    "inquiries_last_30_days": 13,
+    "favorites_count": 47,
+    "shares_count": 28,
+    "avg_time_on_page": 166,
+    "bounce_rate": 0.51,
+    "conversion_rate": 0.037,
+    "price_history": [
+      {
+        "date": "2024-01-01",
+        "price": 3842627
+      },
+      {
+        "date": "2024-02-01",
+        "price": 1095389
+      },
+      {
+        "date": "2024-03-01",
+        "price": 2148522
+      }
+    ]
+  },
+  {
+    "property_id": 91,
+    "views_last_30_days": 327,
+    "inquiries_last_30_days": 9,
+    "favorites_count": 31,
+    "shares_count": 20,
+    "avg_time_on_page": 259,
+    "bounce_rate": 0.15,
+    "conversion_rate": 0.035,
+    "price_history": [
+      {
+        "date": "2024-01-01",
+        "price": 2394851
+      },
+      {
+        "date": "2024-02-01",
+        "price": 1235204
+      },
+      {
+        "date": "2024-03-01",
+        "price": 4966228
+      }
+    ]
+  },
+  {
+    "property_id": 92,
+    "views_last_30_days": 198,
+    "inquiries_last_30_days": 16,
+    "favorites_count": 39,
+    "shares_count": 23,
+    "avg_time_on_page": 114,
+    "bounce_rate": 0.49,
+    "conversion_rate": 0.02,
+    "price_history": [
+      {
+        "date": "2024-01-01",
+        "price": 1951008
+      },
+      {
+        "date": "2024-02-01",
+        "price": 1620654
+      },
+      {
+        "date": "2024-03-01",
+        "price": 2304907
+      }
+    ]
+  },
+  {
+    "property_id": 93,
+    "views_last_30_days": 264,
+    "inquiries_last_30_days": 4,
+    "favorites_count": 47,
+    "shares_count": 22,
+    "avg_time_on_page": 209,
+    "bounce_rate": 0.36,
+    "conversion_rate": 0.046,
+    "price_history": [
+      {
+        "date": "2024-01-01",
+        "price": 1762754
+      },
+      {
+        "date": "2024-02-01",
+        "price": 4806378
+      },
+      {
+        "date": "2024-03-01",
+        "price": 2998235
+      }
+    ]
+  },
+  {
+    "property_id": 94,
+    "views_last_30_days": 355,
+    "inquiries_last_30_days": 19,
+    "favorites_count": 39,
+    "shares_count": 24,
+    "avg_time_on_page": 111,
+    "bounce_rate": 0.78,
+    "conversion_rate": 0.072,
+    "price_history": [
+      {
+        "date": "2024-01-01",
+        "price": 3810029
+      },
+      {
+        "date": "2024-02-01",
+        "price": 1749472
+      },
+      {
+        "date": "2024-03-01",
+        "price": 4244645
+      }
+    ]
+  },
+  {
+    "property_id": 95,
+    "views_last_30_days": 315,
+    "inquiries_last_30_days": 2,
+    "favorites_count": 13,
+    "shares_count": 12,
+    "avg_time_on_page": 264,
+    "bounce_rate": 0.33,
+    "conversion_rate": 0.056,
+    "price_history": [
+      {
+        "date": "2024-01-01",
+        "price": 4568959
+      },
+      {
+        "date": "2024-02-01",
+        "price": 2874102
+      },
+      {
+        "date": "2024-03-01",
+        "price": 1112837
+      }
+    ]
+  },
+  {
+    "property_id": 96,
+    "views_last_30_days": 414,
+    "inquiries_last_30_days": 4,
+    "favorites_count": 35,
+    "shares_count": 14,
+    "avg_time_on_page": 254,
+    "bounce_rate": 0.64,
+    "conversion_rate": 0.075,
+    "price_history": [
+      {
+        "date": "2024-01-01",
+        "price": 1274584
+      },
+      {
+        "date": "2024-02-01",
+        "price": 3183358
+      },
+      {
+        "date": "2024-03-01",
+        "price": 1777301
+      }
+    ]
+  },
+  {
+    "property_id": 97,
+    "views_last_30_days": 408,
+    "inquiries_last_30_days": 6,
+    "favorites_count": 19,
+    "shares_count": 1,
+    "avg_time_on_page": 55,
+    "bounce_rate": 0.71,
+    "conversion_rate": 0.077,
+    "price_history": [
+      {
+        "date": "2024-01-01",
+        "price": 985040
+      },
+      {
+        "date": "2024-02-01",
+        "price": 3550514
+      },
+      {
+        "date": "2024-03-01",
+        "price": 1960586
+      }
+    ]
+  },
+  {
+    "property_id": 98,
+    "views_last_30_days": 55,
+    "inquiries_last_30_days": 5,
+    "favorites_count": 4,
+    "shares_count": 25,
+    "avg_time_on_page": 241,
+    "bounce_rate": 0.71,
+    "conversion_rate": 0.057,
+    "price_history": [
+      {
+        "date": "2024-01-01",
+        "price": 877390
+      },
+      {
+        "date": "2024-02-01",
+        "price": 4262785
+      },
+      {
+        "date": "2024-03-01",
+        "price": 2527141
+      }
+    ]
+  },
+  {
+    "property_id": 99,
+    "views_last_30_days": 459,
+    "inquiries_last_30_days": 18,
+    "favorites_count": 12,
+    "shares_count": 17,
+    "avg_time_on_page": 172,
+    "bounce_rate": 0.24,
+    "conversion_rate": 0.027,
+    "price_history": [
+      {
+        "date": "2024-01-01",
+        "price": 3431597
+      },
+      {
+        "date": "2024-02-01",
+        "price": 1521880
+      },
+      {
+        "date": "2024-03-01",
+        "price": 1243212
+      }
+    ]
+  },
+  {
+    "property_id": 100,
+    "views_last_30_days": 171,
+    "inquiries_last_30_days": 12,
+    "favorites_count": 15,
+    "shares_count": 24,
+    "avg_time_on_page": 240,
+    "bounce_rate": 0.42,
+    "conversion_rate": 0.019,
+    "price_history": [
+      {
+        "date": "2024-01-01",
+        "price": 3811209
+      },
+      {
+        "date": "2024-02-01",
+        "price": 2867084
+      },
+      {
+        "date": "2024-03-01",
+        "price": 4309661
+      }
+    ]
+  }
+]

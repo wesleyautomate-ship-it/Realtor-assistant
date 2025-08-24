@@ -1,0 +1,722 @@
+[
+  {
+    "name": "Downtown Dubai",
+    "average_price_per_sqft": 1709,
+    "popular_property_types": [
+      "Loft",
+      "Duplex",
+      "Serviced Apartment"
+    ],
+    "top_developers": [
+      "Savills",
+      "Union Properties",
+      "Aqua Properties",
+      "Bloom Properties",
+      "Deyaar Development"
+    ],
+    "amenities": [
+      "Concierge",
+      "Swimming Pool",
+      "Parking",
+      "Study Room",
+      "Children's Playground",
+      "Driver's Room",
+      "24/7 Maintenance",
+      "Balcony"
+    ],
+    "transportation": [
+      "Tram",
+      "Car",
+      "Metro"
+    ],
+    "schools": 10,
+    "hospitals": 4,
+    "shopping_centers": 1,
+    "parks": 2,
+    "description": "Downtown Dubai is a vibrant community in Dubai offering excellent amenities and connectivity."
+  },
+  {
+    "name": "Palm Jumeirah",
+    "average_price_per_sqft": 929,
+    "popular_property_types": [
+      "Studio",
+      "Villa",
+      "Serviced Apartment"
+    ],
+    "top_developers": [
+      "Meraas",
+      "Dubai Properties",
+      "Union Properties",
+      "Ellington Properties",
+      "Damac Properties"
+    ],
+    "amenities": [
+      "BBQ Area",
+      "Tennis Court",
+      "Balcony",
+      "24/7 Maintenance",
+      "Built-in Wardrobes",
+      "Terrace",
+      "Swimming Pool",
+      "Pet Friendly"
+    ],
+    "transportation": [
+      "Car",
+      "Tram",
+      "Metro"
+    ],
+    "schools": 15,
+    "hospitals": 1,
+    "shopping_centers": 8,
+    "parks": 3,
+    "description": "Palm Jumeirah is a vibrant community in Dubai offering excellent amenities and connectivity."
+  },
+  {
+    "name": "Dubai Marina",
+    "average_price_per_sqft": 1382,
+    "popular_property_types": [
+      "Penthouse",
+      "Triplex",
+      "Townhouse"
+    ],
+    "top_developers": [
+      "Deyaar Development",
+      "Nakheel",
+      "Sobha Realty",
+      "Ellington Properties",
+      "Better Homes"
+    ],
+    "amenities": [
+      "24/7 Maintenance",
+      "Children's Playground",
+      "Parking",
+      "Central AC",
+      "Tennis Court",
+      "Built-in Wardrobes",
+      "Garden",
+      "Swimming Pool"
+    ],
+    "transportation": [
+      "Bus",
+      "Tram",
+      "Car"
+    ],
+    "schools": 14,
+    "hospitals": 1,
+    "shopping_centers": 7,
+    "parks": 5,
+    "description": "Dubai Marina is a vibrant community in Dubai offering excellent amenities and connectivity."
+  },
+  {
+    "name": "Jumeirah Beach Residence",
+    "average_price_per_sqft": 2947,
+    "popular_property_types": [
+      "Loft",
+      "Villa",
+      "Serviced Apartment"
+    ],
+    "top_developers": [
+      "Union Properties",
+      "Select Group",
+      "Cluttons",
+      "Ellington Properties",
+      "Bloom Properties"
+    ],
+    "amenities": [
+      "Tennis Court",
+      "Modern Kitchen",
+      "Swimming Pool",
+      "Maid's Room",
+      "Furnished",
+      "24/7 Maintenance",
+      "Driver's Room",
+      "Basketball Court"
+    ],
+    "transportation": [
+      "Bus",
+      "Car",
+      "Taxi"
+    ],
+    "schools": 11,
+    "hospitals": 4,
+    "shopping_centers": 1,
+    "parks": 2,
+    "description": "Jumeirah Beach Residence is a vibrant community in Dubai offering excellent amenities and connectivity."
+  },
+  {
+    "name": "Business Bay",
+    "average_price_per_sqft": 2793,
+    "popular_property_types": [
+      "Studio",
+      "Serviced Apartment",
+      "Garden Apartment"
+    ],
+    "top_developers": [
+      "Savills",
+      "Bloom Properties",
+      "Knight Frank",
+      "Union Properties",
+      "Better Homes"
+    ],
+    "amenities": [
+      "Study Room",
+      "Maid's Room",
+      "Children's Playground",
+      "Walk-in Closet",
+      "Pet Friendly",
+      "Spa",
+      "Basketball Court",
+      "Built-in Wardrobes"
+    ],
+    "transportation": [
+      "Tram",
+      "Taxi",
+      "Car"
+    ],
+    "schools": 7,
+    "hospitals": 2,
+    "shopping_centers": 7,
+    "parks": 3,
+    "description": "Business Bay is a vibrant community in Dubai offering excellent amenities and connectivity."
+  },
+  {
+    "name": "Dubai Hills Estate",
+    "average_price_per_sqft": 816,
+    "popular_property_types": [
+      "Penthouse",
+      "Villa",
+      "Triplex"
+    ],
+    "top_developers": [
+      "Nakheel",
+      "Select Group",
+      "Emaar Properties",
+      "Cluttons",
+      "Damac Properties"
+    ],
+    "amenities": [
+      "Furnished",
+      "Concierge",
+      "Maid's Room",
+      "Basketball Court",
+      "Pet Friendly",
+      "24/7 Maintenance",
+      "Study Room",
+      "Terrace"
+    ],
+    "transportation": [
+      "Tram",
+      "Taxi",
+      "Car"
+    ],
+    "schools": 7,
+    "hospitals": 3,
+    "shopping_centers": 4,
+    "parks": 4,
+    "description": "Dubai Hills Estate is a vibrant community in Dubai offering excellent amenities and connectivity."
+  },
+  {
+    "name": "Arabian Ranches",
+    "average_price_per_sqft": 1343,
+    "popular_property_types": [
+      "Villa",
+      "Loft",
+      "Garden Apartment"
+    ],
+    "top_developers": [
+      "Cluttons",
+      "Sobha Realty",
+      "Union Properties",
+      "Select Group",
+      "Meraas"
+    ],
+    "amenities": [
+      "Balcony",
+      "Concierge",
+      "Maid's Room",
+      "Swimming Pool",
+      "24/7 Maintenance",
+      "Walk-in Closet",
+      "Modern Kitchen",
+      "Central AC"
+    ],
+    "transportation": [
+      "Tram",
+      "Taxi",
+      "Car"
+    ],
+    "schools": 6,
+    "hospitals": 5,
+    "shopping_centers": 6,
+    "parks": 1,
+    "description": "Arabian Ranches is a vibrant community in Dubai offering excellent amenities and connectivity."
+  },
+  {
+    "name": "Emirates Hills",
+    "average_price_per_sqft": 1880,
+    "popular_property_types": [
+      "Duplex",
+      "Apartment",
+      "Villa"
+    ],
+    "top_developers": [
+      "Bloom Properties",
+      "Azizi Developments",
+      "Union Properties",
+      "Better Homes",
+      "Omniyat"
+    ],
+    "amenities": [
+      "Gym",
+      "Driver's Room",
+      "Parking",
+      "Children's Playground",
+      "Concierge",
+      "Swimming Pool",
+      "Study Room",
+      "Maid's Room"
+    ],
+    "transportation": [
+      "Taxi",
+      "Car",
+      "Tram"
+    ],
+    "schools": 11,
+    "hospitals": 4,
+    "shopping_centers": 6,
+    "parks": 4,
+    "description": "Emirates Hills is a vibrant community in Dubai offering excellent amenities and connectivity."
+  },
+  {
+    "name": "The Springs",
+    "average_price_per_sqft": 1829,
+    "popular_property_types": [
+      "Penthouse",
+      "Townhouse",
+      "Loft"
+    ],
+    "top_developers": [
+      "Dubai Properties",
+      "Ellington Properties",
+      "Nakheel",
+      "Select Group",
+      "Omniyat"
+    ],
+    "amenities": [
+      "24/7 Maintenance",
+      "Furnished",
+      "Concierge",
+      "Security",
+      "Driver's Room",
+      "Parking",
+      "Pet Friendly",
+      "Swimming Pool"
+    ],
+    "transportation": [
+      "Tram",
+      "Car",
+      "Bus"
+    ],
+    "schools": 6,
+    "hospitals": 3,
+    "shopping_centers": 6,
+    "parks": 3,
+    "description": "The Springs is a vibrant community in Dubai offering excellent amenities and connectivity."
+  },
+  {
+    "name": "The Meadows",
+    "average_price_per_sqft": 889,
+    "popular_property_types": [
+      "Penthouse",
+      "Garden Apartment",
+      "Apartment"
+    ],
+    "top_developers": [
+      "Deyaar Development",
+      "Dubai Properties",
+      "Bloom Properties",
+      "Damac Properties",
+      "Al Habtoor Group"
+    ],
+    "amenities": [
+      "Central AC",
+      "Balcony",
+      "24/7 Maintenance",
+      "Modern Kitchen",
+      "Parking",
+      "Driver's Room",
+      "Children's Playground",
+      "Swimming Pool"
+    ],
+    "transportation": [
+      "Metro",
+      "Tram",
+      "Car"
+    ],
+    "schools": 3,
+    "hospitals": 5,
+    "shopping_centers": 1,
+    "parks": 5,
+    "description": "The Meadows is a vibrant community in Dubai offering excellent amenities and connectivity."
+  },
+  {
+    "name": "Jumeirah Islands",
+    "average_price_per_sqft": 1701,
+    "popular_property_types": [
+      "Penthouse",
+      "Apartment",
+      "Garden Apartment"
+    ],
+    "top_developers": [
+      "Al Habtoor Group",
+      "Meraas",
+      "Omniyat",
+      "Savills",
+      "Cluttons"
+    ],
+    "amenities": [
+      "Basketball Court",
+      "Central AC",
+      "Security",
+      "Garden",
+      "Furnished",
+      "Parking",
+      "Pet Friendly",
+      "Walk-in Closet"
+    ],
+    "transportation": [
+      "Tram",
+      "Bus",
+      "Car"
+    ],
+    "schools": 4,
+    "hospitals": 3,
+    "shopping_centers": 2,
+    "parks": 1,
+    "description": "Jumeirah Islands is a vibrant community in Dubai offering excellent amenities and connectivity."
+  },
+  {
+    "name": "Jumeirah Park",
+    "average_price_per_sqft": 1228,
+    "popular_property_types": [
+      "Loft",
+      "Serviced Apartment",
+      "Studio"
+    ],
+    "top_developers": [
+      "Damac Properties",
+      "Bloom Properties",
+      "Knight Frank",
+      "Aqua Properties",
+      "Better Homes"
+    ],
+    "amenities": [
+      "Study Room",
+      "BBQ Area",
+      "Central AC",
+      "Spa",
+      "Basketball Court",
+      "Balcony",
+      "Driver's Room",
+      "24/7 Maintenance"
+    ],
+    "transportation": [
+      "Car",
+      "Metro",
+      "Tram"
+    ],
+    "schools": 10,
+    "hospitals": 1,
+    "shopping_centers": 6,
+    "parks": 1,
+    "description": "Jumeirah Park is a vibrant community in Dubai offering excellent amenities and connectivity."
+  },
+  {
+    "name": "Dubai Silicon Oasis",
+    "average_price_per_sqft": 990,
+    "popular_property_types": [
+      "Studio",
+      "Apartment",
+      "Villa"
+    ],
+    "top_developers": [
+      "Aqua Properties",
+      "Better Homes",
+      "Union Properties",
+      "Omniyat",
+      "Damac Properties"
+    ],
+    "amenities": [
+      "Maid's Room",
+      "Central AC",
+      "Garden",
+      "24/7 Maintenance",
+      "Balcony",
+      "Spa",
+      "Terrace",
+      "Furnished"
+    ],
+    "transportation": [
+      "Metro",
+      "Bus",
+      "Tram"
+    ],
+    "schools": 6,
+    "hospitals": 3,
+    "shopping_centers": 5,
+    "parks": 4,
+    "description": "Dubai Silicon Oasis is a vibrant community in Dubai offering excellent amenities and connectivity."
+  },
+  {
+    "name": "Dubai Sports City",
+    "average_price_per_sqft": 2898,
+    "popular_property_types": [
+      "Villa",
+      "Penthouse",
+      "Townhouse"
+    ],
+    "top_developers": [
+      "Better Homes",
+      "Azizi Developments",
+      "Omniyat",
+      "Al Habtoor Group",
+      "Damac Properties"
+    ],
+    "amenities": [
+      "24/7 Maintenance",
+      "Concierge",
+      "Parking",
+      "Swimming Pool",
+      "Security",
+      "Gym",
+      "Maid's Room",
+      "Children's Playground"
+    ],
+    "transportation": [
+      "Tram",
+      "Bus",
+      "Taxi"
+    ],
+    "schools": 4,
+    "hospitals": 2,
+    "shopping_centers": 2,
+    "parks": 5,
+    "description": "Dubai Sports City is a vibrant community in Dubai offering excellent amenities and connectivity."
+  },
+  {
+    "name": "Dubai Production City",
+    "average_price_per_sqft": 2671,
+    "popular_property_types": [
+      "Garden Apartment",
+      "Penthouse",
+      "Apartment"
+    ],
+    "top_developers": [
+      "Select Group",
+      "Cluttons",
+      "Union Properties",
+      "Bloom Properties",
+      "Knight Frank"
+    ],
+    "amenities": [
+      "Tennis Court",
+      "Children's Playground",
+      "BBQ Area",
+      "Pet Friendly",
+      "Maid's Room",
+      "Terrace",
+      "24/7 Maintenance",
+      "Spa"
+    ],
+    "transportation": [
+      "Bus",
+      "Car",
+      "Metro"
+    ],
+    "schools": 13,
+    "hospitals": 2,
+    "shopping_centers": 6,
+    "parks": 5,
+    "description": "Dubai Production City is a vibrant community in Dubai offering excellent amenities and connectivity."
+  },
+  {
+    "name": "Dubai Media City",
+    "average_price_per_sqft": 2939,
+    "popular_property_types": [
+      "Serviced Apartment",
+      "Loft",
+      "Garden Apartment"
+    ],
+    "top_developers": [
+      "Al Habtoor Group",
+      "Bloom Properties",
+      "Ellington Properties",
+      "Damac Properties",
+      "Dubai Properties"
+    ],
+    "amenities": [
+      "24/7 Maintenance",
+      "Walk-in Closet",
+      "Gym",
+      "Garden",
+      "Driver's Room",
+      "Furnished",
+      "Security",
+      "Swimming Pool"
+    ],
+    "transportation": [
+      "Bus",
+      "Car",
+      "Taxi"
+    ],
+    "schools": 2,
+    "hospitals": 2,
+    "shopping_centers": 3,
+    "parks": 5,
+    "description": "Dubai Media City is a vibrant community in Dubai offering excellent amenities and connectivity."
+  },
+  {
+    "name": "Dubai Internet City",
+    "average_price_per_sqft": 2037,
+    "popular_property_types": [
+      "Duplex",
+      "Studio",
+      "Townhouse"
+    ],
+    "top_developers": [
+      "Union Properties",
+      "Ellington Properties",
+      "Al Habtoor Group",
+      "Omniyat",
+      "Select Group"
+    ],
+    "amenities": [
+      "Garden",
+      "Terrace",
+      "Spa",
+      "Tennis Court",
+      "Maid's Room",
+      "Central AC",
+      "Modern Kitchen",
+      "Pet Friendly"
+    ],
+    "transportation": [
+      "Metro",
+      "Tram",
+      "Car"
+    ],
+    "schools": 6,
+    "hospitals": 1,
+    "shopping_centers": 2,
+    "parks": 2,
+    "description": "Dubai Internet City is a vibrant community in Dubai offering excellent amenities and connectivity."
+  },
+  {
+    "name": "Dubai Knowledge Park",
+    "average_price_per_sqft": 1981,
+    "popular_property_types": [
+      "Garden Apartment",
+      "Loft",
+      "Triplex"
+    ],
+    "top_developers": [
+      "Select Group",
+      "Omniyat",
+      "Knight Frank",
+      "Dubai Properties",
+      "Nakheel"
+    ],
+    "amenities": [
+      "Security",
+      "BBQ Area",
+      "Study Room",
+      "Garden",
+      "Balcony",
+      "Concierge",
+      "Swimming Pool",
+      "Spa"
+    ],
+    "transportation": [
+      "Tram",
+      "Taxi",
+      "Car"
+    ],
+    "schools": 12,
+    "hospitals": 3,
+    "shopping_centers": 7,
+    "parks": 2,
+    "description": "Dubai Knowledge Park is a vibrant community in Dubai offering excellent amenities and connectivity."
+  },
+  {
+    "name": "Dubai Healthcare City",
+    "average_price_per_sqft": 1657,
+    "popular_property_types": [
+      "Loft",
+      "Triplex",
+      "Townhouse"
+    ],
+    "top_developers": [
+      "Al Habtoor Group",
+      "Ellington Properties",
+      "Chestertons",
+      "Emaar Properties",
+      "Azizi Developments"
+    ],
+    "amenities": [
+      "Balcony",
+      "Basketball Court",
+      "Pet Friendly",
+      "Central AC",
+      "Parking",
+      "24/7 Maintenance",
+      "Spa",
+      "Modern Kitchen"
+    ],
+    "transportation": [
+      "Metro",
+      "Tram",
+      "Taxi"
+    ],
+    "schools": 3,
+    "hospitals": 4,
+    "shopping_centers": 4,
+    "parks": 5,
+    "description": "Dubai Healthcare City is a vibrant community in Dubai offering excellent amenities and connectivity."
+  },
+  {
+    "name": "Dubai International Financial Centre",
+    "average_price_per_sqft": 2078,
+    "popular_property_types": [
+      "Villa",
+      "Apartment",
+      "Duplex"
+    ],
+    "top_developers": [
+      "Azizi Developments",
+      "Al Habtoor Group",
+      "Damac Properties",
+      "Better Homes",
+      "Bloom Properties"
+    ],
+    "amenities": [
+      "Maid's Room",
+      "Furnished",
+      "Balcony",
+      "BBQ Area",
+      "Concierge",
+      "Security",
+      "Tennis Court",
+      "Built-in Wardrobes"
+    ],
+    "transportation": [
+      "Metro",
+      "Tram",
+      "Taxi"
+    ],
+    "schools": 13,
+    "hospitals": 4,
+    "shopping_centers": 7,
+    "parks": 5,
+    "description": "Dubai International Financial Centre is a vibrant community in Dubai offering excellent amenities and connectivity."
+  }
+]

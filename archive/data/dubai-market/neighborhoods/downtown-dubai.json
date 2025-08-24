@@ -1,0 +1,137 @@
+{
+  "name": "Downtown Dubai",
+  "description": "The heart of Dubai, featuring the iconic Burj Khalifa and Dubai Mall",
+  "lifestyle": {
+    "type": "Luxury Urban",
+    "atmosphere": "High-end, cosmopolitan, vibrant",
+    "best_for": ["Luxury living", "Shopping", "Entertainment", "Tourism", "Business"],
+    "lifestyle_features": [
+      "World-class shopping at Dubai Mall",
+      "Fine dining restaurants",
+      "Luxury hotels and residences",
+      "Cultural attractions",
+      "Business district access"
+    ]
+  },
+  "amenities": {
+    "shopping": [
+      "The Dubai Mall (world's largest mall)",
+      "Souk Al Bahar",
+      "Boulevard at Downtown Dubai"
+    ],
+    "dining": [
+      "Over 200 restaurants",
+      "Michelin-starred establishments",
+      "International cuisine",
+      "Rooftop dining options"
+    ],
+    "entertainment": [
+      "Dubai Fountain",
+      "Burj Khalifa observation deck",
+      "Dubai Opera",
+      "VR Park",
+      "KidZania"
+    ],
+    "transportation": [
+      "Dubai Metro Red Line",
+      "Extensive bus network",
+      "Taxi services",
+      "Valet parking"
+    ],
+    "healthcare": [
+      "Downtown Medical Centre",
+      "Specialized clinics",
+      "24/7 emergency services"
+    ]
+  },
+  "price_ranges": {
+    "apartments": {
+      "studio": "80,000 - 120,000 AED/year",
+      "1_bedroom": "120,000 - 180,000 AED/year",
+      "2_bedroom": "180,000 - 280,000 AED/year",
+      "3_bedroom": "280,000 - 450,000 AED/year",
+      "penthouse": "500,000+ AED/year"
+    },
+    "purchase": {
+      "studio": "800,000 - 1,200,000 AED",
+      "1_bedroom": "1,200,000 - 1,800,000 AED",
+      "2_bedroom": "1,800,000 - 2,800,000 AED",
+      "3_bedroom": "2,800,000 - 4,500,000 AED",
+      "penthouse": "5,000,000+ AED"
+    }
+  },
+  "rental_yields": {
+    "average_yield": "5.5% - 7%",
+    "high_yield_areas": "6.5% - 8%",
+    "investment_potential": "Excellent"
+  },
+  "service_charges": {
+    "average_per_sqft": "12 - 18 AED",
+    "includes": [
+      "Building maintenance",
+      "Security",
+      "Cleaning services",
+      "Facilities access",
+      "Insurance"
+    ],
+    "additional_costs": [
+      "DEWA (utilities): 200-500 AED/month",
+      "Internet: 300-500 AED/month",
+      "Parking: 200-400 AED/month"
+    ]
+  },
+  "market_trends": {
+    "current_trend": "Stable with slight appreciation",
+    "price_movement": "+2-4% annually",
+    "demand": "High demand from expats and investors",
+    "supply": "Limited new supply, premium location"
+  },
+  "investment_advice": {
+    "pros": [
+      "Prime location with high demand",
+      "Strong rental yields",
+      "Capital appreciation potential",
+      "Luxury market segment",
+      "Tourist attraction proximity"
+    ],
+    "cons": [
+      "High initial investment",
+      "Premium service charges",
+      "Tourist area traffic",
+      "Limited family amenities"
+    ],
+    "recommendations": [
+      "Ideal for luxury investors",
+      "Good for short-term rentals",
+      "Suitable for high-net-worth individuals",
+      "Consider off-plan opportunities"
+    ]
+  },
+  "schools": [
+    "Downtown Dubai International School",
+    "Dubai International Academy",
+    "GEMS World Academy",
+    "American School of Dubai (20 min drive)"
+  ],
+  "proximity": {
+    "airport": "25 minutes",
+    "business_bay": "5 minutes",
+    "dubai_marina": "15 minutes",
+    "palm_jumeirah": "20 minutes",
+    "dubai_creek": "15 minutes"
+  },
+  "special_features": {
+    "landmarks": [
+      "Burj Khalifa (world's tallest building)",
+      "Dubai Fountain",
+      "Dubai Mall",
+      "Dubai Opera"
+    ],
+    "events": [
+      "New Year's Eve celebrations",
+      "Dubai Shopping Festival",
+      "Dubai Food Festival",
+      "Cultural performances"
+    ]
+  }
+}

@@ -1,0 +1,2770 @@
+property_id,amenity_name,amenity_type,included_in_rent,additional_cost
+1,Maid's Room,Premium,False,0
+1,Furnished,Luxury,True,1963
+1,Balcony,Luxury,False,0
+2,Gym,Basic,False,0
+2,Terrace,Luxury,False,0
+2,Spa,Premium,False,0
+2,Modern Kitchen,Luxury,True,0
+3,Driver's Room,Luxury,False,0
+3,Maid's Room,Luxury,True,2475
+3,Pet Friendly,Premium,False,3939
+3,Gym,Basic,False,211
+3,Terrace,Luxury,True,1434
+3,Swimming Pool,Luxury,False,1412
+3,24/7 Maintenance,Premium,False,0
+4,Children's Playground,Luxury,False,0
+4,Gym,Premium,True,4456
+4,Tennis Court,Basic,False,2611
+5,Parking,Basic,False,3824
+5,Tennis Court,Basic,True,3
+5,24/7 Maintenance,Premium,True,4468
+6,Parking,Luxury,False,0
+6,Basketball Court,Luxury,False,389
+6,Swimming Pool,Premium,True,0
+6,Pet Friendly,Basic,False,0
+6,Security,Premium,True,2912
+6,Tennis Court,Premium,True,99
+6,Terrace,Premium,False,0
+7,24/7 Maintenance,Premium,False,3840
+7,Maid's Room,Basic,True,0
+7,Furnished,Basic,False,3554
+7,Security,Premium,False,2461
+7,Tennis Court,Premium,False,903
+7,Swimming Pool,Premium,False,0
+7,Gym,Premium,False,0
+8,Pet Friendly,Premium,False,3477
+8,Children's Playground,Luxury,True,1698
+8,Gym,Basic,True,952
+8,Tennis Court,Premium,False,2275
+8,Central AC,Luxury,True,0
+9,Furnished,Luxury,True,0
+9,Built-in Wardrobes,Luxury,True,0
+9,Balcony,Luxury,True,0
+9,Tennis Court,Luxury,False,4575
+10,Pet Friendly,Basic,False,3570
+10,Spa,Basic,True,0
+10,Built-in Wardrobes,Basic,False,0
+10,Balcony,Basic,True,0
+11,Walk-in Closet,Basic,False,0
+11,Study Room,Premium,False,3539
+11,Terrace,Basic,True,548
+11,Basketball Court,Luxury,False,0
+11,Swimming Pool,Luxury,True,299
+11,Gym,Basic,True,2856
+11,Parking,Basic,False,0
+11,Furnished,Premium,True,0
+12,Modern Kitchen,Premium,True,0
+12,24/7 Maintenance,Basic,False,3174
+12,Gym,Premium,False,0
+12,BBQ Area,Basic,True,0
+12,Parking,Luxury,False,2288
+12,Study Room,Premium,False,1071
+12,Maid's Room,Luxury,True,0
+12,Swimming Pool,Premium,False,0
+13,Tennis Court,Basic,True,2962
+13,Driver's Room,Basic,True,473
+13,BBQ Area,Premium,False,974
+14,Study Room,Basic,False,0
+14,Children's Playground,Luxury,False,0
+14,Swimming Pool,Basic,True,3262
+14,24/7 Maintenance,Premium,False,4376
+14,Central AC,Premium,False,0
+14,Walk-in Closet,Basic,False,4810
+15,Balcony,Luxury,True,0
+15,Children's Playground,Luxury,False,3229
+15,Basketball Court,Luxury,False,0
+15,Study Room,Basic,False,1005
+15,Parking,Basic,True,4915
+15,Garden,Premium,False,606
+15,Built-in Wardrobes,Premium,True,372
+16,Tennis Court,Premium,False,0
+16,Garden,Luxury,True,4553
+16,Balcony,Luxury,False,0
+16,Study Room,Premium,False,285
+16,Gym,Luxury,False,709
+17,24/7 Maintenance,Premium,False,0
+17,Modern Kitchen,Premium,False,0
+17,Built-in Wardrobes,Luxury,False,0
+17,Gym,Basic,True,0
+17,BBQ Area,Luxury,False,4627
+17,Central AC,Premium,False,0
+18,Concierge,Luxury,False,0
+18,Balcony,Basic,False,57
+18,Children's Playground,Basic,False,0
+18,Central AC,Luxury,True,0
+18,Parking,Luxury,False,2400
+18,Furnished,Basic,False,303
+18,Driver's Room,Basic,False,0
+18,Study Room,Premium,True,0
+19,Modern Kitchen,Premium,False,2563
+19,Garden,Basic,True,0
+19,Spa,Basic,True,89
+19,Maid's Room,Basic,False,2002
+19,Central AC,Basic,False,0
+20,Study Room,Premium,False,0
+20,Walk-in Closet,Luxury,True,0
+20,Swimming Pool,Premium,True,0
+20,Garden,Luxury,False,781
+20,Central AC,Luxury,False,69
+20,Pet Friendly,Premium,True,206
+20,Driver's Room,Luxury,True,3731
+21,Basketball Court,Premium,False,0
+21,Study Room,Premium,True,0
+21,Parking,Premium,True,3731
+21,Central AC,Premium,True,1676
+22,Security,Luxury,True,317
+22,Central AC,Premium,True,4709
+22,Children's Playground,Basic,False,0
+22,Balcony,Luxury,True,4230
+23,Study Room,Basic,False,0
+23,Concierge,Premium,False,2524
+23,BBQ Area,Basic,False,2696
+23,Central AC,Premium,False,4263
+23,Balcony,Luxury,True,3665
+23,Children's Playground,Premium,True,832
+23,Tennis Court,Basic,False,0
+23,Gym,Basic,True,0
+24,Central AC,Basic,False,3808
+24,Pet Friendly,Premium,True,4272
+24,Swimming Pool,Basic,True,0
+24,Balcony,Luxury,False,18
+25,Children's Playground,Basic,False,2800
+25,Central AC,Luxury,False,909
+25,Built-in Wardrobes,Premium,False,3074
+25,Garden,Basic,True,0
+25,Spa,Premium,True,0
+25,Study Room,Premium,False,0
+25,Swimming Pool,Luxury,False,937
+25,Modern Kitchen,Luxury,False,3058
+26,Maid's Room,Luxury,True,898
+26,Gym,Basic,True,180
+26,Security,Luxury,False,2135
+26,Swimming Pool,Basic,True,1689
+26,Pet Friendly,Basic,True,1636
+26,Balcony,Basic,False,0
+27,Security,Basic,True,2966
+27,Study Room,Premium,True,1823
+27,Children's Playground,Premium,False,1135
+27,Concierge,Premium,False,0
+27,BBQ Area,Basic,True,0
+27,Garden,Luxury,True,3060
+27,24/7 Maintenance,Premium,False,3196
+27,Central AC,Basic,False,0
+28,Terrace,Premium,True,4627
+28,Study Room,Luxury,False,0
+28,Swimming Pool,Basic,True,0
+28,Central AC,Basic,False,0
+28,Security,Premium,False,0
+29,Parking,Basic,False,0
+29,Maid's Room,Basic,True,0
+29,Gym,Luxury,False,886
+29,Furnished,Basic,False,3680
+29,BBQ Area,Luxury,False,0
+29,Pet Friendly,Premium,False,0
+29,Driver's Room,Premium,True,1411
+30,Concierge,Basic,False,0
+30,Driver's Room,Basic,False,725
+30,Central AC,Luxury,False,1138
+30,Spa,Basic,True,4897
+31,Built-in Wardrobes,Premium,False,1199
+31,Furnished,Luxury,True,1429
+31,Central AC,Premium,False,1774
+31,Swimming Pool,Luxury,True,1031
+31,Modern Kitchen,Luxury,True,0
+32,Basketball Court,Basic,True,4917
+32,Study Room,Premium,True,0
+32,Gym,Premium,False,0
+32,Furnished,Basic,True,3552
+33,Spa,Basic,True,1616
+33,Furnished,Luxury,True,1866
+33,Balcony,Premium,False,0
+33,Built-in Wardrobes,Luxury,True,1964
+33,BBQ Area,Premium,False,0
+33,Modern Kitchen,Luxury,True,4530
+33,Gym,Luxury,False,3880
+34,Balcony,Basic,False,1730
+34,Children's Playground,Premium,False,0
+34,Furnished,Premium,False,907
+34,Security,Luxury,True,3584
+34,Basketball Court,Luxury,True,475
+34,Spa,Luxury,True,0
+35,Children's Playground,Premium,True,0
+35,Built-in Wardrobes,Premium,True,0
+35,Pet Friendly,Basic,False,0
+36,Walk-in Closet,Premium,False,4526
+36,Gym,Premium,False,0
+36,Tennis Court,Basic,False,0
+36,Parking,Premium,False,1921
+36,Driver's Room,Basic,True,4706
+36,Basketball Court,Basic,True,0
+37,BBQ Area,Luxury,True,0
+37,Security,Luxury,True,0
+37,Maid's Room,Premium,True,0
+37,Tennis Court,Luxury,False,0
+37,Built-in Wardrobes,Premium,True,0
+37,Study Room,Basic,True,1296
+37,Pet Friendly,Premium,True,157
+37,Children's Playground,Premium,True,2183
+38,Study Room,Premium,True,4762
+38,Furnished,Luxury,False,1331
+38,Security,Luxury,False,3301
+38,Parking,Premium,True,2224
+39,Tennis Court,Basic,False,2104
+39,Central AC,Basic,True,0
+39,Concierge,Premium,True,0
+39,Parking,Premium,True,3336
+39,BBQ Area,Basic,True,440
+39,Study Room,Premium,False,0
+39,Terrace,Premium,False,0
+40,Modern Kitchen,Premium,False,0
+40,Garden,Luxury,False,0
+40,BBQ Area,Basic,True,392
+40,Central AC,Luxury,True,4437
+41,Security,Premium,False,1962
+41,Swimming Pool,Luxury,True,0
+41,Children's Playground,Premium,False,3941
+41,Basketball Court,Basic,False,569
+42,Security,Basic,False,1875
+42,Tennis Court,Luxury,False,0
+42,Study Room,Premium,False,1566
+42,Furnished,Basic,False,2025
+42,Pet Friendly,Basic,True,1226
+42,Basketball Court,Basic,True,0
+43,Terrace,Basic,True,3063
+43,Study Room,Luxury,False,1478
+43,Maid's Room,Luxury,False,0
+43,Gym,Basic,False,0
+43,Built-in Wardrobes,Premium,True,1165
+44,Balcony,Basic,False,0
+44,Concierge,Basic,False,948
+44,Modern Kitchen,Luxury,True,0
+44,Walk-in Closet,Luxury,False,4860
+44,Maid's Room,Premium,True,0
+45,Balcony,Premium,True,0
+45,Study Room,Premium,False,0
+45,Terrace,Premium,True,0
+45,BBQ Area,Premium,True,1
+45,Walk-in Closet,Luxury,False,123
+45,Central AC,Basic,False,0
+46,Basketball Court,Premium,True,0
+46,Concierge,Premium,True,2814
+46,Driver's Room,Basic,True,0
+46,Tennis Court,Luxury,False,0
+46,Modern Kitchen,Basic,False,0
+46,Swimming Pool,Luxury,True,0
+47,Swimming Pool,Premium,True,0
+47,Maid's Room,Premium,False,679
+47,Furnished,Basic,False,0
+47,Garden,Basic,False,0
+47,Modern Kitchen,Luxury,True,2588
+47,Walk-in Closet,Luxury,True,0
+48,Basketball Court,Premium,False,4560
+48,Balcony,Luxury,True,0
+48,Children's Playground,Basic,True,1390
+48,Maid's Room,Premium,True,0
+48,Gym,Luxury,False,2723
+48,Garden,Basic,True,4379
+49,Gym,Basic,True,0
+49,Basketball Court,Basic,False,0
+49,Garden,Premium,False,0
+49,Furnished,Premium,True,0
+49,Modern Kitchen,Basic,False,1707
+49,Balcony,Basic,False,727
+50,Tennis Court,Basic,True,146
+50,Pet Friendly,Premium,False,0
+50,Garden,Premium,True,0
+50,Maid's Room,Basic,True,0
+51,Security,Basic,True,0
+51,Terrace,Luxury,False,0
+51,BBQ Area,Luxury,True,3611
+51,Maid's Room,Premium,True,0
+51,Study Room,Basic,False,0
+51,Modern Kitchen,Premium,True,0
+51,Central AC,Basic,True,0
+52,Terrace,Premium,False,0
+52,BBQ Area,Premium,False,397
+52,Modern Kitchen,Premium,False,0
+52,Built-in Wardrobes,Basic,True,0
+52,Central AC,Basic,True,2112
+52,Gym,Luxury,False,58
+52,Children's Playground,Premium,True,0
+52,Parking,Basic,False,2325
+53,Walk-in Closet,Premium,True,1887
+53,Study Room,Basic,False,0
+53,Modern Kitchen,Premium,True,0
+53,Driver's Room,Basic,True,0
+53,Pet Friendly,Basic,True,0
+53,Security,Basic,True,0
+53,Concierge,Luxury,True,2103
+53,Swimming Pool,Premium,False,4145
+54,Garden,Luxury,False,1011
+54,Modern Kitchen,Luxury,False,2
+54,Pet Friendly,Basic,False,0
+54,Basketball Court,Luxury,False,3923
+55,Furnished,Premium,False,0
+55,Spa,Premium,False,1915
+55,Swimming Pool,Luxury,False,0
+55,Built-in Wardrobes,Premium,True,4677
+55,Basketball Court,Basic,False,3836
+56,24/7 Maintenance,Basic,True,0
+56,Garden,Basic,False,4674
+56,Driver's Room,Premium,True,0
+56,Spa,Premium,True,4660
+56,Tennis Court,Luxury,True,0
+57,Central AC,Basic,True,3501
+57,Garden,Luxury,True,2752
+57,Gym,Premium,True,651
+57,24/7 Maintenance,Luxury,True,3390
+57,Security,Basic,True,0
+57,Study Room,Luxury,True,4241
+58,Garden,Luxury,True,0
+58,Furnished,Premium,True,0
+58,Balcony,Basic,True,1829
+58,Built-in Wardrobes,Premium,False,4074
+58,Modern Kitchen,Premium,True,1146
+58,BBQ Area,Basic,True,0
+59,Spa,Luxury,True,0
+59,Parking,Premium,True,206
+59,Tennis Court,Basic,False,0
+59,Gym,Luxury,True,1148
+59,Walk-in Closet,Basic,True,0
+59,Maid's Room,Basic,True,4985
+60,Central AC,Luxury,True,0
+60,Children's Playground,Basic,False,2494
+60,Spa,Basic,True,374
+60,Garden,Luxury,False,1087
+60,Gym,Basic,True,4331
+60,Study Room,Luxury,False,1325
+60,Walk-in Closet,Luxury,True,0
+60,Security,Premium,True,1519
+61,24/7 Maintenance,Basic,True,0
+61,Modern Kitchen,Basic,False,1833
+61,Concierge,Premium,False,3558
+61,Walk-in Closet,Luxury,False,3768
+61,Swimming Pool,Basic,False,0
+61,Security,Basic,True,1199
+61,Terrace,Basic,True,1635
+62,Driver's Room,Luxury,True,1597
+62,BBQ Area,Premium,False,3297
+62,Gym,Basic,False,464
+62,Balcony,Basic,True,4797
+62,Swimming Pool,Basic,False,248
+62,Built-in Wardrobes,Luxury,False,0
+63,Central AC,Luxury,True,0
+63,Furnished,Premium,False,1264
+63,Pet Friendly,Premium,True,0
+63,Tennis Court,Luxury,False,3737
+63,Spa,Premium,True,3921
+63,Parking,Luxury,False,0
+64,Terrace,Basic,False,3216
+64,24/7 Maintenance,Premium,True,0
+64,Spa,Luxury,False,0
+65,Garden,Premium,False,644
+65,Modern Kitchen,Premium,True,0
+65,Driver's Room,Basic,True,4423
+65,Parking,Luxury,False,2334
+65,Spa,Luxury,False,686
+65,Children's Playground,Basic,False,44
+65,Terrace,Luxury,True,3737
+65,Walk-in Closet,Basic,False,0
+66,24/7 Maintenance,Premium,False,2642
+66,Children's Playground,Basic,False,4327
+66,Garden,Premium,True,1362
+66,Pet Friendly,Premium,True,2785
+66,Parking,Luxury,True,0
+66,Spa,Luxury,False,1136
+66,Tennis Court,Premium,True,0
+67,BBQ Area,Premium,False,0
+67,Children's Playground,Luxury,True,1812
+67,Gym,Premium,False,0
+67,Basketball Court,Luxury,True,0
+67,Security,Luxury,True,2297
+68,Pet Friendly,Basic,False,1555
+68,Modern Kitchen,Basic,False,4126
+68,Built-in Wardrobes,Luxury,False,2857
+68,Gym,Luxury,False,553
+69,Tennis Court,Premium,True,0
+69,Maid's Room,Premium,True,2711
+69,Driver's Room,Luxury,False,0
+69,Swimming Pool,Luxury,False,0
+69,Furnished,Basic,True,4512
+69,Walk-in Closet,Luxury,True,4849
+69,Concierge,Basic,True,1831
+70,Garden,Premium,False,2980
+70,Furnished,Luxury,True,0
+70,Modern Kitchen,Basic,False,0
+70,Driver's Room,Premium,False,4359
+70,Built-in Wardrobes,Basic,False,2940
+70,Maid's Room,Luxury,True,3150
+70,Pet Friendly,Luxury,True,0
+70,Gym,Basic,True,747
+71,Walk-in Closet,Premium,False,199
+71,BBQ Area,Basic,False,3150
+71,Garden,Luxury,False,3881
+71,Modern Kitchen,Luxury,True,2985
+72,Garden,Luxury,False,676
+72,Driver's Room,Basic,False,0
+72,Children's Playground,Basic,True,0
+72,Terrace,Basic,True,2954
+72,Modern Kitchen,Basic,False,0
+73,BBQ Area,Basic,False,0
+73,Gym,Basic,True,0
+73,Study Room,Luxury,False,3166
+73,Driver's Room,Basic,True,0
+73,Basketball Court,Luxury,True,2326
+73,Walk-in Closet,Basic,True,787
+74,24/7 Maintenance,Basic,True,0
+74,Central AC,Premium,True,3052
+74,Security,Luxury,False,746
+74,Built-in Wardrobes,Basic,True,0
+74,Garden,Premium,False,1765
+74,Swimming Pool,Basic,True,0
+74,Spa,Premium,True,0
+74,Maid's Room,Basic,True,0
+75,Furnished,Basic,True,1241
+75,Built-in Wardrobes,Luxury,False,996
+75,Tennis Court,Premium,False,3353
+75,Concierge,Premium,False,2829
+75,Parking,Premium,False,0
+75,24/7 Maintenance,Premium,True,3321
+75,Spa,Luxury,False,1691
+76,Garden,Luxury,True,4918
+76,Study Room,Luxury,False,742
+76,Gym,Luxury,False,923
+76,Concierge,Premium,False,4325
+76,Central AC,Basic,False,4055
+76,Maid's Room,Luxury,False,0
+76,Pet Friendly,Premium,True,0
+76,Furnished,Basic,True,0
+77,Swimming Pool,Basic,False,0
+77,Spa,Basic,False,0
+77,Garden,Basic,False,0
+77,Modern Kitchen,Premium,True,0
+77,Built-in Wardrobes,Premium,True,0
+77,Tennis Court,Premium,True,0
+77,Terrace,Premium,False,3250
+77,Children's Playground,Luxury,True,0
+78,Walk-in Closet,Premium,False,0
+78,Garden,Luxury,False,0
+78,Built-in Wardrobes,Basic,True,0
+78,Terrace,Basic,False,4985
+78,Gym,Basic,True,0
+79,Terrace,Premium,True,0
+79,BBQ Area,Luxury,False,3744
+79,Maid's Room,Premium,True,987
+79,Built-in Wardrobes,Basic,False,1390
+79,Security,Premium,False,1883
+79,Gym,Luxury,True,71
+79,Central AC,Premium,True,2795
+80,Gym,Luxury,True,3907
+80,Walk-in Closet,Premium,True,1366
+80,BBQ Area,Premium,False,4465
+81,Garden,Premium,False,0
+81,Built-in Wardrobes,Luxury,True,0
+81,Parking,Premium,False,4217
+81,Security,Premium,True,2233
+81,Terrace,Basic,False,0
+81,Balcony,Basic,True,0
+81,24/7 Maintenance,Basic,False,4529
+82,Children's Playground,Basic,False,4992
+82,Garden,Luxury,True,4757
+82,Tennis Court,Luxury,True,0
+83,Parking,Basic,True,801
+83,24/7 Maintenance,Premium,True,3271
+83,Swimming Pool,Premium,False,1862
+83,Study Room,Premium,False,0
+83,Concierge,Luxury,True,2195
+84,Terrace,Premium,True,811
+84,Modern Kitchen,Premium,False,3457
+84,Basketball Court,Premium,True,0
+84,Pet Friendly,Luxury,True,0
+84,Furnished,Premium,True,2058
+84,Children's Playground,Basic,True,60
+84,BBQ Area,Basic,True,0
+84,Security,Luxury,True,0
+85,Basketball Court,Premium,False,0
+85,Maid's Room,Premium,False,1938
+85,Swimming Pool,Basic,False,1019
+85,Security,Luxury,False,1013
+86,Children's Playground,Premium,True,0
+86,Terrace,Premium,True,2993
+86,Built-in Wardrobes,Basic,True,4806
+86,Modern Kitchen,Luxury,True,0
+86,24/7 Maintenance,Premium,True,0
+86,Central AC,Luxury,True,0
+86,Furnished,Basic,False,0
+86,Gym,Basic,True,3342
+87,24/7 Maintenance,Premium,False,2688
+87,Children's Playground,Premium,True,0
+87,Furnished,Luxury,False,174
+88,Basketball Court,Basic,False,0
+88,BBQ Area,Premium,True,2935
+88,Pet Friendly,Luxury,True,0
+88,24/7 Maintenance,Luxury,False,463
+88,Terrace,Basic,True,3692
+88,Swimming Pool,Premium,True,0
+89,BBQ Area,Luxury,True,0
+89,Swimming Pool,Luxury,True,0
+89,Study Room,Luxury,True,0
+89,Terrace,Luxury,False,3544
+89,Modern Kitchen,Premium,False,4432
+89,24/7 Maintenance,Luxury,True,1424
+90,Swimming Pool,Basic,True,3483
+90,Security,Basic,False,0
+90,Furnished,Basic,True,4778
+90,Tennis Court,Basic,True,1953
+90,BBQ Area,Basic,False,0
+91,Study Room,Basic,False,0
+91,Central AC,Luxury,True,4168
+91,Maid's Room,Luxury,True,0
+91,Swimming Pool,Premium,False,0
+91,Security,Luxury,False,4686
+92,Maid's Room,Basic,False,0
+92,Furnished,Premium,False,1153
+92,Walk-in Closet,Basic,True,0
+92,Security,Premium,False,797
+92,Gym,Basic,True,0
+93,Tennis Court,Basic,True,491
+93,Gym,Basic,False,164
+93,Walk-in Closet,Luxury,False,0
+93,Basketball Court,Luxury,False,0
+93,Central AC,Premium,False,95
+93,24/7 Maintenance,Premium,False,0
+93,Terrace,Premium,True,1740
+94,Driver's Room,Luxury,True,2466
+94,Built-in Wardrobes,Premium,True,0
+94,Concierge,Basic,True,0
+95,Gym,Basic,False,0
+95,Central AC,Premium,False,0
+95,Walk-in Closet,Luxury,False,2133
+96,Garden,Luxury,False,17
+96,Tennis Court,Luxury,False,0
+96,Built-in Wardrobes,Basic,False,3132
+96,Pet Friendly,Premium,True,0
+97,Walk-in Closet,Luxury,True,0
+97,Children's Playground,Luxury,False,0
+97,Basketball Court,Luxury,True,0
+97,24/7 Maintenance,Luxury,True,4732
+98,Gym,Basic,False,1279
+98,Furnished,Premium,False,1050
+98,Concierge,Luxury,True,222
+98,Children's Playground,Premium,False,3980
+98,Security,Luxury,False,0
+98,Garden,Luxury,True,1422
+99,Tennis Court,Luxury,False,1667
+99,Driver's Room,Basic,False,0
+99,Modern Kitchen,Basic,True,3542
+100,Terrace,Premium,False,4473
+100,Balcony,Premium,False,4007
+100,Furnished,Luxury,True,0
+100,Study Room,Luxury,True,3887
+100,BBQ Area,Premium,False,2421
+100,24/7 Maintenance,Basic,True,0
+100,Walk-in Closet,Luxury,False,2555
+101,Basketball Court,Basic,False,0
+101,Gym,Basic,False,0
+101,BBQ Area,Basic,True,0
+101,Concierge,Basic,True,96
+101,Tennis Court,Premium,True,0
+101,24/7 Maintenance,Premium,True,316
+102,Walk-in Closet,Luxury,False,0
+102,Furnished,Luxury,True,0
+102,Balcony,Basic,True,2856
+102,Garden,Luxury,False,0
+103,Tennis Court,Luxury,True,4713
+103,Security,Premium,True,1508
+103,24/7 Maintenance,Basic,True,4698
+103,Gym,Basic,True,0
+103,Central AC,Basic,True,0
+103,Swimming Pool,Basic,False,4187
+104,Balcony,Basic,False,613
+104,Garden,Luxury,False,4052
+104,Driver's Room,Premium,True,0
+104,Gym,Premium,True,2511
+104,Parking,Luxury,True,4725
+105,Children's Playground,Basic,True,2582
+105,Security,Basic,True,1674
+105,Walk-in Closet,Premium,False,2124
+105,Tennis Court,Premium,True,3720
+105,Terrace,Luxury,True,0
+106,Gym,Luxury,True,1237
+106,Modern Kitchen,Basic,False,0
+106,Maid's Room,Luxury,False,0
+107,Pet Friendly,Luxury,False,0
+107,Furnished,Premium,True,0
+107,Maid's Room,Luxury,False,0
+107,Spa,Premium,True,4662
+107,Parking,Basic,False,2603
+107,Tennis Court,Luxury,False,0
+107,Central AC,Basic,False,0
+108,Driver's Room,Premium,True,0
+108,Tennis Court,Premium,True,0
+108,Pet Friendly,Luxury,False,1433
+108,Concierge,Luxury,True,2316
+109,Terrace,Luxury,False,0
+109,Central AC,Luxury,True,3677
+109,Swimming Pool,Premium,True,0
+109,Parking,Luxury,True,0
+109,Pet Friendly,Basic,False,0
+109,Children's Playground,Luxury,False,0
+109,Garden,Luxury,False,0
+109,Tennis Court,Luxury,False,3933
+110,Pet Friendly,Luxury,False,0
+110,Modern Kitchen,Basic,False,0
+110,Central AC,Premium,False,881
+110,Children's Playground,Premium,False,91
+110,Driver's Room,Premium,True,0
+111,Gym,Luxury,True,0
+111,Maid's Room,Basic,False,0
+111,Security,Premium,True,0
+112,Terrace,Premium,False,0
+112,Children's Playground,Premium,False,0
+112,Central AC,Luxury,False,0
+112,Study Room,Premium,True,4277
+112,Garden,Basic,False,0
+112,Basketball Court,Luxury,True,700
+112,BBQ Area,Basic,False,4131
+113,Central AC,Basic,False,0
+113,24/7 Maintenance,Basic,True,381
+113,Gym,Premium,True,0
+113,Maid's Room,Luxury,False,3083
+114,Terrace,Luxury,False,383
+114,Children's Playground,Basic,False,0
+114,Built-in Wardrobes,Luxury,True,1078
+114,Modern Kitchen,Luxury,False,990
+115,Driver's Room,Premium,True,0
+115,Tennis Court,Basic,False,0
+115,BBQ Area,Premium,True,0
+115,Maid's Room,Luxury,True,2268
+116,Security,Premium,False,0
+116,Central AC,Basic,False,0
+116,24/7 Maintenance,Basic,True,2195
+116,Built-in Wardrobes,Luxury,True,0
+116,Walk-in Closet,Basic,True,1795
+116,Modern Kitchen,Basic,True,2011
+116,Maid's Room,Basic,False,0
+116,Driver's Room,Basic,False,4805
+117,Driver's Room,Luxury,False,0
+117,Furnished,Basic,True,0
+117,Garden,Premium,False,0
+117,Balcony,Premium,True,0
+117,BBQ Area,Basic,False,0
+117,Central AC,Premium,False,0
+118,Balcony,Premium,True,3192
+118,Built-in Wardrobes,Luxury,False,0
+118,Swimming Pool,Premium,False,0
+118,Walk-in Closet,Basic,True,1820
+118,Maid's Room,Premium,False,1964
+118,Security,Basic,False,0
+118,Children's Playground,Premium,True,0
+119,Balcony,Luxury,True,3568
+119,Modern Kitchen,Luxury,True,0
+119,Maid's Room,Basic,False,2848
+119,Pet Friendly,Luxury,False,2025
+119,Furnished,Basic,False,0
+119,Spa,Premium,False,2521
+119,Basketball Court,Luxury,True,1290
+119,Study Room,Premium,True,200
+120,Garden,Basic,False,2220
+120,Gym,Premium,True,3229
+120,Maid's Room,Luxury,False,3761
+121,Concierge,Premium,False,19
+121,Study Room,Premium,False,3192
+121,Spa,Premium,False,0
+122,Modern Kitchen,Basic,True,0
+122,Driver's Room,Premium,False,0
+122,Garden,Premium,True,0
+122,Gym,Luxury,True,0
+122,Balcony,Premium,False,287
+122,Parking,Luxury,True,0
+123,24/7 Maintenance,Premium,False,0
+123,Security,Basic,False,1240
+123,Driver's Room,Basic,False,0
+123,Balcony,Premium,False,4959
+123,Gym,Luxury,False,0
+123,Modern Kitchen,Luxury,False,0
+124,Terrace,Luxury,False,4063
+124,Study Room,Premium,True,4620
+124,Furnished,Basic,False,705
+124,Spa,Premium,True,829
+124,Swimming Pool,Basic,True,0
+124,24/7 Maintenance,Luxury,True,0
+124,BBQ Area,Premium,False,1569
+124,Central AC,Basic,True,4589
+125,Spa,Premium,False,1016
+125,Walk-in Closet,Basic,False,0
+125,Gym,Luxury,True,3650
+125,Balcony,Luxury,False,2857
+126,Driver's Room,Luxury,True,1076
+126,Built-in Wardrobes,Luxury,True,0
+126,Pet Friendly,Luxury,False,4436
+126,Gym,Premium,False,1380
+126,Central AC,Luxury,False,0
+126,Parking,Premium,True,0
+126,Basketball Court,Luxury,False,2777
+126,Security,Premium,True,2150
+127,Study Room,Luxury,False,0
+127,Driver's Room,Basic,False,3281
+127,Maid's Room,Premium,True,692
+127,Built-in Wardrobes,Basic,False,0
+128,Concierge,Premium,True,0
+128,Built-in Wardrobes,Basic,False,3763
+128,Swimming Pool,Basic,False,0
+128,Security,Luxury,False,4791
+128,Modern Kitchen,Premium,False,0
+128,Children's Playground,Luxury,True,0
+128,BBQ Area,Basic,False,0
+129,Balcony,Premium,True,0
+129,Furnished,Premium,False,2363
+129,Spa,Luxury,True,0
+129,24/7 Maintenance,Premium,False,4912
+129,Terrace,Premium,False,2606
+129,Modern Kitchen,Basic,True,491
+130,Central AC,Luxury,True,0
+130,Walk-in Closet,Basic,False,4136
+130,Security,Basic,False,0
+130,Furnished,Premium,True,482
+130,Driver's Room,Premium,True,4285
+130,Spa,Luxury,True,1774
+130,Garden,Basic,True,0
+131,BBQ Area,Premium,False,4405
+131,Terrace,Luxury,False,2839
+131,Walk-in Closet,Basic,False,4992
+131,Maid's Room,Luxury,True,1463
+131,Balcony,Basic,False,0
+131,Gym,Luxury,True,0
+131,Furnished,Basic,False,0
+131,Driver's Room,Basic,False,0
+132,Study Room,Luxury,True,2048
+132,Children's Playground,Premium,False,0
+132,Maid's Room,Premium,False,0
+132,Furnished,Luxury,True,0
+132,24/7 Maintenance,Basic,False,3167
+133,Parking,Basic,True,0
+133,Spa,Luxury,False,0
+133,Concierge,Premium,False,804
+133,Gym,Basic,False,567
+134,Parking,Luxury,True,0
+134,Pet Friendly,Premium,True,3386
+134,Walk-in Closet,Premium,True,3722
+134,Gym,Premium,False,847
+134,Basketball Court,Luxury,True,0
+134,Children's Playground,Basic,True,4738
+134,Spa,Premium,False,3032
+134,24/7 Maintenance,Premium,True,0
+135,Study Room,Basic,True,0
+135,Central AC,Luxury,True,486
+135,Driver's Room,Luxury,True,1152
+135,Children's Playground,Basic,False,3316
+135,BBQ Area,Luxury,False,0
+136,Parking,Basic,False,4745
+136,Children's Playground,Basic,False,2926
+136,Basketball Court,Premium,True,3794
+137,Pet Friendly,Premium,False,0
+137,Furnished,Luxury,False,316
+137,Built-in Wardrobes,Basic,False,1047
+137,24/7 Maintenance,Basic,True,4372
+137,Central AC,Basic,True,4141
+137,Parking,Luxury,False,0
+137,Study Room,Premium,False,1431
+138,Basketball Court,Premium,True,0
+138,Walk-in Closet,Premium,True,0
+138,Study Room,Luxury,True,1867
+138,Concierge,Basic,True,66
+138,Driver's Room,Basic,True,4987
+138,Gym,Basic,True,0
+139,Central AC,Premium,True,4140
+139,Balcony,Luxury,False,2331
+139,24/7 Maintenance,Basic,True,0
+139,Spa,Luxury,False,588
+139,Built-in Wardrobes,Luxury,True,0
+139,Children's Playground,Basic,True,2767
+139,Security,Premium,False,0
+140,Terrace,Basic,False,0
+140,Gym,Premium,True,2916
+140,Modern Kitchen,Luxury,False,0
+140,Parking,Premium,False,3728
+140,Spa,Luxury,True,0
+140,Garden,Basic,True,2071
+140,Children's Playground,Premium,True,4404
+140,Study Room,Basic,False,0
+141,Pet Friendly,Luxury,False,0
+141,Swimming Pool,Luxury,False,0
+141,Terrace,Premium,False,0
+141,Study Room,Basic,False,2208
+141,Furnished,Premium,True,0
+141,BBQ Area,Basic,True,0
+141,Basketball Court,Premium,False,0
+142,Driver's Room,Luxury,False,2116
+142,Security,Premium,False,0
+142,Gym,Premium,True,4833
+142,Balcony,Basic,True,1846
+142,Study Room,Basic,True,0
+143,Study Room,Basic,True,0
+143,Terrace,Premium,False,0
+143,Tennis Court,Luxury,True,0
+143,Modern Kitchen,Basic,False,0
+144,Built-in Wardrobes,Luxury,False,0
+144,Walk-in Closet,Basic,True,4972
+144,Tennis Court,Premium,True,3035
+144,Pet Friendly,Premium,False,0
+144,Spa,Basic,True,1916
+144,Basketball Court,Luxury,True,0
+145,Basketball Court,Basic,True,1122
+145,Gym,Basic,False,0
+145,Swimming Pool,Luxury,True,994
+145,Furnished,Luxury,False,2505
+145,Maid's Room,Basic,False,0
+146,Pet Friendly,Premium,False,0
+146,Furnished,Luxury,True,0
+146,Maid's Room,Premium,True,763
+146,Study Room,Basic,True,3
+146,24/7 Maintenance,Basic,True,0
+146,Walk-in Closet,Luxury,False,0
+146,Central AC,Premium,True,0
+147,Children's Playground,Luxury,False,1926
+147,Spa,Premium,False,0
+147,BBQ Area,Luxury,True,1394
+148,Study Room,Basic,True,0
+148,Security,Luxury,True,942
+148,Concierge,Premium,True,4505
+148,Maid's Room,Luxury,False,4353
+148,BBQ Area,Basic,False,4133
+148,Gym,Basic,True,0
+148,Tennis Court,Premium,True,0
+149,BBQ Area,Basic,False,0
+149,Gym,Premium,True,4796
+149,Driver's Room,Basic,False,0
+149,Basketball Court,Premium,False,0
+149,Garden,Luxury,False,0
+150,Basketball Court,Luxury,False,4576
+150,Study Room,Luxury,True,4518
+150,Driver's Room,Premium,True,438
+150,Central AC,Basic,True,2075
+150,Balcony,Basic,True,0
+150,BBQ Area,Luxury,False,3732
+151,Terrace,Luxury,False,3569
+151,BBQ Area,Premium,True,1807
+151,Spa,Premium,False,0
+151,Security,Premium,True,9
+152,Pet Friendly,Premium,False,0
+152,Children's Playground,Premium,False,1716
+152,Balcony,Basic,False,2196
+152,Basketball Court,Luxury,False,2506
+152,Driver's Room,Premium,False,0
+152,BBQ Area,Basic,True,4032
+152,Gym,Basic,False,0
+153,Basketball Court,Basic,False,0
+153,Security,Premium,False,0
+153,Spa,Premium,True,2695
+153,Pet Friendly,Luxury,True,3355
+153,Terrace,Premium,True,0
+154,Parking,Basic,True,2046
+154,Gym,Premium,True,0
+154,Built-in Wardrobes,Basic,True,3636
+154,Terrace,Premium,False,0
+154,Basketball Court,Premium,False,0
+154,Garden,Premium,False,921
+154,Balcony,Luxury,True,3255
+155,Tennis Court,Luxury,False,0
+155,Terrace,Basic,True,37
+155,Concierge,Premium,True,1583
+155,Garden,Luxury,True,0
+155,Central AC,Premium,True,0
+155,Balcony,Premium,False,896
+155,Children's Playground,Basic,False,0
+155,Parking,Premium,True,198
+156,24/7 Maintenance,Premium,True,0
+156,Garden,Premium,True,0
+156,Balcony,Luxury,True,0
+156,Modern Kitchen,Basic,True,0
+156,Study Room,Premium,False,2070
+156,Pet Friendly,Basic,True,0
+156,Built-in Wardrobes,Luxury,False,327
+156,Maid's Room,Luxury,True,0
+157,Parking,Basic,False,194
+157,Concierge,Basic,True,0
+157,Pet Friendly,Luxury,True,0
+157,Study Room,Luxury,True,0
+158,Central AC,Luxury,True,3798
+158,Concierge,Luxury,False,2892
+158,Modern Kitchen,Premium,False,0
+159,Security,Basic,False,35
+159,Pet Friendly,Premium,True,3223
+159,Built-in Wardrobes,Basic,False,0
+160,Maid's Room,Luxury,False,0
+160,Terrace,Basic,False,776
+160,Tennis Court,Basic,False,1908
+160,Built-in Wardrobes,Basic,False,758
+160,Parking,Basic,True,0
+160,Central AC,Premium,False,0
+160,Spa,Luxury,False,0
+161,Maid's Room,Luxury,True,0
+161,Security,Basic,False,0
+161,Balcony,Basic,False,0
+161,Pet Friendly,Luxury,True,0
+161,Modern Kitchen,Premium,False,1113
+162,Study Room,Premium,False,3602
+162,BBQ Area,Luxury,True,0
+162,Terrace,Luxury,True,852
+163,Balcony,Luxury,False,0
+163,Study Room,Basic,False,2156
+163,Terrace,Basic,False,2148
+163,Furnished,Basic,True,187
+163,Concierge,Premium,False,860
+163,Garden,Premium,True,0
+163,Modern Kitchen,Premium,False,2399
+163,Parking,Luxury,False,0
+164,BBQ Area,Premium,False,3224
+164,Tennis Court,Premium,True,0
+164,Balcony,Premium,True,0
+164,Children's Playground,Basic,True,0
+165,Spa,Premium,False,0
+165,Walk-in Closet,Luxury,False,0
+165,Concierge,Basic,False,3482
+165,Gym,Luxury,False,1453
+165,Maid's Room,Luxury,False,2537
+165,Parking,Luxury,True,4052
+165,Security,Premium,True,0
+166,Central AC,Luxury,True,0
+166,24/7 Maintenance,Basic,False,0
+166,Security,Luxury,False,0
+166,Garden,Premium,True,0
+166,Parking,Premium,True,0
+166,Balcony,Premium,False,2315
+166,Gym,Luxury,True,0
+167,Walk-in Closet,Premium,True,1853
+167,Pet Friendly,Premium,False,2649
+167,Security,Premium,False,0
+167,Modern Kitchen,Luxury,True,0
+167,Parking,Luxury,False,3745
+168,Security,Basic,True,2980
+168,Driver's Room,Basic,True,0
+168,Walk-in Closet,Luxury,False,0
+168,Built-in Wardrobes,Premium,True,0
+168,Spa,Premium,False,4380
+169,Tennis Court,Basic,True,0
+169,Driver's Room,Premium,False,0
+169,Built-in Wardrobes,Premium,False,0
+169,Parking,Luxury,True,4654
+169,Maid's Room,Luxury,True,0
+169,Garden,Premium,True,423
+169,Pet Friendly,Luxury,False,0
+169,Furnished,Luxury,True,0
+170,Parking,Premium,True,0
+170,Furnished,Luxury,True,1049
+170,Study Room,Luxury,False,0
+170,Spa,Luxury,True,3572
+170,Children's Playground,Luxury,False,0
+170,Walk-in Closet,Luxury,True,0
+170,Security,Basic,False,3126
+170,24/7 Maintenance,Premium,False,0
+171,Security,Premium,True,0
+171,Modern Kitchen,Luxury,True,0
+171,Study Room,Basic,False,4915
+171,Swimming Pool,Basic,False,0
+171,Pet Friendly,Premium,True,0
+172,Swimming Pool,Luxury,False,0
+172,Tennis Court,Luxury,False,1642
+172,Maid's Room,Basic,False,0
+172,Central AC,Basic,False,0
+172,Concierge,Luxury,False,944
+173,Walk-in Closet,Luxury,True,0
+173,Swimming Pool,Basic,False,2575
+173,BBQ Area,Basic,False,0
+173,Study Room,Basic,True,0
+173,Children's Playground,Luxury,False,1109
+173,Garden,Luxury,True,1893
+173,Furnished,Basic,False,3701
+174,Spa,Basic,True,738
+174,Pet Friendly,Premium,True,0
+174,Study Room,Premium,False,3055
+174,Children's Playground,Basic,True,0
+174,Tennis Court,Luxury,False,2001
+174,Terrace,Luxury,True,0
+174,Walk-in Closet,Basic,False,3199
+174,Built-in Wardrobes,Luxury,True,0
+175,Balcony,Basic,False,2460
+175,Concierge,Premium,True,0
+175,Built-in Wardrobes,Basic,True,4051
+175,Modern Kitchen,Basic,True,0
+175,Swimming Pool,Luxury,True,0
+175,Pet Friendly,Luxury,False,0
+175,Children's Playground,Basic,True,0
+175,Maid's Room,Luxury,False,4429
+176,Swimming Pool,Basic,True,0
+176,Concierge,Basic,False,0
+176,Study Room,Basic,True,0
+176,Garden,Luxury,True,0
+176,Tennis Court,Premium,True,0
+176,Central AC,Basic,False,0
+176,Furnished,Luxury,False,997
+176,Gym,Premium,True,0
+177,Security,Luxury,False,0
+177,Basketball Court,Luxury,True,0
+177,BBQ Area,Basic,True,0
+177,Driver's Room,Luxury,True,3062
+177,Swimming Pool,Premium,True,0
+177,24/7 Maintenance,Luxury,False,4155
+177,Spa,Luxury,True,953
+177,Parking,Premium,False,0
+178,Spa,Luxury,True,0
+178,Walk-in Closet,Luxury,False,0
+178,Pet Friendly,Basic,True,4149
+179,Driver's Room,Basic,False,2111
+179,Garden,Premium,False,0
+179,Built-in Wardrobes,Basic,False,0
+179,Terrace,Luxury,True,4167
+179,Pet Friendly,Premium,False,0
+180,Built-in Wardrobes,Luxury,False,1046
+180,Maid's Room,Basic,False,4480
+180,Basketball Court,Luxury,False,3909
+180,Security,Basic,True,0
+181,Central AC,Premium,False,0
+181,Concierge,Premium,True,3603
+181,24/7 Maintenance,Basic,True,850
+182,Parking,Luxury,True,3766
+182,Modern Kitchen,Luxury,False,3035
+182,Balcony,Basic,False,0
+182,Children's Playground,Premium,True,0
+182,Built-in Wardrobes,Basic,True,0
+182,Concierge,Basic,True,4685
+183,Built-in Wardrobes,Luxury,False,3973
+183,Security,Luxury,False,124
+183,Modern Kitchen,Premium,True,0
+183,Garden,Basic,True,0
+184,Modern Kitchen,Luxury,True,4306
+184,Pet Friendly,Basic,True,4753
+184,Maid's Room,Luxury,False,3277
+184,BBQ Area,Basic,True,3819
+184,Garden,Basic,True,0
+184,Children's Playground,Luxury,True,1992
+184,Concierge,Premium,True,0
+184,Driver's Room,Basic,False,0
+185,Terrace,Premium,True,0
+185,Children's Playground,Basic,True,0
+185,BBQ Area,Premium,True,0
+185,Study Room,Luxury,True,0
+186,Study Room,Basic,False,0
+186,Maid's Room,Premium,False,0
+186,Furnished,Premium,False,0
+187,24/7 Maintenance,Basic,False,1964
+187,Gym,Basic,False,4777
+187,Pet Friendly,Premium,True,564
+187,Concierge,Premium,True,4340
+187,Modern Kitchen,Luxury,False,4275
+188,Parking,Luxury,True,0
+188,Security,Basic,True,0
+188,BBQ Area,Premium,False,0
+188,24/7 Maintenance,Premium,True,4259
+188,Central AC,Basic,False,0
+188,Maid's Room,Premium,True,3855
+188,Built-in Wardrobes,Basic,False,0
+188,Gym,Premium,False,80
+189,Security,Luxury,True,0
+189,Terrace,Premium,False,4742
+189,Tennis Court,Basic,True,2669
+189,Study Room,Basic,True,830
+189,Pet Friendly,Basic,False,0
+190,Furnished,Luxury,False,3886
+190,Walk-in Closet,Basic,True,0
+190,Parking,Basic,True,0
+190,Driver's Room,Basic,True,2077
+190,Swimming Pool,Luxury,False,0
+191,Spa,Premium,False,3801
+191,Central AC,Basic,False,2179
+191,Balcony,Luxury,True,0
+191,Pet Friendly,Premium,False,0
+191,BBQ Area,Premium,False,0
+191,Concierge,Premium,True,0
+191,Security,Premium,True,2759
+191,24/7 Maintenance,Basic,True,2759
+192,Swimming Pool,Premium,True,2109
+192,Walk-in Closet,Basic,True,2563
+192,Parking,Basic,False,4890
+192,Modern Kitchen,Luxury,True,863
+192,BBQ Area,Premium,True,3433
+192,24/7 Maintenance,Luxury,False,0
+192,Pet Friendly,Premium,False,0
+192,Children's Playground,Basic,False,4971
+193,Concierge,Basic,False,3639
+193,Driver's Room,Luxury,True,1492
+193,Security,Basic,True,0
+193,Tennis Court,Premium,False,774
+193,Children's Playground,Basic,False,209
+193,Gym,Premium,False,0
+193,Modern Kitchen,Luxury,True,0
+193,Terrace,Luxury,False,4774
+194,Modern Kitchen,Luxury,True,0
+194,Gym,Basic,True,3175
+194,Security,Luxury,True,1620
+194,Walk-in Closet,Basic,True,1864
+195,Swimming Pool,Premium,False,0
+195,Children's Playground,Premium,False,0
+195,Modern Kitchen,Premium,True,0
+196,Basketball Court,Basic,False,0
+196,Parking,Luxury,False,0
+196,Central AC,Luxury,False,0
+196,Swimming Pool,Basic,False,0
+196,Children's Playground,Luxury,False,1952
+196,Garden,Premium,False,0
+197,Spa,Basic,False,3118
+197,Walk-in Closet,Premium,False,0
+197,Study Room,Basic,False,0
+197,Balcony,Premium,True,0
+197,Parking,Luxury,True,0
+198,Study Room,Premium,False,4953
+198,Concierge,Luxury,False,0
+198,BBQ Area,Premium,True,0
+198,Maid's Room,Basic,True,0
+198,Basketball Court,Luxury,True,1663
+198,Spa,Basic,True,3578
+198,Modern Kitchen,Premium,False,0
+198,Central AC,Premium,True,0
+199,Central AC,Premium,True,0
+199,Tennis Court,Basic,True,0
+199,Study Room,Luxury,False,0
+199,Swimming Pool,Luxury,True,4971
+200,Terrace,Luxury,True,3193
+200,Driver's Room,Luxury,True,0
+200,Garden,Premium,True,2898
+200,24/7 Maintenance,Premium,False,0
+200,Central AC,Basic,False,0
+200,Parking,Luxury,False,0
+200,Spa,Premium,True,2081
+200,Swimming Pool,Basic,True,0
+201,Built-in Wardrobes,Premium,False,3487
+201,24/7 Maintenance,Luxury,True,0
+201,Basketball Court,Luxury,True,3002
+201,Security,Basic,False,0
+201,Spa,Premium,True,0
+201,Children's Playground,Luxury,True,664
+202,Central AC,Basic,False,0
+202,Terrace,Basic,True,0
+202,Concierge,Premium,False,309
+203,Security,Luxury,True,0
+203,Swimming Pool,Basic,True,0
+203,Built-in Wardrobes,Premium,False,0
+203,Terrace,Basic,True,0
+203,Tennis Court,Basic,True,4967
+203,Parking,Basic,False,3457
+204,Spa,Premium,True,1659
+204,Swimming Pool,Basic,False,4924
+204,Modern Kitchen,Luxury,False,1098
+204,BBQ Area,Luxury,True,0
+204,Driver's Room,Basic,True,0
+205,Gym,Luxury,True,4186
+205,Built-in Wardrobes,Premium,True,4921
+205,Maid's Room,Premium,False,0
+205,Pet Friendly,Luxury,True,4484
+206,Driver's Room,Basic,False,1494
+206,Gym,Basic,False,0
+206,Study Room,Luxury,False,0
+206,Balcony,Luxury,False,3790
+206,Parking,Premium,False,0
+206,Garden,Basic,True,0
+206,Maid's Room,Luxury,False,0
+206,Pet Friendly,Basic,False,1508
+207,Terrace,Premium,False,0
+207,24/7 Maintenance,Luxury,True,1681
+207,Garden,Premium,False,0
+207,Spa,Premium,True,4149
+207,Driver's Room,Premium,True,0
+208,Security,Luxury,False,0
+208,Central AC,Luxury,False,1866
+208,Walk-in Closet,Basic,True,1264
+209,Study Room,Luxury,True,1469
+209,Walk-in Closet,Luxury,False,0
+209,Central AC,Luxury,True,0
+209,24/7 Maintenance,Basic,True,0
+209,Spa,Premium,True,0
+209,Parking,Basic,True,3682
+210,BBQ Area,Luxury,False,0
+210,Built-in Wardrobes,Basic,False,0
+210,Driver's Room,Luxury,False,321
+211,Security,Premium,False,671
+211,Swimming Pool,Basic,True,0
+211,Garden,Luxury,True,0
+211,BBQ Area,Basic,True,0
+211,Maid's Room,Luxury,True,0
+211,Built-in Wardrobes,Premium,False,0
+211,Central AC,Premium,True,0
+212,Built-in Wardrobes,Basic,True,3117
+212,Spa,Luxury,False,2501
+212,Walk-in Closet,Premium,False,0
+212,Central AC,Premium,True,1475
+212,Maid's Room,Premium,False,0
+212,Tennis Court,Premium,False,3251
+212,Study Room,Premium,True,0
+213,Modern Kitchen,Basic,True,0
+213,Terrace,Luxury,True,0
+213,Balcony,Basic,True,0
+213,BBQ Area,Basic,False,3908
+214,Pet Friendly,Premium,False,864
+214,Balcony,Basic,False,0
+214,Maid's Room,Premium,True,0
+214,Parking,Premium,True,0
+214,Spa,Luxury,False,0
+215,Basketball Court,Basic,True,2774
+215,Terrace,Luxury,False,3479
+215,Balcony,Basic,True,0
+215,Parking,Premium,False,1843
+215,Modern Kitchen,Premium,True,2410
+215,Walk-in Closet,Luxury,True,0
+215,Security,Premium,True,1738
+215,Children's Playground,Premium,False,4620
+216,Modern Kitchen,Luxury,True,0
+216,BBQ Area,Luxury,False,3747
+216,Furnished,Premium,False,4681
+216,Swimming Pool,Premium,True,0
+216,Gym,Luxury,True,0
+217,Security,Basic,False,980
+217,Modern Kitchen,Basic,False,0
+217,Tennis Court,Basic,False,1441
+217,Basketball Court,Luxury,True,0
+217,Built-in Wardrobes,Premium,True,0
+217,Terrace,Luxury,False,2155
+217,24/7 Maintenance,Premium,False,965
+217,Central AC,Premium,False,3183
+218,Pet Friendly,Luxury,False,0
+218,Built-in Wardrobes,Premium,False,2018
+218,Gym,Premium,True,0
+218,Parking,Premium,False,3328
+218,Swimming Pool,Luxury,False,0
+218,Study Room,Luxury,False,0
+219,Garden,Luxury,False,0
+219,Gym,Basic,True,2762
+219,Tennis Court,Luxury,False,1508
+220,Central AC,Premium,False,2142
+220,Tennis Court,Basic,False,0
+220,Walk-in Closet,Basic,False,0
+220,Terrace,Premium,False,0
+220,24/7 Maintenance,Luxury,True,0
+221,Maid's Room,Luxury,False,3651
+221,Concierge,Luxury,True,1028
+221,Tennis Court,Premium,False,2573
+221,BBQ Area,Basic,False,0
+221,Spa,Luxury,False,4575
+221,Garden,Basic,False,0
+221,Parking,Basic,False,0
+222,Tennis Court,Luxury,False,1666
+222,BBQ Area,Luxury,True,0
+222,Furnished,Basic,True,0
+222,Study Room,Basic,False,2298
+223,BBQ Area,Premium,True,1077
+223,Balcony,Basic,True,0
+223,Spa,Luxury,False,0
+223,Swimming Pool,Premium,True,482
+224,Basketball Court,Luxury,True,0
+224,Pet Friendly,Premium,False,1149
+224,24/7 Maintenance,Basic,False,0
+224,Modern Kitchen,Basic,False,1656
+224,Concierge,Luxury,True,0
+225,Basketball Court,Luxury,False,0
+225,Garden,Basic,False,0
+225,Terrace,Basic,True,0
+225,Swimming Pool,Basic,False,1045
+225,24/7 Maintenance,Luxury,False,0
+226,Children's Playground,Premium,False,0
+226,Driver's Room,Basic,True,0
+226,Garden,Premium,False,3833
+226,Central AC,Basic,True,268
+226,Study Room,Luxury,True,0
+226,Balcony,Luxury,True,2983
+226,Terrace,Luxury,True,0
+226,24/7 Maintenance,Premium,True,3939
+227,Study Room,Basic,False,0
+227,Terrace,Premium,True,0
+227,Built-in Wardrobes,Luxury,True,4201
+228,Central AC,Premium,True,0
+228,Pet Friendly,Basic,False,0
+228,Spa,Luxury,False,2296
+228,Driver's Room,Basic,False,3888
+228,Balcony,Premium,True,903
+228,Children's Playground,Premium,True,0
+228,Basketball Court,Premium,True,0
+228,Furnished,Luxury,True,0
+229,Built-in Wardrobes,Luxury,True,0
+229,Walk-in Closet,Basic,False,0
+229,BBQ Area,Premium,True,0
+229,Garden,Basic,True,4272
+229,Gym,Luxury,False,260
+229,Maid's Room,Basic,True,0
+229,Tennis Court,Premium,False,0
+229,Furnished,Basic,False,827
+230,Balcony,Premium,False,0
+230,Garden,Premium,False,299
+230,Gym,Premium,True,0
+230,Furnished,Premium,False,0
+231,Gym,Basic,False,4402
+231,Central AC,Premium,False,276
+231,Balcony,Basic,False,693
+231,Built-in Wardrobes,Premium,True,253
+231,Pet Friendly,Premium,False,0
+231,Furnished,Premium,False,553
+231,Swimming Pool,Basic,True,62
+232,Furnished,Luxury,False,0
+232,Study Room,Basic,False,0
+232,Terrace,Luxury,True,3107
+233,BBQ Area,Luxury,True,3203
+233,Study Room,Luxury,False,1125
+233,Gym,Luxury,True,0
+233,Basketball Court,Premium,False,4940
+233,Terrace,Luxury,True,0
+233,Pet Friendly,Basic,True,0
+233,Tennis Court,Luxury,True,0
+234,Spa,Luxury,True,2756
+234,Swimming Pool,Luxury,True,0
+234,Security,Basic,True,0
+234,Parking,Basic,True,1247
+234,Walk-in Closet,Premium,True,3126
+234,Central AC,Basic,True,0
+234,Modern Kitchen,Luxury,True,0
+235,Basketball Court,Premium,False,2544
+235,Driver's Room,Luxury,True,4729
+235,Terrace,Basic,True,314
+235,Parking,Basic,False,1033
+235,Pet Friendly,Basic,False,4218
+235,Walk-in Closet,Basic,True,0
+236,BBQ Area,Luxury,True,0
+236,Central AC,Premium,True,0
+236,Gym,Basic,True,246
+237,Built-in Wardrobes,Basic,True,2642
+237,Balcony,Luxury,True,1254
+237,Basketball Court,Basic,False,3068
+237,Pet Friendly,Luxury,False,4134
+237,Tennis Court,Basic,False,0
+237,BBQ Area,Premium,True,0
+237,Terrace,Luxury,False,0
+237,Maid's Room,Premium,False,1254
+238,Security,Premium,False,0
+238,Tennis Court,Luxury,False,0
+238,Terrace,Premium,True,475
+238,Modern Kitchen,Luxury,False,866
+238,Children's Playground,Basic,True,1994
+239,Garden,Basic,True,3838
+239,24/7 Maintenance,Basic,False,0
+239,Built-in Wardrobes,Luxury,False,0
+239,Driver's Room,Basic,False,3251
+239,Parking,Basic,False,97
+240,Central AC,Luxury,True,3856
+240,Balcony,Basic,False,3572
+240,Concierge,Basic,False,0
+240,Maid's Room,Basic,False,1996
+241,24/7 Maintenance,Luxury,False,0
+241,Spa,Premium,False,4339
+241,Garden,Basic,True,2141
+241,Built-in Wardrobes,Basic,True,0
+242,Pet Friendly,Basic,False,0
+242,Tennis Court,Luxury,True,2749
+242,Maid's Room,Basic,True,0
+242,Terrace,Luxury,True,0
+242,Swimming Pool,Basic,True,3569
+243,Study Room,Luxury,True,0
+243,BBQ Area,Premium,False,0
+243,Maid's Room,Premium,True,3118
+244,Walk-in Closet,Basic,True,322
+244,Garden,Basic,False,952
+244,24/7 Maintenance,Basic,False,4623
+244,Basketball Court,Basic,True,0
+244,Gym,Basic,True,662
+244,Concierge,Basic,True,1922
+244,Security,Premium,False,653
+244,Parking,Basic,True,0
+245,Driver's Room,Basic,True,2085
+245,BBQ Area,Basic,True,0
+245,Children's Playground,Luxury,True,3034
+246,Balcony,Basic,False,0
+246,Walk-in Closet,Premium,True,3355
+246,Security,Basic,True,4895
+246,Basketball Court,Premium,False,0
+246,Built-in Wardrobes,Basic,False,542
+246,Tennis Court,Basic,False,29
+247,Children's Playground,Basic,True,231
+247,Driver's Room,Basic,False,0
+247,Garden,Premium,False,0
+247,Concierge,Premium,True,0
+247,Gym,Luxury,True,2436
+248,Tennis Court,Premium,False,0
+248,Maid's Room,Basic,False,0
+248,Study Room,Premium,False,231
+248,Gym,Premium,True,0
+248,Driver's Room,Premium,False,2784
+249,Maid's Room,Premium,True,2840
+249,Garden,Luxury,True,4536
+249,Gym,Luxury,True,0
+250,Maid's Room,Premium,True,2288
+250,Terrace,Basic,True,422
+250,Tennis Court,Premium,True,0
+250,Walk-in Closet,Basic,True,2005
+250,24/7 Maintenance,Luxury,False,4907
+251,Security,Premium,True,0
+251,Terrace,Luxury,False,0
+251,Furnished,Luxury,True,2758
+251,Driver's Room,Basic,True,4465
+252,Balcony,Luxury,True,2261
+252,Tennis Court,Basic,False,241
+252,Security,Luxury,True,101
+252,Built-in Wardrobes,Premium,True,1919
+252,Pet Friendly,Premium,True,4371
+253,Concierge,Luxury,True,1068
+253,Terrace,Basic,True,0
+253,Spa,Premium,False,0
+253,Children's Playground,Basic,False,671
+253,Central AC,Premium,True,0
+253,Modern Kitchen,Premium,True,2592
+253,Garden,Luxury,False,4215
+253,Built-in Wardrobes,Luxury,False,3493
+254,Central AC,Basic,True,1856
+254,Security,Luxury,False,2745
+254,Modern Kitchen,Basic,False,0
+254,Concierge,Premium,False,808
+254,Garden,Premium,True,0
+254,Walk-in Closet,Basic,False,190
+255,Walk-in Closet,Luxury,True,2183
+255,Terrace,Luxury,False,4320
+255,Maid's Room,Luxury,True,0
+255,BBQ Area,Basic,True,0
+255,Driver's Room,Basic,False,0
+256,Balcony,Luxury,False,3149
+256,Central AC,Basic,False,0
+256,Security,Luxury,True,4571
+256,Built-in Wardrobes,Basic,False,910
+257,Built-in Wardrobes,Premium,True,3943
+257,Basketball Court,Basic,False,1889
+257,Spa,Luxury,False,2365
+258,Children's Playground,Premium,True,0
+258,Parking,Basic,False,570
+258,24/7 Maintenance,Basic,False,0
+258,Gym,Luxury,True,3802
+259,Balcony,Premium,True,551
+259,Concierge,Premium,False,2401
+259,Modern Kitchen,Luxury,True,0
+259,Study Room,Basic,False,1011
+259,Children's Playground,Premium,False,0
+259,24/7 Maintenance,Luxury,False,3954
+259,Driver's Room,Basic,False,0
+260,24/7 Maintenance,Premium,False,1546
+260,Furnished,Premium,True,0
+260,Modern Kitchen,Premium,False,4814
+260,Walk-in Closet,Luxury,False,4899
+260,BBQ Area,Premium,True,2490
+261,24/7 Maintenance,Premium,True,2362
+261,Gym,Premium,False,435
+261,Study Room,Luxury,False,3991
+261,Spa,Premium,True,0
+261,Walk-in Closet,Basic,True,1534
+261,Garden,Luxury,True,948
+262,Children's Playground,Premium,True,0
+262,Security,Basic,True,596
+262,Built-in Wardrobes,Basic,True,4135
+262,Central AC,Luxury,False,650
+262,Modern Kitchen,Luxury,True,0
+262,Tennis Court,Basic,False,0
+263,Walk-in Closet,Luxury,False,0
+263,Basketball Court,Premium,True,0
+263,Maid's Room,Luxury,True,3893
+263,Built-in Wardrobes,Luxury,False,3300
+263,Garden,Premium,False,0
+263,Spa,Luxury,False,2819
+263,Gym,Basic,True,2903
+264,Pet Friendly,Premium,False,1270
+264,Built-in Wardrobes,Luxury,False,0
+264,Maid's Room,Luxury,True,3637
+264,BBQ Area,Basic,True,0
+265,Pet Friendly,Premium,False,0
+265,24/7 Maintenance,Basic,True,468
+265,Built-in Wardrobes,Basic,True,0
+265,Concierge,Basic,False,3550
+265,Central AC,Premium,True,4851
+266,Driver's Room,Basic,False,0
+266,Built-in Wardrobes,Basic,False,0
+266,Swimming Pool,Luxury,True,0
+266,Terrace,Premium,True,0
+267,Terrace,Premium,True,3023
+267,Concierge,Premium,False,1430
+267,Children's Playground,Basic,False,0
+268,Study Room,Luxury,True,4421
+268,Pet Friendly,Basic,True,0
+268,Walk-in Closet,Premium,False,329
+268,Children's Playground,Basic,False,0
+269,Driver's Room,Luxury,False,0
+269,Built-in Wardrobes,Premium,False,0
+269,Modern Kitchen,Luxury,False,0
+269,Parking,Premium,True,0
+269,Spa,Basic,True,0
+269,Tennis Court,Luxury,False,0
+269,Basketball Court,Basic,True,4138
+269,Walk-in Closet,Luxury,False,0
+270,Children's Playground,Basic,True,0
+270,BBQ Area,Basic,False,1419
+270,Concierge,Basic,True,0
+270,Basketball Court,Premium,True,0
+270,Modern Kitchen,Basic,False,0
+271,Walk-in Closet,Basic,False,4342
+271,Balcony,Basic,False,0
+271,Garden,Premium,False,0
+271,Terrace,Premium,False,1984
+271,Parking,Basic,True,0
+272,Spa,Premium,False,0
+272,Tennis Court,Basic,False,4056
+272,Basketball Court,Luxury,False,3954
+272,Built-in Wardrobes,Luxury,False,1518
+273,Central AC,Luxury,False,2908
+273,Swimming Pool,Premium,False,4185
+273,Modern Kitchen,Luxury,True,1936
+273,24/7 Maintenance,Luxury,False,0
+273,Balcony,Basic,False,1002
+273,Walk-in Closet,Luxury,False,0
+273,Built-in Wardrobes,Premium,False,0
+274,Central AC,Premium,False,0
+274,Parking,Basic,True,0
+274,Security,Luxury,True,2115
+274,Swimming Pool,Premium,False,0
+274,24/7 Maintenance,Luxury,True,0
+274,Built-in Wardrobes,Basic,False,2449
+274,Study Room,Premium,True,0
+274,Driver's Room,Luxury,False,4212
+275,Walk-in Closet,Luxury,True,0
+275,Security,Premium,False,2938
+275,Spa,Premium,True,114
+276,Built-in Wardrobes,Basic,True,0
+276,Modern Kitchen,Premium,True,0
+276,BBQ Area,Premium,True,388
+276,Study Room,Luxury,False,0
+276,Concierge,Premium,False,0
+276,Garden,Basic,True,174
+276,Pet Friendly,Luxury,True,1516
+276,Maid's Room,Basic,False,4873
+277,Walk-in Closet,Basic,False,867
+277,Children's Playground,Premium,True,1343
+277,Spa,Basic,True,1891
+277,Maid's Room,Luxury,False,0
+278,Spa,Premium,False,3689
+278,Central AC,Luxury,False,0
+278,Maid's Room,Luxury,False,1185
+278,Terrace,Luxury,False,1083
+278,Swimming Pool,Basic,True,0
+279,Basketball Court,Luxury,False,2597
+279,Balcony,Luxury,True,0
+279,Gym,Premium,False,3491
+279,Pet Friendly,Premium,True,0
+280,Security,Premium,True,2384
+280,24/7 Maintenance,Premium,False,1242
+280,Swimming Pool,Basic,True,0
+280,Spa,Premium,False,44
+280,Children's Playground,Premium,False,0
+280,Terrace,Luxury,False,3838
+281,Modern Kitchen,Basic,True,617
+281,Concierge,Basic,True,1707
+281,Study Room,Luxury,True,1066
+281,Walk-in Closet,Luxury,False,0
+281,Balcony,Luxury,True,2480
+281,Furnished,Basic,False,0
+281,BBQ Area,Basic,False,840
+281,Swimming Pool,Luxury,True,1990
+282,Security,Basic,True,1087
+282,Tennis Court,Basic,True,0
+282,Modern Kitchen,Premium,False,1505
+282,BBQ Area,Premium,True,0
+282,Built-in Wardrobes,Premium,True,2745
+282,Terrace,Basic,False,4471
+282,Balcony,Premium,True,0
+282,Walk-in Closet,Luxury,True,3610
+283,Built-in Wardrobes,Luxury,False,0
+283,Maid's Room,Premium,True,4566
+283,Security,Basic,False,3489
+283,Central AC,Basic,True,2059
+283,Pet Friendly,Basic,True,2466
+283,BBQ Area,Basic,False,0
+283,Tennis Court,Basic,False,0
+284,Swimming Pool,Luxury,True,3015
+284,Furnished,Basic,True,0
+284,Pet Friendly,Luxury,False,0
+285,Modern Kitchen,Luxury,True,1435
+285,Garden,Basic,True,641
+285,Walk-in Closet,Basic,False,1077
+285,Swimming Pool,Premium,False,2571
+285,Children's Playground,Luxury,False,3895
+285,BBQ Area,Luxury,False,552
+285,Central AC,Luxury,False,4117
+285,Pet Friendly,Basic,False,305
+286,Central AC,Premium,True,4850
+286,Gym,Luxury,False,3041
+286,Balcony,Luxury,True,1935
+286,Modern Kitchen,Luxury,False,0
+286,Study Room,Premium,True,3726
+286,Spa,Premium,False,4267
+287,Driver's Room,Luxury,True,0
+287,Concierge,Premium,False,0
+287,Children's Playground,Premium,True,0
+287,Central AC,Premium,False,0
+287,BBQ Area,Luxury,True,0
+287,Pet Friendly,Premium,True,0
+287,Spa,Basic,False,0
+288,Tennis Court,Premium,True,0
+288,BBQ Area,Luxury,True,2427
+288,Terrace,Basic,True,203
+288,Modern Kitchen,Basic,False,0
+289,BBQ Area,Premium,True,0
+289,Terrace,Basic,False,1690
+289,Maid's Room,Luxury,True,0
+289,Parking,Premium,False,0
+289,Built-in Wardrobes,Luxury,False,1494
+290,24/7 Maintenance,Premium,False,0
+290,Terrace,Basic,True,3350
+290,Spa,Luxury,True,0
+290,Central AC,Basic,True,0
+290,Furnished,Luxury,True,0
+290,Pet Friendly,Luxury,True,2250
+290,Garden,Basic,True,0
+291,Balcony,Basic,False,0
+291,Parking,Basic,True,4885
+291,Basketball Court,Basic,True,2776
+291,BBQ Area,Luxury,False,0
+292,Basketball Court,Basic,False,0
+292,Walk-in Closet,Basic,False,2340
+292,Gym,Basic,False,0
+292,Driver's Room,Basic,True,0
+292,Garden,Luxury,False,0
+292,Pet Friendly,Premium,True,3616
+292,BBQ Area,Luxury,False,0
+293,Spa,Basic,False,0
+293,Terrace,Premium,False,0
+293,Children's Playground,Luxury,False,3113
+294,Balcony,Luxury,False,0
+294,Driver's Room,Luxury,True,423
+294,Swimming Pool,Luxury,False,0
+294,Central AC,Basic,True,2313
+294,Pet Friendly,Premium,False,0
+294,Walk-in Closet,Luxury,False,3236
+294,Tennis Court,Luxury,False,0
+295,Modern Kitchen,Premium,True,2209
+295,Walk-in Closet,Basic,False,0
+295,Maid's Room,Luxury,False,1534
+295,Central AC,Luxury,True,3077
+296,24/7 Maintenance,Basic,True,0
+296,Maid's Room,Premium,True,3936
+296,Security,Luxury,True,0
+296,Modern Kitchen,Basic,True,0
+297,Furnished,Luxury,False,0
+297,Tennis Court,Premium,True,3221
+297,Children's Playground,Basic,False,2561
+298,Built-in Wardrobes,Basic,False,0
+298,Spa,Luxury,True,0
+298,Study Room,Basic,False,0
+298,24/7 Maintenance,Luxury,True,449
+298,Basketball Court,Premium,True,0
+299,Central AC,Luxury,True,4323
+299,Driver's Room,Luxury,True,0
+299,Furnished,Luxury,True,0
+299,BBQ Area,Luxury,False,0
+300,24/7 Maintenance,Basic,True,0
+300,Pet Friendly,Basic,False,1676
+300,Security,Premium,False,0
+300,Terrace,Premium,True,354
+301,Driver's Room,Basic,True,3722
+301,Central AC,Luxury,True,0
+301,24/7 Maintenance,Basic,False,0
+302,Balcony,Premium,True,2121
+302,Study Room,Premium,True,1234
+302,Furnished,Luxury,True,1253
+302,Maid's Room,Basic,True,0
+302,Built-in Wardrobes,Basic,True,1792
+303,Spa,Premium,True,0
+303,Terrace,Basic,True,0
+303,Driver's Room,Basic,True,0
+304,Basketball Court,Basic,True,0
+304,Modern Kitchen,Premium,True,0
+304,Pet Friendly,Luxury,False,108
+304,Children's Playground,Basic,False,0
+305,BBQ Area,Basic,True,0
+305,Gym,Luxury,True,0
+305,Built-in Wardrobes,Premium,True,0
+305,Walk-in Closet,Luxury,True,0
+306,Concierge,Basic,True,2118
+306,Garden,Premium,True,3656
+306,Maid's Room,Luxury,True,0
+306,Driver's Room,Basic,False,1974
+306,Central AC,Basic,False,1070
+306,Furnished,Luxury,False,0
+306,Terrace,Basic,True,958
+307,24/7 Maintenance,Premium,True,2720
+307,Furnished,Premium,False,0
+307,Terrace,Luxury,True,0
+307,Walk-in Closet,Luxury,True,34
+307,Concierge,Premium,True,2384
+307,Garden,Luxury,True,3483
+308,Driver's Room,Basic,False,0
+308,Parking,Premium,True,3417
+308,Security,Luxury,False,3154
+308,BBQ Area,Luxury,False,0
+308,Built-in Wardrobes,Luxury,True,3751
+308,Furnished,Premium,False,0
+308,Tennis Court,Basic,False,0
+308,Swimming Pool,Premium,True,0
+309,Study Room,Premium,False,1929
+309,Modern Kitchen,Premium,False,4256
+309,Security,Luxury,True,1952
+309,Terrace,Luxury,True,0
+309,Driver's Room,Luxury,False,4469
+309,Children's Playground,Basic,False,0
+310,Built-in Wardrobes,Basic,False,1868
+310,Balcony,Basic,True,2831
+310,BBQ Area,Basic,True,0
+310,Pet Friendly,Basic,True,0
+310,Swimming Pool,Luxury,True,1425
+311,Modern Kitchen,Basic,False,1916
+311,BBQ Area,Luxury,True,0
+311,Spa,Premium,True,747
+311,Garden,Luxury,False,1686
+312,Balcony,Basic,False,2476
+312,Walk-in Closet,Premium,False,0
+312,BBQ Area,Premium,True,4045
+312,Gym,Luxury,True,0
+312,Terrace,Premium,True,0
+312,Built-in Wardrobes,Premium,True,0
+312,Furnished,Luxury,False,0
+313,24/7 Maintenance,Basic,False,0
+313,Security,Basic,False,3681
+313,Terrace,Basic,True,0
+313,Built-in Wardrobes,Luxury,False,0
+313,Pet Friendly,Luxury,False,2247
+313,Central AC,Premium,False,2154
+314,Furnished,Luxury,False,0
+314,Driver's Room,Premium,True,4937
+314,Parking,Premium,True,749
+314,Spa,Premium,True,0
+315,Modern Kitchen,Basic,False,0
+315,Walk-in Closet,Basic,False,3187
+315,Central AC,Luxury,False,0
+315,Tennis Court,Basic,True,0
+315,Driver's Room,Premium,True,3501
+316,Spa,Luxury,False,2661
+316,Pet Friendly,Premium,True,0
+316,24/7 Maintenance,Premium,True,2807
+316,Swimming Pool,Premium,False,3104
+316,Balcony,Luxury,False,0
+316,Security,Premium,True,0
+316,Gym,Luxury,True,1930
+317,Walk-in Closet,Basic,False,0
+317,Concierge,Premium,True,0
+317,Spa,Basic,False,0
+317,Study Room,Basic,False,0
+317,24/7 Maintenance,Premium,False,220
+317,Terrace,Basic,False,0
+317,Parking,Luxury,True,339
+317,Driver's Room,Luxury,False,0
+318,Walk-in Closet,Luxury,False,3702
+318,Central AC,Basic,True,3044
+318,Tennis Court,Premium,False,0
+318,Study Room,Premium,False,2681
+318,Basketball Court,Premium,True,0
+318,Maid's Room,Basic,False,0
+318,Gym,Luxury,False,3078
+318,BBQ Area,Basic,True,2960
+319,Study Room,Basic,True,770
+319,Maid's Room,Luxury,False,4604
+319,Gym,Luxury,False,0
+319,Concierge,Premium,False,0
+319,Tennis Court,Premium,True,3732
+320,Security,Premium,True,933
+320,Swimming Pool,Basic,False,2238
+320,Spa,Premium,True,0
+321,24/7 Maintenance,Luxury,False,0
+321,Built-in Wardrobes,Basic,False,4882
+321,Garden,Basic,True,4497
+321,Concierge,Luxury,True,1223
+321,Basketball Court,Luxury,False,0
+321,Security,Premium,False,4885
+321,Study Room,Luxury,False,3080
+321,Maid's Room,Basic,True,0
+322,Pet Friendly,Luxury,True,0
+322,Driver's Room,Premium,True,4350
+322,Furnished,Premium,True,0
+322,Study Room,Luxury,True,1243
+322,Basketball Court,Basic,True,0
+322,BBQ Area,Premium,True,4650
+322,Gym,Premium,True,0
+323,Walk-in Closet,Premium,False,580
+323,Tennis Court,Basic,True,0
+323,Furnished,Basic,True,0
+323,Basketball Court,Basic,False,3426
+323,Central AC,Premium,True,0
+323,24/7 Maintenance,Luxury,False,0
+323,Concierge,Luxury,False,0
+323,Driver's Room,Luxury,False,0
+324,Walk-in Closet,Premium,False,1119
+324,Central AC,Premium,True,0
+324,Swimming Pool,Premium,False,0
+324,Modern Kitchen,Basic,True,0
+324,Basketball Court,Basic,True,0
+324,24/7 Maintenance,Basic,True,0
+325,24/7 Maintenance,Basic,True,0
+325,Children's Playground,Luxury,True,0
+325,Pet Friendly,Basic,False,1643
+326,Parking,Luxury,False,0
+326,Furnished,Basic,True,0
+326,Gym,Luxury,False,0
+326,Modern Kitchen,Luxury,True,916
+326,Tennis Court,Basic,False,3631
+327,Walk-in Closet,Luxury,False,0
+327,Pet Friendly,Luxury,True,0
+327,Parking,Basic,True,484
+327,Basketball Court,Premium,False,2540
+327,Children's Playground,Premium,True,0
+328,Parking,Basic,False,1329
+328,Balcony,Luxury,False,0
+328,Tennis Court,Luxury,True,372
+328,24/7 Maintenance,Luxury,False,0
+328,Concierge,Premium,False,0
+328,Terrace,Basic,True,0
+328,Built-in Wardrobes,Basic,True,0
+328,BBQ Area,Luxury,True,174
+329,Concierge,Basic,True,3006
+329,Terrace,Basic,False,0
+329,Basketball Court,Premium,False,4781
+329,Children's Playground,Premium,False,0
+329,Garden,Premium,False,1520
+329,Gym,Basic,False,0
+329,Maid's Room,Basic,False,0
+330,Basketball Court,Premium,True,1789
+330,Tennis Court,Premium,False,0
+330,BBQ Area,Luxury,False,0
+331,BBQ Area,Premium,False,1323
+331,Terrace,Luxury,False,4876
+331,Built-in Wardrobes,Luxury,False,0
+332,Basketball Court,Premium,True,0
+332,Built-in Wardrobes,Premium,False,3351
+332,Furnished,Luxury,False,0
+332,Terrace,Basic,True,3720
+332,Study Room,Luxury,False,1845
+332,Driver's Room,Basic,False,0
+332,Central AC,Basic,True,3872
+332,Gym,Luxury,True,0
+333,Concierge,Basic,False,0
+333,Modern Kitchen,Basic,True,4142
+333,Children's Playground,Premium,False,0
+333,Gym,Premium,True,2466
+333,Security,Luxury,False,0
+333,Swimming Pool,Premium,False,0
+333,Central AC,Premium,True,3276
+333,Balcony,Luxury,False,0
+334,Pet Friendly,Premium,True,4908
+334,Tennis Court,Basic,True,2589
+334,Central AC,Premium,False,2384
+334,Concierge,Basic,True,1734
+335,Walk-in Closet,Basic,True,3120
+335,Security,Basic,False,3946
+335,Swimming Pool,Basic,False,416
+335,Modern Kitchen,Luxury,True,0
+335,Tennis Court,Premium,False,2246
+335,Balcony,Basic,False,0
+335,Parking,Premium,True,0
+335,Garden,Premium,False,0
+336,Pet Friendly,Premium,False,0
+336,Terrace,Premium,False,4207
+336,Security,Premium,False,0
+336,24/7 Maintenance,Basic,True,0
+336,Built-in Wardrobes,Premium,False,1938
+336,Gym,Premium,False,948
+336,Swimming Pool,Premium,False,0
+337,Walk-in Closet,Basic,False,0
+337,BBQ Area,Premium,True,1995
+337,Driver's Room,Basic,False,0
+337,Maid's Room,Basic,False,0
+337,Concierge,Luxury,True,2162
+338,24/7 Maintenance,Basic,True,0
+338,Concierge,Luxury,True,1313
+338,Balcony,Luxury,False,0
+338,Parking,Premium,False,418
+338,Walk-in Closet,Luxury,False,0
+339,Garden,Basic,False,0
+339,BBQ Area,Luxury,True,0
+339,Swimming Pool,Luxury,True,4940
+339,Built-in Wardrobes,Premium,False,0
+339,Maid's Room,Basic,True,0
+339,Pet Friendly,Premium,True,2857
+339,Terrace,Basic,True,0
+339,Walk-in Closet,Luxury,True,0
+340,Children's Playground,Luxury,True,0
+340,Pet Friendly,Basic,True,4808
+340,Gym,Premium,True,0
+341,Gym,Premium,True,0
+341,Basketball Court,Basic,True,3173
+341,Security,Basic,False,0
+341,Garden,Luxury,True,0
+341,Swimming Pool,Basic,True,4514
+341,Built-in Wardrobes,Premium,True,2222
+341,Study Room,Premium,True,0
+342,Central AC,Luxury,False,0
+342,Children's Playground,Basic,True,0
+342,Furnished,Basic,True,4095
+342,Swimming Pool,Luxury,True,838
+342,Tennis Court,Luxury,False,0
+342,Built-in Wardrobes,Basic,False,2299
+342,Terrace,Luxury,True,4686
+343,Garden,Basic,False,980
+343,Terrace,Basic,True,2286
+343,Parking,Premium,False,1437
+343,Swimming Pool,Premium,True,1754
+343,Security,Luxury,True,1827
+343,Modern Kitchen,Basic,True,0
+344,Parking,Premium,False,0
+344,Spa,Premium,True,540
+344,Balcony,Luxury,True,0
+345,Built-in Wardrobes,Luxury,True,3003
+345,Furnished,Premium,True,1807
+345,Central AC,Luxury,True,236
+346,Basketball Court,Premium,False,0
+346,Garden,Basic,False,0
+346,Parking,Luxury,False,0
+346,Tennis Court,Premium,False,0
+346,Terrace,Premium,True,0
+346,Balcony,Luxury,True,3237
+346,Built-in Wardrobes,Premium,True,0
+346,Maid's Room,Luxury,True,0
+347,Study Room,Premium,True,3164
+347,Spa,Luxury,False,0
+347,Furnished,Luxury,False,0
+347,BBQ Area,Premium,True,3418
+347,Walk-in Closet,Luxury,False,0
+347,Garden,Premium,True,3563
+347,Parking,Luxury,False,4651
+348,Balcony,Basic,True,825
+348,Walk-in Closet,Luxury,True,1283
+348,Security,Premium,False,0
+348,Parking,Premium,True,0
+348,BBQ Area,Basic,False,267
+348,Maid's Room,Luxury,False,4500
+349,Driver's Room,Basic,True,0
+349,Central AC,Basic,False,4179
+349,Concierge,Premium,False,1789
+349,Walk-in Closet,Basic,False,0
+350,Furnished,Basic,False,0
+350,Study Room,Luxury,True,4419
+350,Walk-in Closet,Premium,True,0
+350,Terrace,Luxury,False,0
+350,Gym,Luxury,False,4983
+350,Central AC,Premium,False,0
+351,Central AC,Premium,True,0
+351,Concierge,Premium,False,0
+351,Parking,Luxury,False,0
+351,Swimming Pool,Luxury,False,0
+351,Terrace,Basic,False,0
+351,Built-in Wardrobes,Luxury,True,2785
+352,Spa,Premium,True,0
+352,Study Room,Premium,True,0
+352,Furnished,Premium,False,0
+352,Basketball Court,Premium,True,0
+352,Built-in Wardrobes,Basic,True,0
+352,Security,Premium,False,0
+352,Balcony,Premium,False,3724
+352,24/7 Maintenance,Premium,False,2604
+353,Modern Kitchen,Premium,True,0
+353,Furnished,Basic,False,4983
+353,Gym,Basic,True,1785
+353,Swimming Pool,Premium,True,0
+353,Garden,Basic,False,0
+354,Modern Kitchen,Basic,False,0
+354,Children's Playground,Basic,False,0
+354,Spa,Basic,False,2778
+354,Pet Friendly,Luxury,True,3907
+355,Walk-in Closet,Basic,True,4219
+355,Modern Kitchen,Luxury,True,1326
+355,Furnished,Basic,True,2644
+356,Driver's Room,Basic,True,0
+356,Balcony,Luxury,False,3168
+356,Spa,Basic,True,0
+356,Study Room,Luxury,True,0
+356,24/7 Maintenance,Basic,True,0
+357,Pet Friendly,Luxury,True,0
+357,Modern Kitchen,Basic,False,472
+357,Built-in Wardrobes,Luxury,True,3791
+357,Central AC,Luxury,False,0
+358,Study Room,Basic,True,3952
+358,Concierge,Basic,False,0
+358,Swimming Pool,Premium,True,0
+358,Pet Friendly,Luxury,False,0
+358,Central AC,Premium,False,0
+358,Security,Premium,False,0
+359,BBQ Area,Luxury,True,4681
+359,Pet Friendly,Premium,False,763
+359,Security,Luxury,True,4471
+360,Tennis Court,Premium,False,0
+360,Parking,Luxury,False,0
+360,Gym,Luxury,False,231
+360,Pet Friendly,Premium,False,506
+360,Study Room,Luxury,True,0
+361,Study Room,Luxury,True,0
+361,Spa,Basic,False,0
+361,Balcony,Luxury,True,1785
+361,Gym,Premium,False,1278
+361,Furnished,Basic,True,0
+362,Furnished,Luxury,False,4081
+362,Parking,Basic,True,0
+362,24/7 Maintenance,Premium,True,0
+362,Garden,Luxury,True,0
+362,Swimming Pool,Premium,False,4493
+362,Central AC,Basic,False,1990
+363,Driver's Room,Basic,True,3805
+363,24/7 Maintenance,Premium,False,0
+363,Security,Luxury,False,2238
+363,Terrace,Luxury,False,0
+363,Maid's Room,Premium,False,2062
+363,Basketball Court,Basic,True,4225
+364,Children's Playground,Luxury,False,4911
+364,Tennis Court,Basic,False,0
+364,Concierge,Luxury,True,3789
+364,Driver's Room,Luxury,False,4255
+365,Garden,Premium,True,393
+365,Security,Luxury,True,2916
+365,Children's Playground,Premium,True,0
+365,Study Room,Luxury,False,0
+365,Pet Friendly,Luxury,True,2641
+365,Gym,Basic,False,703
+365,Furnished,Premium,True,0
+365,Walk-in Closet,Basic,True,892
+366,Swimming Pool,Luxury,True,4700
+366,Spa,Luxury,True,4340
+366,Walk-in Closet,Luxury,False,0
+366,Pet Friendly,Premium,True,4733
+366,Balcony,Premium,True,3636
+366,Concierge,Luxury,True,3145
+367,Children's Playground,Basic,False,4611
+367,Spa,Basic,False,3763
+367,Security,Luxury,True,1391
+367,Modern Kitchen,Basic,False,0
+367,Maid's Room,Premium,True,0
+368,Concierge,Basic,True,3746
+368,24/7 Maintenance,Premium,True,167
+368,Pet Friendly,Basic,True,2262
+368,Balcony,Luxury,True,3521
+368,Basketball Court,Premium,True,948
+368,Tennis Court,Basic,False,0
+368,Gym,Luxury,False,4274
+368,Modern Kitchen,Luxury,False,696
+369,Study Room,Premium,True,0
+369,Terrace,Basic,False,1627
+369,Central AC,Premium,True,0
+369,Balcony,Premium,False,2965
+369,Basketball Court,Premium,True,0
+370,Swimming Pool,Luxury,True,4307
+370,24/7 Maintenance,Premium,True,0
+370,Garden,Premium,True,0
+370,Walk-in Closet,Premium,False,0
+370,Terrace,Basic,False,0
+370,Children's Playground,Basic,True,0
+370,Parking,Premium,False,3428
+370,BBQ Area,Premium,True,985
+371,Parking,Basic,True,0
+371,Central AC,Basic,False,3546
+371,Children's Playground,Basic,False,0
+371,Terrace,Basic,True,0
+371,Security,Premium,True,2530
+371,Spa,Premium,True,0
+372,Walk-in Closet,Basic,True,1846
+372,Balcony,Basic,True,2988
+372,24/7 Maintenance,Luxury,False,0
+372,Garden,Premium,True,1414
+372,Central AC,Premium,False,1285
+372,Swimming Pool,Luxury,False,2476
+373,Concierge,Premium,True,1514
+373,Basketball Court,Premium,False,0
+373,Modern Kitchen,Premium,False,2568
+373,Children's Playground,Premium,True,3386
+373,Pet Friendly,Premium,True,0
+373,Driver's Room,Premium,True,4037
+373,Spa,Luxury,False,0
+373,Central AC,Premium,False,1010
+374,Modern Kitchen,Luxury,False,0
+374,Built-in Wardrobes,Premium,False,146
+374,Security,Luxury,False,0
+374,Terrace,Basic,True,1890
+375,Tennis Court,Luxury,True,0
+375,Children's Playground,Basic,True,1788
+375,Garden,Luxury,False,2093
+375,Walk-in Closet,Premium,False,0
+376,Maid's Room,Premium,False,4839
+376,Pet Friendly,Premium,False,3149
+376,BBQ Area,Premium,True,657
+376,24/7 Maintenance,Basic,False,0
+377,BBQ Area,Luxury,True,3802
+377,Modern Kitchen,Luxury,True,2743
+377,Furnished,Luxury,True,0
+377,Balcony,Basic,False,2152
+377,Security,Premium,False,0
+378,Parking,Luxury,False,3358
+378,Modern Kitchen,Basic,False,3333
+378,Maid's Room,Premium,True,4180
+378,Driver's Room,Basic,True,130
+378,Swimming Pool,Luxury,False,0
+378,Terrace,Premium,True,2944
+378,Study Room,Luxury,True,4949
+378,Garden,Premium,True,876
+379,Study Room,Premium,True,2635
+379,Swimming Pool,Luxury,True,2696
+379,24/7 Maintenance,Luxury,False,0
+379,Balcony,Luxury,True,0
+379,Spa,Premium,True,158
+380,Parking,Luxury,False,0
+380,Security,Basic,True,0
+380,Built-in Wardrobes,Luxury,False,0
+381,Central AC,Basic,True,3703
+381,BBQ Area,Basic,False,0
+381,Basketball Court,Luxury,False,3850
+381,Tennis Court,Basic,False,0
+381,Terrace,Premium,True,1866
+382,24/7 Maintenance,Basic,True,0
+382,Gym,Luxury,True,1961
+382,Balcony,Luxury,False,3689
+382,Built-in Wardrobes,Premium,False,4644
+382,Study Room,Basic,False,0
+382,Maid's Room,Premium,True,0
+383,Terrace,Luxury,True,2667
+383,BBQ Area,Basic,True,0
+383,Modern Kitchen,Luxury,True,0
+383,Pet Friendly,Premium,False,2114
+384,Maid's Room,Luxury,True,0
+384,Security,Luxury,True,0
+384,Swimming Pool,Premium,True,2384
+384,Furnished,Luxury,True,869
+385,Tennis Court,Luxury,True,3115
+385,Basketball Court,Premium,False,0
+385,Parking,Premium,False,0
+385,Balcony,Luxury,True,0
+385,Maid's Room,Basic,True,3772
+385,24/7 Maintenance,Luxury,True,3443
+385,Gym,Luxury,True,2999
+385,Furnished,Basic,True,0
+386,Terrace,Premium,False,2069
+386,Furnished,Luxury,True,740
+386,Modern Kitchen,Luxury,False,2750
+386,Swimming Pool,Luxury,True,4732
+386,Parking,Luxury,False,2537
+386,Tennis Court,Luxury,False,4460
+386,Children's Playground,Premium,False,1177
+386,Maid's Room,Basic,False,0
+387,Concierge,Basic,False,0
+387,Security,Premium,False,0
+387,Pet Friendly,Luxury,False,0
+387,Terrace,Premium,True,0
+387,Balcony,Luxury,True,0
+387,Walk-in Closet,Basic,True,4003
+387,Study Room,Premium,False,0
+388,24/7 Maintenance,Luxury,True,0
+388,Gym,Luxury,True,3521
+388,Study Room,Premium,False,676
+388,Furnished,Premium,True,3387
+388,Walk-in Closet,Premium,True,51
+389,Security,Luxury,False,2429
+389,Swimming Pool,Basic,False,0
+389,Driver's Room,Basic,False,0
+389,Tennis Court,Basic,False,2760
+389,Walk-in Closet,Luxury,False,0
+389,24/7 Maintenance,Luxury,False,4483
+389,BBQ Area,Basic,False,0
+389,Balcony,Basic,False,4200
+390,Modern Kitchen,Luxury,False,4358
+390,Basketball Court,Basic,True,2776
+390,Pet Friendly,Basic,True,4203
+391,Modern Kitchen,Basic,False,0
+391,Balcony,Basic,True,1406
+391,Terrace,Premium,False,0
+391,Spa,Premium,True,0
+391,Furnished,Basic,False,0
+392,Terrace,Basic,False,0
+392,Concierge,Premium,True,1704
+392,Tennis Court,Luxury,False,795
+392,BBQ Area,Premium,True,0
+392,Gym,Premium,True,4754
+393,Children's Playground,Basic,True,0
+393,Terrace,Basic,True,2508
+393,Built-in Wardrobes,Basic,False,0
+393,Basketball Court,Basic,False,4634
+393,Modern Kitchen,Premium,True,328
+393,Pet Friendly,Premium,False,0
+394,Concierge,Luxury,True,2864
+394,BBQ Area,Luxury,False,0
+394,Central AC,Basic,True,3110
+394,Gym,Basic,False,0
+394,Tennis Court,Basic,True,0
+395,Pet Friendly,Luxury,False,4169
+395,Driver's Room,Basic,False,0
+395,24/7 Maintenance,Basic,False,2839
+395,Modern Kitchen,Luxury,True,0
+396,Balcony,Premium,False,0
+396,24/7 Maintenance,Luxury,True,858
+396,Furnished,Luxury,False,0
+396,Walk-in Closet,Luxury,False,502
+396,Spa,Basic,True,2948
+396,Children's Playground,Basic,True,0
+396,Pet Friendly,Luxury,False,2563
+396,Swimming Pool,Luxury,False,0
+397,24/7 Maintenance,Basic,True,3732
+397,Garden,Basic,True,0
+397,Modern Kitchen,Luxury,False,0
+398,Garden,Premium,False,0
+398,Children's Playground,Luxury,False,0
+398,24/7 Maintenance,Basic,True,0
+398,Basketball Court,Basic,True,1997
+398,Swimming Pool,Basic,False,0
+398,Maid's Room,Basic,False,0
+399,Walk-in Closet,Basic,False,643
+399,Terrace,Premium,True,2869
+399,Study Room,Premium,False,0
+399,Concierge,Luxury,True,841
+399,Garden,Luxury,False,2799
+399,Basketball Court,Luxury,True,0
+400,Furnished,Basic,True,4912
+400,Built-in Wardrobes,Luxury,False,3422
+400,Garden,Luxury,False,503
+400,Children's Playground,Premium,False,0
+401,Driver's Room,Luxury,True,35
+401,Children's Playground,Luxury,True,3421
+401,Study Room,Luxury,False,1643
+401,Parking,Basic,True,0
+402,Gym,Premium,False,0
+402,24/7 Maintenance,Premium,False,0
+402,Children's Playground,Luxury,True,402
+402,Study Room,Basic,False,0
+402,Balcony,Luxury,False,4379
+402,Spa,Basic,True,3935
+403,Security,Basic,False,2157
+403,Central AC,Premium,False,3220
+403,Walk-in Closet,Premium,True,0
+403,Pet Friendly,Luxury,False,0
+403,Built-in Wardrobes,Premium,False,788
+404,BBQ Area,Luxury,False,2046
+404,Terrace,Luxury,True,0
+404,Spa,Luxury,False,0
+404,Furnished,Luxury,False,0
+404,Security,Basic,True,3976
+404,Garden,Premium,False,0
+405,Security,Luxury,True,0
+405,Gym,Basic,True,0
+405,Maid's Room,Basic,True,0
+405,Concierge,Luxury,True,819
+405,Tennis Court,Basic,False,0
+405,24/7 Maintenance,Basic,False,2303
+405,Swimming Pool,Premium,True,0
+405,Furnished,Basic,False,0
+406,24/7 Maintenance,Luxury,False,0
+406,Maid's Room,Basic,True,1334
+406,Security,Luxury,True,2832
+406,Children's Playground,Basic,False,0
+406,Concierge,Basic,False,4702
+407,Pet Friendly,Basic,False,0
+407,Central AC,Luxury,True,0
+407,Garden,Luxury,False,0
+407,Gym,Luxury,True,0
+407,Modern Kitchen,Luxury,True,1005
+408,Swimming Pool,Basic,True,2865
+408,Children's Playground,Luxury,False,1067
+408,Parking,Basic,True,1358
+408,Driver's Room,Basic,True,0
+408,Security,Luxury,True,3733
+409,Swimming Pool,Luxury,True,0
+409,BBQ Area,Luxury,False,1626
+409,Garden,Premium,False,1331
+409,Spa,Luxury,False,0
+409,24/7 Maintenance,Premium,False,1751
+409,Tennis Court,Basic,False,0
+410,Concierge,Luxury,False,0
+410,Furnished,Luxury,False,0
+410,Pet Friendly,Premium,True,0
+410,Security,Luxury,False,843
+410,Balcony,Premium,True,0
+411,Spa,Basic,False,0
+411,Basketball Court,Luxury,True,0
+411,Maid's Room,Luxury,True,3086
+412,Built-in Wardrobes,Luxury,False,3183
+412,Children's Playground,Basic,False,0
+412,Pet Friendly,Premium,False,0
+412,Modern Kitchen,Premium,True,3459
+412,Study Room,Basic,True,421
+412,Tennis Court,Luxury,True,3664
+412,Furnished,Premium,True,4170
+412,Balcony,Premium,False,2001
+413,Pet Friendly,Basic,True,1562
+413,Driver's Room,Basic,True,0
+413,Balcony,Luxury,True,0
+414,Children's Playground,Premium,False,0
+414,Spa,Basic,False,0
+414,Gym,Basic,False,4055
+414,Garden,Basic,True,0
+414,24/7 Maintenance,Premium,True,0
+414,Concierge,Basic,True,0
+415,Gym,Premium,False,0
+415,BBQ Area,Basic,True,0
+415,Basketball Court,Premium,False,877
+415,Study Room,Premium,True,0
+415,Furnished,Premium,False,1157
+415,Central AC,Luxury,True,0
+415,Tennis Court,Premium,False,3
+416,Swimming Pool,Luxury,True,1107
+416,Central AC,Premium,True,4849
+416,24/7 Maintenance,Basic,False,0
+416,Furnished,Basic,False,3875
+416,Children's Playground,Basic,True,0
+416,Modern Kitchen,Luxury,False,0
+416,Security,Basic,True,0
+416,Spa,Basic,False,0
+417,Parking,Premium,True,0
+417,Driver's Room,Luxury,False,0
+417,Garden,Premium,False,0
+417,Study Room,Basic,False,810
+417,Security,Luxury,False,1297
+417,Maid's Room,Luxury,False,0
+418,24/7 Maintenance,Luxury,True,2592
+418,Balcony,Basic,False,2935
+418,Study Room,Basic,False,1742
+418,Security,Luxury,False,0
+418,Maid's Room,Luxury,False,3556
+418,Terrace,Luxury,True,0
+418,Concierge,Basic,True,0
+419,24/7 Maintenance,Premium,False,0
+419,Study Room,Luxury,False,4628
+419,Concierge,Basic,False,3232
+419,Modern Kitchen,Basic,False,104
+419,Driver's Room,Premium,False,2233
+419,Basketball Court,Basic,True,0
+420,Pet Friendly,Basic,False,0
+420,Furnished,Basic,True,0
+420,Central AC,Luxury,True,0
+420,Parking,Premium,True,0
+420,24/7 Maintenance,Premium,False,0
+420,Basketball Court,Premium,True,1117
+421,Modern Kitchen,Luxury,True,0
+421,Driver's Room,Luxury,False,465
+421,24/7 Maintenance,Luxury,True,0
+421,Concierge,Premium,True,0
+421,Built-in Wardrobes,Luxury,False,719
+421,BBQ Area,Premium,True,1056
+421,Central AC,Luxury,False,484
+422,Swimming Pool,Luxury,True,0
+422,Garden,Basic,True,4898
+422,Central AC,Luxury,False,1194
+423,Children's Playground,Premium,False,0
+423,Pet Friendly,Basic,True,0
+423,24/7 Maintenance,Premium,True,4947
+423,Gym,Luxury,False,0
+423,Driver's Room,Luxury,True,418
+424,Walk-in Closet,Luxury,True,0
+424,Built-in Wardrobes,Basic,False,0
+424,Gym,Luxury,True,0
+424,Driver's Room,Luxury,True,0
+424,Pet Friendly,Premium,False,0
+424,Study Room,Basic,True,0
+424,Modern Kitchen,Premium,False,0
+425,Tennis Court,Basic,False,0
+425,Concierge,Premium,True,0
+425,Walk-in Closet,Premium,False,1222
+425,Security,Basic,True,3104
+425,Study Room,Luxury,False,0
+426,Swimming Pool,Basic,True,0
+426,24/7 Maintenance,Basic,True,0
+426,Pet Friendly,Luxury,False,2250
+426,Study Room,Luxury,False,0
+426,Security,Basic,False,0
+426,Spa,Luxury,False,0
+426,Furnished,Basic,True,0
+427,Modern Kitchen,Luxury,True,0
+427,BBQ Area,Luxury,False,1498
+427,Maid's Room,Premium,True,3029
+427,Security,Basic,False,0
+427,Spa,Luxury,False,0
+427,Gym,Luxury,False,4934
+428,BBQ Area,Premium,False,0
+428,Built-in Wardrobes,Basic,True,0
+428,Walk-in Closet,Basic,True,0
+428,Furnished,Premium,False,0
+428,Children's Playground,Luxury,True,1691
+428,24/7 Maintenance,Luxury,False,4440
+429,Modern Kitchen,Premium,True,516
+429,Basketball Court,Premium,True,1996
+429,Security,Basic,False,1494
+429,Maid's Room,Premium,False,0
+429,Driver's Room,Premium,False,3898
+429,Parking,Luxury,False,0
+429,Pet Friendly,Basic,False,327
+429,Central AC,Luxury,False,0
+430,Pet Friendly,Premium,False,0
+430,Parking,Basic,False,1407
+430,Garden,Basic,True,1223
+430,Central AC,Luxury,False,0
+430,Walk-in Closet,Premium,False,367
+430,Driver's Room,Luxury,False,1815
+430,Concierge,Premium,False,0
+430,Built-in Wardrobes,Premium,False,2124
+431,Modern Kitchen,Basic,False,0
+431,Garden,Premium,False,533
+431,Parking,Luxury,True,0
+431,Furnished,Premium,True,0
+431,Walk-in Closet,Premium,True,131
+431,Concierge,Premium,True,4310
+431,Terrace,Premium,False,0
+432,Tennis Court,Luxury,True,375
+432,Built-in Wardrobes,Premium,False,0
+432,Garden,Premium,True,3714
+433,BBQ Area,Basic,False,1273
+433,Terrace,Basic,False,0
+433,Balcony,Basic,False,1044
+433,Basketball Court,Premium,True,0
+433,Pet Friendly,Basic,True,0
+433,Concierge,Luxury,False,3995
+433,24/7 Maintenance,Luxury,True,3792
+434,Balcony,Premium,False,0
+434,Security,Basic,False,0
+434,Furnished,Basic,True,3129
+434,Driver's Room,Basic,False,1507
+434,Walk-in Closet,Premium,True,3896
+435,Balcony,Premium,False,4263
+435,Gym,Premium,False,0
+435,Study Room,Basic,False,0
+435,BBQ Area,Basic,True,1342
+435,Parking,Luxury,False,0
+435,Furnished,Basic,True,0
+435,Central AC,Basic,False,0
+435,Built-in Wardrobes,Basic,False,0
+436,Basketball Court,Luxury,True,225
+436,Central AC,Luxury,False,1079
+436,Study Room,Luxury,False,2890
+436,Driver's Room,Luxury,False,3936
+436,Parking,Premium,False,0
+436,Balcony,Luxury,True,0
+437,Tennis Court,Luxury,False,0
+437,Study Room,Basic,True,0
+437,Children's Playground,Basic,True,4066
+437,Gym,Luxury,False,1598
+437,Central AC,Luxury,True,701
+437,BBQ Area,Luxury,True,0
+438,Walk-in Closet,Luxury,False,0
+438,Basketball Court,Premium,True,0
+438,Terrace,Basic,False,1844
+438,Security,Premium,False,4289
+438,Spa,Premium,True,0
+438,Maid's Room,Basic,True,3809
+438,Study Room,Premium,True,0
+438,Gym,Basic,True,0
+439,Parking,Basic,False,4047
+439,BBQ Area,Basic,True,265
+439,24/7 Maintenance,Premium,True,4899
+439,Balcony,Luxury,True,0
+439,Children's Playground,Basic,False,1416
+440,Terrace,Basic,False,0
+440,Spa,Luxury,True,440
+440,Maid's Room,Premium,True,2611
+440,Basketball Court,Luxury,False,152
+440,Concierge,Luxury,False,697
+441,Walk-in Closet,Basic,False,0
+441,Maid's Room,Premium,False,0
+441,Tennis Court,Basic,True,3353
+441,BBQ Area,Premium,True,0
+441,Built-in Wardrobes,Luxury,True,0
+442,Garden,Premium,True,0
+442,Concierge,Basic,False,0
+442,Driver's Room,Premium,False,1650
+443,Built-in Wardrobes,Luxury,True,4163
+443,Terrace,Luxury,False,1191
+443,Garden,Luxury,False,0
+443,Concierge,Premium,True,0
+443,Gym,Basic,True,0
+443,Basketball Court,Premium,True,0
+443,Parking,Basic,True,3199
+444,Terrace,Luxury,False,907
+444,Study Room,Luxury,True,4786
+444,Pet Friendly,Premium,True,1065
+445,Modern Kitchen,Premium,True,0
+445,Garden,Luxury,True,1564
+445,Children's Playground,Basic,False,0
+445,Driver's Room,Luxury,False,0
+445,Walk-in Closet,Basic,False,2559
+445,Parking,Basic,False,3857
+445,BBQ Area,Premium,False,4476
+446,Modern Kitchen,Basic,False,508
+446,Walk-in Closet,Luxury,True,0
+446,Security,Premium,True,3051
+446,Concierge,Premium,True,4004
+446,Gym,Luxury,True,2873
+446,Built-in Wardrobes,Basic,False,1002
+446,Study Room,Premium,True,1756
+446,Driver's Room,Luxury,True,3938
+447,Furnished,Basic,False,0
+447,Modern Kitchen,Basic,True,0
+447,Tennis Court,Premium,False,306
+447,Gym,Luxury,True,0
+447,Swimming Pool,Luxury,False,0
+448,Driver's Room,Basic,False,2398
+448,BBQ Area,Luxury,True,507
+448,Walk-in Closet,Basic,False,0
+448,Swimming Pool,Premium,True,2246
+448,Balcony,Luxury,False,400
+449,BBQ Area,Premium,True,3262
+449,Garden,Premium,False,0
+449,Tennis Court,Luxury,True,3329
+449,Parking,Luxury,False,3740
+449,Built-in Wardrobes,Luxury,True,1542
+449,Gym,Basic,True,884
+450,Furnished,Luxury,True,0
+450,Concierge,Basic,False,2950
+450,24/7 Maintenance,Premium,True,0
+450,Built-in Wardrobes,Basic,True,0
+450,Garden,Basic,True,4457
+450,Central AC,Premium,True,2797
+450,Swimming Pool,Luxury,False,2650
+451,Driver's Room,Premium,False,86
+451,Gym,Premium,False,1692
+451,Walk-in Closet,Premium,True,0
+451,BBQ Area,Basic,False,0
+452,Children's Playground,Luxury,True,0
+452,Security,Luxury,False,2867
+452,Parking,Premium,True,2210
+452,Furnished,Premium,True,3863
+452,24/7 Maintenance,Basic,True,0
+453,Maid's Room,Premium,True,0
+453,Security,Luxury,True,1699
+453,Gym,Basic,False,0
+453,Central AC,Basic,False,1168
+454,Built-in Wardrobes,Basic,False,1913
+454,Gym,Basic,True,0
+454,Central AC,Basic,False,2645
+454,Pet Friendly,Luxury,False,0
+454,Balcony,Luxury,True,4729
+454,Parking,Premium,True,0
+454,Terrace,Luxury,False,0
+455,Concierge,Basic,True,1625
+455,Children's Playground,Premium,False,3171
+455,Parking,Basic,False,693
+456,Gym,Premium,True,4135
+456,Furnished,Luxury,False,0
+456,Swimming Pool,Premium,False,0
+457,Basketball Court,Basic,True,1474
+457,Central AC,Luxury,False,0
+457,Furnished,Luxury,True,211
+457,Spa,Premium,False,0
+457,Children's Playground,Luxury,False,4536
+457,Driver's Room,Premium,True,1370
+458,Concierge,Premium,False,2112
+458,Terrace,Premium,True,0
+458,Basketball Court,Premium,False,994
+458,Pet Friendly,Luxury,True,0
+458,24/7 Maintenance,Premium,False,0
+458,BBQ Area,Luxury,True,1770
+458,Swimming Pool,Premium,False,0
+458,Central AC,Luxury,False,1882
+459,Tennis Court,Premium,False,0
+459,Walk-in Closet,Basic,True,158
+459,Security,Basic,True,0
+459,Maid's Room,Basic,False,0
+459,24/7 Maintenance,Basic,False,0
+459,Swimming Pool,Luxury,False,2181
+459,Balcony,Luxury,False,1723
+460,Maid's Room,Luxury,False,4852
+460,Gym,Luxury,True,2520
+460,Pet Friendly,Basic,True,0
+460,Basketball Court,Basic,True,0
+460,Modern Kitchen,Luxury,True,0
+461,Study Room,Premium,True,4591
+461,Driver's Room,Premium,False,1950
+461,Basketball Court,Luxury,False,1713
+461,Swimming Pool,Basic,False,2514
+462,Gym,Premium,False,1342
+462,Terrace,Premium,False,2027
+462,Children's Playground,Premium,False,2496
+462,Maid's Room,Premium,False,0
+462,Walk-in Closet,Luxury,False,0
+463,Swimming Pool,Basic,True,3722
+463,Walk-in Closet,Basic,True,0
+463,Basketball Court,Basic,True,0
+463,Maid's Room,Luxury,False,2009
+463,24/7 Maintenance,Luxury,True,0
+463,Children's Playground,Basic,False,0
+464,Tennis Court,Basic,True,0
+464,Terrace,Basic,True,0
+464,Security,Luxury,False,0
+464,Garden,Luxury,True,2262
+464,Children's Playground,Luxury,True,0
+464,Spa,Luxury,True,4091
+465,Concierge,Premium,True,2310
+465,Furnished,Luxury,False,0
+465,Walk-in Closet,Premium,False,2003
+465,Terrace,Premium,True,0
+465,Security,Luxury,True,0
+465,Garden,Basic,False,0
+465,Modern Kitchen,Premium,True,0
+466,Modern Kitchen,Luxury,True,4585
+466,Spa,Premium,False,4428
+466,Built-in Wardrobes,Premium,False,1104
+466,Maid's Room,Premium,True,1037
+466,Driver's Room,Luxury,True,2732
+466,Terrace,Basic,True,0
+466,Parking,Luxury,True,0
+466,Central AC,Basic,True,2464
+467,24/7 Maintenance,Luxury,False,2479
+467,Driver's Room,Luxury,True,2969
+467,Garden,Premium,True,2997
+467,Gym,Luxury,True,3850
+467,Balcony,Basic,False,0
+467,Parking,Luxury,False,4380
+467,Children's Playground,Luxury,True,0
+467,Maid's Room,Basic,True,2811
+468,Concierge,Premium,False,4338
+468,Central AC,Basic,True,0
+468,Furnished,Basic,False,0
+468,Terrace,Basic,True,0
+469,Built-in Wardrobes,Luxury,False,0
+469,Swimming Pool,Basic,True,0
+469,Spa,Premium,False,0
+470,Gym,Premium,True,3030
+470,Pet Friendly,Premium,True,0
+470,Modern Kitchen,Basic,True,155
+470,Balcony,Premium,True,579
+470,Spa,Luxury,True,1714
+470,Driver's Room,Basic,True,3210
+470,Concierge,Basic,True,4492
+471,Parking,Premium,True,2600
+471,Modern Kitchen,Luxury,False,843
+471,Garden,Basic,False,2329
+471,Security,Premium,True,0
+472,Built-in Wardrobes,Basic,False,0
+472,Basketball Court,Basic,True,4683
+472,Security,Premium,False,3606
+472,Maid's Room,Luxury,False,0
+472,Spa,Luxury,True,1499
+472,Gym,Luxury,True,1881
+473,Concierge,Luxury,True,4236
+473,Central AC,Basic,False,2638
+473,24/7 Maintenance,Luxury,True,0
+473,Tennis Court,Premium,True,0
+474,Modern Kitchen,Luxury,True,0
+474,Concierge,Basic,False,3491
+474,Basketball Court,Luxury,False,0
+475,Central AC,Basic,True,4455
+475,Gym,Premium,False,826
+475,Maid's Room,Premium,False,0
+475,Swimming Pool,Premium,False,0
+475,Security,Basic,True,0
+475,Balcony,Premium,True,0
+475,Garden,Basic,True,0
+475,Built-in Wardrobes,Basic,True,0
+476,Walk-in Closet,Luxury,False,0
+476,Garden,Basic,False,0
+476,Pet Friendly,Premium,False,3434
+477,24/7 Maintenance,Luxury,True,1892
+477,Driver's Room,Basic,False,4503
+477,Terrace,Basic,False,959
+477,Walk-in Closet,Luxury,True,2305
+477,Built-in Wardrobes,Basic,True,0
+477,Central AC,Premium,False,2348
+477,Basketball Court,Basic,True,2383
+478,Built-in Wardrobes,Premium,False,3416
+478,Study Room,Premium,False,4637
+478,Maid's Room,Basic,True,2495
+478,Balcony,Premium,False,1809
+479,Balcony,Luxury,False,0
+479,Built-in Wardrobes,Basic,True,4194
+479,Study Room,Basic,False,0
+479,Walk-in Closet,Basic,True,207
+480,Tennis Court,Luxury,False,3632
+480,Balcony,Basic,True,0
+480,Pet Friendly,Luxury,True,4192
+480,Concierge,Basic,False,4920
+481,Study Room,Luxury,True,2870
+481,Tennis Court,Basic,False,0
+481,Maid's Room,Basic,False,0
+481,Children's Playground,Luxury,True,3718
+481,Modern Kitchen,Basic,True,1330
+481,Gym,Basic,True,4251
+481,Pet Friendly,Premium,True,2468
+482,Basketball Court,Luxury,True,4746
+482,Central AC,Premium,True,4450
+482,Garden,Premium,False,0
+482,Terrace,Premium,True,2284
+483,Study Room,Luxury,True,4193
+483,Swimming Pool,Basic,False,164
+483,Children's Playground,Luxury,False,0
+484,Study Room,Premium,False,0
+484,Maid's Room,Premium,False,1502
+484,Central AC,Basic,False,3439
+484,Built-in Wardrobes,Basic,False,4952
+484,Gym,Luxury,True,0
+484,Basketball Court,Luxury,True,645
+484,24/7 Maintenance,Luxury,True,0
+485,Central AC,Premium,False,4168
+485,Walk-in Closet,Premium,False,3039
+485,Gym,Luxury,True,3734
+485,Pet Friendly,Basic,False,4098
+486,Gym,Basic,False,0
+486,Concierge,Basic,False,3583
+486,Walk-in Closet,Luxury,False,0
+486,Spa,Luxury,False,0
+487,Garden,Premium,False,3224
+487,Children's Playground,Basic,False,850
+487,Pet Friendly,Basic,False,0
+487,Walk-in Closet,Basic,True,0
+487,Driver's Room,Luxury,False,1986
+488,Built-in Wardrobes,Basic,False,1883
+488,Gym,Luxury,True,4094
+488,Tennis Court,Basic,False,3988
+489,Gym,Basic,False,1683
+489,Security,Basic,True,3971
+489,Modern Kitchen,Premium,False,0
+489,Walk-in Closet,Luxury,True,0
+489,BBQ Area,Premium,True,1380
+490,Tennis Court,Basic,True,1747
+490,Maid's Room,Luxury,True,0
+490,Terrace,Premium,True,0
+490,Pet Friendly,Premium,False,0
+490,Swimming Pool,Basic,False,2250
+491,Spa,Basic,False,2952
+491,BBQ Area,Premium,False,1812
+491,Central AC,Premium,False,0
+491,Walk-in Closet,Premium,False,2875
+492,Driver's Room,Basic,True,832
+492,Garden,Premium,False,0
+492,Central AC,Luxury,False,0
+492,Modern Kitchen,Premium,True,0
+492,Swimming Pool,Luxury,True,2482
+492,Study Room,Basic,False,0
+492,Pet Friendly,Premium,True,1424
+492,Parking,Premium,False,1226
+493,Balcony,Basic,True,1352
+493,Children's Playground,Luxury,False,4936
+493,Study Room,Luxury,False,1261
+494,24/7 Maintenance,Premium,False,936
+494,Concierge,Luxury,True,3036
+494,Pet Friendly,Luxury,True,3910
+495,Balcony,Premium,True,1399
+495,Children's Playground,Luxury,False,361
+495,Terrace,Basic,True,2811
+495,Security,Premium,False,1550
+495,Study Room,Premium,True,1699
+495,Garden,Premium,True,0
+495,Furnished,Luxury,True,1070
+496,Modern Kitchen,Basic,True,4730
+496,Central AC,Basic,True,1377
+496,Maid's Room,Basic,True,4007
+496,Furnished,Luxury,False,1102
+497,Terrace,Basic,False,1464
+497,Garden,Premium,True,0
+497,Gym,Luxury,False,1873
+497,24/7 Maintenance,Premium,True,3604
+497,Spa,Premium,True,2309
+497,Built-in Wardrobes,Basic,False,0
+497,Parking,Luxury,False,0
+497,Pet Friendly,Luxury,False,0
+498,Basketball Court,Luxury,True,0
+498,Children's Playground,Premium,True,3734
+498,Study Room,Basic,True,413
+499,Balcony,Basic,False,2145
+499,Swimming Pool,Luxury,False,2776
+499,Maid's Room,Luxury,True,2670
+499,Gym,Luxury,False,0
+499,Modern Kitchen,Premium,False,0
+499,Furnished,Basic,True,0
+499,Garden,Premium,False,4457
+500,Tennis Court,Basic,True,0
+500,BBQ Area,Premium,False,0
+500,Pet Friendly,Basic,True,0

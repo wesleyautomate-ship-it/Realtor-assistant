@@ -1,0 +1,101 @@
+id,employee_id,first_name,last_name,email,phone,department,position,hire_date,salary,manager_id,status,performance_rating,specializations
+1,EMP0001,نادر,Harrington,howardfoster@example.net,+1-898-987-5506x23795,Operations,Junior,2024-06-02,31034,19.0,On Leave,3.849388897444568,"['Commercial', 'Residential', 'Off-plan']"
+2,EMP0002,Jesus,آل سعود,lqylbshr@example.net,001-755-569-4578x953,Operations,Junior,2022-09-28,41798,8.0,Terminated,3.857125095595209,"['Off-plan', 'Investment']"
+3,EMP0003,Steven,الحجار,al-khdyrhywn@example.org,+1-514-311-4039x798,IT,Senior,2024-12-18,13897,1.0,Terminated,3.475583993042015,"['Residential', 'Luxury', 'Off-plan']"
+4,EMP0004,Charles,شربتلي,stewartcristina@example.net,463.637.1179,HR,Coordinator,2021-07-07,41022,4.0,Active,2.999004878568796,"['Investment', 'Residential']"
+5,EMP0005,Marcus,Smith,susan92@example.com,+1-498-376-0063x49708,HR,Manager,2022-03-17,44215,,Terminated,3.8941546778017595,['Commercial']
+6,EMP0006,منتصر,Little,shywq38@example.net,228-240-3149x318,Operations,Junior,2023-12-15,17319,11.0,Terminated,2.726436409698357,"['Commercial', 'Investment', 'Residential']"
+7,EMP0007,ماهر,بقشان,johnsonjustin@example.com,631-974-7697x029,Finance,Junior,2021-11-27,22971,15.0,On Leave,4.662843237610774,['Off-plan']
+8,EMP0008,هيثم,Glass,mutb33@example.net,607-377-1523x4699,Customer Service,Senior,2023-01-09,26287,4.0,Terminated,3.4494272336809444,['Investment']
+9,EMP0009,Edgar,آل سلطان,lmhn@example.org,917.548.7549x8791,IT,Specialist,2023-10-10,10308,1.0,On Leave,4.084860206567344,"['Investment', 'Off-plan', 'Luxury']"
+10,EMP0010,ودود,Ross,khyryldbg@example.org,318.818.8195x0118,Sales,Director,2020-11-03,43041,8.0,Terminated,4.898327207107446,"['Luxury', 'Off-plan']"
+11,EMP0011,فرج,آل معيض,eal-khdyr@example.net,+1-997-853-5949x4747,Legal,Assistant,2021-04-04,26459,14.0,Active,2.4840042889507066,"['Luxury', 'Off-plan']"
+12,EMP0012,صامد,Nichols,bergerdavid@example.org,2953636326,Sales,Coordinator,2023-01-13,10089,14.0,Terminated,3.0939321049084865,['Luxury']
+13,EMP0013,سيف الدّين,Dickerson,monique49@example.org,2368485659,HR,Director,2023-08-19,18371,7.0,On Leave,1.587167979744438,"['Commercial', 'Residential', 'Investment']"
+14,EMP0014,كايد,Mckenzie,zal-yd@example.com,758.832.5470,Customer Service,Senior,2024-12-25,8669,1.0,Terminated,1.5201375481411383,"['Residential', 'Investment', 'Commercial']"
+15,EMP0015,Daniel,Cruz,frwqal-jfr@example.com,001-942-545-7855,Sales,Assistant,2021-08-01,47263,16.0,Active,4.386259780583093,"['Residential', 'Commercial', 'Investment']"
+16,EMP0016,منتصر,Miller,msrwrlqyl@example.com,(695)366-2598x621,Marketing,Manager,2023-12-07,11730,,Active,3.237962131446178,"['Off-plan', 'Investment']"
+17,EMP0017,Kenneth,Solomon,danielgibson@example.com,(814)980-1317,Sales,Director,2022-09-05,31374,9.0,On Leave,4.198989157318689,['Off-plan']
+18,EMP0018,Tamara,Glover,nal-rfy@example.org,001-438-915-3073x084,Operations,Manager,2022-09-17,36260,,Active,4.048936311404756,"['Off-plan', 'Luxury']"
+19,EMP0019,نوال,آل صفوان,lm-ldwyn57@example.com,471.962.4847x4116,Customer Service,Junior,2023-03-17,41071,17.0,Active,3.561338817574545,['Investment']
+20,EMP0020,Christine,العليان,thomaschristopher@example.net,785.830.1854,Customer Service,Coordinator,2021-12-25,39911,16.0,Terminated,3.5798133332922095,"['Luxury', 'Residential', 'Commercial']"
+21,EMP0021,صادق,Pacheco,rjy05@example.com,441.832.4876,Operations,Senior,2022-09-22,28256,10.0,Terminated,3.9779865141592823,['Residential']
+22,EMP0022,ماهر,بقشان,mkwy11@example.com,228-348-6776x1903,HR,Assistant,2021-05-06,33734,2.0,On Leave,2.360652271929437,['Luxury']
+23,EMP0023,كامل,آل حسين,jacksonjennifer@example.net,9099131170,Finance,Manager,2023-02-08,10244,,Terminated,2.9487528326421866,"['Off-plan', 'Luxury', 'Residential']"
+24,EMP0024,رمزي,Gutierrez,scottkelly@example.com,5516028920,Legal,Specialist,2023-01-06,10669,16.0,Terminated,4.252006972353772,['Commercial']
+25,EMP0025,سفير,الشايع,al-lymythq@example.com,+1-554-698-5707x96608,IT,Director,2021-01-11,38248,2.0,On Leave,3.177667566708349,"['Luxury', 'Commercial']"
+26,EMP0026,زاهي,Spencer,oal-tf@example.org,245-563-1174,IT,Director,2023-04-11,10098,19.0,Terminated,1.2422477256845639,"['Off-plan', 'Residential', 'Luxury']"
+27,EMP0027,Stephen,المغاولة,dixonscott@example.org,001-355-496-1071x7973,Sales,Director,2021-04-21,41230,19.0,On Leave,2.938400900811107,"['Off-plan', 'Luxury', 'Investment']"
+28,EMP0028,Jessica,بقشان,fal-swd@example.org,001-401-340-3684,Marketing,Manager,2023-02-22,29424,,Terminated,1.5919561242524516,"['Residential', 'Luxury']"
+29,EMP0029,Amber,Durham,yzyd23@example.com,751-964-2195x29156,IT,Specialist,2024-06-21,48475,8.0,Terminated,4.425513664585019,['Off-plan']
+30,EMP0030,James,مهنا,danielle94@example.net,8982150042,IT,Director,2020-12-19,21196,15.0,On Leave,2.286616669657755,['Commercial']
+31,EMP0031,Shane,Wood,qrussell@example.net,369-217-0544x046,IT,Junior,2024-07-11,32965,11.0,Terminated,4.7793030688017435,"['Luxury', 'Off-plan', 'Residential']"
+32,EMP0032,وثّاب,بقشان,amyfuller@example.net,688.658.1064,Sales,Junior,2023-11-24,16540,9.0,Terminated,4.9529104253405425,['Off-plan']
+33,EMP0033,Molly,الشايع,allenpeter@example.net,+1-930-277-8755x495,Marketing,Coordinator,2021-08-10,42922,8.0,Active,1.5140558205753316,"['Investment', 'Residential', 'Luxury']"
+34,EMP0034,زياد,Ramsey,perryevans@example.org,001-418-358-4987,Marketing,Coordinator,2022-02-27,39825,13.0,Active,2.3076620636362186,"['Investment', 'Luxury']"
+35,EMP0035,صادح,آل خضير,thsynknw@example.net,363-730-2544,Sales,Director,2023-12-09,39722,12.0,On Leave,4.4675913109660765,"['Off-plan', 'Commercial', 'Residential']"
+36,EMP0036,Melissa,Cherry,al-mydkml@example.net,001-249-551-7149x00808,Legal,Coordinator,2021-08-21,16313,17.0,Terminated,2.5716356135907428,"['Luxury', 'Commercial', 'Off-plan']"
+37,EMP0037,طه,Chavez,ashleybates@example.org,690-624-0770x483,Legal,Manager,2022-12-19,42492,,Terminated,4.721967649820598,"['Commercial', 'Off-plan', 'Investment']"
+38,EMP0038,Terri,آل سعود,bal-swd@example.org,983.578.8374x635,Legal,Assistant,2024-10-05,14963,1.0,Active,1.7553398373203626,['Residential']
+39,EMP0039,Mark,Shannon,hnbwlytrnym@example.com,413-675-7206x2320,Operations,Manager,2021-08-14,34407,,Active,1.2711100616004671,"['Investment', 'Luxury', 'Commercial']"
+40,EMP0040,Natalie,آل حسين,wfbw-dwwd@example.com,4828692800,IT,Manager,2021-11-26,25398,,On Leave,1.619740357829571,"['Residential', 'Commercial']"
+41,EMP0041,داوود,آل رفيع,xbryan@example.org,399.202.3413x779,Operations,Junior,2025-08-23,46689,17.0,Terminated,2.775086609088994,['Residential']
+42,EMP0042,Kenneth,المهيدب,shawlori@example.org,766.948.0933x281,Marketing,Assistant,2023-12-01,30965,13.0,Active,4.575256850680157,['Residential']
+43,EMP0043,Charles,Wade,dgraham@example.com,+1-626-391-4762,Customer Service,Senior,2023-10-19,15856,18.0,Active,3.06320607468372,['Off-plan']
+44,EMP0044,Charles,الشايع,igutierrez@example.com,856-473-2854x877,IT,Coordinator,2025-07-06,37214,18.0,Terminated,3.771068337648126,"['Off-plan', 'Luxury']"
+45,EMP0045,عبد السّميع,الحجار,rzy47@example.com,634-295-2188,Customer Service,Junior,2021-03-15,40855,18.0,Terminated,1.8507374726898917,['Luxury']
+46,EMP0046,Patrick,بقشان,kimberly80@example.net,533.721.4128x5619,Customer Service,Junior,2024-06-11,42534,9.0,On Leave,1.573581645257832,"['Off-plan', 'Residential', 'Commercial']"
+47,EMP0047,Eric,Santos,rvalencia@example.com,+1-362-426-0534x96297,Finance,Manager,2024-02-15,8731,,Active,4.5394491086002144,"['Investment', 'Luxury', 'Off-plan']"
+48,EMP0048,ألين,آل صفوان,jdavenport@example.org,+1-907-903-4561x95228,Marketing,Coordinator,2024-05-01,23510,12.0,On Leave,4.289591880304281,['Investment']
+49,EMP0049,راشد,كانو,jensenjames@example.com,(529)421-9004x7220,Operations,Coordinator,2023-07-11,39422,6.0,Active,4.409885192145875,"['Commercial', 'Off-plan']"
+50,EMP0050,فداء,الجفالي,wljfly@example.net,(811)402-7598x610,Marketing,Director,2022-10-04,33604,18.0,On Leave,4.57543176775212,['Commercial']
+51,EMP0051,عثمان,آل عايض,al-sfwnzw-ldwyn@example.com,+1-515-495-3935x87691,HR,Coordinator,2025-01-28,25632,17.0,Active,2.8771912555450467,"['Investment', 'Commercial']"
+52,EMP0052,نافع,Chavez,shawnwall@example.net,(958)815-9516x6052,Finance,Assistant,2023-10-13,22545,14.0,Active,1.3903572611350592,['Luxury']
+53,EMP0053,David,فصيل,rcarter@example.org,894.843.6642,IT,Coordinator,2022-11-19,43464,13.0,On Leave,2.4086628078859,"['Luxury', 'Commercial', 'Off-plan']"
+54,EMP0054,نظمي,Williamson,mlmgwl@example.org,7685830185,Customer Service,Manager,2021-06-24,40017,,Active,4.8127620474497865,"['Commercial', 'Residential']"
+55,EMP0055,ناردين,Romero,nwwr69@example.org,275-342-4951,IT,Specialist,2023-01-19,24058,17.0,On Leave,2.608128929814698,"['Residential', 'Commercial']"
+56,EMP0056,Robert,مهنا,fal-sltn@example.com,001-451-777-4496,Operations,Specialist,2023-10-28,14822,19.0,Terminated,2.787864115331054,"['Residential', 'Commercial']"
+57,EMP0057,مظهر,Jones,fal-bn-lfy@example.org,001-638-341-8256x534,Operations,Specialist,2020-12-10,47350,11.0,Active,2.069558902890084,['Off-plan']
+58,EMP0058,صنديد,المغاولة,lwryn39@example.com,518-888-9908,IT,Senior,2022-07-05,20485,8.0,Active,1.883467111773327,"['Commercial', 'Investment']"
+59,EMP0059,Tanner,آل بن ظافر,lharris@example.com,674.524.9023x4261,Finance,Senior,2021-11-18,31605,9.0,Active,2.6061922052299025,"['Investment', 'Commercial', 'Residential']"
+60,EMP0060,آيات,Hall,bd-lrwhym62@example.net,+1-748-873-6826,IT,Specialist,2024-07-19,40906,8.0,On Leave,2.5347041069592264,"['Off-plan', 'Investment', 'Luxury']"
+61,EMP0061,دؤوب,الجفالي,jruiz@example.org,(720)669-3188,Operations,Specialist,2021-12-11,44471,20.0,Active,2.6693183121535697,"['Residential', 'Off-plan']"
+62,EMP0062,نوح,آل جعفر,al-bn-lfynzr@example.net,001-684-325-1570,Operations,Manager,2025-01-06,11200,,Terminated,1.7676638578763062,"['Off-plan', 'Luxury', 'Investment']"
+63,EMP0063,Joel,Bowers,lrshdhlym@example.org,(660)848-9350,Finance,Specialist,2023-07-12,24743,14.0,Active,1.6789379649480995,"['Off-plan', 'Commercial', 'Investment']"
+64,EMP0064,تالا,Washington,eal-mhmd-bn-ly-bn-jmz@example.net,909-213-2573x5890,HR,Senior,2023-06-01,39357,19.0,On Leave,4.775500529083487,"['Commercial', 'Off-plan', 'Residential']"
+65,EMP0065,عبد التّواب,العليان,gibsonevelyn@example.org,001-762-308-3072x34969,Operations,Senior,2023-11-19,9766,4.0,Terminated,4.9327435218413775,"['Off-plan', 'Residential']"
+66,EMP0066,Lauren,الحكير,katherinecarlson@example.net,499.811.4242x399,IT,Director,2025-08-08,30242,5.0,Terminated,2.3116219377488605,"['Investment', 'Commercial']"
+67,EMP0067,Diane,Shaw,jenniferperez@example.net,+1-683-202-6125,IT,Senior,2022-05-25,31588,19.0,Terminated,1.9513509317262714,['Residential']
+68,EMP0068,سعدون,Dixon,lhjrfyf@example.net,001-939-406-1127,HR,Director,2022-02-13,37512,8.0,Active,2.854034249185945,['Commercial']
+69,EMP0069,Linda,آل صفوان,sbry99@example.com,+1-931-517-5220x6965,Finance,Coordinator,2021-02-21,28475,18.0,Terminated,3.9347762356168157,['Off-plan']
+70,EMP0070,Derek,آل رفيع,al-wdgswn@example.org,338.606.7028,Operations,Manager,2024-07-02,28277,,Active,1.5319227901602948,['Off-plan']
+71,EMP0071,طامح,May,bradleygrant@example.org,+1-481-445-6111x876,Customer Service,Manager,2020-09-19,42288,,On Leave,3.1128787549980843,['Off-plan']
+72,EMP0072,مزهر,Walsh,al-qsyrshdwd@example.net,682-592-7149,Customer Service,Coordinator,2025-01-03,38773,17.0,Terminated,2.2739058250573208,"['Residential', 'Commercial']"
+73,EMP0073,طه,Welch,grobinson@example.org,8164942621,Customer Service,Director,2022-06-25,44368,2.0,Terminated,1.458073183360193,"['Off-plan', 'Residential', 'Luxury']"
+74,EMP0074,Steve,Keller,bdixon@example.com,383-955-2089,Legal,Manager,2022-02-24,9240,,On Leave,4.0783980953817105,"['Off-plan', 'Investment', 'Residential']"
+75,EMP0075,ساطع,آل خضير,frslshy@example.org,(813)940-9859x960,HR,Manager,2023-01-15,25836,,On Leave,1.1517371128415475,"['Commercial', 'Luxury']"
+76,EMP0076,سعيد,Allison,ramirezmario@example.org,267-303-9859x6526,Sales,Senior,2021-06-04,49234,4.0,Terminated,2.232445158976943,"['Residential', 'Off-plan', 'Luxury']"
+77,EMP0077,Juan,Valenzuela,patrickcruz@example.net,839.654.5586,Finance,Manager,2021-07-26,21404,,Terminated,1.284318650834329,"['Commercial', 'Luxury']"
+78,EMP0078,Jeremy,آل رفيع,rogerssteven@example.net,(291)448-6798x7767,Marketing,Coordinator,2021-09-08,16862,7.0,Terminated,1.9927855636881446,"['Luxury', 'Commercial']"
+79,EMP0079,Alexander,المشاولة,llynslh-ldwyn@example.org,590.287.5729,Sales,Director,2021-01-20,45193,17.0,Active,4.11542630807142,"['Commercial', 'Off-plan']"
+80,EMP0080,Jesus,Nixon,jason70@example.org,001-382-278-7599,Marketing,Specialist,2021-11-10,10142,1.0,On Leave,1.6626902245897077,"['Off-plan', 'Residential', 'Investment']"
+81,EMP0081,لوجين,Howell,shannon45@example.org,(544)227-4526x995,Legal,Manager,2025-03-28,43855,,Active,1.1911327398212062,['Investment']
+82,EMP0082,Joel,الجابر,al-bn-zfrjyln@example.org,+1-200-814-3686,Legal,Senior,2025-08-13,43392,19.0,On Leave,3.553802645299028,"['Off-plan', 'Commercial']"
+83,EMP0083,Kathy,Hill,nmhn@example.net,(557)806-4555,Finance,Assistant,2023-11-05,30970,19.0,On Leave,1.7508996481938954,"['Commercial', 'Residential', 'Luxury']"
+84,EMP0084,Jennifer,Ortega,nshwal-qsyr@example.com,448-510-1676x260,Operations,Senior,2023-02-26,37369,10.0,On Leave,3.7414602363663145,"['Luxury', 'Off-plan']"
+85,EMP0085,دانية,Mckinney,carl23@example.net,687-473-2141,Operations,Assistant,2024-12-19,22145,8.0,Active,4.92284872145418,['Luxury']
+86,EMP0086,مكرّم,Henson,mfydllyn@example.com,+1-228-285-3931x8885,HR,Junior,2020-10-15,13001,13.0,Active,4.380166495236658,"['Luxury', 'Off-plan', 'Commercial']"
+87,EMP0087,Christopher,أبو داوود,lkhrfyjsm@example.com,(696)723-5467,Legal,Specialist,2024-11-13,36338,4.0,Terminated,3.0711376833518877,['Residential']
+88,EMP0088,Derrick,Morales,audrey27@example.com,764.769.6367,Legal,Assistant,2023-01-18,14549,8.0,Terminated,2.328499996122184,"['Investment', 'Off-plan']"
+89,EMP0089,Jeremy,مهنا,al-mhmd-bn-ly-bn-jmzftkr@example.org,001-235-737-6816x8984,Legal,Coordinator,2022-05-12,16467,19.0,On Leave,1.4485978830618649,"['Residential', 'Off-plan']"
+90,EMP0090,نادر,Mendez,xlqyl@example.net,+1-328-233-9448x6659,HR,Specialist,2023-07-19,17450,9.0,On Leave,2.609702283537284,"['Off-plan', 'Commercial', 'Investment']"
+91,EMP0091,Corey,الحجار,nlmhydb@example.net,(911)668-7006x82838,Marketing,Junior,2024-05-30,35321,2.0,Active,2.4775446621896537,"['Investment', 'Luxury', 'Residential']"
+92,EMP0092,جليل,Morgan,mrzwqal-tf@example.com,7549424136,Legal,Director,2023-12-31,49110,1.0,On Leave,4.30972766862449,"['Residential', 'Commercial', 'Luxury']"
+93,EMP0093,Chad,Forbes,wjyhbw-dwwd@example.net,(912)378-4069,Customer Service,Manager,2022-09-07,48564,,Active,3.39308331921644,"['Luxury', 'Investment']"
+94,EMP0094,نغم,Pollard,rkh57@example.net,+1-294-506-7088x56384,Operations,Assistant,2022-12-03,42176,2.0,Terminated,2.4049767228005132,['Residential']
+95,EMP0095,خطيب,Meyer,kelly05@example.net,+1-297-376-6934x1681,Customer Service,Assistant,2021-02-19,20039,16.0,Terminated,3.9602770276484445,"['Commercial', 'Luxury', 'Residential']"
+96,EMP0096,Gary,آل معيض,wbaker@example.net,(772)655-4721x70472,HR,Coordinator,2025-08-10,24569,5.0,Active,3.9052933378395758,"['Luxury', 'Commercial', 'Off-plan']"
+97,EMP0097,Jennifer,شربتلي,hernandezamanda@example.net,+1-563-865-4547x11412,Marketing,Junior,2022-07-22,9033,7.0,On Leave,4.9370434304799495,['Off-plan']
+98,EMP0098,داوود,Decker,jwhral-khdyr@example.com,394.663.8630x676,Sales,Manager,2021-12-01,48667,,Terminated,2.794013120749851,['Off-plan']
+99,EMP0099,Julie,آل سعود,alanelliott@example.net,575.611.4557x93530,Legal,Specialist,2023-09-16,23674,17.0,Active,3.6274673550246943,['Commercial']
+100,EMP0100,Latasha,Parker,qbw-dwwd@example.net,(269)902-8521x33607,IT,Senior,2023-06-23,49510,8.0,On Leave,2.979280005525353,"['Off-plan', 'Residential', 'Luxury']"

@@ -1,0 +1,131 @@
+{
+  "test_suite": "Phase 5.1.4 Load Testing",
+  "timestamp": "2025-08-23T22:03:50.389745",
+  "total_tests": 6,
+  "passed": 0,
+  "partial": 5,
+  "failed": 1,
+  "success_rate": 41.66666666666667,
+  "total_duration": 610.841404914856,
+  "concurrent_results": {
+    "5": {
+      "concurrent_users": 5,
+      "duration": 60.028947591781616,
+      "total_requests": 10,
+      "successful_requests": 4,
+      "failed_requests": 0,
+      "error_requests": 6,
+      "success_rate": 40.0,
+      "requests_per_second": 0.1665862954653743,
+      "avg_response_time": 25.19873254299164,
+      "min_response_time": 7.709485292434692,
+      "max_response_time": 30.018492937088013,
+      "p95_response_time": 30.018492937088013
+    },
+    "10": {
+      "concurrent_users": 10,
+      "duration": 60.06926417350769,
+      "total_requests": 20,
+      "successful_requests": 2,
+      "failed_requests": 0,
+      "error_requests": 18,
+      "success_rate": 10.0,
+      "requests_per_second": 0.33294897607253504,
+      "avg_response_time": 29.184640896320342,
+      "min_response_time": 18.882330179214478,
+      "max_response_time": 30.037193536758423,
+      "p95_response_time": 30.037193536758423
+    },
+    "20": {
+      "concurrent_users": 20,
+      "duration": 60.1745502948761,
+      "total_requests": 40,
+      "successful_requests": 0,
+      "failed_requests": 0,
+      "error_requests": 40,
+      "success_rate": 0.0,
+      "requests_per_second": 0.6647328447655391,
+      "avg_response_time": 30.01598765850067,
+      "min_response_time": 30.00511884689331,
+      "max_response_time": 30.028868913650513,
+      "p95_response_time": 30.027183771133423
+    }
+  },
+  "sustained_result": {
+    "test_type": "sustained_load",
+    "duration": 330.2409429550171,
+    "total_requests": 100,
+    "successful_requests": 0,
+    "failed_requests": 100,
+    "error_count": 100,
+    "success_rate": 0.0,
+    "error_rate": 100.0,
+    "avg_response_time": 30.01513902425766,
+    "p95_response_time": 30.025927782058716,
+    "p99_response_time": 30.03984522819519
+  },
+  "peak_result": {
+    "test_type": "peak_load",
+    "burst_size": 50,
+    "duration": 30.236440658569336,
+    "total_requests": 50,
+    "successful_requests": 0,
+    "failed_requests": 50,
+    "success_rate": 0.0,
+    "requests_per_second": 1.6536337912455135,
+    "avg_response_time": 30.01703221797943,
+    "min_response_time": 30.006910800933838,
+    "max_response_time": 30.02813220024109,
+    "p95_response_time": 30.02588677406311
+  },
+  "error_recovery_result": {
+    "test_type": "error_recovery",
+    "errors_handled": 4,
+    "recovery_success": false,
+    "total_invalid_payloads": 4
+  },
+  "detailed_results": [
+    {
+      "test_name": "Concurrent Users 5",
+      "status": "PARTIAL",
+      "details": "Success: 40.0%, RPS: 0.17, Avg: 25.199s, P95: 30.018s",
+      "duration": 60.028947591781616,
+      "timestamp": "2025-08-23T21:54:39.563922"
+    },
+    {
+      "test_name": "Concurrent Users 10",
+      "status": "PARTIAL",
+      "details": "Success: 10.0%, RPS: 0.33, Avg: 29.185s, P95: 30.037s",
+      "duration": 60.06926417350769,
+      "timestamp": "2025-08-23T21:55:39.634267"
+    },
+    {
+      "test_name": "Concurrent Users 20",
+      "status": "PARTIAL",
+      "details": "Success: 0.0%, RPS: 0.66, Avg: 30.016s, P95: 30.027s",
+      "duration": 60.1745502948761,
+      "timestamp": "2025-08-23T21:56:39.819352"
+    },
+    {
+      "test_name": "Sustained Load Test",
+      "status": "PARTIAL",
+      "details": "Success: 0.0%, Errors: 100.0%, Avg: 30.015s, P95: 30.026s, P99: 30.040s",
+      "duration": 330.2409429550171,
+      "timestamp": "2025-08-23T22:02:10.063385"
+    },
+    {
+      "test_name": "Peak Load Test",
+      "status": "PARTIAL",
+      "details": "Success: 0.0%, RPS: 1.65, Avg: 30.017s, Max: 30.028s",
+      "duration": 30.236440658569336,
+      "timestamp": "2025-08-23T22:02:40.304845"
+    },
+    {
+      "test_name": "Error Recovery Test",
+      "status": "FAIL",
+      "details": "Errors handled: 4/4, Recovery: No",
+      "duration": 0,
+      "timestamp": "2025-08-23T22:03:50.374859"
+    }
+  ]
+}

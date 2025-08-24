@@ -1,0 +1,102 @@
+{
+  "test_suite": "Phase 5.1.2 Performance Testing",
+  "timestamp": "2025-08-23T18:38:31.925472",
+  "targets": {
+    "context_retrieval": 2.0,
+    "total_response": 3.0,
+    "database_query": 0.5,
+    "chromadb_query": 1.0
+  },
+  "total_tests": 8,
+  "passed": 5,
+  "failed": 3,
+  "success_rate": 62.5,
+  "total_duration": 26.22866654396057,
+  "performance_results": {
+    "context_retrieval": {
+      "count": 5,
+      "mean": 1.2034638404846192,
+      "median": 1.0243308544158936,
+      "min": 0.8436524868011475,
+      "max": 1.8539578914642334,
+      "std_dev": 0.42008581613138957
+    },
+    "api_response": {
+      "count": 3,
+      "mean": 6.100975751876831,
+      "median": 5.973252058029175,
+      "min": 5.351060152053833,
+      "max": 6.978615045547485,
+      "std_dev": 0.8212604576572227
+    }
+  },
+  "recommendations": [
+    "API response average (6.101s) exceeds target (3.0s). Consider: optimizing context retrieval, implementing response caching, parallel processing."
+  ],
+  "detailed_results": [
+    {
+      "test_name": "Context Retrieval 1",
+      "duration": 1.8539578914642334,
+      "target": 2.0,
+      "status": "PASS",
+      "details": "Retrieved 7 context items",
+      "timestamp": "2025-08-23T18:38:09.448978"
+    },
+    {
+      "test_name": "Context Retrieval 2",
+      "duration": 0.8436524868011475,
+      "target": 2.0,
+      "status": "PASS",
+      "details": "Retrieved 7 context items",
+      "timestamp": "2025-08-23T18:38:10.293013"
+    },
+    {
+      "test_name": "Context Retrieval 3",
+      "duration": 0.9079272747039795,
+      "target": 2.0,
+      "status": "PASS",
+      "details": "Retrieved 7 context items",
+      "timestamp": "2025-08-23T18:38:11.201602"
+    },
+    {
+      "test_name": "Context Retrieval 4",
+      "duration": 1.3874506950378418,
+      "target": 2.0,
+      "status": "PASS",
+      "details": "Retrieved 5 context items",
+      "timestamp": "2025-08-23T18:38:12.589681"
+    },
+    {
+      "test_name": "Context Retrieval 5",
+      "duration": 1.0243308544158936,
+      "target": 2.0,
+      "status": "PASS",
+      "details": "Retrieved 7 context items",
+      "timestamp": "2025-08-23T18:38:13.614372"
+    },
+    {
+      "test_name": "API Response 1",
+      "duration": 5.973252058029175,
+      "target": 3.0,
+      "status": "FAIL",
+      "details": "Response: 3727 chars",
+      "timestamp": "2025-08-23T18:38:19.588766"
+    },
+    {
+      "test_name": "API Response 2",
+      "duration": 5.351060152053833,
+      "target": 3.0,
+      "status": "FAIL",
+      "details": "Response: 3314 chars",
+      "timestamp": "2025-08-23T18:38:24.940675"
+    },
+    {
+      "test_name": "API Response 3",
+      "duration": 6.978615045547485,
+      "target": 3.0,
+      "status": "FAIL",
+      "details": "Response: 4271 chars",
+      "timestamp": "2025-08-23T18:38:31.919703"
+    }
+  ]
+}

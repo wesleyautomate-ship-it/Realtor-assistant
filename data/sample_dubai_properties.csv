@@ -1,0 +1,4 @@
+address,price_aed,bedrooms,bathrooms,square_feet,property_type,area,developer,completion_date,view,amenities,service_charges,agent,agency
+"Marina Gate 1, Dubai Marina",2500000,2,2,1200,Apartment,Dubai Marina,Emaar Properties,2016,Sea View,"['Swimming Pool', 'Gymnasium', 'Parking', 'Concierge']",18000,Ahmed Ali,Emaar Properties
+"Burj Vista 1, Downtown Dubai",4500000,3,3,1800,Apartment,Downtown Dubai,Emaar Properties,2017,Burj Khalifa View,"['Swimming Pool', 'Gymnasium', 'Concierge', 'BBQ Area']",25000,Sarah Johnson,Emaar Properties
+"Palm Tower, Palm Jumeirah",8500000,4,4,2800,Penthouse,Palm Jumeirah,Nakheel,2020,Sea View,"['Private Pool', 'Gymnasium', 'Concierge', 'Private Garden']",35000,Michael Brown,Nakheel

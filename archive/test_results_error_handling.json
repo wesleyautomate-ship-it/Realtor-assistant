@@ -1,0 +1,77 @@
+{
+  "test_suite": "Phase 5.1.5 Error Handling Testing",
+  "timestamp": "2025-08-23T22:15:28.183290",
+  "total_tests": 5,
+  "passed": 3,
+  "partial": 2,
+  "failed": 0,
+  "success_rate": 80.0,
+  "total_duration": 340.59682273864746,
+  "invalid_inputs_result": {
+    "test_type": "invalid_inputs",
+    "total_tests": 9,
+    "errors_handled": 9,
+    "success_rate": 100.0
+  },
+  "malformed_requests_result": {
+    "test_type": "malformed_requests",
+    "total_tests": 4,
+    "errors_handled": 4,
+    "success_rate": 100.0
+  },
+  "system_recovery_result": {
+    "test_type": "system_recovery",
+    "total_attempts": 3,
+    "recovery_success": 0,
+    "recovery_rate": 0.0
+  },
+  "edge_cases_result": {
+    "test_type": "edge_cases",
+    "total_cases": 8,
+    "handled_successfully": 0,
+    "success_rate": 0.0
+  },
+  "error_logging_result": {
+    "test_type": "error_logging",
+    "total_tests": 3,
+    "graceful_handling": 3,
+    "graceful_rate": 100.0
+  },
+  "detailed_results": [
+    {
+      "test_name": "Invalid Inputs Test",
+      "status": "PASS",
+      "details": "Errors handled: 9/9 (100.0%)",
+      "duration": 90.18690538406372,
+      "timestamp": "2025-08-23T22:11:17.826074"
+    },
+    {
+      "test_name": "Malformed Requests Test",
+      "status": "PASS",
+      "details": "Errors handled: 4/4 (100.0%)",
+      "duration": 40.05081629753113,
+      "timestamp": "2025-08-23T22:11:57.877997"
+    },
+    {
+      "test_name": "System Recovery Test",
+      "status": "PARTIAL",
+      "details": "Recovery successful: 0/3 (0.0%)",
+      "duration": 60.09587812423706,
+      "timestamp": "2025-08-23T22:12:57.974537"
+    },
+    {
+      "test_name": "Edge Cases Test",
+      "status": "PARTIAL",
+      "details": "Handled successfully: 0/8 (0.0%)",
+      "duration": 120.13933300971985,
+      "timestamp": "2025-08-23T22:14:58.115045"
+    },
+    {
+      "test_name": "Error Logging Test",
+      "status": "PASS",
+      "details": "Gracefully handled: 3/3 (100.0%)",
+      "duration": 30.048355102539062,
+      "timestamp": "2025-08-23T22:15:28.164047"
+    }
+  ]
+}

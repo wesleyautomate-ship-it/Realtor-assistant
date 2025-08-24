@@ -1,0 +1,275 @@
+# Data Processing Pipeline Configuration
+
+# Database Configuration
+postgres:
+  host: localhost
+  database: real_estate_db
+  user: admin
+  password: password123
+  port: 5432
+
+chroma:
+  host: localhost
+  port: 8000
+
+# Web Scraping Configuration
+web_headers:
+  User-Agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+  Accept: "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+  Accept-Language: "en-US,en;q=0.5"
+  Accept-Encoding: "gzip, deflate"
+  Connection: "keep-alive"
+
+# Rate Limiting Configuration
+rate_limiting:
+  requests_per_minute: 60
+  delay_between_requests: 1.0
+  max_retries: 3
+  retry_delay: 5.0
+
+# Data Validation Rules
+data_validation:
+  min_price: 100000
+  max_price: 100000000
+  min_bedrooms: 0
+  max_bedrooms: 10
+  min_bathrooms: 1
+  max_bathrooms: 8
+  min_square_feet: 300
+  max_square_feet: 20000
+  required_fields: ["address", "price_aed", "property_type"]
+
+# Market Data Configuration
+market_data:
+  dubai_marina:
+    average_price_per_sqft: 1200
+    rental_yield: 6.5
+    market_trend: "Stable"
+    demand_level: "High"
+    investment_grade: "A"
+    appreciation_rate: 3.5
+  
+  downtown_dubai:
+    average_price_per_sqft: 1500
+    rental_yield: 5.8
+    market_trend: "Growing"
+    demand_level: "Very High"
+    investment_grade: "A+"
+    appreciation_rate: 4.2
+  
+  palm_jumeirah:
+    average_price_per_sqft: 2000
+    rental_yield: 4.2
+    market_trend: "Growing"
+    demand_level: "High"
+    investment_grade: "A+"
+    appreciation_rate: 5.0
+  
+  business_bay:
+    average_price_per_sqft: 1000
+    rental_yield: 7.1
+    market_trend: "Stable"
+    demand_level: "Medium"
+    investment_grade: "B+"
+    appreciation_rate: 2.8
+  
+  dubai_hills_estate:
+    average_price_per_sqft: 1100
+    rental_yield: 6.8
+    market_trend: "Growing"
+    demand_level: "High"
+    investment_grade: "A"
+    appreciation_rate: 3.8
+  
+  jumeirah_beach_residence:
+    average_price_per_sqft: 1300
+    rental_yield: 6.0
+    market_trend: "Stable"
+    demand_level: "High"
+    investment_grade: "A"
+    appreciation_rate: 3.2
+  
+  dubai_silicon_oasis:
+    average_price_per_sqft: 800
+    rental_yield: 7.5
+    market_trend: "Growing"
+    demand_level: "Medium"
+    investment_grade: "B"
+    appreciation_rate: 2.5
+  
+  dubai_sports_city:
+    average_price_per_sqft: 900
+    rental_yield: 6.2
+    market_trend: "Stable"
+    demand_level: "Medium"
+    investment_grade: "B"
+    appreciation_rate: 2.8
+  
+  dubai_production_city:
+    average_price_per_sqft: 700
+    rental_yield: 8.0
+    market_trend: "Growing"
+    demand_level: "Low"
+    investment_grade: "C"
+    appreciation_rate: 1.5
+  
+  dubai_creek_harbour:
+    average_price_per_sqft: 1400
+    rental_yield: 5.5
+    market_trend: "Growing"
+    demand_level: "High"
+    investment_grade: "A"
+    appreciation_rate: 4.5
+
+# Property Type Mappings
+property_types:
+  apartment:
+    - "apartment"
+    - "flat"
+    - "condo"
+    - "condominium"
+  villa:
+    - "villa"
+    - "house"
+  townhouse:
+    - "townhouse"
+  penthouse:
+    - "penthouse"
+  studio:
+    - "studio"
+  duplex:
+    - "duplex"
+  maisonette:
+    - "maisonette"
+  loft:
+    - "loft"
+
+# Area Standardization
+area_mappings:
+  dubai_marina:
+    - "dubai marina"
+    - "marina"
+  downtown_dubai:
+    - "downtown dubai"
+    - "downtown"
+  palm_jumeirah:
+    - "palm jumeirah"
+    - "palm"
+  business_bay:
+    - "business bay"
+  dubai_hills_estate:
+    - "dubai hills estate"
+    - "dubai hills"
+  jumeirah_beach_residence:
+    - "jumeirah beach residence"
+    - "jbr"
+  dubai_silicon_oasis:
+    - "dubai silicon oasis"
+    - "dso"
+  dubai_sports_city:
+    - "dubai sports city"
+  dubai_production_city:
+    - "dubai production city"
+  dubai_creek_harbour:
+    - "dubai creek harbour"
+
+# Developer Mappings
+developer_mappings:
+  emaar_properties:
+    - "emaar properties"
+    - "emaar"
+  nakheel:
+    - "nakheel"
+  damac:
+    - "damac"
+  sobek:
+    - "sobek"
+  meydan:
+    - "meydan"
+  mashreq:
+    - "mashreq"
+  union_properties:
+    - "union properties"
+  dubai_properties:
+    - "dubai properties"
+  dubai_holding:
+    - "dubai holding"
+
+# Amenity Standardization
+amenity_mappings:
+  swimming_pool:
+    - "pool"
+    - "swimming pool"
+  gymnasium:
+    - "gym"
+    - "gymnasium"
+    - "fitness center"
+  parking:
+    - "parking"
+    - "car park"
+  elevator:
+    - "elevator"
+    - "lift"
+  air_conditioning:
+    - "ac"
+    - "air conditioning"
+    - "central ac"
+  balcony:
+    - "balcony"
+    - "terrace"
+  garden:
+    - "garden"
+    - "private garden"
+  security:
+    - "security"
+    - "24/7 security"
+  concierge:
+    - "concierge"
+    - "concierge service"
+  playground:
+    - "playground"
+    - "kids play area"
+  bbq_area:
+    - "bbq"
+    - "barbecue"
+    - "bbq area"
+  tennis_court:
+    - "tennis"
+    - "tennis court"
+  basketball_court:
+    - "basketball"
+    - "basketball court"
+  football_field:
+    - "football"
+    - "football field"
+    - "soccer field"
+
+# Processing Configuration
+processing:
+  batch_size: 1000
+  max_workers: 4
+  timeout: 300
+  retry_attempts: 3
+  
+# Logging Configuration
+logging:
+  level: INFO
+  file: data_pipeline.log
+  max_size: 10MB
+  backup_count: 5
+  
+# Quality Control
+quality_control:
+  min_completeness_score: 0.7
+  max_duplicate_ratio: 0.1
+  required_validation_flags:
+    - "has_address"
+    - "has_price"
+    - "has_property_type"
+  
+# Output Configuration
+output:
+  create_backup: true
+  backup_directory: "backups"
+  export_formats: ["csv", "json"]
+  compression: true

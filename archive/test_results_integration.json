@@ -1,0 +1,166 @@
+{
+  "test_suite": "Phase 5.1.1 Integration Testing",
+  "timestamp": "2025-08-23T18:35:36.180812",
+  "total_tests": 22,
+  "passed": 15,
+  "partial": 3,
+  "failed": 4,
+  "success_rate": 75.0,
+  "total_duration": 35.946812868118286,
+  "detailed_results": [
+    {
+      "test_name": "API Health Check",
+      "status": "PASS",
+      "details": "API is healthy",
+      "duration": 0.010313034057617188,
+      "timestamp": "2025-08-23T18:35:03.115375"
+    },
+    {
+      "test_name": "Chat Endpoint",
+      "status": "PASS",
+      "details": "Response received: 4420 chars",
+      "duration": 8.93773341178894,
+      "timestamp": "2025-08-23T18:35:12.053941"
+    },
+    {
+      "test_name": "Intent: PROPERTY_SEARCH",
+      "status": "PASS",
+      "details": "Correctly classified as PROPERTY_SEARCH",
+      "duration": 0.02611708641052246,
+      "timestamp": "2025-08-23T18:35:12.082387"
+    },
+    {
+      "test_name": "Intent: MARKET_INFO",
+      "status": "PASS",
+      "details": "Correctly classified as MARKET_INFO",
+      "duration": 0.0017321109771728516,
+      "timestamp": "2025-08-23T18:35:12.084545"
+    },
+    {
+      "test_name": "Intent: POLICY_QUESTION",
+      "status": "FAIL",
+      "details": "Expected POLICY_QUESTION, got PROPERTY_SEARCH",
+      "duration": 0.0006794929504394531,
+      "timestamp": "2025-08-23T18:35:12.085574"
+    },
+    {
+      "test_name": "Intent: AGENT_SUPPORT",
+      "status": "PASS",
+      "details": "Correctly classified as AGENT_SUPPORT",
+      "duration": 0.0009911060333251953,
+      "timestamp": "2025-08-23T18:35:12.086997"
+    },
+    {
+      "test_name": "Intent: GENERAL",
+      "status": "FAIL",
+      "details": "Expected GENERAL, got MARKET_INFO",
+      "duration": 0.0005748271942138672,
+      "timestamp": "2025-08-23T18:35:12.088460"
+    },
+    {
+      "test_name": "Intent: INVESTMENT_QUESTION",
+      "status": "PASS",
+      "details": "Correctly classified as INVESTMENT_QUESTION",
+      "duration": 0.0007121562957763672,
+      "timestamp": "2025-08-23T18:35:12.089572"
+    },
+    {
+      "test_name": "Intent: REGULATORY_QUESTION",
+      "status": "PASS",
+      "details": "Correctly classified as REGULATORY_QUESTION",
+      "duration": 0.0011272430419921875,
+      "timestamp": "2025-08-23T18:35:12.091108"
+    },
+    {
+      "test_name": "Intent: NEIGHBORHOOD_QUESTION",
+      "status": "PASS",
+      "details": "Correctly classified as NEIGHBORHOOD_QUESTION",
+      "duration": 0.00043201446533203125,
+      "timestamp": "2025-08-23T18:35:12.091975"
+    },
+    {
+      "test_name": "Intent: DEVELOPER_QUESTION",
+      "status": "PASS",
+      "details": "Correctly classified as DEVELOPER_QUESTION",
+      "duration": 0.0007088184356689453,
+      "timestamp": "2025-08-23T18:35:12.093667"
+    },
+    {
+      "test_name": "Intent: TRANSACTION_GUIDANCE",
+      "status": "PASS",
+      "details": "Correctly classified as TRANSACTION_GUIDANCE",
+      "duration": 0.0006108283996582031,
+      "timestamp": "2025-08-23T18:35:12.094708"
+    },
+    {
+      "test_name": "Intent: FINANCIAL_INSIGHTS",
+      "status": "FAIL",
+      "details": "Expected FINANCIAL_INSIGHTS, got MARKET_INFO",
+      "duration": 0.0008499622344970703,
+      "timestamp": "2025-08-23T18:35:12.095939"
+    },
+    {
+      "test_name": "Intent: URBAN_PLANNING",
+      "status": "PASS",
+      "details": "Correctly classified as URBAN_PLANNING",
+      "duration": 0.0007467269897460938,
+      "timestamp": "2025-08-23T18:35:12.097286"
+    },
+    {
+      "test_name": "CSV Processor",
+      "status": "PASS",
+      "details": "Processed 4 records",
+      "duration": 0.6178882122039795,
+      "timestamp": "2025-08-23T18:35:12.716671"
+    },
+    {
+      "test_name": "Multi-Source Query 1",
+      "status": "PARTIAL",
+      "details": "Got 0 docs + 4 structured items",
+      "duration": 1.8801674842834473,
+      "timestamp": "2025-08-23T18:35:14.597578"
+    },
+    {
+      "test_name": "Multi-Source Query 2",
+      "status": "PARTIAL",
+      "details": "Got 0 docs + 3 structured items",
+      "duration": 1.069650650024414,
+      "timestamp": "2025-08-23T18:35:15.667771"
+    },
+    {
+      "test_name": "Multi-Source Query 3",
+      "status": "PARTIAL",
+      "details": "Got 0 docs + 3 structured items",
+      "duration": 0.9038312435150146,
+      "timestamp": "2025-08-23T18:35:16.572791"
+    },
+    {
+      "test_name": "Property Search Workflow",
+      "status": "PASS",
+      "details": "Complete response generated (3017 chars)",
+      "duration": 5.487224578857422,
+      "timestamp": "2025-08-23T18:35:22.060954"
+    },
+    {
+      "test_name": "Investment Analysis Workflow",
+      "status": "PASS",
+      "details": "Complete response generated (4013 chars)",
+      "duration": 6.33518123626709,
+      "timestamp": "2025-08-23T18:35:28.396901"
+    },
+    {
+      "test_name": "Regulatory Guidance Workflow",
+      "status": "PASS",
+      "details": "Complete response generated (5143 chars)",
+      "duration": 7.700445175170898,
+      "timestamp": "2025-08-23T18:35:36.097840"
+    },
+    {
+      "test_name": "Data Consistency",
+      "status": "FAIL",
+      "details": "Issues: ChromaDB: market_forecasts (empty), agent_resources (empty)",
+      "duration": 0.07909512519836426,
+      "timestamp": "2025-08-23T18:35:36.178691"
+    }
+  ]
+}
