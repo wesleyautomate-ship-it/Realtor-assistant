@@ -1,9 +1,7 @@
 # Environment variables
 .env
 .env.local
-.env.development.local
-.env.test.local
-.env.production.local
+.env.production
 
 # Python
 __pycache__/
@@ -32,23 +30,6 @@ MANIFEST
 venv/
 env/
 ENV/
-env.bak/
-venv.bak/
-
-# Node.js
-node_modules/
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-lerna-debug.log*
-
-# React
-build/
-.DS_Store
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
 
 # IDE
 .vscode/
@@ -66,8 +47,22 @@ build/
 ehthumbs.db
 Thumbs.db
 
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.npm
+.yarn-integrity
+
+# Build outputs
+build/
+dist/
+*.tgz
+*.tar.gz
+
 # Logs
-logs
+logs/
 *.log
 
 # Database
@@ -75,31 +70,31 @@ logs
 *.sqlite
 *.sqlite3
 
-# Docker
-.dockerignore
+# Cache
+.cache/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# SSL certificates
+ssl/
+*.pem
+*.key
+*.crt
+
+# Backups
+backups/
+*.backup
+*.bak
 
 # Temporary files
 *.tmp
 *.temp
-.cache/
+temp/
+tmp/
 
-# Coverage reports
-htmlcov/
-.coverage
-.coverage.*
-coverage.xml
-*.cover
-.hypothesis/
-.pytest_cache/
+# Docker
+.dockerignore
 
-# Jupyter Notebook
-.ipynb_checkpoints
-
-# pyenv
-.python-version
-
-# ChromaDB data
-chroma_data/
-
-# PostgreSQL data
-postgres_data/
+# ChromaDB
+chroma_db/

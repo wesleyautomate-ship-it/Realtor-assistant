@@ -12,6 +12,7 @@ Main manager that integrates all AI enhancement modules:
 
 import json
 import logging
+import os
 from typing import Dict, Any, Optional, List
 from sqlalchemy import create_engine, text
 from datetime import datetime
@@ -26,6 +27,7 @@ class AIEnhancementManager:
     """Main manager for all AI enhancements"""
     
     def __init__(self, db_url: str, model):
+        self.db_url = db_url
         self.engine = create_engine(db_url)
         self.model = model
         self.response_enhancer = ResponseEnhancer(model)
@@ -207,81 +209,67 @@ class AIEnhancementManager:
                                user_preferences: Dict[str, Any],
                                conversation_history: List[Dict],
                                file_analysis: Optional[Dict] = None) -> str:
-        """Create an enhanced prompt with all context and analysis"""
+        """Create an enhanced prompt using the improved RAG service method"""
+        
+        try:
+            # Use the improved RAG service to get context and create improved prompt
+            from rag_service_improved import ImprovedRAGService, QueryIntent, QueryAnalysis
+            
+            # Create a temporary RAG service instance for this request
+            rag_service = ImprovedRAGService(
+                db_url=self.db_url,
+                chroma_host=os.getenv("CHROMA_HOST", "localhost"),
+                chroma_port=int(os.getenv("CHROMA_PORT", "8000"))
+            )
+            
+            # Analyze the query
+            analysis = rag_service.analyze_query(message)
+            
+            # Get relevant context
+            context_items = rag_service.get_relevant_context(message, analysis, max_items=5)
+            
+            # Build context string
+            context = rag_service.build_context_string(context_items)
+            
+            # Create improved prompt using the new method
+            improved_prompt = rag_service.create_improved_prompt(
+                query=message,
+                analysis=analysis,
+                context=context,
+                user_role="agent"  # Default role, can be enhanced later
+            )
+            
+            return improved_prompt
+            
+        except Exception as e:
+            logger.error(f"Error creating improved prompt: {e}")
+            # Fallback to original prompt creation
+            return self._create_fallback_prompt(message, query_understanding, user_preferences, conversation_history, file_analysis)
+    
+    def _create_fallback_prompt(self,
+                               message: str,
+                               query_understanding: QueryUnderstanding,
+                               user_preferences: Dict[str, Any],
+                               conversation_history: List[Dict],
+                               file_analysis: Optional[Dict] = None) -> str:
+        """Fallback prompt creation method"""
         
         prompt_parts = []
         
         # System context
         prompt_parts.append("""
-You are an expert Dubai real estate AI assistant with deep knowledge of:
-- Dubai property market trends and prices
-- Real estate regulations and legal requirements
-- Investment opportunities and ROI analysis
-- Neighborhood information and amenities
-- Golden Visa and residency requirements
-- Property development and construction quality
+You are an expert Dubai real estate AI assistant. Provide direct, data-driven responses in a professional format.
 
-You provide personalized, accurate, and helpful responses based on user preferences and conversation history.
-Always use Dubai-specific terminology and provide practical, actionable advice.
+RESPONSE REQUIREMENTS:
+1. Start with direct answer - No conversational fillers
+2. Use structured formatting - Headers, bullet points, bold keywords
+3. Present specific data - Include actual numbers, prices, percentages
+4. Keep under 200 words unless presenting detailed data tables
+5. End with actionable next steps specific to the query
         """)
-        
-        # User preferences context
-        if user_preferences:
-            preferences_text = "User Preferences:\n"
-            if user_preferences.get('budget_range'):
-                preferences_text += f"- Budget: AED {user_preferences['budget_range'][0]:,.0f} - {user_preferences['budget_range'][1]:,.0f}\n"
-            if user_preferences.get('preferred_locations'):
-                preferences_text += f"- Preferred Locations: {', '.join(user_preferences['preferred_locations'])}\n"
-            if user_preferences.get('property_types'):
-                preferences_text += f"- Property Types: {', '.join(user_preferences['property_types'])}\n"
-            if user_preferences.get('bedrooms'):
-                preferences_text += f"- Bedrooms: {user_preferences['bedrooms']}\n"
-            if user_preferences.get('bathrooms'):
-                preferences_text += f"- Bathrooms: {user_preferences['bathrooms']}\n"
-            
-            prompt_parts.append(preferences_text)
-        
-        # Query analysis context
-        prompt_parts.append(f"""
-Query Analysis:
-- Intent: {query_understanding.intent}
-- Sentiment: {query_understanding.sentiment.value}
-- Urgency Level: {query_understanding.urgency_level}/5
-- Complexity Level: {query_understanding.complexity_level}/5
-- Requires Follow-up: {query_understanding.requires_follow_up}
-- Extracted Entities: {json.dumps(query_understanding.entities, indent=2)}
-        """)
-        
-        # File analysis context
-        if file_analysis:
-            prompt_parts.append(f"""
-File Analysis:
-{json.dumps(file_analysis, indent=2)}
-        """)
-        
-        # Conversation history context
-        if conversation_history:
-            history_text = "Recent Conversation:\n"
-            for msg in conversation_history[-5:]:  # Last 5 messages
-                role_emoji = "👤" if msg['role'] == 'user' else "🤖"
-                content_preview = msg['content'][:100] + "..." if len(msg['content']) > 100 else msg['content']
-                history_text += f"{role_emoji} {msg['role'].title()}: {content_preview}\n"
-            prompt_parts.append(history_text)
         
         # Current query
-        prompt_parts.append(f"""
-Current Query: {message}
-
-Please provide a comprehensive, personalized response that:
-1. Addresses the specific intent and sentiment
-2. Uses the user's preferences when relevant
-3. Incorporates file analysis if provided
-4. Maintains conversation continuity
-5. Suggests relevant next steps
-6. Uses Dubai-specific terminology and context
-7. Provides practical, actionable advice
-8. Includes specific Dubai market insights when relevant
-        """)
+        prompt_parts.append(f"USER QUERY: {message}")
         
         return "\n\n".join(prompt_parts)
     

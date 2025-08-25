@@ -20,17 +20,29 @@ from werkzeug.utils import secure_filename
 
 # Import property management router
 from property_management import router as property_router
-from enhanced_rag_service import EnhancedRAGService
+from rag_service_improved import ImprovedRAGService
 from ai_manager import AIEnhancementManager
 from intelligent_processor import IntelligentDataProcessor
 from data_quality_checker import DataQualityChecker
+from cache_manager import CacheManager
+from batch_processor import BatchProcessor, PerformanceMonitor
 
-# Load environment variables
-load_dotenv()
+# Import settings
+from config.settings import (
+    DATABASE_URL, CHROMA_HOST, CHROMA_PORT, GOOGLE_API_KEY,
+    AI_MODEL, HOST, PORT, DEBUG, ALLOWED_ORIGINS,
+    UPLOAD_DIR, ALLOWED_EXTENSIONS, MAX_FILE_SIZE,
+    validate_settings, IS_PRODUCTION
+)
+
+# Validate settings
+if not validate_settings():
+    print("❌ Critical settings validation failed")
+    exit(1)
 
 # Configure Google Gemini
-genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
-model = genai.GenerativeModel('gemini-1.5-flash')
+genai.configure(api_key=GOOGLE_API_KEY)
+model = genai.GenerativeModel(AI_MODEL)
 
 # Initialize FastAPI app
 app = FastAPI(title="Dubai Real Estate RAG Chat System", version="1.2.0")
@@ -38,7 +50,7 @@ app = FastAPI(title="Dubai Real Estate RAG Chat System", version="1.2.0")
 # Add CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://localhost:3001", "http://192.168.1.241:3001"],
+    allow_origins=ALLOWED_ORIGINS,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -48,7 +60,6 @@ app.add_middleware(
 app.include_router(property_router)
 
 # Database setup
-DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://admin:password123@localhost:5432/real_estate_db")
 engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
@@ -84,24 +95,29 @@ class Client(Base):
     preferred_location = Column(String(255))
     requirements = Column(Text)
 
-# Initialize Enhanced RAG Service
-rag_service = EnhancedRAGService(
-    db_url=os.getenv("DATABASE_URL", "postgresql://admin:password123@localhost:5432/real_estate_db"),
-    chroma_host=os.getenv("CHROMA_HOST", "localhost"),
-    chroma_port=int(os.getenv("CHROMA_PORT", "8000"))
+# Initialize Improved RAG Service
+rag_service = ImprovedRAGService(
+    db_url=DATABASE_URL,
+    chroma_host=CHROMA_HOST,
+    chroma_port=CHROMA_PORT
 )
 
 # Initialize AI Enhancement Manager
 ai_manager = AIEnhancementManager(
-    db_url=os.getenv("DATABASE_URL", "postgresql://admin:password123@localhost:5432/real_estate_db"),
+    db_url=DATABASE_URL,
     model=model
 )
 
-# File upload settings
-UPLOAD_DIR = Path("uploads")
-UPLOAD_DIR.mkdir(exist_ok=True)
-ALLOWED_EXTENSIONS = {'.jpg', '.jpeg', '.png', '.gif', '.pdf', '.doc', '.docx', '.txt'}
-MAX_FILE_SIZE = 10 * 1024 * 1024  # 10MB
+# Initialize Cache Manager
+cache_manager = CacheManager()
+
+# Initialize Batch Processor
+batch_processor = BatchProcessor(max_workers=4, batch_size=50)
+
+# Initialize Performance Monitor
+performance_monitor = PerformanceMonitor()
+
+# File upload settings (now imported from config)
 
 # Pydantic models
 class ChatRequest(BaseModel):
@@ -175,10 +191,14 @@ async def health_check():
         # Test ChromaDB connection
         chroma_status = "connected" if collection else "not connected"
         
+        # Test cache health
+        cache_health = cache_manager.health_check()
+        
         return {
             "status": "healthy", 
             "database": "connected", 
             "chromadb": chroma_status,
+            "cache": cache_health,
             "timestamp": datetime.now().isoformat()
         }
     except Exception as e:
@@ -187,6 +207,55 @@ async def health_check():
             "error": str(e),
             "timestamp": datetime.now().isoformat()
         }
+
+@app.get("/performance/cache-stats")
+def get_cache_stats():
+    """Get cache performance statistics"""
+    return cache_manager.get_cache_stats()
+
+@app.get("/performance/cache-health")
+def get_cache_health():
+    """Get cache health status"""
+    return cache_manager.health_check()
+
+@app.get("/performance/batch-jobs")
+def get_batch_jobs():
+    """Get all active batch jobs"""
+    jobs = batch_processor.get_all_jobs()
+    return {
+        "active_jobs": len(jobs),
+        "jobs": [
+            {
+                "job_id": job.job_id,
+                "job_type": job.job_type,
+                "status": job.status.value,
+                "progress": job.progress,
+                "total_items": job.total_items,
+                "processed_items": job.processed_items,
+                "failed_items": job.failed_items,
+                "start_time": job.start_time.isoformat() if job.start_time else None,
+                "end_time": job.end_time.isoformat() if job.end_time else None
+            }
+            for job in jobs
+        ]
+    }
+
+@app.get("/performance/metrics")
+def get_performance_metrics():
+    """Get overall performance metrics"""
+    return performance_monitor.get_performance_report()
+
+@app.post("/performance/clear-cache")
+def clear_cache():
+    """Clear all cache entries"""
+    success = cache_manager.clear_all_cache()
+    return {"success": success, "message": "Cache cleared" if success else "Failed to clear cache"}
+
+@app.delete("/performance/cancel-job/{job_id}")
+def cancel_batch_job(job_id: str):
+    """Cancel a running batch job"""
+    success = batch_processor.cancel_job(job_id)
+    return {"success": success, "message": f"Job {job_id} cancelled" if success else "Failed to cancel job"}
 
 @app.post("/chat", response_model=ChatResponse)
 async def chat(request: ChatRequest):
@@ -1086,4 +1155,10 @@ async def get_conversation_by_session(session_id: str):
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8001)
+    uvicorn.run(
+        app, 
+        host=HOST, 
+        port=PORT,
+        log_level=LOG_LEVEL.lower(),
+        reload=DEBUG and not IS_PRODUCTION
+    )
