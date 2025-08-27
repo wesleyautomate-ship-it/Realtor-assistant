@@ -1,0 +1,544 @@
+[
+  {
+    "id": "TC001",
+    "title": "User Registration Success",
+    "description": "Verify that a new user can successfully register with valid username, email, and password.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Send POST request to /auth/register with valid username, email, and password."
+      },
+      {
+        "type": "assertion",
+        "description": "Confirm response status is 201 Created."
+      },
+      {
+        "type": "assertion",
+        "description": "Confirm response message indicates successful registration."
+      }
+    ]
+  },
+  {
+    "id": "TC002",
+    "title": "User Registration with Missing Required Fields",
+    "description": "Verify registration fails and returns appropriate error when required fields are missing.",
+    "category": "error handling",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Send POST request to /auth/register without password field."
+      },
+      {
+        "type": "assertion",
+        "description": "Confirm response status is 400 Bad Request."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify error message indicates missing password."
+      }
+    ]
+  },
+  {
+    "id": "TC003",
+    "title": "User Login Success",
+    "description": "Verify that a registered user can login successfully and receive a valid JWT access token.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Send POST request to /auth/login with valid username and password."
+      },
+      {
+        "type": "assertion",
+        "description": "Confirm response status is 200 OK."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify response contains access_token and token_type."
+      }
+    ]
+  },
+  {
+    "id": "TC004",
+    "title": "User Login Failure with Invalid Credentials",
+    "description": "Verify login fails with invalid username or password and returns appropriate error.",
+    "category": "error handling",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Send POST request to /auth/login with incorrect password."
+      },
+      {
+        "type": "assertion",
+        "description": "Confirm response status is 401 Unauthorized."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify error message indicates authentication failure."
+      }
+    ]
+  },
+  {
+    "id": "TC005",
+    "title": "Generate API Key for Authenticated User",
+    "description": "Verify API key generation endpoint returns a valid API key for an authenticated user.",
+    "category": "functional",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Authenticate user and obtain valid JWT token."
+      },
+      {
+        "type": "action",
+        "description": "Send POST request to /auth/generate-key with Authorization header."
+      },
+      {
+        "type": "assertion",
+        "description": "Confirm response status is 200 OK."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify response contains a non-empty api_key string."
+      }
+    ]
+  },
+  {
+    "id": "TC006",
+    "title": "Create New Property Listing Successfully",
+    "description": "Verify that a new property can be created with all required fields and returns 201 status.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Send POST request to /properties with valid property data including title, description, location, property_type, price, bedrooms, bathrooms, and area."
+      },
+      {
+        "type": "assertion",
+        "description": "Confirm response status is 201 Created."
+      }
+    ]
+  },
+  {
+    "id": "TC007",
+    "title": "Retrieve Property Details by ID",
+    "description": "Verify that property details can be retrieved by property_id and return correct information.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Send GET request to /properties/{property_id} with valid property_id."
+      },
+      {
+        "type": "assertion",
+        "description": "Confirm response status is 200 OK."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify response contains correct property fields matching the requested id."
+      }
+    ]
+  },
+  {
+    "id": "TC008",
+    "title": "Update Property Information Successfully",
+    "description": "Verify that an existing property's details can be updated and returns success response.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Send PUT request to /properties/{property_id} with updated property data."
+      },
+      {
+        "type": "assertion",
+        "description": "Confirm response status is 200 OK."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify updated property information is correctly stored."
+      }
+    ]
+  },
+  {
+    "id": "TC009",
+    "title": "Delete Property Listing Successfully",
+    "description": "Verify that a property listing can be deleted by ID and returns 204 status with no content.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Send DELETE request to /properties/{property_id}."
+      },
+      {
+        "type": "assertion",
+        "description": "Confirm response status is 204 No Content."
+      }
+    ]
+  },
+  {
+    "id": "TC010",
+    "title": "Filter and Paginate Properties List",
+    "description": "Verify that properties can be listed with various filters including location, price range, property_type and support pagination.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Send GET request to /properties with query parameters page=1, limit=10, location='Downtown', min_price=500000, max_price=1000000, property_type='Apartment'."
+      },
+      {
+        "type": "assertion",
+        "description": "Confirm response status is 200 OK."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify that returned properties match the filters applied."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify pagination info is correct including total, page, and limit fields."
+      }
+    ]
+  },
+  {
+    "id": "TC011",
+    "title": "Create New Client Record with Preferences",
+    "description": "Verify successful creation of a new client record with contact information and preferences.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Send POST request to /clients with valid name, email, phone, and preferences object."
+      },
+      {
+        "type": "assertion",
+        "description": "Confirm response status is 201 Created."
+      }
+    ]
+  },
+  {
+    "id": "TC012",
+    "title": "List Clients with Filtering and Pagination",
+    "description": "Verify that client records can be listed with filters such as search keyword and status with pagination support.",
+    "category": "functional",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Send GET request to /clients with query parameters page=1, limit=20, search='John', status='active'."
+      },
+      {
+        "type": "assertion",
+        "description": "Confirm response status is 200 OK."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify returned client records match search and status filters applied."
+      }
+    ]
+  },
+  {
+    "id": "TC013",
+    "title": "AI Chat with Valid Message and Context",
+    "description": "Verify that sending a message to the chat API returns a context-aware and confidence scored AI response using RAG.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Send POST request to /chat with valid message, user_id, session_id, and optional context."
+      },
+      {
+        "type": "assertion",
+        "description": "Confirm response status is 200 OK."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify response contains response text, intent, confidence score, context_used array, and suggestions array."
+      }
+    ]
+  },
+  {
+    "id": "TC014",
+    "title": "AI Chat Error Handling with Missing Message",
+    "description": "Verify that the chat API returns an error when the required message field is missing in request.",
+    "category": "error handling",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Send POST request to /chat with missing message field."
+      },
+      {
+        "type": "assertion",
+        "description": "Confirm response returns 400 Bad Request."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify error message indicates missing required message."
+      }
+    ]
+  },
+  {
+    "id": "TC015",
+    "title": "Upload Document for Ingestion Successfully",
+    "description": "Verify that uploading a valid document file with category and metadata is processed correctly and returns file details.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Send POST multipart/form-data request to /ingest/upload with file, category, and metadata."
+      },
+      {
+        "type": "assertion",
+        "description": "Confirm response status is 200 OK."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify response contains file_id, filename, category, status, pages, and extracted_text."
+      }
+    ]
+  },
+  {
+    "id": "TC016",
+    "title": "Check Document Ingestion Status",
+    "description": "Verify that the ingestion status for an uploaded document can be retrieved by its file_id.",
+    "category": "functional",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Send GET request to /ingest/status/{file_id} with a valid file_id."
+      },
+      {
+        "type": "assertion",
+        "description": "Confirm response status is 200 OK."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify ingestion status reflects processing stage accurately."
+      }
+    ]
+  },
+  {
+    "id": "TC017",
+    "title": "List All Ingested Documents",
+    "description": "Verify that the list of all uploaded and processed documents can be retrieved.",
+    "category": "functional",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Send GET request to /ingest/documents."
+      },
+      {
+        "type": "assertion",
+        "description": "Confirm response status is 200 OK."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify response contains an array of documents with expected fields."
+      }
+    ]
+  },
+  {
+    "id": "TC018",
+    "title": "Get Market Overview Data",
+    "description": "Verify that the market overview endpoint returns comprehensive market statistics including total properties, average price, price trend, rental yield, top areas, and market sentiment.",
+    "category": "functional",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Send GET request to /market/overview."
+      },
+      {
+        "type": "assertion",
+        "description": "Confirm response status is 200 OK."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify response contains total_properties, average_price, price_trend, rental_yield, top_areas array, and market_sentiment string."
+      }
+    ]
+  },
+  {
+    "id": "TC019",
+    "title": "Get Area-Specific Market Analysis",
+    "description": "Verify that detailed market data can be retrieved for a specific area by area name.",
+    "category": "functional",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Send GET request to /market/areas/{area_name} with valid area name."
+      },
+      {
+        "type": "assertion",
+        "description": "Confirm response status is 200 OK."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify response contains area-specific market data fields."
+      }
+    ]
+  },
+  {
+    "id": "TC020",
+    "title": "Get Price Trends with Filters",
+    "description": "Verify that price trend data for specific areas and property types over a defined period can be retrieved.",
+    "category": "functional",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Send GET request to /market/trends with query parameters area='Marina', property_type='Villa', period='last_6_months'."
+      },
+      {
+        "type": "assertion",
+        "description": "Confirm response status is 200 OK."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify response contains price trend data relevant to filters applied."
+      }
+    ]
+  },
+  {
+    "id": "TC021",
+    "title": "Get Usage Analytics with Filtering",
+    "description": "Verify usage analytics API provides system usage statistics with optional filters like period and user_id.",
+    "category": "functional",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Send GET request to /analytics/usage with query parameters period='last_month', user_id='user123'."
+      },
+      {
+        "type": "assertion",
+        "description": "Confirm response status is 200 OK."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify response includes total_queries, unique_users, avg_response_time, popular_intents array, and top_queries array."
+      }
+    ]
+  },
+  {
+    "id": "TC022",
+    "title": "Get System Performance Metrics",
+    "description": "Verify performance metrics endpoint returns real-time performance data like CPU usage, memory usage, and active connections.",
+    "category": "functional",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Send GET request to /analytics/performance."
+      },
+      {
+        "type": "assertion",
+        "description": "Confirm response status is 200 OK."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify response contains performance metrics fields."
+      }
+    ]
+  },
+  {
+    "id": "TC023",
+    "title": "Health Check API Responds with System Status",
+    "description": "Verify that the health check endpoint returns current system status with status message, timestamp, version, and service statuses.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Send GET request to /health."
+      },
+      {
+        "type": "assertion",
+        "description": "Confirm response status is 200 OK."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify response contains status string, timestamp, version, and services object."
+      }
+    ]
+  },
+  {
+    "id": "TC024",
+    "title": "Retrieve Detailed System Status",
+    "description": "Verify system status endpoint returns uptime, memory usage, CPU usage, active connections, and total queries count.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Send GET request to /status."
+      },
+      {
+        "type": "assertion",
+        "description": "Confirm response status is 200 OK."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify response includes uptime, memory_usage, cpu_usage, active_connections, and total_queries."
+      }
+    ]
+  },
+  {
+    "id": "TC025",
+    "title": "Handle Invalid Property Deletion Request",
+    "description": "Verify that deleting a non-existing property returns an appropriate error status and message.",
+    "category": "error handling",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Send DELETE request to /properties/{property_id} with non-existing property_id."
+      },
+      {
+        "type": "assertion",
+        "description": "Confirm response status is 404 Not Found."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify error message indicates property not found."
+      }
+    ]
+  },
+  {
+    "id": "TC026",
+    "title": "Handle Invalid Client Creation Input",
+    "description": "Verify that client creation fails if required fields like name or email are missing and returns proper error.",
+    "category": "error handling",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Send POST request to /clients missing required name field."
+      },
+      {
+        "type": "assertion",
+        "description": "Confirm response status is 400 Bad Request."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify error message indicates missing required fields."
+      }
+    ]
+  }
+]

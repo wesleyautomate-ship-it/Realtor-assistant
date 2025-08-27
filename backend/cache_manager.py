@@ -12,10 +12,10 @@ from typing import Dict, List, Any, Optional, Union
 from datetime import datetime, timedelta
 import pickle
 import os
-from dotenv import load_dotenv
+from env_loader import load_env
 
-# Load environment variables
-load_dotenv()
+# Load environment variables from centralized loader
+load_env()
 
 logger = logging.getLogger(__name__)
 

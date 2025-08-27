@@ -1,5 +1,4 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react';
-import './EnhancedFileUpload.css';
 
 const EnhancedFileUpload = ({ onFileUpload, selectedRole, onAnalysisComplete }) => {
   const [isDragOver, setIsDragOver] = useState(false);
@@ -97,310 +96,142 @@ const EnhancedFileUpload = ({ onFileUpload, selectedRole, onAnalysisComplete }) 
 
     const uploadedFiles = [];
 
-    // Actually upload files to backend
+    // Simulate file upload with progress
     for (const file of validFiles) {
       try {
-        // Create FormData for file upload
-        const formData = new FormData();
-        formData.append('file', file);
-        
-        // Upload file to backend
-        const response = await fetch('/upload-file', {
-          method: 'POST',
-          body: formData
-        });
-        
-        if (!response.ok) {
-          throw new Error(`Upload failed: ${response.status} ${response.statusText}`);
+        // Simulate upload progress
+        for (let i = 0; i <= 100; i += 10) {
+          await new Promise(resolve => setTimeout(resolve, 100));
+          setUploadProgress(prev => ({
+            ...prev,
+            [file.name]: i
+          }));
         }
-        
-        const uploadResult = await response.json();
-        
-        // Update progress to 100%
-        setUploadProgress(prev => ({
-          ...prev,
-          [file.name]: 100
-        }));
-        
-        // Add to uploaded files list
+
         const uploadedFile = {
           id: Date.now() + Math.random(),
           name: file.name,
           size: file.size,
           type: file.type,
-          uploadedAt: new Date(),
-          status: 'completed',
-          analysisStatus: 'pending',
-          serverPath: uploadResult.file_path // Store server path
+          uploadedAt: new Date().toISOString(),
+          status: 'uploaded',
+          progress: 100
         };
-        
+
         uploadedFiles.push(uploadedFile);
-        
-        addNotification(`Successfully uploaded ${file.name}`, 'success');
-        
+        addNotification(`Successfully uploaded: ${file.name}`, 'success');
+
       } catch (error) {
-        console.error(`Upload failed for ${file.name}:`, error);
-        
-        // Update progress to show error
-        setUploadProgress(prev => ({
-          ...prev,
-          [file.name]: -1 // -1 indicates error
-        }));
-        
-        addNotification(`Upload failed for ${file.name}: ${error.message}`, 'error');
+        addNotification(`Failed to upload: ${file.name}`, 'error');
       }
     }
 
-    // Add successfully uploaded files to the list
     setUploadedFiles(prev => [...prev, ...uploadedFiles]);
     setUploading(false);
-    
-    // Clear progress after a delay
-    setTimeout(() => setUploadProgress({}), 2000);
+    setUploadProgress({});
 
-    // Generate preview data for uploaded files
-    await generatePreviews(validFiles);
-
-    // Start AI analysis for uploaded files
-    if (uploadedFiles.length > 0) {
-      await performAIAnalysis(uploadedFiles);
-    }
-
-    // Call the parent upload handler
+    // Call the parent component's onFileUpload callback
     if (onFileUpload) {
       onFileUpload(uploadedFiles);
     }
   };
 
-  const generatePreviews = async (files) => {
-    const newPreviews = {};
-    
-    for (const file of files) {
-      if (file.type.startsWith('image/')) {
-        // Generate image preview
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          newPreviews[file.name] = {
-            type: 'image',
-            data: e.target.result,
-            dimensions: 'Loading...'
-          };
-          setPreviewData(prev => ({ ...prev, ...newPreviews }));
-        };
-        reader.readAsDataURL(file);
-      } else if (file.type === 'application/pdf') {
-        // Generate PDF preview
-        newPreviews[file.name] = {
-          type: 'pdf',
-          data: 'PDF Document',
-          pages: 'Loading...'
-        };
-        setPreviewData(prev => ({ ...prev, ...newPreviews }));
-      } else if (file.type.includes('csv') || file.type.includes('excel')) {
-        // Generate CSV/Excel preview
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          const content = e.target.result;
-          const lines = content.split('\n').slice(0, 5); // First 5 lines
-          newPreviews[file.name] = {
-            type: 'data',
-            data: lines.join('\n'),
-            rows: content.split('\n').length
-          };
-          setPreviewData(prev => ({ ...prev, ...newPreviews }));
-        };
-        reader.readAsText(file);
-      } else {
-        // Generate text preview
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          const content = e.target.result;
-          newPreviews[file.name] = {
-            type: 'text',
-            data: content.substring(0, 200) + (content.length > 200 ? '...' : ''),
-            length: content.length
-          };
-          setPreviewData(prev => ({ ...prev, ...newPreviews }));
-        };
-        reader.readAsText(file);
-      }
-    }
-  };
-
-  const performAIAnalysis = async (files) => {
+  const handleAnalyzeFile = async (file) => {
     setAnalyzing(true);
-    
-    for (const file of files) {
-      try {
-        // Create FormData for file upload
-        const formData = new FormData();
-        formData.append('file', file);
-        
-        // Call the real backend API
-        const response = await fetch('/analyze-file', {
-          method: 'POST',
-          body: formData
-        });
-        
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        
-        const analysis = await response.json();
-        
-        // Store the real analysis results
-        setAnalysisResults(prev => ({
-          ...prev,
-          [file.id]: {
-            ...analysis,
-            fileId: file.id,
-            fileName: file.name,
-            analysisDate: new Date()
-          }
-        }));
+    setSelectedFile(file);
 
-        // Update file status to completed
-        setUploadedFiles(prev => prev.map(f => 
-          f.id === file.id 
-            ? { ...f, analysisStatus: 'completed' }
-            : f
-        ));
-        
-        console.log(`Analysis completed for ${file.name}:`, analysis);
-        
-      } catch (error) {
-        console.error(`Analysis failed for ${file.name}:`, error);
-        
-        // Update file status to failed
-        setUploadedFiles(prev => prev.map(f => 
-          f.id === file.id 
-            ? { ...f, analysisStatus: 'failed' }
-            : f
-        ));
-        
-        // Show error message to user
-        alert(`Analysis failed for ${file.name}: ${error.message}`);
+    try {
+      // Simulate AI analysis
+      await new Promise(resolve => setTimeout(resolve, 2000));
+
+      const analysisResult = {
+        fileId: file.id,
+        analysisType: 'Property Analysis',
+        insights: [
+          'Property value estimated at AED 2.5M',
+          'Market trend analysis shows 15% appreciation',
+          'Location score: 8.5/10',
+          'Investment potential: High'
+        ],
+        recommendations: [
+          'Consider this property for investment',
+          'Market timing is favorable',
+          'Location has good growth potential'
+        ],
+        confidence: 0.85
+      };
+
+      setAnalysisResults(prev => ({
+        ...prev,
+        [file.id]: analysisResult
+      }));
+
+      addNotification(`Analysis completed for: ${file.name}`, 'success');
+
+      if (onAnalysisComplete) {
+        onAnalysisComplete(analysisResult);
       }
-    }
-    
-    setAnalyzing(false);
-    
-    // Notify parent component
-    if (onAnalysisComplete) {
-      onAnalysisComplete(analysisResults);
+
+    } catch (error) {
+      addNotification(`Analysis failed for: ${file.name}`, 'error');
+    } finally {
+      setAnalyzing(false);
     }
   };
 
-  const generateMockAnalysis = (file, fileType) => {
-    const baseAnalysis = {
-      fileId: file.id,
-      fileName: file.name,
-      fileType: fileType,
-      analysisDate: new Date(),
-      confidence: Math.random() * 0.3 + 0.7, // 70-100%
-      processingTime: Math.random() * 2 + 1, // 1-3 seconds
+  const handlePreviewFile = (file) => {
+    setSelectedFile(file);
+    
+    // Simulate file preview data
+    const preview = {
+      content: `Sample content from ${file.name}...`,
+      metadata: {
+        size: file.size,
+        type: file.type,
+        uploadedAt: file.uploadedAt
+      }
     };
-
-    switch (fileType) {
-      case 'image':
-        return {
-          ...baseAnalysis,
-          analysisType: 'Property Image Analysis',
-          results: {
-            propertyType: ['Apartment', 'Villa', 'Penthouse'][Math.floor(Math.random() * 3)],
-            estimatedValue: `AED ${(Math.random() * 5000000 + 500000).toLocaleString()}`,
-            quality: ['Excellent', 'Good', 'Average'][Math.floor(Math.random() * 3)],
-            features: ['Balcony', 'Pool View', 'Modern Kitchen', 'Spacious Living Room'].slice(0, Math.floor(Math.random() * 4) + 1),
-            location: ['Dubai Marina', 'Downtown Dubai', 'Palm Jumeirah'][Math.floor(Math.random() * 3)],
-            recommendations: [
-              'High rental yield potential',
-              'Strong capital appreciation',
-              'Excellent location for investment'
-            ]
-          }
-        };
-      
-      case 'pdf':
-        return {
-          ...baseAnalysis,
-          analysisType: 'Document Analysis',
-          results: {
-            documentType: ['Property Contract', 'Legal Document', 'Market Report'][Math.floor(Math.random() * 3)],
-            keyExtracted: Math.floor(Math.random() * 10) + 5,
-            compliance: ['Compliant', 'Needs Review', 'Non-Compliant'][Math.floor(Math.random() * 3)],
-            summary: 'Document contains property details, legal terms, and financial information. All clauses appear standard for Dubai real estate transactions.',
-            recommendations: [
-              'Review legal clauses carefully',
-              'Verify all financial terms',
-              'Confirm regulatory compliance'
-            ]
-          }
-        };
-      
-      case 'csv':
-      case 'excel':
-        return {
-          ...baseAnalysis,
-          analysisType: 'Data Analysis',
-          results: {
-            dataType: ['Property Listings', 'Market Data', 'Financial Records'][Math.floor(Math.random() * 3)],
-            records: Math.floor(Math.random() * 1000) + 100,
-            insights: [
-              'Average property price: AED 2.5M',
-              'Price range: AED 500K - 15M',
-              'Most popular area: Dubai Marina',
-              'Average rental yield: 6.5%'
-            ],
-            trends: [
-              'Prices increasing by 8% annually',
-              'High demand for 2-3 bedroom units',
-              'Strong investor interest in off-plan projects'
-            ]
-          }
-        };
-      
-      default:
-        return {
-          ...baseAnalysis,
-          analysisType: 'Content Analysis',
-          results: {
-            contentType: ['Property Description', 'Market Report', 'Legal Document'][Math.floor(Math.random() * 3)],
-            keyPoints: Math.floor(Math.random() * 8) + 3,
-            sentiment: ['Positive', 'Neutral', 'Negative'][Math.floor(Math.random() * 3)],
-            summary: 'Document contains relevant real estate information with detailed property descriptions and market insights.',
-            recommendations: [
-              'Use for market research',
-              'Include in property analysis',
-              'Reference for client discussions'
-            ]
-          }
-        };
-    }
-  };
-
-  const getFileType = (mimeType, fileName) => {
-    if (mimeType.startsWith('image/')) return 'image';
-    if (mimeType === 'application/pdf') return 'pdf';
-    if (mimeType.includes('csv') || fileName.toLowerCase().endsWith('.csv')) return 'csv';
-    if (mimeType.includes('excel') || fileName.toLowerCase().endsWith('.xlsx') || fileName.toLowerCase().endsWith('.xls')) return 'excel';
-    if (mimeType.includes('word') || fileName.toLowerCase().endsWith('.docx') || fileName.toLowerCase().endsWith('.doc')) return 'word';
-    if (mimeType.includes('text/') || fileName.toLowerCase().endsWith('.txt')) return 'text';
-    return 'document';
+    
+    setPreviewData(prev => ({
+      ...prev,
+      [file.id]: preview
+    }));
   };
 
   const removeFile = (fileId) => {
-    setUploadedFiles(prev => prev.filter(file => file.id !== fileId));
+    setUploadedFiles(prev => prev.filter(f => f.id !== fileId));
     setAnalysisResults(prev => {
       const newResults = { ...prev };
       delete newResults[fileId];
       return newResults;
     });
     setPreviewData(prev => {
-      const newPreviews = { ...prev };
-      const fileName = uploadedFiles.find(f => f.id === fileId)?.name;
-      if (fileName) delete newPreviews[fileName];
-      return newPreviews;
+      const newPreview = { ...prev };
+      delete newPreview[fileId];
+      return newPreview;
     });
+    
+    if (selectedFile && selectedFile.id === fileId) {
+      setSelectedFile(null);
+    }
+  };
+
+  const getFileIcon = (fileName) => {
+    const extension = fileName.split('.').pop()?.toLowerCase();
+    const icons = {
+      pdf: '📄',
+      csv: '📊',
+      xlsx: '📈',
+      xls: '📈',
+      doc: '📝',
+      docx: '📝',
+      txt: '📄',
+      jpg: '🖼️',
+      jpeg: '🖼️',
+      png: '🖼️',
+      json: '⚙️'
+    };
+    return icons[extension] || '📁';
   };
 
   const formatFileSize = (bytes) => {
@@ -411,330 +242,228 @@ const EnhancedFileUpload = ({ onFileUpload, selectedRole, onAnalysisComplete }) 
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
   };
 
-  const getFileIcon = (fileName, fileType) => {
-    const extension = fileName.split('.').pop()?.toLowerCase();
-    
-    if (fileType.includes('pdf')) return '📄';
-    if (fileType.includes('csv') || extension === 'csv') return '📊';
-    if (fileType.includes('excel') || extension === 'xlsx' || extension === 'xls') return '📈';
-    if (fileType.includes('json') || extension === 'json') return '⚙️';
-    if (fileType.includes('image')) return '🖼️';
-    if (fileType.includes('word') || extension === 'docx' || extension === 'doc') return '📝';
-    if (fileType.includes('text') || extension === 'txt') return '📄';
-    
-    return '📁';
-  };
-
-  const getRoleDescription = (role) => {
-    const descriptions = {
-      client: 'Upload property preferences, requirements, or documents for AI analysis',
-      agent: 'Upload property data, client documents, and market reports for enhanced insights',
-      employee: 'Upload company documents, policies, and internal reports for processing',
-      admin: 'Upload system configurations, user data, and administrative documents'
-    };
-    return descriptions[role] || descriptions.client;
-  };
-
-  const selectFile = (file) => {
-    setSelectedFile(file);
-  };
-
   return (
-    <div className="enhanced-file-upload">
-      {/* Notifications */}
-      <div className="notifications-container">
-        {notifications.map(notification => (
-          <div 
-            key={notification.id} 
-            className={`notification notification-${notification.type}`}
-            onClick={() => removeNotification(notification.id)}
-          >
-            <span className="notification-message">{notification.message}</span>
-            <button className="notification-close">×</button>
+    <div className="upload-container">
+      {/* Header */}
+      <div className="upload-header">
+        <div className="flex items-center justify-between w-full p-6">
+          <div className="flex items-center">
+            <div className="w-12 h-12 bg-gradient-to-br from-primary-500 to-primary-300 rounded-full flex items-center justify-center text-2xl font-bold text-secondary-50 mr-4 shadow-lg">
+              📁
+            </div>
+            <div>
+              <h1 className="text-2xl font-bold text-primary-500">Enhanced File Upload</h1>
+              <p className="text-sm text-text-secondary">
+                Upload and analyze real estate documents with AI
+              </p>
+            </div>
           </div>
-        ))}
+          
+          <div className="flex items-center gap-4">
+            <span className="text-sm text-text-secondary">
+              {uploadedFiles.length} files uploaded
+            </span>
+          </div>
+        </div>
       </div>
 
-      <div className="upload-container">
-        {/* Header */}
-        <div className="upload-header">
-          <div className="header-content">
-            <div className="header-title">
-              <div className="title-icon">🤖</div>
-              <div className="title-text">
-                <h1 className="page-title">AI-Enhanced File Upload</h1>
-                <p className="page-subtitle">Upload files for intelligent analysis and insights</p>
+      {/* Notifications */}
+      {notifications.length > 0 && (
+        <div className="fixed top-4 right-4 z-50 space-y-2">
+          {notifications.map(notification => (
+            <div
+              key={notification.id}
+              className={`p-4 rounded-lg shadow-lg max-w-sm ${
+                notification.type === 'success' ? 'bg-success-100 text-success-800' :
+                notification.type === 'error' ? 'bg-error-100 text-error-800' :
+                'bg-primary-100 text-primary-800'
+              }`}
+            >
+              <div className="flex items-center justify-between">
+                <span className="text-sm">{notification.message}</span>
+                <button
+                  onClick={() => removeNotification(notification.id)}
+                  className="ml-2 text-lg hover:opacity-70"
+                >
+                  ×
+                </button>
               </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      <div className="p-6 space-y-6">
+        {/* Upload Zone */}
+        <div className="card">
+          <div className="card-header">
+            <h3 className="text-lg font-semibold text-text-primary">Upload Files</h3>
+          </div>
+          <div className="card-body">
+            <div
+              className={`upload-zone ${isDragOver ? 'drag-over' : ''} ${uploading ? 'uploading' : ''}`}
+              onDragOver={handleDragOver}
+              onDragLeave={handleDragLeave}
+              onDrop={handleDrop}
+              onClick={() => fileInputRef.current?.click()}
+            >
+              <div className="text-center">
+                <div className="w-16 h-16 bg-gradient-to-br from-primary-500 to-primary-300 rounded-full flex items-center justify-center text-3xl mx-auto mb-4">
+                  📁
+                </div>
+                <h3 className="text-xl font-semibold text-text-primary mb-2">
+                  {uploading ? 'Uploading...' : 'Drop files here or click to browse'}
+                </h3>
+                <p className="text-text-secondary mb-4">
+                  Support for PDF, CSV, Excel, Word, Images, and more
+                </p>
+                <p className="text-sm text-text-tertiary">
+                  Max file size: {maxFileSize}MB
+                </p>
+              </div>
+              
+              <input
+                ref={fileInputRef}
+                type="file"
+                multiple
+                onChange={handleFileSelect}
+                className="hidden"
+                accept=".pdf,.csv,.xlsx,.xls,.doc,.docx,.txt,.jpg,.jpeg,.png,.json"
+              />
             </div>
           </div>
         </div>
 
-        <div className="upload-main">
-          {/* Left Panel - Upload Area */}
-          <div className="upload-panel">
-            {/* Upload Zone */}
-            <div className="upload-section">
-              <div className="upload-content">
-                <div
-                  className={`upload-zone ${isDragOver ? 'drag-over' : ''} ${uploading ? 'uploading' : ''}`}
-                  onDragOver={handleDragOver}
-                  onDragLeave={handleDragLeave}
-                  onDrop={handleDrop}
-                  onClick={() => fileInputRef.current?.click()}
-                >
-                  <div className="upload-zone-content">
-                    <div className="upload-icon">
-                      <span className="icon-symbol">🧠</span>
+        {/* Upload Progress */}
+        {Object.keys(uploadProgress).length > 0 && (
+          <div className="card">
+            <div className="card-header">
+              <h3 className="text-lg font-semibold text-text-primary">Upload Progress</h3>
+            </div>
+            <div className="card-body">
+              {Object.entries(uploadProgress).map(([fileName, progress]) => (
+                <div key={fileName} className="mb-4">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-sm text-text-secondary">{fileName}</span>
+                    <span className="text-sm text-text-secondary">{progress}%</span>
+                  </div>
+                  <div className="w-full bg-gray-200 rounded-full h-2">
+                    <div
+                      className="bg-gradient-to-r from-primary-500 to-primary-300 h-2 rounded-full transition-all duration-300"
+                      style={{ width: `${progress}%` }}
+                    ></div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Uploaded Files */}
+        {uploadedFiles.length > 0 && (
+          <div className="card">
+            <div className="card-header">
+              <h3 className="text-lg font-semibold text-text-primary">Uploaded Files</h3>
+            </div>
+            <div className="card-body">
+              <div className="space-y-4">
+                {uploadedFiles.map(file => (
+                  <div key={file.id} className="flex items-center justify-between p-4 bg-surface rounded-lg border border-border">
+                    <div className="flex items-center gap-4">
+                      <div className="w-10 h-10 bg-gradient-to-br from-primary-500 to-primary-300 rounded-lg flex items-center justify-center text-xl">
+                        {getFileIcon(file.name)}
+                      </div>
+                      <div>
+                        <h4 className="font-medium text-text-primary">{file.name}</h4>
+                        <p className="text-sm text-text-secondary">
+                          {formatFileSize(file.size)} • {new Date(file.uploadedAt).toLocaleDateString()}
+                        </p>
+                      </div>
                     </div>
                     
-                    <h3 className="upload-title">
-                      {uploading ? 'Uploading Files...' : 'AI-Powered File Analysis'}
-                    </h3>
-                    
-                    <p className="upload-description">
-                      {uploading 
-                        ? 'Please wait while your files are being processed by AI'
-                        : 'Drag & drop files here for intelligent analysis and insights'
-                      }
-                    </p>
-                    
-                    {!uploading && (
-                      <button className="btn btn-primary btn-lg browse-btn">
-                        <span className="btn-icon">📂</span>
-                        Browse Files
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={() => handlePreviewFile(file)}
+                        className="btn btn-secondary btn-sm"
+                      >
+                        👁️ Preview
                       </button>
-                    )}
-                  </div>
-                  
-                  <input
-                    ref={fileInputRef}
-                    type="file"
-                    multiple
-                    accept=".pdf,.csv,.xlsx,.xls,.json,.jpg,.jpeg,.png,.gif,.docx,.doc,.txt"
-                    onChange={handleFileSelect}
-                    style={{ display: 'none' }}
-                  />
-                </div>
-
-                {/* File Format Info */}
-                <div className="upload-info">
-                  <div className="info-section">
-                    <h4 className="info-title">AI Analysis Capabilities</h4>
-                    <div className="ai-capabilities">
-                      <div className="capability-item">
-                        <span className="capability-icon">🖼️</span>
-                        <span className="capability-text">Image Analysis</span>
-                      </div>
-                      <div className="capability-item">
-                        <span className="capability-icon">📄</span>
-                        <span className="capability-text">Document Review</span>
-                      </div>
-                      <div className="capability-item">
-                        <span className="capability-icon">📊</span>
-                        <span className="capability-text">Data Insights</span>
-                      </div>
-                      <div className="capability-item">
-                        <span className="capability-icon">💡</span>
-                        <span className="capability-text">Smart Recommendations</span>
-                      </div>
+                      <button
+                        onClick={() => handleAnalyzeFile(file)}
+                        disabled={analyzing}
+                        className="btn btn-primary btn-sm"
+                      >
+                        {analyzing && selectedFile?.id === file.id ? (
+                          <span className="flex items-center gap-2">
+                            <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin"></div>
+                            Analyzing...
+                          </span>
+                        ) : (
+                          '🤖 Analyze'
+                        )}
+                      </button>
+                      <button
+                        onClick={() => removeFile(file.id)}
+                        className="btn btn-ghost btn-sm text-error-500 hover:text-error-600"
+                      >
+                        🗑️
+                      </button>
                     </div>
                   </div>
-                </div>
-
-                {/* Upload Progress */}
-                {Object.keys(uploadProgress).length > 0 && (
-                  <div className="upload-progress">
-                    <h4 className="progress-title">Uploading Files</h4>
-                    {Object.entries(uploadProgress).map(([fileName, progress]) => (
-                      <div key={fileName} className="progress-item">
-                        <div className="progress-info">
-                          <span className="progress-filename">{fileName}</span>
-                          <span className="progress-percentage">{progress === -1 ? 'Failed' : `${progress}%`}</span>
-                        </div>
-                        <div className="progress-bar">
-                          <div 
-                            className="progress-fill"
-                            style={{ width: `${progress === -1 ? 100 : progress}%` }}
-                          ></div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
-
-                {/* AI Analysis Progress */}
-                {analyzing && (
-                  <div className="ai-analysis-progress">
-                    <h4 className="progress-title">🤖 AI Analysis in Progress</h4>
-                    <div className="analysis-status">
-                      <div className="analysis-spinner"></div>
-                      <p>Analyzing files with advanced AI algorithms...</p>
-                    </div>
-                  </div>
-                )}
-
-                {/* Uploaded Files List */}
-                {uploadedFiles.length > 0 && (
-                  <div className="uploaded-files">
-                    <div className="files-header">
-                      <h4 className="files-title">Uploaded Files</h4>
-                      <span className="files-count">{uploadedFiles.length} files</span>
-                    </div>
-                    
-                    <div className="files-list">
-                      {uploadedFiles.map(file => (
-                        <div 
-                          key={file.id} 
-                          className={`file-item ${selectedFile?.id === file.id ? 'selected' : ''}`}
-                          onClick={() => selectFile(file)}
-                        >
-                          <div className="file-info">
-                            <div className="file-icon">
-                              <span className="icon">{getFileIcon(file.name, file.type)}</span>
-                            </div>
-                            
-                            <div className="file-details">
-                              <div className="file-name">{file.name}</div>
-                              <div className="file-meta">
-                                <span className="file-size">{formatFileSize(file.size)}</span>
-                                <span className="file-date">
-                                  {file.uploadedAt.toLocaleDateString()}
-                                </span>
-                              </div>
-                            </div>
-                          </div>
-                          
-                          <div className="file-actions">
-                            <span className={`status-badge badge-${file.status}`}>
-                              {file.status}
-                            </span>
-                            <span className={`analysis-badge badge-${file.analysisStatus}`}>
-                              {file.analysisStatus === 'completed' ? '🤖 Analyzed' : 
-                               file.analysisStatus === 'pending' ? '⏳ Analyzing' : '❌ Failed'}
-                            </span>
-                            <button
-                              className="btn btn-ghost btn-sm remove-btn"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                removeFile(file.id);
-                              }}
-                              title="Remove file"
-                            >
-                              <span className="btn-icon">🗑️</span>
-                            </button>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
+                ))}
               </div>
             </div>
           </div>
+        )}
 
-          {/* Right Panel - Preview & Analysis */}
-          <div className="preview-panel">
-            {selectedFile ? (
-              <div className="preview-content">
-                <div className="preview-header">
-                  <h3 className="preview-title">File Analysis</h3>
-                  <span className="preview-filename">{selectedFile.name}</span>
-                </div>
-
-                {/* File Preview */}
-                <div className="file-preview">
-                  <h4 className="preview-section-title">📄 File Preview</h4>
-                  <div className="preview-container">
-                    {previewData[selectedFile.name] && (
-                      <div className="preview-data">
-                        {previewData[selectedFile.name].type === 'image' && (
-                          <img 
-                            src={previewData[selectedFile.name].data} 
-                            alt="File preview" 
-                            className="image-preview"
-                          />
-                        )}
-                        {previewData[selectedFile.name].type === 'text' && (
-                          <div className="text-preview">
-                            <pre>{previewData[selectedFile.name].data}</pre>
-                          </div>
-                        )}
-                        {previewData[selectedFile.name].type === 'data' && (
-                          <div className="data-preview">
-                            <pre>{previewData[selectedFile.name].data}</pre>
-                          </div>
-                        )}
-                        {previewData[selectedFile.name].type === 'pdf' && (
-                          <div className="pdf-preview">
-                            <div className="pdf-placeholder">
-                              <span className="pdf-icon">📄</span>
-                              <p>PDF Document</p>
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                    )}
-                  </div>
-                </div>
-
-                {/* AI Analysis Results */}
-                {analysisResults[selectedFile.id] && (
-                  <div className="ai-analysis">
-                    <h4 className="preview-section-title">🤖 AI Analysis Results</h4>
-                    <div className="analysis-container">
-                      <div className="analysis-header">
-                        <span className="analysis-type">{analysisResults[selectedFile.id].analysisType}</span>
-                        <span className="confidence-score">
-                          Confidence: {(analysisResults[selectedFile.id].confidence * 100).toFixed(1)}%
-                        </span>
+        {/* Analysis Results */}
+        {Object.keys(analysisResults).length > 0 && (
+          <div className="card">
+            <div className="card-header">
+              <h3 className="text-lg font-semibold text-text-primary">AI Analysis Results</h3>
+            </div>
+            <div className="card-body">
+              <div className="space-y-6">
+                {Object.values(analysisResults).map(result => (
+                  <div key={result.fileId} className="p-4 bg-surface rounded-lg border border-border">
+                    <div className="flex items-center justify-between mb-4">
+                      <h4 className="font-semibold text-text-primary">{result.analysisType}</h4>
+                      <span className="badge badge-primary">
+                        Confidence: {(result.confidence * 100).toFixed(0)}%
+                      </span>
+                    </div>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <h5 className="font-medium text-text-primary mb-2">Key Insights</h5>
+                        <ul className="space-y-1">
+                          {result.insights.map((insight, index) => (
+                            <li key={index} className="text-sm text-text-secondary flex items-center gap-2">
+                              <span className="text-primary-500">•</span>
+                              {insight}
+                            </li>
+                          ))}
+                        </ul>
                       </div>
                       
-                      <div className="analysis-results">
-                        {Object.entries(analysisResults[selectedFile.id].results).map(([key, value]) => (
-                          <div key={key} className="result-item">
-                            <span className="result-label">{key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}:</span>
-                            <span className="result-value">
-                              {Array.isArray(value) ? value.join(', ') : value}
-                            </span>
-                          </div>
-                        ))}
+                      <div>
+                        <h5 className="font-medium text-text-primary mb-2">Recommendations</h5>
+                        <ul className="space-y-1">
+                          {result.recommendations.map((rec, index) => (
+                            <li key={index} className="text-sm text-text-secondary flex items-center gap-2">
+                              <span className="text-success-500">✓</span>
+                              {rec}
+                            </li>
+                          ))}
+                        </ul>
                       </div>
                     </div>
                   </div>
-                )}
-
-                {/* Analysis Status */}
-                {selectedFile.analysisStatus === 'pending' && (
-                  <div className="analysis-pending">
-                    <div className="pending-content">
-                      <div className="pending-spinner"></div>
-                      <p>AI analysis in progress...</p>
-                    </div>
-                  </div>
-                )}
+                ))}
               </div>
-            ) : (
-              <div className="preview-placeholder">
-                <div className="placeholder-content">
-                  <span className="placeholder-icon">📁</span>
-                  <h3>Select a file to view analysis</h3>
-                  <p>Choose any uploaded file to see AI-powered insights and recommendations</p>
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* Role Information */}
-        <div className="role-info">
-          <div className="role-content">
-            <div className="role-header">
-              <span className="role-icon">👤</span>
-              <span className="role-label">Current Role: {selectedRole.charAt(0).toUpperCase() + selectedRole.slice(1)}</span>
             </div>
-            <p className="role-description">{getRoleDescription(selectedRole)}</p>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );

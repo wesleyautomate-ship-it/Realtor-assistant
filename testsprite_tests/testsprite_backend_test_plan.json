@@ -1,0 +1,47 @@
+[
+  {
+    "id": "TC001",
+    "title": "test_chat_api_with_rag_context",
+    "description": "Verify that the /chat endpoint correctly processes chat messages, integrates retrieval-augmented generation (RAG) context, and returns AI-powered responses with intent, confidence score, context used, and suggestions."
+  },
+  {
+    "id": "TC002",
+    "title": "test_property_management_crud_and_filtering",
+    "description": "Test the /properties and /properties/{property_id} endpoints for full CRUD operations including creation, retrieval, update, deletion, and advanced filtering with pagination."
+  },
+  {
+    "id": "TC003",
+    "title": "test_client_management_crud_and_filtering",
+    "description": "Validate the /clients endpoint for client record creation, retrieval with filtering and pagination, and proper handling of client preferences and contact information."
+  },
+  {
+    "id": "TC004",
+    "title": "test_market_data_analytics_endpoints",
+    "description": "Ensure the /market/overview, /market/areas/{area_name}, and /market/trends endpoints return comprehensive, accurate, and up-to-date market analytics, area-specific data, and price trends."
+  },
+  {
+    "id": "TC005",
+    "title": "test_document_ingestion_upload_and_status",
+    "description": "Verify the /ingest/upload endpoint for robust document upload and processing, and the /ingest/status/{file_id} endpoint for accurate retrieval of document processing status."
+  },
+  {
+    "id": "TC006",
+    "title": "test_authentication_user_registration_and_login",
+    "description": "Test the /auth/register and /auth/login endpoints for secure user registration and authentication, including correct issuance of access tokens."
+  },
+  {
+    "id": "TC007",
+    "title": "test_authentication_api_key_generation",
+    "description": "Validate the /auth/generate-key endpoint to ensure API keys are generated correctly for authenticated users."
+  },
+  {
+    "id": "TC008",
+    "title": "test_analytics_usage_and_performance_metrics",
+    "description": "Check the /analytics/usage and /analytics/performance endpoints for accurate system usage statistics and performance metrics reporting."
+  },
+  {
+    "id": "TC009",
+    "title": "test_health_check_and_system_status_endpoints",
+    "description": "Verify the /health and /status endpoints provide real-time system health status and detailed system performance information."
+  }
+]

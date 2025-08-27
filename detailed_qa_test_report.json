@@ -1,0 +1,92 @@
+{
+  "timestamp": "2025-08-27T16:12:13.060670",
+  "summary": {
+    "total": 7,
+    "passed": 6,
+    "failed": 0,
+    "errors": 1,
+    "success_rate": 85.71428571428571,
+    "average_ai_quality": 5.833333333333333
+  },
+  "results": [
+    {
+      "test": "Property Search (Busy Agent)",
+      "status": "PASSED",
+      "details": "Response length: 233, Quality Score: 8/10",
+      "response_content": "I'm having trouble processing your request right now. Please try again in a moment.\n\n\ud83d\udca1 **Pro Tip**: dubai marina is one of Dubai's most sought-after areas with excellent rental yields (6-8%) and strong capital appreciation potential.",
+      "timestamp": "2025-08-27T16:11:26.989820"
+    },
+    {
+      "test": "Voice Query (Busy Agent)",
+      "status": "PASSED",
+      "details": "Response length: 318, Quality Score: 8/10",
+      "response_content": "I understand this might seem complex, but don't worry! Let me break it down for you: I'm having trouble processing your request right now. Please try again in a moment.\n\n\ud83d\udcca **Dubai Market Overview**: Dubai's real estate market is driven by strong economic fundamentals, government initiatives, and international demand.",
+      "timestamp": "2025-08-27T16:11:29.009337"
+    },
+    {
+      "test": "Market Analysis (Data Analyst)",
+      "status": "PASSED",
+      "details": "Response length: 558, Quality Score: 8/10",
+      "response_content": "I understand this might seem complex, but don't worry! Let me break it down for you: I'm having trouble processing your request right now. Please try again in a moment.\n\n\ud83d\udca1 **Pro Tip**: downtown dubai, arabian ranches offers premium lifestyle with world-class amenities and strong investment returns. Properties here typically appreciate 8-12% annually.\n\n\ud83e\udd14 **Next Steps**: Would you like me to show you similar properties in other areas?\n\n\ud83c\udf06 **Dubai Advantage**: Dubai offers tax-free returns, freehold ownership for foreigners, and world-class infrastructure.",
+      "timestamp": "2025-08-27T16:11:31.433465"
+    },
+    {
+      "test": "Procedure Questions (New Trainee)",
+      "status": "PASSED",
+      "details": "Response length: 168, Quality Score: 2/10",
+      "response_content": "I understand this might seem complex, but don't worry! Let me break it down for you: I'm having trouble processing your request right now. Please try again in a moment.",
+      "timestamp": "2025-08-27T16:11:33.407227"
+    },
+    {
+      "test": "Conversation Memory",
+      "status": "ERROR",
+      "details": "('Connection aborted.', ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None))",
+      "response_content": "",
+      "timestamp": "2025-08-27T16:12:05.611780"
+    },
+    {
+      "test": "Golden Visa Question",
+      "status": "PASSED",
+      "details": "Response length: 301, Quality Score: 7/10",
+      "response_content": "I understand this might seem complex, but don't worry! Let me break it down for you: I'm having trouble processing your request right now. Please try again in a moment.\n\n\ud83c\udfdb\ufe0f **Government Support**: Dubai's government actively supports the real estate sector through various initiatives and regulations.",
+      "timestamp": "2025-08-27T16:12:08.740203"
+    },
+    {
+      "test": "Commission Structure Question",
+      "status": "PASSED",
+      "details": "Response length: 168, Quality Score: 2/10",
+      "response_content": "I understand this might seem complex, but don't worry! Let me break it down for you: I'm having trouble processing your request right now. Please try again in a moment.",
+      "timestamp": "2025-08-27T16:12:13.041931"
+    }
+  ],
+  "ai_responses": [
+    {
+      "test": "Property Search (Busy Agent)",
+      "response": "I'm having trouble processing your request right now. Please try again in a moment.\n\n\ud83d\udca1 **Pro Tip**: dubai marina is one of Dubai's most sought-after areas with excellent rental yields (6-8%) and strong capital appreciation potential."
+    },
+    {
+      "test": "Voice Query (Busy Agent)",
+      "response": "I understand this might seem complex, but don't worry! Let me break it down for you: I'm having trouble processing your request right now. Please try again in a moment.\n\n\ud83d\udcca **Dubai Market Overview**: Dubai's real estate market is driven by strong economic fundamentals, government initiatives, and international demand."
+    },
+    {
+      "test": "Market Analysis (Data Analyst)",
+      "response": "I understand this might seem complex, but don't worry! Let me break it down for you: I'm having trouble processing your request right now. Please try again in a moment.\n\n\ud83d\udca1 **Pro Tip**: downtown dubai, arabian ranches offers premium lifestyle with world-class amenities and strong investment returns. Properties here typically appreciate 8-12% annually.\n\n\ud83e\udd14 **Next Steps**: Would you like me to show you similar properties in other areas?\n\n\ud83c\udf06 **Dubai Advantage**: Dubai offers tax-free returns, freehold ownership for foreigners, and world-class infrastructure."
+    },
+    {
+      "test": "Procedure Questions (New Trainee)",
+      "response": "I understand this might seem complex, but don't worry! Let me break it down for you: I'm having trouble processing your request right now. Please try again in a moment."
+    },
+    {
+      "test": "Conversation Memory",
+      "response": ""
+    },
+    {
+      "test": "Golden Visa Question",
+      "response": "I understand this might seem complex, but don't worry! Let me break it down for you: I'm having trouble processing your request right now. Please try again in a moment.\n\n\ud83c\udfdb\ufe0f **Government Support**: Dubai's government actively supports the real estate sector through various initiatives and regulations."
+    },
+    {
+      "test": "Commission Structure Question",
+      "response": "I understand this might seem complex, but don't worry! Let me break it down for you: I'm having trouble processing your request right now. Please try again in a moment."
+    }
+  ]
+}

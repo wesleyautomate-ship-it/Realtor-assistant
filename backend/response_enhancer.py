@@ -11,8 +11,23 @@ This module enhances AI responses with:
 """
 
 from typing import Dict, Any, List
-from ai_enhancements import SentimentType
-from query_understanding import QueryUnderstanding
+try:
+    from ai_enhancements import SentimentType
+except ImportError:
+    class SentimentType:
+        CONFUSED = "confused"
+        EXCITED = "excited"
+        NEUTRAL = "neutral"
+        FRUSTRATED = "frustrated"
+
+try:
+    from query_understanding import QueryUnderstanding
+except ImportError:
+    class QueryUnderstanding:
+        def __init__(self):
+            self.sentiment = SentimentType.NEUTRAL
+            self.urgency_level = 1
+            self.requires_follow_up = False
 
 class ResponseEnhancer:
     """Enhances AI responses for better quality and personalization"""

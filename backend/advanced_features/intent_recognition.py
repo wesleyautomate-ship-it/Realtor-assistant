@@ -257,6 +257,9 @@ class IntentRecognitionEngine:
             "tax_calculation": config.features.enable_tax_calculator,
             "currency_conversion": config.features.enable_currency_converter,
             "content_generation": config.features.enable_content_generation,
+            "create_instagram_post": config.features.enable_instagram_post_generation,
+            "draft_follow_up_email": config.features.enable_email_generation,
+            "generate_whatsapp_broadcast": config.features.enable_whatsapp_broadcast,
             "neighborhood_insights": config.features.enable_neighborhood_insights
         }
         return feature_mapping.get(intent_type, False)

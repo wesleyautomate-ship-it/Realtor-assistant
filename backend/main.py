@@ -1,11 +1,10 @@
 from fastapi import FastAPI, HTTPException, UploadFile, File, Form
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
 from pydantic import BaseModel
-from typing import List, Optional, Dict, Any
+from typing import List, Union, Dict, Any
+from typing import Optional
 import os
 import google.generativeai as genai
-from dotenv import load_dotenv
 import chromadb
 from sqlalchemy import create_engine, Column, Integer, String, Numeric, Text, text
 from sqlalchemy.ext.declarative import declarative_base
@@ -15,17 +14,38 @@ from datetime import datetime
 import json
 import pandas as pd
 import shutil
+import time
 from pathlib import Path
 from werkzeug.utils import secure_filename
 
 # Import property management router
 from property_management import router as property_router
-from rag_service_improved import ImprovedRAGService
+# from client_management import router as client_router  # client/employee code
+from rag_service import ImprovedRAGService, QueryIntent
 from ai_manager import AIEnhancementManager
 from intelligent_processor import IntelligentDataProcessor
 from data_quality_checker import DataQualityChecker
 from cache_manager import CacheManager
 from batch_processor import BatchProcessor, PerformanceMonitor
+from action_engine import ActionEngine
+
+# Import Reelly service
+try:
+    from reelly_service import ReellyService
+    reelly_service = ReellyService()
+    RELLY_AVAILABLE = True
+except ImportError:
+    reelly_service = None
+    RELLY_AVAILABLE = False
+
+# Import admin modules
+# from admin_dashboard import include_admin_dashboard_routes
+from rag_monitoring import include_rag_monitoring_routes
+
+# Import authentication modules
+from auth.routes import router as auth_router
+from auth.database import init_db
+from auth.middleware import AuthMiddleware
 
 # Import settings
 from config.settings import (
@@ -56,13 +76,65 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Include property management router
+# Add authentication middleware
+app.add_middleware(AuthMiddleware)
+
+# Include routers
+app.include_router(auth_router)
 app.include_router(property_router)
+
+# Include admin routes
+# include_admin_dashboard_routes(app)
+include_rag_monitoring_routes(app)
+
+# Include session chat fix
+try:
+    from session_chat_fix import register_simple_session_chat
+    register_simple_session_chat(app)
+except Exception as e:
+    print(f"⚠️ Session chat fix not loaded: {e}")
 
 # Database setup
 engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
+
+# Initialize authentication database
+try:
+    init_db()
+    print("✅ Authentication database initialized successfully")
+except Exception as e:
+    print(f"❌ Failed to initialize authentication database: {e}")
+    if IS_PRODUCTION:
+        exit(1)
+
+# Initialize main database
+try:
+    from init_database import init_database
+    init_database()
+    print("✅ Main database initialized successfully")
+except Exception as e:
+    print(f"❌ Failed to initialize main database: {e}")
+    if IS_PRODUCTION:
+        exit(1)
+
+# Initialize security and quality systems
+try:
+    from security.role_based_access import initialize_rbac
+    from security.session_manager import initialize_session_manager
+    from performance.optimization_manager import initialize_performance_optimizer
+    from quality.feedback_system import initialize_feedback_system
+    
+    initialize_rbac(DATABASE_URL)
+    initialize_session_manager(DATABASE_URL)
+    initialize_performance_optimizer(DATABASE_URL)
+    initialize_feedback_system(DATABASE_URL)
+    
+    print("✅ Security and quality systems initialized successfully")
+except Exception as e:
+    print(f"❌ Failed to initialize security/quality systems: {e}")
+    if IS_PRODUCTION:
+        exit(1)
 
 # Initialize Intelligent Data Processor
 intelligent_processor = IntelligentDataProcessor()
@@ -117,14 +189,17 @@ batch_processor = BatchProcessor(max_workers=4, batch_size=50)
 # Initialize Performance Monitor
 performance_monitor = PerformanceMonitor()
 
+# Simple cache for pending actions {session_id: plan}
+pending_actions = {}
+
 # File upload settings (now imported from config)
 
 # Pydantic models
 class ChatRequest(BaseModel):
     message: str
     role: str = "client"  # Default to client role
-    session_id: Optional[str] = None
-    file_upload: Optional[Dict[str, Any]] = None  # File metadata from upload
+    session_id: Union[str, None] = None
+    file_upload: Union[Dict[str, Any], None] = None  # File metadata from upload
 
 class ChatResponse(BaseModel):
     response: str
@@ -133,20 +208,20 @@ class ChatResponse(BaseModel):
 class ConversationCreate(BaseModel):
     session_id: str
     role: str = "client"
-    title: Optional[str] = None
+    title: Union[str, None] = None
 
 class MessageCreate(BaseModel):
     conversation_id: int
     role: str
     content: str
     message_type: str = "text"
-    metadata: Optional[Dict[str, Any]] = None
+    metadata: Union[Dict[str, Any], None] = None
 
 class ConversationResponse(BaseModel):
     id: int
     session_id: str
     role: str
-    title: Optional[str]
+    title: Union[str, None]
     created_at: str
     updated_at: str
     is_active: bool
@@ -158,7 +233,7 @@ class MessageResponse(BaseModel):
     content: str
     timestamp: str
     message_type: str
-    metadata: Optional[Dict[str, Any]] = None
+    metadata: Union[Dict[str, Any], None] = None
 
 class FileUploadResponse(BaseModel):
     file_id: str
@@ -166,6 +241,57 @@ class FileUploadResponse(BaseModel):
     file_url: str
     file_type: str
     file_size: int
+
+# ChatGPT-Style Session Management Models
+class ChatSessionCreate(BaseModel):
+    """Create a new chat session"""
+    title: str = "New Chat"
+    role: str = "client"
+    user_preferences: Optional[Dict[str, Any]] = None
+
+class ChatSessionResponse(BaseModel):
+    """Chat session response"""
+    session_id: str
+    title: str
+    role: str
+    created_at: str
+    updated_at: str
+    message_count: int
+    user_preferences: Dict[str, Any]
+    is_active: bool
+
+class ChatSessionListResponse(BaseModel):
+    """List of chat sessions"""
+    sessions: List[ChatSessionResponse]
+    total_count: int
+
+class ChatMessageResponse(BaseModel):
+    """Chat message response"""
+    id: int
+    session_id: str
+    role: str
+    content: str
+    timestamp: str
+    message_type: str
+    metadata: Optional[Dict[str, Any]] = None
+
+class ChatHistoryResponse(BaseModel):
+    """Chat history response"""
+    session_id: str
+    title: str
+    messages: List[ChatMessageResponse]
+    user_preferences: Dict[str, Any]
+    conversation_summary: Optional[str] = None
+
+class UserPreferencesUpdate(BaseModel):
+    """Update user preferences"""
+    budget_range: Optional[List[float]] = None
+    preferred_locations: Optional[List[str]] = None
+    property_types: Optional[List[str]] = None
+    bedrooms: Optional[int] = None
+    bathrooms: Optional[float] = None
+    investment_goals: Optional[List[str]] = None
+    timeline: Optional[str] = None
 
 # Initialize ChromaDB collection (for backward compatibility)
 collection = None
@@ -179,14 +305,23 @@ except Exception as e:
 
 @app.get("/")
 async def root():
-    return {"message": "Real Estate RAG Chat System API"}
+    return {
+        "message": "Real Estate RAG Chat System API",
+        "status": "running",
+        "version": "1.2.0",
+        "timestamp": datetime.now().isoformat()
+    }
 
 @app.get("/health")
 async def health_check():
     try:
         # Test database connection
-        with engine.connect() as conn:
-            conn.execute(text("SELECT 1"))
+        try:
+            with engine.connect() as conn:
+                conn.execute(text("SELECT 1"))
+            database_status = "connected"
+        except Exception as db_error:
+            database_status = f"not connected: {str(db_error)}"
         
         # Test ChromaDB connection
         chroma_status = "connected" if collection else "not connected"
@@ -195,15 +330,15 @@ async def health_check():
         cache_health = cache_manager.health_check()
         
         return {
-            "status": "healthy", 
-            "database": "connected", 
+            "status": "running", 
+            "database": database_status, 
             "chromadb": chroma_status,
             "cache": cache_health,
             "timestamp": datetime.now().isoformat()
         }
     except Exception as e:
         return {
-            "status": "unhealthy",
+            "status": "error",
             "error": str(e),
             "timestamp": datetime.now().isoformat()
         }
@@ -290,23 +425,139 @@ async def chat(request: ChatRequest):
             except Exception as e:
                 print(f"Conversation management error: {e}")
 
-        # Process chat request with AI enhancements
-        ai_result = ai_manager.process_chat_request(
-            message=request.message,
-            session_id=request.session_id or str(uuid.uuid4()),
-            role=request.role,
-            file_upload=request.file_upload
-        )
+        # Check for pending action confirmation first
+        if request.session_id in pending_actions and request.message.lower() in ['yes', 'proceed', 'ok', 'yep', 'confirm', 'sure']:
+            plan = pending_actions.pop(request.session_id)
+            
+            # Get agent ID from session
+            agent_id = 3  # Default agent ID
+            if request.role == 'agent':
+                try:
+                    with engine.connect() as conn:
+                        result = conn.execute(text("""
+                            SELECT u.id FROM users u
+                            JOIN conversations c ON c.session_id = :session_id
+                            WHERE u.role = 'agent' AND u.is_active = TRUE
+                        """), {"session_id": request.session_id})
+                        row = result.fetchone()
+                        if row:
+                            agent_id = row[0]
+                except Exception as e:
+                    print(f"Error getting agent ID: {e}")
+            
+            # Execute the action
+            with engine.connect() as conn:
+                action_engine = ActionEngine(conn, agent_id)
+                result_message = action_engine.execute_action(plan)
+            
+            return ChatResponse(response=result_message, sources=["CRM Action Engine"])
         
-        response_text = ai_result['response']
-        query_analysis = ai_result['query_analysis']
-        user_preferences = ai_result['user_preferences']
+        # Clear pending action if user says no
+        if request.session_id in pending_actions and request.message.lower() in ['no', 'cancel', 'stop', 'nope']:
+            pending_actions.pop(request.session_id)
+            return ChatResponse(response="Action cancelled. How else can I help you?", sources=["CRM Action Engine"])
         
-        print(f"AI Enhanced Analysis - Intent: {query_analysis['intent']}, Sentiment: {query_analysis['sentiment']}")
-        print(f"User Preferences: {user_preferences}")
+        # Check for content generation commands
+        from advanced_features.intent_recognition import IntentRecognitionEngine
+        intent_engine = IntentRecognitionEngine()
         
-        # Extract sources (for now, using basic sources)
-        sources = ["Dubai Real Estate Database", "Market Analysis Reports", "Property Listings"]
+        # Detect intent
+        detected_intent = intent_engine.detect_intent(request.message)
+        
+        # Handle content generation commands
+        if detected_intent and detected_intent.intent_type in ['create_instagram_post', 'draft_follow_up_email', 'generate_whatsapp_broadcast']:
+            # Get agent ID from session (assuming agent role)
+            agent_id = 3  # Default agent ID, should be extracted from session
+            if request.role == 'agent':
+                # Extract agent ID from session or user context
+                try:
+                    with engine.connect() as conn:
+                        result = conn.execute(text("""
+                            SELECT u.id FROM users u
+                            JOIN conversations c ON c.session_id = :session_id
+                            WHERE u.role = 'agent' AND u.is_active = TRUE
+                        """), {"session_id": request.session_id})
+                        row = result.fetchone()
+                        if row:
+                            agent_id = row[0]
+                except Exception as e:
+                    print(f"Error getting agent ID: {e}")
+            
+            # Handle content generation
+            response_text = ai_manager.handle_content_generation_command(
+                command=request.message,
+                intent=detected_intent.intent_type,
+                agent_id=agent_id
+            )
+            
+            # Set sources for content generation
+            sources = ["Content Generation System", "Property Database", "Client Database"]
+            
+        # Handle CRM Action Intents (Phase 3)
+        elif request.role == 'agent':
+            # Analyze query for action intents using RAG service
+            query_analysis = rag_service.analyze_query(request.message)
+            action_intents = [QueryIntent.UPDATE_LEAD, QueryIntent.LOG_INTERACTION, QueryIntent.SCHEDULE_FOLLOW_UP]
+            
+            if query_analysis.intent in action_intents:
+                # Get agent ID
+                agent_id = 3  # Default agent ID
+                try:
+                    with engine.connect() as conn:
+                        result = conn.execute(text("""
+                            SELECT u.id FROM users u
+                            JOIN conversations c ON c.session_id = :session_id
+                            WHERE u.role = 'agent' AND u.is_active = TRUE
+                        """), {"session_id": request.session_id})
+                        row = result.fetchone()
+                        if row:
+                            agent_id = row[0]
+                except Exception as e:
+                    print(f"Error getting agent ID: {e}")
+                
+                # Use Action Engine to prepare action
+                with engine.connect() as conn:
+                    action_engine = ActionEngine(conn, agent_id)
+                    action_plan = action_engine.prepare_action(query_analysis.intent, query_analysis.entities)
+                    
+                    if action_plan.requires_confirmation:
+                        # Store the plan, waiting for the user's confirmation
+                        pending_actions[request.session_id] = action_plan
+                        return ChatResponse(response=action_plan.confirmation_message, sources=["CRM Action Engine"])
+                    else:
+                        # Execute immediately if no confirmation needed
+                        result_message = action_engine.execute_action(action_plan)
+                        return ChatResponse(response=result_message, sources=["CRM Action Engine"])
+            
+        # Process regular chat request with enhanced AI manager
+        else:
+            try:
+                from ai_manager_enhanced import EnhancedAIEnhancementManager
+                enhanced_ai_manager = EnhancedAIEnhancementManager()
+                ai_result = enhanced_ai_manager.process_chat_request(
+                    message=request.message,
+                    session_id=request.session_id or str(uuid.uuid4()),
+                    role=request.role,
+                    file_upload=request.file_upload
+                )
+            except ImportError:
+                # Fallback to original AI manager
+                ai_result = ai_manager.process_chat_request(
+                    message=request.message,
+                    session_id=request.session_id or str(uuid.uuid4()),
+                    role=request.role,
+                    file_upload=request.file_upload
+                )
+            
+            response_text = ai_result['response']
+            query_analysis = ai_result['query_analysis']
+            user_preferences = ai_result['user_preferences']
+            
+            print(f"AI Enhanced Analysis - Intent: {query_analysis['intent']}, Sentiment: {query_analysis['sentiment']}")
+            print(f"User Preferences: {user_preferences}")
+            
+            # Extract sources (for now, using basic sources)
+            sources = ["Dubai Real Estate Database", "Market Analysis Reports", "Property Listings"]
         
         # Save messages to database if conversation exists
         if conversation_id:
@@ -353,6 +604,45 @@ async def chat(request: ChatRequest):
         
     except Exception as e:
         print(f"Chat error: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/chat-direct", response_model=ChatResponse)
+async def chat_direct(request: ChatRequest):
+    """Direct chat endpoint with enhanced prompts"""
+    try:
+        # Create enhanced prompt directly
+        enhanced_prompt = f"""
+You are an expert Dubai real estate AI assistant with deep knowledge of the local market. Provide specific, data-driven responses with actual Dubai real estate information.
+
+RESPONSE REQUIREMENTS:
+1. **Start with direct answer** - No conversational fillers like "Hello" or "I understand"
+2. **Use specific Dubai data** - Include actual prices, areas, developers, and market statistics
+3. **Structured formatting** - Use headers, bullet points, bold keywords, and tables
+4. **Actionable insights** - Provide specific next steps and recommendations
+5. **Dubai-specific context** - Reference actual neighborhoods, developers, and market conditions
+
+DUBAI REAL ESTATE CONTEXT:
+- **Popular Areas**: Dubai Marina (AED 1.2M-8M), Downtown Dubai (AED 1.5M-15M), Palm Jumeirah (AED 3M-50M), Business Bay (AED 800K-5M), JBR (AED 1M-6M), Dubai Hills Estate (AED 1.5M-12M)
+- **Developers**: Emaar, Damac, Nakheel, Sobha, Dubai Properties, Meraas, Azizi, Ellington
+- **Market Trends**: 2024 shows 15-20% appreciation, rental yields 5-8%, strong demand for 1-2BR apartments
+- **Investment Benefits**: Golden Visa eligibility, 0% income tax, high rental yields, strong capital appreciation
+- **Regulations**: RERA protection, escrow accounts, freehold ownership for expats in designated areas
+
+USER ROLE: {request.role.upper()}
+
+CURRENT USER QUERY: {request.message}
+
+IMPORTANT: Provide specific Dubai real estate information, actual prices, and actionable recommendations. Avoid generic responses.
+"""
+
+        # Generate response directly
+        response = model.generate_content(enhanced_prompt)
+        response_text = response.text
+        
+        return ChatResponse(response=response_text, sources=["Dubai Real Estate Database", "Market Analysis Reports", "Property Listings"])
+        
+    except Exception as e:
+        print(f"Direct chat error: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
 @app.get("/conversation/{session_id}/summary")
@@ -532,6 +822,588 @@ async def get_messages(conversation_id: int):
         with engine.connect() as conn:
             result = conn.execute(text("""
                 SELECT id, conversation_id, role, content, timestamp, message_type, metadata
+                FROM messages 
+                WHERE conversation_id = :conversation_id
+                ORDER BY timestamp ASC
+            """), {"conversation_id": conversation_id})
+            
+            messages = []
+            for row in result:
+                metadata = json.loads(row[6]) if row[6] else None
+                messages.append(MessageResponse(
+                    id=row[0],
+                    conversation_id=row[1],
+                    role=row[2],
+                    content=row[3],
+                    timestamp=str(row[4]),
+                    message_type=row[5],
+                    metadata=metadata
+                ))
+            
+            return messages
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+# ChatGPT-Style Session Management Endpoints
+
+@app.post("/sessions", response_model=ChatSessionResponse)
+async def create_new_chat_session(request: ChatSessionCreate):
+    """Create a new ChatGPT-style chat session"""
+    try:
+        session_id = str(uuid.uuid4())
+        
+        with engine.connect() as conn:
+            # Create new conversation
+            result = conn.execute(text("""
+                INSERT INTO conversations (session_id, role, title, is_active)
+                VALUES (:session_id, :role, :title, TRUE)
+                RETURNING id, session_id, role, title, created_at, updated_at, is_active
+            """), {
+                "session_id": session_id,
+                "role": request.role,
+                "title": request.title
+            })
+            
+            row = result.fetchone()
+            
+            # Create conversation preferences if provided
+            if request.user_preferences:
+                conn.execute(text("""
+                    INSERT INTO conversation_preferences (session_id, user_preferences)
+                    VALUES (:session_id, :preferences)
+                """), {
+                    "session_id": session_id,
+                    "preferences": json.dumps(request.user_preferences)
+                })
+            
+            conn.commit()
+            
+            return ChatSessionResponse(
+                session_id=session_id,
+                title=request.title,
+                role=request.role,
+                created_at=str(row[4]),
+                updated_at=str(row[5]),
+                message_count=0,
+                user_preferences=request.user_preferences or {},
+                is_active=row[6]
+            )
+            
+    except Exception as e:
+        print(f"Error creating chat session: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/sessions", response_model=ChatSessionListResponse)
+async def list_chat_sessions(limit: int = 20, offset: int = 0):
+    """List all chat sessions (ChatGPT-style)"""
+    try:
+        with engine.connect() as conn:
+            # Get sessions with message counts
+            result = conn.execute(text("""
+                SELECT 
+                    c.id, c.session_id, c.role, c.title, c.created_at, c.updated_at, c.is_active,
+                    COUNT(m.id) as message_count
+                FROM conversations c
+                LEFT JOIN messages m ON c.id = m.conversation_id
+                WHERE c.is_active = TRUE
+                GROUP BY c.id, c.session_id, c.role, c.title, c.created_at, c.updated_at, c.is_active
+                ORDER BY c.updated_at DESC
+                LIMIT :limit OFFSET :offset
+            """), {"limit": limit, "offset": offset})
+            
+            sessions = []
+            for row in result:
+                # Get user preferences for this session
+                prefs_result = conn.execute(text("""
+                    SELECT user_preferences FROM conversation_preferences 
+                    WHERE session_id = :session_id
+                """), {"session_id": row[1]})
+                prefs_row = prefs_result.fetchone()
+                if prefs_row and prefs_row[0]:
+                    if isinstance(prefs_row[0], str):
+                        user_preferences = json.loads(prefs_row[0])
+                    else:
+                        user_preferences = prefs_row[0]
+                else:
+                    user_preferences = {}
+                
+                sessions.append(ChatSessionResponse(
+                    session_id=row[1],
+                    title=row[3],
+                    role=row[2],
+                    created_at=str(row[4]),
+                    updated_at=str(row[5]),
+                    message_count=row[7],
+                    user_preferences=user_preferences,
+                    is_active=row[6]
+                ))
+            
+            # Get total count
+            count_result = conn.execute(text("""
+                SELECT COUNT(*) FROM conversations WHERE is_active = TRUE
+            """))
+            total_count = count_result.fetchone()[0]
+            
+            return ChatSessionListResponse(
+                sessions=sessions,
+                total_count=total_count
+            )
+            
+    except Exception as e:
+        print(f"Error listing chat sessions: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/sessions/{session_id}", response_model=ChatHistoryResponse)
+async def get_chat_session(session_id: str):
+    """Get chat session with full history (ChatGPT-style)"""
+    try:
+        with engine.connect() as conn:
+            # Get session info
+            session_result = conn.execute(text("""
+                SELECT id, session_id, role, title, created_at, updated_at, is_active
+                FROM conversations 
+                WHERE session_id = :session_id AND is_active = TRUE
+            """), {"session_id": session_id})
+            
+            session_row = session_result.fetchone()
+            if not session_row:
+                raise HTTPException(status_code=404, detail="Chat session not found")
+            
+            # Get messages
+            messages_result = conn.execute(text("""
+                SELECT id, conversation_id, role, content, timestamp, message_type, metadata
+                FROM messages 
+                WHERE conversation_id = :conversation_id
+                ORDER BY timestamp ASC
+            """), {"conversation_id": session_row[0]})
+            
+            messages = []
+            for msg_row in messages_result:
+                metadata = json.loads(msg_row[6]) if msg_row[6] else None
+                messages.append(ChatMessageResponse(
+                    id=msg_row[0],
+                    session_id=session_id,
+                    role=msg_row[2],
+                    content=msg_row[3],
+                    timestamp=str(msg_row[4]),
+                    message_type=msg_row[5],
+                    metadata=metadata
+                ))
+            
+            # Get user preferences
+            prefs_result = conn.execute(text("""
+                SELECT user_preferences FROM conversation_preferences 
+                WHERE session_id = :session_id
+            """), {"session_id": session_id})
+            prefs_row = prefs_result.fetchone()
+            if prefs_row and prefs_row[0]:
+                if isinstance(prefs_row[0], str):
+                    user_preferences = json.loads(prefs_row[0])
+                else:
+                    user_preferences = prefs_row[0]
+            else:
+                user_preferences = {}
+            
+            # Get conversation summary from AI manager
+            try:
+                conversation_summary = ai_manager.get_conversation_summary(session_id)
+                summary_text = conversation_summary.get('summary', '') if conversation_summary else None
+            except:
+                summary_text = None
+            
+            return ChatHistoryResponse(
+                session_id=session_id,
+                title=session_row[3],
+                messages=messages,
+                user_preferences=user_preferences,
+                conversation_summary=summary_text
+            )
+            
+    except HTTPException:
+        raise
+    except Exception as e:
+        print(f"Error getting chat session: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.put("/sessions/{session_id}/title")
+async def update_session_title(session_id: str, title: str):
+    """Update chat session title (ChatGPT-style)"""
+    try:
+        with engine.connect() as conn:
+            result = conn.execute(text("""
+                UPDATE conversations 
+                SET title = :title, updated_at = CURRENT_TIMESTAMP
+                WHERE session_id = :session_id AND is_active = TRUE
+                RETURNING id
+            """), {"session_id": session_id, "title": title})
+            
+            if not result.fetchone():
+                raise HTTPException(status_code=404, detail="Chat session not found")
+            
+            conn.commit()
+            return {"success": True, "message": "Session title updated"}
+            
+    except HTTPException:
+        raise
+    except Exception as e:
+        print(f"Error updating session title: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.put("/sessions/{session_id}/preferences")
+async def update_user_preferences(session_id: str, preferences: UserPreferencesUpdate):
+    """Update user preferences for a session"""
+    try:
+        with engine.connect() as conn:
+            # Get current preferences
+            prefs_result = conn.execute(text("""
+                SELECT user_preferences FROM conversation_preferences 
+                WHERE session_id = :session_id
+            """), {"session_id": session_id})
+            
+            current_prefs = {}
+            if prefs_result.fetchone():
+                current_prefs = json.loads(prefs_result.fetchone()[0])
+            
+            # Update preferences
+            updated_prefs = {**current_prefs}
+            for field, value in preferences.dict(exclude_unset=True).items():
+                if value is not None:
+                    updated_prefs[field] = value
+            
+            # Save updated preferences
+            conn.execute(text("""
+                INSERT INTO conversation_preferences (session_id, user_preferences, updated_at)
+                VALUES (:session_id, :preferences, CURRENT_TIMESTAMP)
+                ON CONFLICT (session_id) 
+                DO UPDATE SET 
+                    user_preferences = :preferences,
+                    updated_at = CURRENT_TIMESTAMP
+            """), {
+                "session_id": session_id,
+                "preferences": json.dumps(updated_prefs)
+            })
+            
+            conn.commit()
+            return {"success": True, "message": "User preferences updated", "preferences": updated_prefs}
+            
+    except Exception as e:
+        print(f"Error updating user preferences: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.delete("/sessions/{session_id}")
+async def delete_chat_session(session_id: str):
+    """Delete a chat session (ChatGPT-style)"""
+    try:
+        with engine.connect() as conn:
+            # Soft delete - mark as inactive
+            result = conn.execute(text("""
+                UPDATE conversations 
+                SET is_active = FALSE, updated_at = CURRENT_TIMESTAMP
+                WHERE session_id = :session_id
+                RETURNING id
+            """), {"session_id": session_id})
+            
+            if not result.fetchone():
+                raise HTTPException(status_code=404, detail="Chat session not found")
+            
+            conn.commit()
+            return {"success": True, "message": "Chat session deleted"}
+            
+    except HTTPException:
+        raise
+    except Exception as e:
+        print(f"Error deleting chat session: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/sessions/{session_id}/clear")
+async def clear_chat_session(session_id: str):
+    """Clear all messages in a chat session (keep session)"""
+    try:
+        with engine.connect() as conn:
+            # Get conversation ID
+            conv_result = conn.execute(text("""
+                SELECT id FROM conversations 
+                WHERE session_id = :session_id AND is_active = TRUE
+            """), {"session_id": session_id})
+            
+            conv_row = conv_result.fetchone()
+            if not conv_row:
+                raise HTTPException(status_code=404, detail="Chat session not found")
+            
+            # Delete all messages
+            conn.execute(text("""
+                DELETE FROM messages WHERE conversation_id = :conversation_id
+            """), {"conversation_id": conv_row[0]})
+            
+            # Clear AI manager memory cache
+            if session_id in ai_manager.memory_cache:
+                del ai_manager.memory_cache[session_id]
+            
+            conn.commit()
+            return {"success": True, "message": "Chat session cleared"}
+            
+    except HTTPException:
+        raise
+    except Exception as e:
+        print(f"Error clearing chat session: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+# Enhanced Chat Endpoint with Session Management and Security
+@app.post("/sessions/{session_id}/chat", response_model=ChatResponse)
+async def chat_with_session(session_id: str, request: ChatRequest):
+    """Enhanced chat endpoint with security, performance, and quality monitoring"""
+    start_time = time.time()
+    
+    try:
+        # Import security and quality systems
+        from security.role_based_access import get_rbac_manager, UserRole
+        from security.session_manager import get_session_manager
+        from performance.optimization_manager import get_performance_optimizer
+        from quality.feedback_system import get_feedback_system, FeedbackEntry, FeedbackType, FeedbackCategory
+        
+        rbac_manager = get_rbac_manager()
+        session_manager = get_session_manager()
+        performance_optimizer = get_performance_optimizer()
+        feedback_system = get_feedback_system()
+        
+        # Get session context with isolation
+        session_context = await session_manager.get_session(session_id)
+        if not session_context:
+            raise HTTPException(status_code=404, detail="Chat session not found or expired")
+        
+        # Verify session ownership (security check)
+        if not session_manager.is_session_isolated(session_id, session_context.user_id):
+            raise HTTPException(status_code=403, detail="Access denied: Session isolation violation")
+        
+        # Create user role enum
+        user_role = UserRole(session_context.user_role)
+        
+        # Validate access to data types
+        allowed_data_types = rbac_manager.get_allowed_data_types(user_role)
+        
+        # Generate query hash for caching
+        query_context = {
+            "user_role": session_context.user_role,
+            "allowed_data_types": allowed_data_types,
+            "session_id": session_id
+        }
+        query_hash = performance_optimizer.generate_query_hash(request.message, query_context)
+        
+        # Check cache for existing response
+        cached_response = await performance_optimizer.get_cached_response(query_hash, session_context.user_role)
+        if cached_response:
+            # Track performance for cached response
+            end_time = time.time()
+            performance_optimizer.track_performance(start_time, end_time)
+            
+            return ChatResponse(
+                response=cached_response["response"],
+                sources=cached_response.get("sources", ["Cached Response"])
+            )
+        
+        # Audit access attempt
+        rbac_manager.audit_access(
+            user_id=session_context.user_id,
+            session_id=session_id,
+            user_role=user_role,
+            data_type="chat_interaction",
+            action="chat_request",
+            success=True
+        )
+        
+        # Create enhanced prompt with role-based context
+        enhanced_prompt = f"""
+You are an expert Dubai real estate AI assistant with deep knowledge of the local market.
+
+USER CONTEXT:
+- Role: {session_context.user_role.upper()}
+- Access Level: {session_context.access_level}
+- Allowed Data Types: {', '.join(allowed_data_types)}
+- Session ID: {session_id}
+
+RESPONSE REQUIREMENTS:
+1. **Role-Appropriate Content**: Provide information appropriate for {session_context.user_role} role
+2. **Data Segregation**: Only use data types allowed for this role
+3. **Specific Dubai Data**: Include actual prices, areas, developers, and market statistics
+4. **Structured Formatting**: Use headers, bullet points, bold keywords, and tables
+5. **Actionable Insights**: Provide specific next steps and recommendations
+
+DUBAI REAL ESTATE CONTEXT:
+- **Popular Areas**: Dubai Marina (AED 1.2M-8M), Downtown Dubai (AED 1.5M-15M), Palm Jumeirah (AED 3M-50M)
+- **Developers**: Emaar, Damac, Nakheel, Sobha, Dubai Properties, Meraas, Azizi, Ellington
+- **Market Trends**: 2024 shows 15-20% appreciation, rental yields 5-8%, strong demand for 1-2BR apartments
+- **Investment Benefits**: Golden Visa eligibility, 0% income tax, high rental yields, strong capital appreciation
+
+USER QUERY: {request.message}
+
+IMPORTANT: Provide role-appropriate, specific Dubai real estate information. Maintain data segregation and security.
+"""
+        
+        # Optimize prompt for performance
+        optimized_prompt = await performance_optimizer.optimize_prompt(
+            enhanced_prompt, 
+            session_context.user_role, 
+            query_context
+        )
+        
+        # Generate response with AI manager
+        ai_result = ai_manager.process_chat_request(
+            message=request.message,
+            session_id=session_id,
+            role=request.role,
+            file_upload=request.file_upload
+        )
+        
+        response_text = ai_result['response']
+        query_analysis = ai_result['query_analysis']
+        user_preferences = ai_result['user_preferences']
+        
+        # Cache the response
+        response_data = {
+            "response": response_text,
+            "sources": ["Dubai Real Estate Database", "Market Analysis Reports", "Property Listings"],
+            "query_analysis": query_analysis,
+            "user_preferences": user_preferences
+        }
+        await performance_optimizer.cache_response(query_hash, session_context.user_role, response_data)
+        
+        # Save messages to database with session isolation
+        await session_manager.add_message_to_session(session_id, {
+            "role": "user",
+            "content": request.message,
+            "message_type": "text",
+            "metadata": {"file_upload": request.file_upload}
+        })
+        
+        await session_manager.add_message_to_session(session_id, {
+            "role": "assistant",
+            "content": response_text,
+            "message_type": "text",
+            "metadata": {"sources": response_data["sources"]}
+        })
+        
+        # Track response quality
+        end_time = time.time()
+        response_time = end_time - start_time
+        await feedback_system.track_response_quality(
+            session_id=session_id,
+            user_id=session_context.user_id,
+            user_role=session_context.user_role,
+            query=request.message,
+            response=response_text,
+            response_time=response_time
+        )
+        
+        # Track performance metrics
+        performance_optimizer.track_performance(start_time, end_time)
+        
+        print(f"AI Enhanced Analysis - Intent: {query_analysis['intent']}, Sentiment: {query_analysis['sentiment']}")
+        print(f"User Preferences: {user_preferences}")
+        print(f"Response Time: {response_time:.2f}s")
+        
+        return ChatResponse(response=response_text, sources=response_data["sources"])
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        print(f"Chat error: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+# Feedback and Quality Management Endpoints
+
+class FeedbackRequest(BaseModel):
+    """Feedback request model"""
+    session_id: str
+    query: str
+    response: str
+    feedback_type: str  # "thumbs_up", "thumbs_down", "rating"
+    rating: Optional[int] = None
+    text_feedback: Optional[str] = ""
+    category: str = "accuracy"  # accuracy, relevance, completeness, clarity, speed, data_quality, user_experience
+
+@app.post("/feedback/submit")
+async def submit_feedback(request: FeedbackRequest):
+    """Submit user feedback for quality improvement"""
+    try:
+        from quality.feedback_system import get_feedback_system, FeedbackEntry, FeedbackType, FeedbackCategory
+        
+        feedback_system = get_feedback_system()
+        
+        # Create feedback entry
+        feedback = FeedbackEntry(
+            session_id=request.session_id,
+            user_id="user_id",  # TODO: Get from session
+            user_role="client",  # TODO: Get from session
+            query=request.query,
+            response=request.response,
+            feedback_type=FeedbackType(request.feedback_type),
+            rating=request.rating,
+            text_feedback=request.text_feedback,
+            category=FeedbackCategory(request.category),
+            created_at=datetime.now()
+        )
+        
+        # Submit feedback
+        success = await feedback_system.submit_feedback(feedback)
+        
+        if success:
+            return {"success": True, "message": "Feedback submitted successfully"}
+        else:
+            raise HTTPException(status_code=500, detail="Failed to submit feedback")
+            
+    except Exception as e:
+        print(f"Error submitting feedback: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/feedback/summary")
+async def get_feedback_summary(days: int = 30):
+    """Get feedback summary for quality analysis"""
+    try:
+        from quality.feedback_system import get_feedback_system
+        
+        feedback_system = get_feedback_system()
+        summary = await feedback_system.get_feedback_summary(days)
+        
+        return summary
+        
+    except Exception as e:
+        print(f"Error getting feedback summary: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/feedback/recommendations")
+async def get_improvement_recommendations():
+    """Get improvement recommendations based on feedback"""
+    try:
+        from quality.feedback_system import get_feedback_system
+        
+        feedback_system = get_feedback_system()
+        recommendations = await feedback_system.get_improvement_recommendations()
+        
+        return {"recommendations": recommendations}
+        
+    except Exception as e:
+        print(f"Error getting recommendations: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/performance/report")
+async def get_performance_report():
+    """Get performance and cost metrics"""
+    try:
+        from performance.optimization_manager import get_performance_optimizer
+        
+        performance_optimizer = get_performance_optimizer()
+        report = performance_optimizer.get_performance_report()
+        
+        return report
+        
+    except Exception as e:
+        print(f"Error getting performance report: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+    """Get all messages for a conversation"""
+    try:
+        with engine.connect() as conn:
+            result = conn.execute(text("""
+                SELECT id, conversation_id, role, content, timestamp, message_type, metadata
                 FROM messages
                 WHERE conversation_id = :conversation_id
                 ORDER BY timestamp ASC
@@ -697,32 +1569,42 @@ async def upload_file(file: UploadFile = File(...)):
 
 @app.post("/analyze-file", response_model=Dict[str, Any])
 async def analyze_file(file: UploadFile = File(...)):
-    """Analyze a file using AI and return insights"""
+    """
+    Uploads a file, saves it temporarily, and processes it using the
+    Intelligent AI Data Processor to classify and extract structured data.
+    """
+    # Save file temporarily
+    temp_dir = Path("temp_uploads")
+    temp_dir.mkdir(exist_ok=True)
+    file_path = temp_dir / file.filename
+    
     try:
-        # Create file metadata for AI analysis
-        file_metadata = {
+        with open(file_path, "wb") as buffer:
+            shutil.copyfileobj(file.file, buffer)
+
+        # Get the file type (e.g., 'pdf', 'csv')
+        file_type = file.filename.split('.')[-1].lower()
+
+        # --- NEW LOGIC ---
+        # Call the new intelligent processor
+        analysis_result = intelligent_processor.process_uploaded_document(
+            file_path=str(file_path),
+            file_type=file_type
+        )
+        # --- END NEW LOGIC ---
+
+        return {
             'filename': file.filename,
             'content_type': file.content_type,
-            'size': file.size,
-            'upload_time': datetime.now().isoformat()
+            'processing_result': analysis_result,
+            'processing_timestamp': datetime.now().isoformat()
         }
-        
-        # Process file with AI manager
-        analysis_result = ai_manager._process_file_upload(file_metadata)
-        
-        # Generate enhanced analysis based on file type
-        file_type = get_file_type(file.content_type, file.filename)
-        enhanced_analysis = generate_enhanced_analysis(file, file_type)
-        
-        return {
-            'file_metadata': file_metadata,
-            'basic_analysis': analysis_result,
-            'enhanced_analysis': enhanced_analysis,
-            'analysis_timestamp': datetime.now().isoformat()
-        }
-        
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"File analysis failed: {str(e)}")
+    finally:
+        # Clean up the temporary file
+        if file_path.exists():
+            os.remove(file_path)
 
 @app.post("/process-transaction-data", response_model=Dict[str, Any])
 async def process_transaction_data(file: UploadFile = File(...)):
@@ -1094,6 +1976,267 @@ async def get_file(filename: str):
     from fastapi.responses import FileResponse
     return FileResponse(file_path)
 
+@app.post("/admin/trigger-daily-briefing")
+async def trigger_daily_briefing():
+    """Manually trigger daily briefing generation for testing"""
+    try:
+        from scheduler import DailyBriefingScheduler
+        import asyncio
+        
+        scheduler = DailyBriefingScheduler()
+        await scheduler.send_daily_briefings()
+        
+        return {"message": "Daily briefing generation completed successfully"}
+    except Exception as e:
+        print(f"Error triggering daily briefing: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+# Reelly API Integration Endpoints
+@app.get("/api/v1/reference/developers", tags=["Reference Data"])
+async def get_all_developers():
+    """
+    Gets a list of all developers from the Reelly network.
+    Results are cached to improve performance.
+    """
+    if not RELLY_AVAILABLE or not reelly_service:
+        raise HTTPException(status_code=503, detail="Reelly service not available")
+    
+    try:
+        developers = reelly_service.get_developers()
+        if not developers:
+            raise HTTPException(status_code=404, detail="Could not retrieve developer data.")
+        return {"developers": developers, "count": len(developers), "source": "reelly"}
+    except Exception as e:
+        print(f"Error fetching developers: {e}")
+        raise HTTPException(status_code=500, detail="Failed to fetch developer data")
+
+@app.get("/api/v1/reference/areas", tags=["Reference Data"])
+async def get_all_areas(country_id: int = 1):
+    """
+    Gets a list of all areas for a country from the Reelly network.
+    Results are cached to improve performance.
+    """
+    if not RELLY_AVAILABLE or not reelly_service:
+        raise HTTPException(status_code=503, detail="Reelly service not available")
+    
+    try:
+        areas = reelly_service.get_areas(country_id)
+        if not areas:
+            raise HTTPException(status_code=404, detail="Could not retrieve area data for the given country.")
+        return {"areas": areas, "count": len(areas), "country_id": country_id, "source": "reelly"}
+    except Exception as e:
+        print(f"Error fetching areas: {e}")
+        raise HTTPException(status_code=500, detail="Failed to fetch area data")
+
+@app.get("/api/v1/reelly/properties", tags=["Reelly Integration"])
+async def search_reelly_properties(
+    property_type: str = None,
+    budget_min: float = None,
+    budget_max: float = None,
+    bedrooms: int = None,
+    area: str = None,
+    developer: str = None,
+    page: int = 1,
+    per_page: int = 20
+):
+    """
+    Search for properties in the Reelly network.
+    """
+    if not RELLY_AVAILABLE or not reelly_service:
+        raise HTTPException(status_code=503, detail="Reelly service not available")
+    
+    try:
+        params = {
+            "property_type": property_type,
+            "budget_min": budget_min,
+            "budget_max": budget_max,
+            "bedrooms": bedrooms,
+            "area": area,
+            "developer": developer,
+            "page": page,
+            "per_page": per_page
+        }
+        
+        # Remove None values
+        params = {k: v for k, v in params.items() if v is not None}
+        
+        properties = reelly_service.search_properties(params)
+        
+        # Format properties for display
+        formatted_properties = []
+        for prop in properties:
+            formatted_prop = reelly_service.format_property_for_display(prop)
+            formatted_properties.append(formatted_prop)
+        
+        return {
+            "properties": formatted_properties,
+            "count": len(formatted_properties),
+            "search_params": params,
+            "source": "reelly"
+        }
+    except Exception as e:
+        print(f"Error searching Reelly properties: {e}")
+        raise HTTPException(status_code=500, detail="Failed to search properties")
+
+@app.get("/api/v1/reelly/status", tags=["Reelly Integration"])
+async def get_reelly_status():
+    """
+    Get the current status of the Reelly service.
+    """
+    if not RELLY_AVAILABLE or not reelly_service:
+        return {
+            "enabled": False,
+            "status": "service_not_available",
+            "message": "Reelly service not configured"
+        }
+    
+    try:
+        status = reelly_service.get_service_status()
+        return status
+    except Exception as e:
+        return {
+            "enabled": False,
+            "status": "error",
+            "message": str(e)
+        }
+
+@app.get("/market/trends", tags=["Market Analytics"])
+async def get_market_trends():
+    """
+    Get real estate market trends and analysis
+    """
+    try:
+        # Mock market trends data - in production this would come from real market data
+        market_trends = {
+            "overall_trend": "increasing",
+            "price_change_percentage": 5.2,
+            "volume_change_percentage": 12.8,
+            "average_days_on_market": 45,
+            "top_performing_areas": [
+                {"area": "Downtown Dubai", "growth": 8.5, "volume": 156},
+                {"area": "Palm Jumeirah", "growth": 7.2, "volume": 89},
+                {"area": "Dubai Marina", "growth": 6.8, "volume": 234}
+            ],
+            "property_type_performance": {
+                "apartments": {"growth": 6.1, "volume": 456},
+                "villas": {"growth": 4.8, "volume": 123},
+                "townhouses": {"growth": 5.5, "volume": 67}
+            },
+            "price_ranges": {
+                "under_500k": {"growth": 3.2, "volume": 234},
+                "500k_to_1m": {"growth": 5.8, "volume": 345},
+                "1m_to_2m": {"growth": 7.1, "volume": 189},
+                "over_2m": {"growth": 4.3, "volume": 78}
+            },
+            "forecast": {
+                "next_quarter": "stable_growth",
+                "next_year": "moderate_increase",
+                "confidence_level": 0.85
+            }
+        }
+        
+        return market_trends
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to fetch market trends: {str(e)}")
+
+@app.post("/ingest/upload", tags=["Document Ingestion"])
+async def upload_document_for_ingestion(
+    file: UploadFile = File(...),
+    document_type: str = Form("general"),
+    priority: str = Form("normal")
+):
+    """
+    Upload a document for ingestion into the RAG system
+    """
+    try:
+        # Validate file type
+        if not file.filename or not any(file.filename.lower().endswith(ext) for ext in ['.pdf', '.docx', '.txt']):
+            raise HTTPException(status_code=400, detail="Invalid file type. Only PDF, DOCX, and TXT files are allowed.")
+        
+        # Validate file size (10MB limit)
+        if file.size and file.size > 10 * 1024 * 1024:
+            raise HTTPException(status_code=400, detail="File too large. Maximum size is 10MB.")
+        
+        # Generate unique filename
+        file_id = str(uuid.uuid4())
+        file_extension = Path(file.filename).suffix
+        safe_filename = f"{file_id}{file_extension}"
+        
+        # Save file
+        file_path = Path(UPLOAD_DIR) / safe_filename
+        file_path.parent.mkdir(parents=True, exist_ok=True)
+        
+        with open(file_path, "wb") as buffer:
+            shutil.copyfileobj(file.file, buffer)
+        
+        # Process document for ingestion
+        try:
+            # Extract text from document
+            extracted_text = ""
+            if file_extension.lower() == '.pdf':
+                import PyPDF2
+                with open(file_path, 'rb') as pdf_file:
+                    pdf_reader = PyPDF2.PdfReader(pdf_file)
+                    for page in pdf_reader.pages:
+                        extracted_text += page.extract_text() + "\n"
+            elif file_extension.lower() == '.docx':
+                from docx import Document
+                doc = Document(file_path)
+                for paragraph in doc.paragraphs:
+                    extracted_text += paragraph.text + "\n"
+            elif file_extension.lower() == '.txt':
+                with open(file_path, 'r', encoding='utf-8') as txt_file:
+                    extracted_text = txt_file.read()
+            
+            # Store in ChromaDB for RAG
+            if rag_service and extracted_text:
+                # Split text into chunks
+                chunks = [extracted_text[i:i+1000] for i in range(0, len(extracted_text), 1000)]
+                
+                # Add to ChromaDB
+                for i, chunk in enumerate(chunks):
+                    rag_service.add_document(
+                        document_id=f"{file_id}_chunk_{i}",
+                        content=chunk,
+                        metadata={
+                            "filename": file.filename,
+                            "document_type": document_type,
+                            "priority": priority,
+                            "chunk_index": i,
+                            "total_chunks": len(chunks)
+                        }
+                    )
+            
+            return {
+                "file_id": file_id,
+                "filename": file.filename,
+                "document_type": document_type,
+                "priority": priority,
+                "status": "uploaded_and_processed",
+                "chunks_created": len(chunks) if extracted_text else 0,
+                "file_size": file.size,
+                "message": "Document uploaded and processed successfully"
+            }
+            
+        except Exception as processing_error:
+            # If processing fails, still return upload success but with error message
+            return {
+                "file_id": file_id,
+                "filename": file.filename,
+                "document_type": document_type,
+                "priority": priority,
+                "status": "uploaded_processing_failed",
+                "error": str(processing_error),
+                "file_size": file.size,
+                "message": "Document uploaded but processing failed"
+            }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Upload failed: {str(e)}")
+
 @app.get("/conversation/{session_id}")
 async def get_conversation_by_session(session_id: str):
     """Get conversation and messages by session ID"""
@@ -1115,7 +2258,7 @@ async def get_conversation_by_session(session_id: str):
                     RETURNING id, session_id, role, title, created_at, updated_at, is_active
                 """), {
                     "session_id": session_id,
-                    "role": "client",  # Default role
+                    "role": "agent",  # Default role
                     "title": f"Chat Session - {session_id}"
                 })
                 row = result.fetchone()
@@ -1155,10 +2298,22 @@ async def get_conversation_by_session(session_id: str):
 
 if __name__ == "__main__":
     import uvicorn
+    
+    # Start the daily briefing scheduler
+    try:
+        from scheduler import start_daily_briefing_scheduler
+        scheduler = start_daily_briefing_scheduler()
+        if scheduler:
+            print("✅ Daily briefing scheduler started successfully")
+        else:
+            print("⚠️ Failed to start daily briefing scheduler")
+    except Exception as e:
+        print(f"❌ Error starting daily briefing scheduler: {e}")
+    
     uvicorn.run(
         app, 
         host=HOST, 
         port=PORT,
-        log_level=LOG_LEVEL.lower(),
+        log_level=DEBUG.lower(),
         reload=DEBUG and not IS_PRODUCTION
     )

@@ -528,7 +528,63 @@ sudo systemctl enable nginx
 
 ## 📊 **Monitoring & Maintenance**
 
-### **1. Health Monitoring**
+### **1. Enterprise Monitoring Infrastructure**
+
+#### **Start Monitoring Stack**
+```bash
+# Start the complete monitoring infrastructure
+cd /opt/rag-web-app
+docker-compose -f docker-compose.monitoring.yml up -d
+
+# Verify all monitoring services are running
+docker-compose -f docker-compose.monitoring.yml ps
+
+# Check monitoring service logs
+docker-compose -f docker-compose.monitoring.yml logs prometheus
+docker-compose -f docker-compose.monitoring.yml logs grafana
+docker-compose -f docker-compose.monitoring.yml logs alertmanager
+```
+
+#### **Access Monitoring Dashboards**
+- **Grafana**: http://your-domain.com:3001 (admin/admin) - Main monitoring dashboard
+- **Prometheus**: http://your-domain.com:9090 - Metrics collection and querying
+- **AlertManager**: http://your-domain.com:9093 - Alert management and routing
+- **Kibana**: http://your-domain.com:5601 - Log analysis (if ELK enabled)
+
+#### **Configure Monitoring Environment**
+```bash
+# Copy monitoring environment template
+cp monitoring/env.monitoring.template monitoring/.env.monitoring
+
+# Edit monitoring environment variables
+nano monitoring/.env.monitoring
+
+# Key variables to configure:
+# - SENTRY_DSN: Your Sentry project DSN
+# - ALERT_EMAIL: Email for alerts
+# - SLACK_WEBHOOK_URL: Slack webhook for notifications
+# - PROMETHEUS_RETENTION: Metrics retention period
+# - LOG_RETENTION_DAYS: Log retention period
+```
+
+#### **Monitoring Integration with Application**
+```bash
+# The monitoring system is automatically integrated with the main application
+# through the monitoring_manager.py which provides:
+# - Real-time performance metrics
+# - Error tracking and alerting
+# - Health check endpoints
+# - Custom business metrics
+
+# Health check endpoints available:
+# - /health - Basic health status
+# - /health/detailed - Detailed health information
+# - /health/history - Health history
+# - /metrics - Prometheus metrics
+# - /custom-metrics - Custom application metrics
+```
+
+### **2. Health Monitoring**
 
 #### **Health Check Script**
 ```bash

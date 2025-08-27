@@ -599,6 +599,47 @@ sudo certbot --nginx -d your-domain.com
 
 ### **Monitoring and Maintenance**
 
+#### **Enterprise Monitoring Setup**
+```bash
+# Start monitoring infrastructure
+docker-compose -f docker-compose.monitoring.yml up -d
+
+# Access monitoring dashboards
+# Grafana: http://localhost:3001 (admin/admin)
+# Prometheus: http://localhost:9090
+# AlertManager: http://localhost:9093
+
+# Check monitoring services
+docker-compose -f docker-compose.monitoring.yml ps
+docker-compose -f docker-compose.monitoring.yml logs prometheus
+```
+
+#### **Application Monitoring Integration**
+```python
+# The monitoring system is automatically integrated through monitoring_manager.py
+# Key monitoring features available:
+
+# 1. Performance Monitoring
+from monitoring.application_metrics import MetricsCollector
+metrics = MetricsCollector()
+metrics.track_rag_query("property_search", response_time=1.2)
+
+# 2. Error Tracking
+from monitoring.error_tracker import ErrorTracker
+error_tracker = ErrorTracker()
+error_tracker.track_error("database_connection", "Connection timeout", severity="high")
+
+# 3. Health Checks
+from monitoring.health_checks import HealthChecker
+health_checker = HealthChecker()
+status = health_checker.check_system_health()
+
+# 4. Custom Metrics
+from monitoring.application_metrics import rag_queries_total, response_time_histogram
+rag_queries_total.inc()
+response_time_histogram.observe(1.5)
+```
+
 #### **Health Checks**
 ```bash
 # Check service status
@@ -610,6 +651,11 @@ docker-compose logs -f frontend
 
 # Monitor resources
 docker stats
+
+# Health check endpoints
+curl http://localhost:8001/health
+curl http://localhost:8001/health/detailed
+curl http://localhost:8001/metrics
 ```
 
 #### **Backup Procedures**

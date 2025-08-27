@@ -50,6 +50,9 @@ class FeatureFlags:
     enable_tax_calculator: bool = True
     enable_currency_converter: bool = True
     enable_content_generation: bool = True
+    enable_instagram_post_generation: bool = True
+    enable_email_generation: bool = True
+    enable_whatsapp_broadcast: bool = True
     enable_neighborhood_insights: bool = True
 
 class AdvancedFeaturesConfig:
@@ -150,6 +153,27 @@ class AdvancedFeaturesConfig:
                 r"write.*description",
                 r"create.*listing",
                 r"property.*marketing"
+            ],
+            "create_instagram_post": [
+                r"/create post",
+                r"/generate post",
+                r"create.*instagram.*post",
+                r"generate.*instagram.*post",
+                r"create.*social.*media.*post"
+            ],
+            "draft_follow_up_email": [
+                r"/draft email",
+                r"/generate email",
+                r"draft.*follow.*up.*email",
+                r"generate.*follow.*up.*email",
+                r"create.*email.*for.*client"
+            ],
+            "generate_whatsapp_broadcast": [
+                r"/generate whatsapp",
+                r"/create whatsapp",
+                r"generate.*whatsapp.*broadcast",
+                r"create.*whatsapp.*message",
+                r"whatsapp.*broadcast.*for"
             ],
             "sentiment_analysis": [
                 r"client.*feeling",

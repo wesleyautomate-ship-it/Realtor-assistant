@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import './ModernPropertyManagement.css';
 
 const ModernPropertyManagement = ({ properties = [] }) => {
   const [filteredProperties, setFilteredProperties] = useState(properties);
@@ -104,6 +103,7 @@ const ModernPropertyManagement = ({ properties = [] }) => {
       maxSqFt: ''
     });
     setSearchTerm('');
+    setSortBy('price');
   };
 
   const formatPrice = (price) => {
@@ -111,7 +111,7 @@ const ModernPropertyManagement = ({ properties = [] }) => {
       style: 'currency',
       currency: 'AED',
       minimumFractionDigits: 0,
-      maximumFractionDigits: 0
+      maximumFractionDigits: 0,
     }).format(price);
   };
 
@@ -122,132 +122,94 @@ const ModernPropertyManagement = ({ properties = [] }) => {
       'Townhouse': '🏘️',
       'Penthouse': '🏙️',
       'Studio': '🏠',
-      'Duplex': '🏘️'
+      'Duplex': '🏛️'
     };
     return icons[type] || '🏠';
   };
 
-  const getStatusColor = (status) => {
-    const colors = {
-      'Available': 'success',
-      'Under Contract': 'warning',
-      'Sold': 'error',
-      'Rented': 'primary'
-    };
-    return colors[status] || 'secondary';
-  };
-
   return (
-    <div className="modern-property-container">
+    <div className="property-container">
       {/* Header */}
       <div className="property-header">
-        <div className="header-content">
-          <div className="header-title">
-            <div className="title-icon">🏠</div>
-            <div className="title-text">
-              <h1 className="page-title">Property Management</h1>
-              <p className="page-subtitle">Search and manage properties with advanced filtering</p>
+        <div className="flex items-center justify-between w-full p-6">
+          <div className="flex items-center">
+            <div className="w-12 h-12 bg-gradient-to-br from-primary-500 to-primary-300 rounded-full flex items-center justify-center text-2xl font-bold text-secondary-50 mr-4 shadow-lg">
+              🏠
+            </div>
+            <div>
+              <h1 className="text-2xl font-bold text-primary-500">Property Management</h1>
+              <p className="text-sm text-text-secondary">
+                {filteredProperties.length} properties found
+              </p>
             </div>
           </div>
           
-          <div className="header-actions">
-            <div className="view-toggle">
-              <button
-                className={`view-btn ${viewMode === 'grid' ? 'active' : ''}`}
-                onClick={() => setViewMode('grid')}
-                title="Grid view"
-              >
-                <span className="view-icon">⊞</span>
-              </button>
-              <button
-                className={`view-btn ${viewMode === 'list' ? 'active' : ''}`}
-                onClick={() => setViewMode('list')}
-                title="List view"
-              >
-                <span className="view-icon">☰</span>
-              </button>
-            </div>
+          <div className="flex items-center gap-4">
+            <button
+              className={`btn ${viewMode === 'grid' ? 'btn-primary' : 'btn-secondary'} btn-sm`}
+              onClick={() => setViewMode('grid')}
+            >
+              📊 Grid
+            </button>
+            <button
+              className={`btn ${viewMode === 'list' ? 'btn-primary' : 'btn-secondary'} btn-sm`}
+              onClick={() => setViewMode('list')}
+            >
+              📋 List
+            </button>
           </div>
         </div>
       </div>
 
-      {/* Search and Filters */}
-      <div className="filters-section">
-        <div className="filters-content">
-          {/* Search Bar */}
-          <div className="search-container">
-            <div className="search-input-wrapper">
-              <span className="search-icon">🔍</span>
+      {/* Filters */}
+      <div className="card m-6">
+        <div className="card-header">
+          <h3 className="text-lg font-semibold text-text-primary">Filters & Search</h3>
+        </div>
+        <div className="card-body">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            {/* Search */}
+            <div className="lg:col-span-2">
+              <label className="block text-sm font-medium text-text-secondary mb-2">Search</label>
               <input
                 type="text"
-                className="search-input"
-                placeholder="Search properties by address, type, or area..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
+                placeholder="Search by address, type, or area..."
+                className="input w-full"
               />
             </div>
-          </div>
 
-          {/* Filter Controls */}
-          <div className="filters-grid">
-            <div className="filter-group">
-              <label className="filter-label">Price Range (AED)</label>
-              <div className="price-inputs">
-                <input
-                  type="number"
-                  className="filter-input"
-                  placeholder="Min Price"
-                  value={filters.minPrice}
-                  onChange={(e) => handleFilterChange('minPrice', e.target.value)}
-                />
-                <span className="price-separator">-</span>
-                <input
-                  type="number"
-                  className="filter-input"
-                  placeholder="Max Price"
-                  value={filters.maxPrice}
-                  onChange={(e) => handleFilterChange('maxPrice', e.target.value)}
-                />
-              </div>
+            {/* Price Range */}
+            <div>
+              <label className="block text-sm font-medium text-text-secondary mb-2">Min Price (AED)</label>
+              <input
+                type="number"
+                value={filters.minPrice}
+                onChange={(e) => handleFilterChange('minPrice', e.target.value)}
+                placeholder="Min price"
+                className="input w-full"
+              />
             </div>
 
-            <div className="filter-group">
-              <label className="filter-label">Bedrooms</label>
-              <select
-                className="filter-select"
-                value={filters.bedrooms}
-                onChange={(e) => handleFilterChange('bedrooms', e.target.value)}
-              >
-                <option value="any">Any</option>
-                <option value="0">Studio</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4+</option>
-              </select>
+            <div>
+              <label className="block text-sm font-medium text-text-secondary mb-2">Max Price (AED)</label>
+              <input
+                type="number"
+                value={filters.maxPrice}
+                onChange={(e) => handleFilterChange('maxPrice', e.target.value)}
+                placeholder="Max price"
+                className="input w-full"
+              />
             </div>
 
-            <div className="filter-group">
-              <label className="filter-label">Bathrooms</label>
+            {/* Property Type */}
+            <div>
+              <label className="block text-sm font-medium text-text-secondary mb-2">Property Type</label>
               <select
-                className="filter-select"
-                value={filters.bathrooms}
-                onChange={(e) => handleFilterChange('bathrooms', e.target.value)}
-              >
-                <option value="any">Any</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4+</option>
-              </select>
-            </div>
-
-            <div className="filter-group">
-              <label className="filter-label">Property Type</label>
-              <select
-                className="filter-select"
                 value={filters.propertyType}
                 onChange={(e) => handleFilterChange('propertyType', e.target.value)}
+                className="input w-full"
               >
                 <option value="any">Any Type</option>
                 {propertyTypes.map(type => (
@@ -256,12 +218,13 @@ const ModernPropertyManagement = ({ properties = [] }) => {
               </select>
             </div>
 
-            <div className="filter-group">
-              <label className="filter-label">Location</label>
+            {/* Location */}
+            <div>
+              <label className="block text-sm font-medium text-text-secondary mb-2">Location</label>
               <select
-                className="filter-select"
                 value={filters.location}
                 onChange={(e) => handleFilterChange('location', e.target.value)}
+                className="input w-full"
               >
                 <option value="any">Any Location</option>
                 {locations.map(location => (
@@ -270,133 +233,112 @@ const ModernPropertyManagement = ({ properties = [] }) => {
               </select>
             </div>
 
-            <div className="filter-group">
-              <label className="filter-label">Square Feet</label>
-              <div className="sqft-inputs">
-                <input
-                  type="number"
-                  className="filter-input"
-                  placeholder="Min Sq Ft"
-                  value={filters.minSqFt}
-                  onChange={(e) => handleFilterChange('minSqFt', e.target.value)}
-                />
-                <span className="sqft-separator">-</span>
-                <input
-                  type="number"
-                  className="filter-input"
-                  placeholder="Max Sq Ft"
-                  value={filters.maxSqFt}
-                  onChange={(e) => handleFilterChange('maxSqFt', e.target.value)}
-                />
-              </div>
+            {/* Bedrooms */}
+            <div>
+              <label className="block text-sm font-medium text-text-secondary mb-2">Bedrooms</label>
+              <select
+                value={filters.bedrooms}
+                onChange={(e) => handleFilterChange('bedrooms', e.target.value)}
+                className="input w-full"
+              >
+                <option value="any">Any</option>
+                {[1, 2, 3, 4, 5, 6].map(num => (
+                  <option key={num} value={num}>{num}+</option>
+                ))}
+              </select>
+            </div>
+
+            {/* Bathrooms */}
+            <div>
+              <label className="block text-sm font-medium text-text-secondary mb-2">Bathrooms</label>
+              <select
+                value={filters.bathrooms}
+                onChange={(e) => handleFilterChange('bathrooms', e.target.value)}
+                className="input w-full"
+              >
+                <option value="any">Any</option>
+                {[1, 2, 3, 4, 5].map(num => (
+                  <option key={num} value={num}>{num}+</option>
+                ))}
+              </select>
             </div>
           </div>
 
-          {/* Filter Actions */}
-          <div className="filter-actions">
-            <button className="btn btn-primary" onClick={() => {}}>
-              <span className="btn-icon">🔍</span>
-              Search Properties
-            </button>
-            <button className="btn btn-secondary" onClick={clearFilters}>
-              <span className="btn-icon">🗑️</span>
-              Clear Filters
+          <div className="flex items-center justify-between mt-6">
+            <div className="flex items-center gap-4">
+              <label className="text-sm font-medium text-text-secondary">Sort by:</label>
+              <select
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value)}
+                className="input"
+              >
+                <option value="price">Price (Low to High)</option>
+                <option value="price-desc">Price (High to Low)</option>
+                <option value="size">Size</option>
+                <option value="bedrooms">Bedrooms</option>
+              </select>
+            </div>
+
+            <button
+              onClick={clearFilters}
+              className="btn btn-ghost btn-sm"
+            >
+              🗑️ Clear Filters
             </button>
           </div>
-        </div>
-      </div>
-
-      {/* Results Header */}
-      <div className="results-header">
-        <div className="results-info">
-          <span className="results-count">
-            {filteredProperties.length} properties found
-          </span>
-        </div>
-        
-        <div className="sort-controls">
-          <label className="sort-label">Sort by:</label>
-          <select
-            className="sort-select"
-            value={sortBy}
-            onChange={(e) => setSortBy(e.target.value)}
-          >
-            <option value="price">Price (Low to High)</option>
-            <option value="price-desc">Price (High to Low)</option>
-            <option value="size">Size (Small to Large)</option>
-            <option value="bedrooms">Bedrooms (Most)</option>
-          </select>
         </div>
       </div>
 
       {/* Properties Grid/List */}
-      <div className={`properties-container ${viewMode}`}>
+      <div className="p-6">
         {filteredProperties.length === 0 ? (
-          <div className="empty-results">
-            <div className="empty-icon">🏠</div>
-            <h3 className="empty-title">No properties found</h3>
-            <p className="empty-description">
-              Try adjusting your search criteria or filters
+          <div className="flex flex-col items-center justify-center py-12 text-center">
+            <div className="w-16 h-16 bg-gradient-to-br from-primary-500 to-primary-300 rounded-full flex items-center justify-center text-3xl mb-4">
+              🏠
+            </div>
+            <h3 className="text-xl font-semibold text-text-primary mb-2">No Properties Found</h3>
+            <p className="text-text-secondary max-w-md">
+              Try adjusting your filters or search terms to find more properties.
             </p>
           </div>
         ) : (
-          <div className={`properties-${viewMode}`}>
+          <div className={viewMode === 'grid' ? 'property-grid' : 'space-y-4'}>
             {filteredProperties.map((property, index) => (
-              <div key={property.id || index} className="property-card">
-                <div className="property-image">
-                  <div className="image-placeholder">
-                    <span className="property-icon">{getPropertyIcon(property.property_type)}</span>
-                  </div>
-                  <div className="property-status">
-                    <span className={`status-badge badge-${getStatusColor(property.status)}`}>
-                      {property.status}
-                    </span>
-                  </div>
-                </div>
-                
-                <div className="property-content">
-                  <div className="property-header">
-                    <h3 className="property-title">{property.property_type}</h3>
-                    <div className="property-price">{formatPrice(property.price_aed)}</div>
-                  </div>
-                  
-                  <div className="property-location">
-                    <span className="location-icon">📍</span>
-                    <span className="location-text">{property.area}</span>
-                  </div>
-                  
-                  <div className="property-details">
-                    <div className="detail-item">
-                      <span className="detail-icon">🛏️</span>
-                      <span className="detail-text">{property.bedrooms} beds</span>
+              <div
+                key={index}
+                className={`property-card ${viewMode === 'list' ? 'flex items-center' : ''}`}
+              >
+                <div className={`${viewMode === 'list' ? 'flex-1 flex items-center' : ''}`}>
+                  <div className={`${viewMode === 'list' ? 'flex items-center gap-6' : 'p-6'}`}>
+                    <div className={`${viewMode === 'list' ? 'w-20 h-20' : 'w-full h-48'} bg-gradient-to-br from-primary-500 to-primary-300 rounded-lg flex items-center justify-center text-4xl shadow-lg`}>
+                      {getPropertyIcon(property.property_type)}
                     </div>
-                    <div className="detail-item">
-                      <span className="detail-icon">🚿</span>
-                      <span className="detail-text">{property.bathrooms} baths</span>
+                    
+                    <div className={`${viewMode === 'list' ? 'flex-1' : 'mt-4'}`}>
+                      <div className="flex items-center justify-between mb-2">
+                        <h3 className="text-lg font-semibold text-text-primary">
+                          {property.property_type}
+                        </h3>
+                        <span className="text-xl font-bold text-primary-500">
+                          {formatPrice(property.price_aed)}
+                        </span>
+                      </div>
+                      
+                      <p className="text-text-secondary mb-2">
+                        📍 {property.address}
+                      </p>
+                      
+                      <div className="flex items-center gap-4 text-sm text-text-secondary">
+                        <span>🛏️ {property.bedrooms} beds</span>
+                        <span>🚿 {property.bathrooms} baths</span>
+                        <span>📏 {property.square_feet} sq ft</span>
+                      </div>
+                      
+                      <div className="flex items-center gap-2 mt-3">
+                        <span className="badge badge-primary">{property.area}</span>
+                        <span className="badge badge-success">Available</span>
+                      </div>
                     </div>
-                    <div className="detail-item">
-                      <span className="detail-icon">📏</span>
-                      <span className="detail-text">{property.square_feet} sq ft</span>
-                    </div>
-                  </div>
-                  
-                  <div className="property-amenities">
-                    {property.amenities && property.amenities.split(', ').slice(0, 3).map((amenity, idx) => (
-                      <span key={idx} className="amenity-tag">{amenity}</span>
-                    ))}
-                    {property.amenities && property.amenities.split(', ').length > 3 && (
-                      <span className="amenity-more">+{property.amenities.split(', ').length - 3} more</span>
-                    )}
-                  </div>
-                  
-                  <div className="property-footer">
-                    <div className="property-agent">
-                      <span className="agent-icon">👤</span>
-                      <span className="agent-name">{property.agent}</span>
-                    </div>
-                    <button className="btn btn-primary btn-sm">
-                      View Details
-                    </button>
                   </div>
                 </div>
               </div>

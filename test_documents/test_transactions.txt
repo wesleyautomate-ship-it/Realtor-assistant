@@ -1,0 +1,23 @@
+
+    PROPERTY TRANSACTION REPORT - DUBAI MARINA
+    
+    Recent Sales Transactions:
+    
+    1. Sale Date: 2025-01-15
+       Property: Marina Gate 1, Unit 3405
+       Address: Dubai Marina, Tower 1, Floor 34
+       Sale Price: AED 2,500,000
+       Buyer: Ahmed Al Mansouri
+    
+    2. Sale Date: 2025-01-20
+       Property: Marina Gate 2, Unit 1208
+       Address: Dubai Marina, Tower 2, Floor 12
+       Sale Price: AED 1,800,000
+       Buyer: Sarah Johnson
+    
+    3. Sale Date: 2025-01-25
+       Property: Marina Heights, Unit 2501
+       Address: Dubai Marina, Tower A, Floor 25
+       Sale Price: AED 3,200,000
+       Buyer: Mohammed Al Rashid
+    

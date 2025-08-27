@@ -14,6 +14,40 @@ import pandas as pd
 from pathlib import Path
 from collections import defaultdict
 
+# AI Integration
+try:
+    import google.generativeai as genai
+    from config.settings import GOOGLE_API_KEY
+    genai.configure(api_key=GOOGLE_API_KEY)
+    model = genai.GenerativeModel('gemini-1.5-flash')
+    AI_AVAILABLE = True
+except ImportError:
+    AI_AVAILABLE = False
+    model = None
+
+# Database Integration
+try:
+    from sqlalchemy import create_engine, text
+    from sqlalchemy.orm import sessionmaker
+    from config.settings import DATABASE_URL
+    engine = create_engine(DATABASE_URL)
+    SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+    DB_AVAILABLE = True
+except ImportError:
+    DB_AVAILABLE = False
+    engine = None
+    SessionLocal = None
+
+# ChromaDB Integration
+try:
+    import chromadb
+    from config.settings import CHROMA_HOST, CHROMA_PORT
+    chroma_client = chromadb.HttpClient(host=CHROMA_HOST, port=CHROMA_PORT)
+    CHROMA_AVAILABLE = True
+except ImportError:
+    CHROMA_AVAILABLE = False
+    chroma_client = None
+
 # Text processing
 try:
     from fuzzywuzzy import fuzz, process
@@ -139,7 +173,346 @@ class IntelligentDataProcessor:
                 r'\d{3}-\d{3}-\d{4}'
             ]
         }
-    
+
+    def _get_document_category(self, text_content: str) -> dict:
+        """
+        Uses AI to classify the document into a specific category.
+        """
+        if not AI_AVAILABLE or not model:
+            logger.warning("AI model not available, falling back to rule-based classification")
+            return self.classify_document(text_content, "text")
+        
+        # We only use the first 2000 characters for a quick and cheap classification
+        prompt = f"""
+        Analyze the following document content. Classify it into ONE of the following categories:
+        'transaction_sheet', 'legal_handbook', 'market_report', 'property_brochure', or 'unknown'.
+        Respond ONLY with a single JSON object in the format:
+        {{"category": "your_choice", "confidence": 0.95}}
+        
+        Content:
+        ---
+        {text_content[:2000]}
+        ---
+        """
+        try:
+            response = model.generate_content(prompt)
+            
+            # Handle different response formats
+            if hasattr(response, 'text'):
+                response_text = response.text
+            elif hasattr(response, 'parts'):
+                response_text = response.parts[0].text if response.parts else ""
+            else:
+                response_text = str(response)
+            
+            # Clean the response text
+            response_text = response_text.strip()
+            
+            # Try to extract JSON from the response
+            if response_text.startswith('{') and response_text.endswith('}'):
+                result = json.loads(response_text)
+            else:
+                # Try to find JSON in the response
+                import re
+                json_match = re.search(r'\{.*\}', response_text, re.DOTALL)
+                if json_match:
+                    result = json.loads(json_match.group())
+                else:
+                    # Fallback to rule-based classification
+                    logger.warning(f"Could not parse AI response: {response_text}")
+                    return self.classify_document(text_content, "text")
+            
+            return result
+        except (json.JSONDecodeError, Exception) as e:
+            logger.error(f"Error in AI classification: {e}")
+            # Fallback to rule-based classification
+            return self.classify_document(text_content, "text")
+
+    def process_uploaded_document(self, file_path: str, file_type: str):
+        """
+        Orchestrates the full processing of an uploaded document.
+        """
+        try:
+            # 1. Extract content from the document
+            content = self.extract_content(file_path, file_type)
+            if not content:
+                raise ValueError("Could not extract content from the document.")
+
+            # 2. Triage: Get the document category
+            classification = self._get_document_category(content)
+            category = classification.get("category")
+            confidence = classification.get("confidence", 0.0)
+            
+            logger.info(f"Document classified as: {category} with confidence {confidence}")
+
+            # 3. Route to the correct specialized extractor
+            if category == 'transaction_sheet':
+                return self._extract_transaction_data(content)
+            elif category == 'legal_handbook':
+                return self._process_legal_document(content)
+            elif category == 'market_report':
+                return self._process_market_report(content)
+            elif category == 'property_brochure':
+                return self._process_property_brochure(content)
+            else:
+                # Handle other categories or unknown types
+                return {
+                    "status": "classified", 
+                    "category": category, 
+                    "confidence": confidence,
+                    "message": "No specialized extractor for this category yet."
+                }
+                
+        except Exception as e:
+            logger.error(f"Error processing document {file_path}: {e}")
+            return {"status": "error", "message": f"Processing failed: {str(e)}"}
+
+    def _extract_transaction_data(self, content: str) -> dict:
+        """
+        Uses AI to extract structured transaction data from text.
+        """
+        if not AI_AVAILABLE or not model:
+            return {"status": "error", "message": "AI model not available for transaction extraction"}
+        
+        prompt = f"""
+        You are a data extraction specialist. Extract all property sales transactions from the text below.
+        For each transaction, provide the sale date, full address, unit/villa number, and sale price.
+        Standardize all dates to YYYY-MM-DD format and ensure prices are only numbers.
+        Respond ONLY with a JSON object containing a single key "transactions" which is a list of objects.
+        
+        Example: {{"transactions": [{{"sale_date": "2025-08-27", "address": "Marina Gate 1", "unit_number": "3405", "sale_price": 2500000}}]}}
+
+        Text to process:
+        ---
+        {content}
+        ---
+        """
+        try:
+            response = model.generate_content(prompt)
+            
+            # Handle different response formats
+            if hasattr(response, 'text'):
+                response_text = response.text
+            elif hasattr(response, 'parts'):
+                response_text = response.parts[0].text if response.parts else ""
+            else:
+                response_text = str(response)
+            
+            # Clean the response text
+            response_text = response_text.strip()
+            
+            # Try to extract JSON from the response
+            if response_text.startswith('{') and response_text.endswith('}'):
+                extracted_data = json.loads(response_text)
+            else:
+                # Try to find JSON in the response
+                import re
+                json_match = re.search(r'\{.*\}', response_text, re.DOTALL)
+                if json_match:
+                    extracted_data = json.loads(json_match.group())
+                else:
+                    logger.error(f"Could not parse AI response for transaction extraction: {response_text}")
+                    return {"status": "error", "message": "Could not parse AI response"}
+            
+            transactions = extracted_data.get("transactions", [])
+
+            # Save transactions to database
+            if DB_AVAILABLE and transactions:
+                saved_count = self._save_transactions_to_db(transactions)
+                return {
+                    "status": "processed", 
+                    "category": "transaction_sheet", 
+                    "records_extracted": len(transactions),
+                    "records_saved": saved_count
+                }
+            else:
+                return {
+                    "status": "processed", 
+                    "category": "transaction_sheet", 
+                    "records_extracted": len(transactions),
+                    "records_saved": 0
+                }
+                
+        except Exception as e:
+            logger.error(f"Failed to extract transaction data: {e}")
+            return {"status": "error", "message": f"Failed to extract transaction data: {e}"}
+
+    def _process_legal_document(self, content: str) -> dict:
+        """
+        Uses AI to chunk and tag legal documents for the vector database.
+        """
+        if not AI_AVAILABLE or not model:
+            return {"status": "error", "message": "AI model not available for legal document processing"}
+        
+        prompt = f"""
+        You are a legal analyst AI. Analyze the legal document content below.
+        Break it down into logical paragraphs or sections.
+        For each section, provide a concise summary and a list of relevant metadata tags from this list: ['deal_structuring', 'commission_rules', 'RERA_compliance', 'financing', 'tenancy_contracts'].
+        Respond ONLY with a JSON object containing a single key "legal_chunks" which is a list of objects.
+
+        Example: {{"legal_chunks": [{{"content": "The full text of the paragraph...", "summary": "A brief summary.", "tags": ["RERA_compliance"]}}]}}
+
+        Content to process:
+        ---
+        {content}
+        ---
+        """
+        try:
+            response = model.generate_content(prompt)
+            
+            # Handle different response formats
+            if hasattr(response, 'text'):
+                response_text = response.text
+            elif hasattr(response, 'parts'):
+                response_text = response.parts[0].text if response.parts else ""
+            else:
+                response_text = str(response)
+            
+            # Clean the response text
+            response_text = response_text.strip()
+            
+            # Try to extract JSON from the response
+            if response_text.startswith('{') and response_text.endswith('}'):
+                extracted_data = json.loads(response_text)
+            else:
+                # Try to find JSON in the response
+                import re
+                json_match = re.search(r'\{.*\}', response_text, re.DOTALL)
+                if json_match:
+                    extracted_data = json.loads(json_match.group())
+                else:
+                    logger.error(f"Could not parse AI response for legal document processing: {response_text}")
+                    return {"status": "error", "message": "Could not parse AI response"}
+            
+            chunks = extracted_data.get("legal_chunks", [])
+
+            # Save chunks to ChromaDB
+            if CHROMA_AVAILABLE and chunks:
+                saved_count = self._save_legal_chunks_to_chroma(chunks)
+                return {
+                    "status": "processed", 
+                    "category": "legal_handbook", 
+                    "chunks_created": len(chunks),
+                    "chunks_saved": saved_count
+                }
+            else:
+                return {
+                    "status": "processed", 
+                    "category": "legal_handbook", 
+                    "chunks_created": len(chunks),
+                    "chunks_saved": 0
+                }
+                
+        except Exception as e:
+            logger.error(f"Failed to process legal document: {e}")
+            return {"status": "error", "message": f"Failed to process legal document: {e}"}
+
+    def _process_market_report(self, content: str) -> dict:
+        """
+        Process market reports and extract market insights.
+        """
+        return {
+            "status": "processed",
+            "category": "market_report",
+            "message": "Market report processing not yet implemented"
+        }
+
+    def _process_property_brochure(self, content: str) -> dict:
+        """
+        Process property brochures and extract property details.
+        """
+        return {
+            "status": "processed",
+            "category": "property_brochure", 
+            "message": "Property brochure processing not yet implemented"
+        }
+
+    def _save_transactions_to_db(self, transactions: List[Dict]) -> int:
+        """
+        Save extracted transactions to the database.
+        """
+        if not DB_AVAILABLE:
+            return 0
+        
+        try:
+            with SessionLocal() as session:
+                saved_count = 0
+                for transaction in transactions:
+                    try:
+                        # Insert transaction into database
+                        query = text("""
+                            INSERT INTO transactions (transaction_date, sale_price, source_document_id, created_at)
+                            VALUES (:transaction_date, :sale_price, :source_document_id, :created_at)
+                        """)
+                        
+                        session.execute(query, {
+                            'transaction_date': transaction.get('sale_date'),
+                            'sale_price': transaction.get('sale_price', 0),
+                            'source_document_id': f"ai_extracted_{datetime.now().strftime('%Y%m%d_%H%M%S')}",
+                            'created_at': datetime.now()
+                        })
+                        saved_count += 1
+                        
+                    except Exception as e:
+                        logger.error(f"Error saving transaction {transaction}: {e}")
+                        continue
+                
+                session.commit()
+                logger.info(f"Successfully saved {saved_count} transactions to database")
+                return saved_count
+                
+        except Exception as e:
+            logger.error(f"Database error saving transactions: {e}")
+            return 0
+
+    def _save_legal_chunks_to_chroma(self, chunks: List[Dict]) -> int:
+        """
+        Save legal document chunks to ChromaDB regulatory_framework collection.
+        """
+        if not CHROMA_AVAILABLE:
+            return 0
+        
+        try:
+            # Ensure collection exists
+            try:
+                collection = chroma_client.get_collection("regulatory_framework")
+            except Exception:
+                # Create collection if it doesn't exist
+                collection = chroma_client.create_collection(
+                    name="regulatory_framework",
+                    metadata={"description": "Legal and regulatory framework documents"}
+                )
+                logger.info("Created regulatory_framework collection in ChromaDB")
+            
+            documents = []
+            metadatas = []
+            ids = []
+            
+            for i, chunk in enumerate(chunks):
+                documents.append(chunk['content'])
+                metadatas.append({
+                    'summary': chunk.get('summary', ''),
+                    'tags': ','.join(chunk.get('tags', [])),
+                    'source': 'ai_processed',
+                    'processed_date': datetime.now().isoformat()
+                })
+                ids.append(f"legal_chunk_{datetime.now().strftime('%Y%m%d_%H%M%S')}_{i}")
+            
+            if documents:
+                collection.add(
+                    documents=documents,
+                    metadatas=metadatas,
+                    ids=ids
+                )
+                logger.info(f"Successfully saved {len(documents)} legal chunks to ChromaDB")
+                return len(documents)
+            
+            return 0
+            
+        except Exception as e:
+            logger.error(f"ChromaDB error saving legal chunks: {e}")
+            return 0
+
     def classify_document(self, content: str, file_type: str) -> Dict[str, Any]:
         """Intelligently classify document based on content"""
         content_lower = content.lower()

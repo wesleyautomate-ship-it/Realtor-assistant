@@ -1,0 +1,108 @@
+{
+  "timestamp": "2025-08-27 14:56:52",
+  "summary": {
+    "total_tests": 14,
+    "passed": 0,
+    "failed": 14,
+    "success_rate": 0.0
+  },
+  "detailed_results": {
+    "basic_chat": [
+      {
+        "query": "Hello, I'm interested in Dubai real estate",
+        "status": "FAIL",
+        "error": "HTTP 404"
+      },
+      {
+        "query": "What are the best areas to invest in?",
+        "status": "FAIL",
+        "error": "HTTP 404"
+      },
+      {
+        "query": "Tell me about property prices in Dubai Marina",
+        "status": "FAIL",
+        "error": "HTTP 404"
+      }
+    ],
+    "dubai_knowledge": [
+      {
+        "query": "What are the current property prices in Dubai Marina?",
+        "status": "FAIL",
+        "error": "HTTP 404"
+      },
+      {
+        "query": "Tell me about the Golden Visa program in Dubai",
+        "status": "FAIL",
+        "error": "HTTP 404"
+      },
+      {
+        "query": "What are the rental yields in Downtown Dubai?",
+        "status": "FAIL",
+        "error": "HTTP 404"
+      },
+      {
+        "query": "Compare Dubai Marina vs Palm Jumeirah for investment",
+        "status": "FAIL",
+        "error": "HTTP 404"
+      }
+    ],
+    "role_based_responses": {
+      "client": {
+        "status": "FAIL",
+        "error": "HTTP 404"
+      },
+      "agent": {
+        "status": "FAIL",
+        "error": "HTTP 404"
+      },
+      "employee": {
+        "status": "FAIL",
+        "error": "HTTP 404"
+      }
+    },
+    "conversation_memory": [
+      {
+        "message": "I'm looking for a 2-bedroom apartment in Dubai Marina",
+        "status": "FAIL",
+        "error": "HTTP 404"
+      },
+      {
+        "message": "What's my budget range?",
+        "status": "FAIL",
+        "error": "HTTP 404"
+      },
+      {
+        "message": "Can you suggest properties within that budget?",
+        "status": "FAIL",
+        "error": "HTTP 404"
+      },
+      {
+        "message": "What about the ROI on these properties?",
+        "status": "FAIL",
+        "error": "HTTP 404"
+      }
+    ],
+    "performance_metrics": {
+      "performance": {
+        "avg_response_time": 0,
+        "total_requests": 0,
+        "cache_hit_rate": 0.0,
+        "cache_hits": 0,
+        "cache_misses": 0
+      },
+      "costs": {
+        "total_cost": 0.0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "avg_cost_per_request": 0.0
+      },
+      "cache": {
+        "memory_cache_size": 0,
+        "redis_available": false
+      }
+    },
+    "feedback_submission": {
+      "status": "PASS"
+    }
+  }
+}
