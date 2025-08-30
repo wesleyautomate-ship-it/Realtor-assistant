@@ -1,0 +1,6 @@
+This is a test document for the Dubai Real Estate RAG system.
+It contains sample content about properties in Dubai Marina.
+Property Type: Apartment
+Bedrooms: 2
+Price: AED 2.5 million
+Developer: Test Developer

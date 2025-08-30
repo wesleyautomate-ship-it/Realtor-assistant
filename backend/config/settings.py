@@ -47,6 +47,10 @@ ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://localhost:3001", 
     "http://192.168.1.241:3001"
+    "https://*.ngrok.io",
+    "https://*.ngrok-free.app",
+    "http://*.ngrok.io",
+    "http://*.ngrok-free.app",
 ]
 
 # File Upload Configuration
@@ -56,7 +60,9 @@ ALLOWED_EXTENSIONS = {'.jpg', '.jpeg', '.png', '.gif', '.pdf', '.doc', '.docx', 
 MAX_FILE_SIZE = 10 * 1024 * 1024  # 10MB
 
 # Cache Configuration
-REDIS_URL = os.getenv("REDIS_URL", "redis://localhost:6379")
+REDIS_HOST = os.getenv("REDIS_HOST", "localhost")
+REDIS_PORT = int(os.getenv("REDIS_PORT", "6379"))
+REDIS_URL = os.getenv("REDIS_URL", f"redis://{REDIS_HOST}:{REDIS_PORT}")
 CACHE_TTL = int(os.getenv("CACHE_TTL", "3600"))  # 1 hour
 
 # Logging Configuration

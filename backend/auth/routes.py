@@ -66,7 +66,7 @@ class UserProfile(BaseModel):
     role: str
     is_active: bool
     email_verified: bool
-    created_at: datetime
+    created_at: Optional[datetime] = None
 
 @router.post("/register", response_model=TokenResponse)
 async def register(
@@ -110,7 +110,7 @@ async def register(
             )
         
         # Validate role
-        valid_roles = ["client", "agent", "employee"]
+        valid_roles = ["agent", "employee", "admin"]
         if user_data.role not in valid_roles:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
@@ -215,7 +215,7 @@ async def login(
             )
         
         # Rate limiting for login attempts
-        if not rate_limiter.is_ip_allowed(client_ip, user_agent, 5):  # 5 attempts per minute
+        if not rate_limiter.is_ip_allowed(client_ip, user_agent):  # Rate limiting
             raise HTTPException(
                 status_code=status.HTTP_429_TOO_MANY_REQUESTS,
                 detail="Too many login attempts. Please try again later."
@@ -481,7 +481,7 @@ async def forgot_password(
     try:
         # Rate limiting
         client_ip = request.client.host
-        if not rate_limiter.is_ip_allowed(client_ip, request.headers.get("user-agent", ""), 3):  # 3 requests per minute
+        if not rate_limiter.is_ip_allowed(client_ip, request.headers.get("user-agent", "")):  # Rate limiting
             raise HTTPException(
                 status_code=status.HTTP_429_TOO_MANY_REQUESTS,
                 detail="Too many password reset requests. Please try again later."

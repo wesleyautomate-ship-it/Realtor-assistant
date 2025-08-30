@@ -39,6 +39,201 @@ except ImportError:
 
 logger = logging.getLogger(__name__)
 
+def get_daily_briefing_prompt(agent_name: str, market_summary: dict, new_listings: list, new_leads: list):
+    """Generates a prompt for a daily agent briefing."""
+
+    # Format the data for the prompt
+    listings_str = "\n".join([f"- {l['bedrooms']}BR {l['type']} in {l['area']} for AED {l['price']}" for l in new_listings])
+    leads_str = "\n".join([f"- {lead['name']}, interested in {lead['interest']}" for lead in new_leads])
+
+    prompt = f"""
+You are "MarketPulse AI," an elite real estate analyst. Your task is to generate a personalized morning briefing for a top-performing Dubai real estate agent.
+
+**Agent Name:** {agent_name}
+**Date:** {datetime.now().strftime('%A, %B %d, %Y')}
+
+**Tone:** Professional, data-first, concise, and highly scannable. Use emojis to delineate sections.
+
+**Instructions:**
+Based on the provided real-time data, create a morning briefing with the following strict structure.
+
+---
+**[REAL-TIME DATA INPUT]**
+
+**Market Summary:**
+- Overall Market Trend: {market_summary['trend']}
+- Average Price Change (24h): {market_summary['price_change_pct']}%
+- Hotspot Area of the Day: {market_summary['hotspot_area']}
+
+**New Listings in Your Sector:**
+{listings_str}
+
+**New Leads Assigned to You:**
+{leads_str}
+
+---
+**[END OF DATA INPUT]**
+
+**[GENERATION TASK]**
+
+Generate the briefing now. Follow this format exactly:
+
+###  Morning Briefing: {agent_name}
+
+**📈 Market Snapshot**
+- A 1-2 sentence summary of today's market pulse based on the data.
+
+**🔑 New Key Listings**
+- A bulleted list of the most important new listings. Rephrase them professionally.
+
+**👤 New Client Opportunities**
+- A bulleted list of new leads. Highlight what makes each one a key opportunity.
+
+**✅ Your Top 3 Priorities Today**
+- Based on all the data, generate three specific, actionable priorities for the agent. For example: "Follow up with [Lead Name] regarding the new listing in [Area]" or "Analyze the price drop in [Area] for potential client outreach."
+"""
+    return prompt
+
+
+def get_social_media_prompt(platform: str, topic: str, key_points: list, audience: str, call_to_action: str):
+    """Generates a prompt for social media content creation."""
+    
+    points_str = "\n".join([f"- {point}" for point in key_points])
+    
+    prompt = f"""
+You are "RealtyScribe AI," a Dubai real estate social media expert. Create engaging, platform-optimized content.
+
+**Platform:** {platform}
+**Topic:** {topic}
+**Key Points:** {points_str}
+**Target Audience:** {audience}
+**Call to Action:** {call_to_action}
+
+**Tone:** Engaging, professional, with Dubai real estate expertise. Use relevant hashtags and emojis.
+
+**Instructions:**
+Create a social media post optimized for {platform} that includes:
+- Compelling headline/hook
+- Key property highlights
+- Dubai market context
+- Relevant hashtags
+- Clear call to action
+- Platform-specific formatting
+
+**Format:** Return only the post content, ready to publish.
+"""
+    return prompt
+
+
+def get_email_prompt(client_name: str, client_context: str, email_goal: str, listings_to_mention: list):
+    """Generates a prompt for follow-up email creation."""
+    
+    listings_str = "\n".join([f"- {listing}" for listing in listings_to_mention]) if listings_to_mention else "None specified"
+    
+    prompt = f"""
+You are "AgentAssist AI," a Dubai real estate communication specialist. Draft a personalized follow-up email.
+
+**Client Name:** {client_name}
+**Client Context:** {client_context}
+**Email Goal:** {email_goal}
+**Listings to Mention:** {listings_str}
+
+**Tone:** Warm, professional, Dubai-focused. Show understanding of local market.
+
+**Instructions:**
+Create a personalized email that:
+- Addresses the client by name
+- References their specific context
+- Achieves the stated goal
+- Mentions relevant listings if provided
+- Includes Dubai market insights
+- Has a clear next step
+
+**Format:** Professional email with subject line and body.
+"""
+    return prompt
+
+
+def get_market_report_prompt(neighborhood: str, property_type: str, time_period: str, market_data: dict):
+    """Generates a prompt for market report creation."""
+    
+    prompt = f"""
+You are "Dubai Data Insights," a RERA-certified market analyst. Create a comprehensive market report.
+
+**Neighborhood:** {neighborhood}
+**Property Type:** {property_type}
+**Time Period:** {time_period}
+**Market Data:** {json.dumps(market_data, indent=2)}
+
+**Tone:** Formal, analytical, data-driven. Dubai real estate expertise.
+
+**Instructions:**
+Generate a professional market report including:
+- Executive summary
+- Market trends analysis
+- Price movement insights
+- Supply and demand factors
+- Future outlook
+- Recommendations
+
+**Format:** Structured report with clear sections and data visualization suggestions.
+"""
+    return prompt
+
+
+def get_property_brochure_prompt(property_details: dict):
+    """Generates a prompt for luxury property brochure creation."""
+    
+    prompt = f"""
+You are "LuxeNarratives," a luxury real estate copywriter specializing in Dubai's premium market.
+
+**Property Details:** {json.dumps(property_details, indent=2)}
+
+**Tone:** Aspirational, sophisticated, luxury-focused. Dubai premium real estate expertise.
+
+**Instructions:**
+Create a compelling property brochure that includes:
+- Luxury headline and tagline
+- Property highlights and features
+- Lifestyle benefits
+- Location advantages
+- Investment potential
+- Professional photography suggestions
+- Contact information section
+
+**Format:** Professional brochure layout with sections for different aspects of the property.
+"""
+    return prompt
+
+
+def get_cma_prompt(subject_property: dict, comparable_properties: list):
+    """Generates a prompt for Comparative Market Analysis creation."""
+    
+    comps_str = "\n".join([f"- {json.dumps(comp, indent=2)}" for comp in comparable_properties])
+    
+    prompt = f"""
+You are a "RERA-Certified Valuator," a Dubai property valuation expert. Create a professional CMA report.
+
+**Subject Property:** {json.dumps(subject_property, indent=2)}
+
+**Comparable Properties:** {comps_str}
+
+**Tone:** Objective, data-driven, professional. RERA compliance focus.
+
+**Instructions:**
+Generate a comprehensive CMA report including:
+- Property overview
+- Market analysis
+- Comparable property analysis
+- Valuation methodology
+- Price range recommendation
+- Market positioning
+- Risk factors
+
+**Format:** Professional valuation report with clear sections and supporting data.
+"""
+    return prompt
+
 class AIEnhancementManager:
     """Main manager for all AI enhancements"""
     
@@ -229,7 +424,7 @@ class AIEnhancementManager:
         
         try:
             # Use the improved RAG service to get context and create improved prompt
-            from rag_service_improved import ImprovedRAGService, QueryIntent, QueryAnalysis
+            from rag_service import ImprovedRAGService, QueryIntent, QueryAnalysis
             
             # Create a temporary RAG service instance for this request
             rag_service = ImprovedRAGService(
@@ -831,3 +1026,148 @@ FORMAT: Return the complete message ready to send.
         except Exception as e:
             logger.error(f"Error fetching client details: {e}")
             return None
+
+    # ============================================================================
+    # CONTENT GENERATION FUNCTIONS
+    # ============================================================================
+
+    def generate_daily_briefing(self, agent_name: str, market_summary: dict, new_listings: list, new_leads: list) -> str:
+        """Generate a daily briefing for a real estate agent"""
+        try:
+            # Create the specialized prompt
+            prompt = get_daily_briefing_prompt(agent_name, market_summary, new_listings, new_leads)
+            
+            # Generate content using the AI model
+            response = self.model.generate_content(prompt)
+            return response.text
+            
+        except Exception as e:
+            logger.error(f"Error generating daily briefing: {e}")
+            return "Unable to generate daily briefing at this time."
+
+    def generate_social_media_post(self, platform: str, topic: str, key_points: list, audience: str, call_to_action: str) -> str:
+        """Generate a social media post for the specified platform"""
+        try:
+            # Create the specialized prompt
+            prompt = get_social_media_prompt(platform, topic, key_points, audience, call_to_action)
+            
+            # Generate content using the AI model
+            response = self.model.generate_content(prompt)
+            return response.text
+            
+        except Exception as e:
+            logger.error(f"Error generating social media post: {e}")
+            return "Unable to generate social media post at this time."
+
+    def draft_follow_up_email(self, client_name: str, client_context: str, email_goal: str, listings_to_mention: list = None) -> str:
+        """Draft a personalized follow-up email for a client"""
+        try:
+            # Create the specialized prompt
+            prompt = get_email_prompt(client_name, client_context, email_goal, listings_to_mention)
+            
+            # Generate content using the AI model
+            response = self.model.generate_content(prompt)
+            return response.text
+            
+        except Exception as e:
+            logger.error(f"Error drafting follow-up email: {e}")
+            return "Unable to draft follow-up email at this time."
+
+    def generate_market_report(self, neighborhood: str, property_type: str, time_period: str, market_data: dict) -> str:
+        """Generate a detailed market report for a specific neighborhood"""
+        try:
+            # Create the specialized prompt
+            prompt = get_market_report_prompt(neighborhood, property_type, time_period, market_data)
+            
+            # Generate content using the AI model
+            response = self.model.generate_content(prompt)
+            return response.text
+            
+        except Exception as e:
+            logger.error(f"Error generating market report: {e}")
+            return "Unable to generate market report at this time."
+
+    def build_property_brochure(self, property_details: dict) -> str:
+        """Build a persuasive property brochure"""
+        try:
+            # Create the specialized prompt
+            prompt = get_property_brochure_prompt(property_details)
+            
+            # Generate content using the AI model
+            response = self.model.generate_content(prompt)
+            return response.text
+            
+        except Exception as e:
+            logger.error(f"Error building property brochure: {e}")
+            return "Unable to build property brochure at this time."
+
+    def generate_cma_content(self, subject_property: dict, comparable_properties: list) -> str:
+        """Generate Comparative Market Analysis content"""
+        try:
+            # Create the specialized prompt
+            prompt = get_cma_prompt(subject_property, comparable_properties)
+            
+            # Generate content using the AI model
+            response = self.model.generate_content(prompt)
+            return response.text
+            
+        except Exception as e:
+            logger.error(f"Error generating CMA content: {e}")
+            return "Unable to generate CMA content at this time."
+
+    def generate_content_by_type(self, content_type: str, **kwargs) -> str:
+        """Universal content generation function that routes to the appropriate generator"""
+        try:
+            if content_type == "daily_briefing":
+                return self.generate_daily_briefing(
+                    kwargs.get('agent_name'),
+                    kwargs.get('market_summary'),
+                    kwargs.get('new_listings', []),
+                    kwargs.get('new_leads', [])
+                )
+            elif content_type == "social_media":
+                return self.generate_social_media_post(
+                    kwargs.get('platform'),
+                    kwargs.get('topic'),
+                    kwargs.get('key_points', []),
+                    kwargs.get('audience'),
+                    kwargs.get('call_to_action')
+                )
+            elif content_type == "follow_up_email":
+                return self.draft_follow_up_email(
+                    kwargs.get('client_name'),
+                    kwargs.get('client_context'),
+                    kwargs.get('email_goal'),
+                    kwargs.get('listings_to_mention')
+                )
+            elif content_type == "market_report":
+                return self.generate_market_report(
+                    kwargs.get('neighborhood'),
+                    kwargs.get('property_type'),
+                    kwargs.get('time_period'),
+                    kwargs.get('market_data', {})
+                )
+            elif content_type == "property_brochure":
+                return self.build_property_brochure(kwargs.get('property_details', {}))
+            elif content_type == "cma":
+                return self.generate_cma_content(
+                    kwargs.get('subject_property', {}),
+                    kwargs.get('comparable_properties', [])
+                )
+            else:
+                return f"Unsupported content type: {content_type}"
+                
+        except Exception as e:
+            logger.error(f"Error in generate_content_by_type: {e}")
+            return f"Unable to generate {content_type} content at this time."
+
+    def get_available_content_types(self) -> list:
+        """Get list of available content generation types"""
+        return [
+            "daily_briefing",
+            "social_media", 
+            "follow_up_email",
+            "market_report",
+            "property_brochure",
+            "cma"
+        ]

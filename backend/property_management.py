@@ -63,6 +63,29 @@ class PropertyDetailsResponse(BaseModel):
     market_analysis: Dict[str, Any]
     neighborhood_info: Dict[str, Any]
 
+@router.get("/", response_model=List[PropertyResponse])
+async def get_all_properties():
+    """Get all properties from the database"""
+    try:
+        with engine.connect() as conn:
+            result = conn.execute(text("SELECT id, title, description, price, location, property_type, bedrooms, bathrooms, area_sqft FROM properties"))
+            properties = []
+            for row in result:
+                properties.append(PropertyResponse(
+                    id=row[0],
+                    title=row[1],
+                    description=row[2],
+                    price=float(row[3]),
+                    location=row[4],
+                    property_type=row[5],
+                    bedrooms=row[6],
+                    bathrooms=row[7],
+                    area_sqft=float(row[8]) if row[8] else None
+                ))
+            return properties
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Database error: {str(e)}")
+
 @router.post("/", response_model=PropertyResponse)
 async def create_property(property_data: PropertyCreate):
     """Create a new property"""
@@ -115,50 +138,61 @@ async def search_properties(
     location: Optional[str] = Query(None, description="Location/area"),
     min_area_sqft: Optional[float] = Query(None, description="Minimum area in sqft"),
     max_area_sqft: Optional[float] = Query(None, description="Maximum area in sqft"),
-    limit: int = Query(20, description="Number of results to return")
+    page: int = Query(1, ge=1, description="Page number"),
+    limit: int = Query(20, ge=1, le=100, description="Number of results to return")
 ):
-    """Advanced property search with multiple filters"""
-    
-    # Build dynamic SQL query
-    query = "SELECT * FROM properties WHERE 1=1"
-    params = {}
-    
-    if min_price is not None:
-        query += " AND price >= :min_price"
-        params["min_price"] = min_price
-    
-    if max_price is not None:
-        query += " AND price <= :max_price"
-        params["max_price"] = max_price
-    
-    if bedrooms is not None:
-        query += " AND bedrooms = :bedrooms"
-        params["bedrooms"] = bedrooms
-    
-    if bathrooms is not None:
-        query += " AND bathrooms = :bathrooms"
-        params["bathrooms"] = bathrooms
-    
-    if property_type:
-        query += " AND property_type ILIKE :property_type"
-        params["property_type"] = f"%{property_type}%"
-    
-    if location:
-        query += " AND location ILIKE :location"
-        params["location"] = f"%{location}%"
-    
-    if min_area_sqft is not None:
-        query += " AND area_sqft >= :min_area_sqft"
-        params["min_area_sqft"] = min_area_sqft
-    
-    if max_area_sqft is not None:
-        query += " AND area_sqft <= :max_area_sqft"
-        params["max_area_sqft"] = max_area_sqft
-    
-    query += f" LIMIT {limit}"
+    """Advanced property search with multiple filters and pagination"""
     
     try:
         with engine.connect() as conn:
+            # Calculate offset for pagination
+            offset = (page - 1) * limit
+            
+            # Build dynamic SQL query with pagination
+            query = """
+                SELECT id, title, description, price, location, property_type, 
+                       bedrooms, bathrooms, area_sqft
+                FROM properties WHERE 1=1
+            """
+            params = {}
+            
+            if min_price is not None:
+                query += " AND price >= :min_price"
+                params["min_price"] = min_price
+            
+            if max_price is not None:
+                query += " AND price <= :max_price"
+                params["max_price"] = max_price
+            
+            if bedrooms is not None:
+                query += " AND bedrooms = :bedrooms"
+                params["bedrooms"] = bedrooms
+            
+            if bathrooms is not None:
+                query += " AND bathrooms = :bathrooms"
+                params["bathrooms"] = bathrooms
+            
+            if property_type:
+                query += " AND property_type ILIKE :property_type"
+                params["property_type"] = f"%{property_type}%"
+            
+            if location:
+                query += " AND location ILIKE :location"
+                params["location"] = f"%{location}%"
+            
+            if min_area_sqft is not None:
+                query += " AND area_sqft >= :min_area_sqft"
+                params["min_area_sqft"] = min_area_sqft
+            
+            if max_area_sqft is not None:
+                query += " AND area_sqft <= :max_area_sqft"
+                params["max_area_sqft"] = max_area_sqft
+            
+            # Add pagination
+            query += " ORDER BY id DESC LIMIT :limit OFFSET :offset"
+            params["limit"] = limit
+            params["offset"] = offset
+            
             result = conn.execute(text(query), params)
             properties = []
             
@@ -175,7 +209,48 @@ async def search_properties(
                     area_sqft=float(row[8]) if row[8] else None
                 ))
             
-            return properties
+            # Get total count for pagination
+            count_query = "SELECT COUNT(*) FROM properties WHERE 1=1"
+            count_params = {}
+            
+            # Add same filters to count query
+            if min_price is not None:
+                count_query += " AND price >= :min_price"
+                count_params["min_price"] = min_price
+            if max_price is not None:
+                count_query += " AND price <= :max_price"
+                count_params["max_price"] = max_price
+            if bedrooms is not None:
+                count_query += " AND bedrooms = :bedrooms"
+                count_params["bedrooms"] = bedrooms
+            if bathrooms is not None:
+                count_query += " AND bathrooms = :bathrooms"
+                count_params["bathrooms"] = bathrooms
+            if property_type:
+                count_query += " AND property_type ILIKE :property_type"
+                count_params["property_type"] = f"%{property_type}%"
+            if location:
+                count_query += " AND location ILIKE :location"
+                count_params["location"] = f"%{location}%"
+            if min_area_sqft is not None:
+                count_query += " AND area_sqft >= :min_area_sqft"
+                count_params["min_area_sqft"] = min_area_sqft
+            if max_area_sqft is not None:
+                count_query += " AND area_sqft <= :max_area_sqft"
+                count_params["max_area_sqft"] = max_area_sqft
+            
+            count_result = conn.execute(text(count_query), count_params)
+            total_count = count_result.fetchone()[0]
+            
+            return {
+                "properties": properties,
+                "pagination": {
+                    "page": page,
+                    "limit": limit,
+                    "total": total_count,
+                    "pages": (total_count + limit - 1) // limit
+                }
+            }
             
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Database error: {str(e)}")

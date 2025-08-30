@@ -1,0 +1,91 @@
+services:
+  # PostgreSQL Database
+  postgres-staging:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: real_estate_db_staging
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password123
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data_staging:/var/lib/postgresql/data
+    networks:
+      - rag-network-staging
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d real_estate_db_staging"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Redis Cache
+  redis-staging:
+    image: redis:7-alpine
+    ports:
+      - "6380:6379"
+    networks:
+      - rag-network-staging
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ChromaDB for document embeddings
+  chromadb-staging:
+    image: chromadb/chroma:latest
+    ports:
+      - "8003:8000"
+    volumes:
+      - chroma_data_staging:/chroma/chroma
+    networks:
+      - rag-network-staging
+
+  # FastAPI Backend
+  backend-staging:
+    build: ./backend
+    ports:
+      - "8004:8001"
+    environment:
+      - DATABASE_URL=postgresql://admin:password123@postgres-staging:5432/real_estate_db_staging
+      - CHROMA_HOST=chromadb-staging
+      - CHROMA_PORT=8000
+      - REDIS_HOST=redis-staging
+      - REDIS_PORT=6379
+      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
+      - REELLY_API_KEY=${REELLY_API_KEY}
+    depends_on:
+      - postgres-staging
+      - chromadb-staging
+      - redis-staging
+    volumes:
+       - ./backend:/app
+       - ./.env.staging:/app/.env
+    networks:
+      - rag-network-staging
+    restart: unless-stopped
+
+  # React Frontend
+  frontend-staging:
+    build: ./frontend
+    ports:
+      - "3001:3000"
+    environment:
+      - REACT_APP_API_URL=http://localhost:8004
+    depends_on:
+      - backend-staging
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    networks:
+      - rag-network-staging
+    restart: unless-stopped
+
+volumes:
+  postgres_data_staging:
+  chroma_data_staging:
+
+networks:
+  rag-network-staging:
+    driver: bridge
+

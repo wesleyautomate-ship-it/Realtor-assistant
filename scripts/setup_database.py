@@ -81,6 +81,7 @@ def create_tables(engine):
         session_id VARCHAR(255) UNIQUE NOT NULL,
         role VARCHAR(50) DEFAULT 'client',
         title VARCHAR(255),
+        user_id INTEGER,
         is_active BOOLEAN DEFAULT TRUE,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP

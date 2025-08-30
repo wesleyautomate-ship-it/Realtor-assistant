@@ -88,6 +88,7 @@ def init_database():
                 CREATE TABLE IF NOT EXISTS conversations (
                     id SERIAL PRIMARY KEY,
                     session_id VARCHAR(255) NOT NULL,
+                    user_id INTEGER REFERENCES users(id),
                     role VARCHAR(50) DEFAULT 'client',
                     title VARCHAR(255),
                     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -95,6 +96,13 @@ def init_database():
                     is_active BOOLEAN DEFAULT TRUE
                 )
             """))
+            
+            # Add user_id column if it doesn't exist (for existing tables)
+            try:
+                conn.execute(text("ALTER TABLE conversations ADD COLUMN IF NOT EXISTS user_id INTEGER REFERENCES users(id)"))
+                print("✅ user_id column ensured in conversations table")
+            except Exception as e:
+                print(f"⚠️ user_id column check: {e}")
             
             # Create messages table
             conn.execute(text("""

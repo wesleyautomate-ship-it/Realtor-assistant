@@ -11,6 +11,10 @@ from sqlalchemy import create_engine, text
 from datetime import datetime, date
 import logging
 import bcrypt
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
 
 # Setup logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -22,7 +26,7 @@ def hash_password(password: str) -> str:
     return bcrypt.hashpw(password.encode('utf-8'), salt).decode('utf-8')
 
 class PostgreSQLPopulator:
-    def __init__(self, db_url: str = "postgresql://admin:password123@localhost:5432/real_estate_db"):
+    def __init__(self, db_url: str):
         self.engine = create_engine(db_url)
         
         # Sample data for each table
@@ -920,7 +924,14 @@ class PostgreSQLPopulator:
 def main():
     """Main function to run PostgreSQL population"""
     try:
-        populator = PostgreSQLPopulator()
+        # Get the database URL from the environment variable
+        db_url = os.getenv("DATABASE_URL")
+        if not db_url:
+            logger.error("❌ DATABASE_URL environment variable not set.")
+            sys.exit(1)
+
+        # Pass the correct URL to the populator
+        populator = PostgreSQLPopulator(db_url=db_url)
         results = populator.run_population()
         
         print("\n" + "="*60)

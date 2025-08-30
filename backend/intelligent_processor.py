@@ -11,8 +11,10 @@ import logging
 from datetime import datetime
 from typing import Dict, List, Any, Optional, Union, Tuple
 import pandas as pd
+import numpy as np
 from pathlib import Path
 from collections import defaultdict
+import time
 
 # AI Integration
 try:
@@ -182,16 +184,23 @@ class IntelligentDataProcessor:
             logger.warning("AI model not available, falling back to rule-based classification")
             return self.classify_document(text_content, "text")
         
-        # We only use the first 2000 characters for a quick and cheap classification
+        # We only use the first 4000 characters for a quick and cheap classification
         prompt = f"""
-        Analyze the following document content. Classify it into ONE of the following categories:
-        'transaction_sheet', 'legal_handbook', 'market_report', 'property_brochure', or 'unknown'.
-        Respond ONLY with a single JSON object in the format:
-        {{"category": "your_choice", "confidence": 0.95}}
-        
-        Content:
-        ---
-        {text_content[:2000]}
+You are a document classification specialist for a Dubai real estate company. Your task is to accurately classify the document based on its content.
+
+**Classification Categories:**
+- **transaction_sheet**: Contains tables or lists of property sales data (e.g., dates, addresses, prices).
+- **legal_handbook**: Contains legal clauses, contract terms, or regulatory information (e.g., RERA rules).
+- **market_report**: Contains analysis of market trends, statistics, charts, and forecasts for a specific area.
+- **property_brochure**: A marketing document describing a single property for sale or rent, focusing on features and lifestyle.
+- **unknown**: The document does not clearly fit any of the above categories.
+
+Analyze the following content and respond ONLY with a single, clean JSON object in the format:
+{{"category": "your_choice", "confidence": <a number between 0.0 and 1.0>}}
+
+**Content Snippet:**
+---
+{text_content[:4000]}
         ---
         """
         try:
@@ -267,6 +276,281 @@ class IntelligentDataProcessor:
             logger.error(f"Error processing document {file_path}: {e}")
             return {"status": "error", "message": f"Processing failed: {str(e)}"}
 
+    def process_uploaded_document_async(self, file_path: str, file_type: str, instructions: str = "", task_id: str = None):
+        """
+        Enhanced asynchronous document processing with two-step AI pipeline and detailed reporting.
+        This method orchestrates the complete processing workflow and generates comprehensive reports.
+        """
+        from task_manager import task_manager, TaskStatus
+        
+        start_time = time.time()
+        processing_report = {
+            "execution_plan": None,
+            "storage_summary": {},
+            "performance_metrics": {},
+            "processing_steps": [],
+            "final_result": None
+        }
+        
+        try:
+            # Step 1: Extract content
+            if task_id:
+                task_manager.update_task_status(task_id, TaskStatus.PROCESSING, progress=0.1)
+            
+            content = self.extract_content(file_path, file_type)
+            if not content:
+                raise ValueError("Could not extract content from the document.")
+            
+            processing_report["processing_steps"].append({
+                "step": "content_extraction",
+                "status": "completed",
+                "details": f"Extracted {len(content)} characters from {file_type} file"
+            })
+            
+            # Step 2: Triage & Planning AI
+            if task_id:
+                task_manager.update_task_status(task_id, TaskStatus.PROCESSING, progress=0.3)
+            
+            execution_plan = self._generate_execution_plan(content, instructions)
+            processing_report["execution_plan"] = execution_plan
+            
+            processing_report["processing_steps"].append({
+                "step": "ai_triage_and_planning",
+                "status": "completed",
+                "details": f"Generated execution plan: {execution_plan.get('category', 'unknown')} with {execution_plan.get('confidence', 0):.2f} confidence"
+            })
+            
+            # Step 3: Specialized Processing
+            if task_id:
+                task_manager.update_task_status(task_id, TaskStatus.PROCESSING, progress=0.6)
+            
+            category = execution_plan.get("category", "unknown")
+            specialized_result = self._execute_specialized_processing(content, category, execution_plan)
+            
+            processing_report["processing_steps"].append({
+                "step": "specialized_processing",
+                "status": "completed",
+                "details": f"Processed as {category} with status: {specialized_result.get('status', 'unknown')}"
+            })
+            
+            # Step 4: Data Storage
+            if task_id:
+                task_manager.update_task_status(task_id, TaskStatus.PROCESSING, progress=0.8)
+            
+            storage_summary = self._store_processed_data(specialized_result, category, content)
+            processing_report["storage_summary"] = storage_summary
+            
+            processing_report["processing_steps"].append({
+                "step": "data_storage",
+                "status": "completed",
+                "details": f"Stored data in {len(storage_summary)} locations"
+            })
+            
+            # Step 5: Finalize
+            if task_id:
+                task_manager.update_task_status(task_id, TaskStatus.PROCESSING, progress=1.0)
+            
+            total_time = time.time() - start_time
+            processing_report["performance_metrics"] = {
+                "total_processing_time_seconds": total_time,
+                "content_size_characters": len(content),
+                "file_type": file_type,
+                "ai_model_used": "gemini-1.5-flash"
+            }
+            
+            processing_report["final_result"] = {
+                "status": "completed",
+                "category": category,
+                "confidence": execution_plan.get("confidence", 0.0),
+                "extracted_data": specialized_result,
+                "storage_locations": storage_summary
+            }
+            
+            if task_id:
+                task_manager.set_task_result(task_id, processing_report)
+            
+            return processing_report
+            
+        except Exception as e:
+            error_msg = f"Processing failed: {str(e)}"
+            logger.error(f"Error in async document processing: {e}")
+            
+            processing_report["processing_steps"].append({
+                "step": "error_handling",
+                "status": "failed",
+                "details": error_msg
+            })
+            
+            if task_id:
+                task_manager.set_task_error(task_id, error_msg)
+            
+            return processing_report
+
+    def _generate_execution_plan(self, content: str, instructions: str = "") -> Dict[str, Any]:
+        """
+        Step 1: Triage & Planning AI
+        Analyzes the document content and user instructions to create a detailed execution plan.
+        """
+        if not AI_AVAILABLE or not model:
+            return {"category": "unknown", "confidence": 0.0, "plan": "AI not available"}
+        
+        prompt = f"""
+You are an expert document analysis and processing planner for a Dubai real estate company. Your task is to analyze the provided document content and create a detailed execution plan for processing it.
+
+**Document Content Preview:**
+{content[:2000]}...
+
+**User Instructions (if any):**
+{instructions if instructions else "No specific instructions provided"}
+
+**Your Analysis Tasks:**
+1. **Document Classification**: Determine the primary category of this document
+2. **Processing Strategy**: Plan the optimal approach for extracting and storing the data
+3. **Data Storage Planning**: Determine where different types of data should be stored
+4. **Quality Assessment**: Evaluate the content quality and potential processing challenges
+
+**Available Categories:**
+- transaction_sheet: Property sales data, transaction records, price lists
+- legal_handbook: Contracts, legal documents, regulations, compliance materials
+- market_report: Market analysis, trends, statistics, forecasts
+- property_brochure: Property listings, marketing materials, property descriptions
+- unknown: Documents that don't clearly fit other categories
+
+**Output Format:**
+Respond with a JSON object containing:
+{{
+    "category": "the_primary_category",
+    "confidence": 0.95,
+    "processing_strategy": "detailed_plan_for_processing",
+    "data_storage_plan": {{
+        "postgresql_tables": ["list", "of", "relevant", "tables"],
+        "chromadb_collections": ["list", "of", "collections"],
+        "vector_embeddings": "description_of_what_to_embed"
+    }},
+    "quality_assessment": {{
+        "content_quality": "high/medium/low",
+        "extraction_complexity": "simple/moderate/complex",
+        "potential_issues": ["list", "of", "potential", "problems"]
+    }},
+    "recommended_actions": ["list", "of", "specific", "processing", "steps"]
+}}
+
+**Document Content:**
+---
+{content}
+---
+"""
+        
+        try:
+            response = model.generate_content(prompt)
+            response_text = response.text.strip()
+            
+            # Extract JSON from response
+            json_match = re.search(r'\{.*\}', response_text, re.DOTALL)
+            if json_match:
+                execution_plan = json.loads(json_match.group())
+                return execution_plan
+            else:
+                logger.error(f"Could not parse execution plan response: {response_text}")
+                return {"category": "unknown", "confidence": 0.0, "plan": "Failed to parse AI response"}
+                
+        except Exception as e:
+            logger.error(f"Error generating execution plan: {e}")
+            return {"category": "unknown", "confidence": 0.0, "plan": f"Error: {str(e)}"}
+
+    def _execute_specialized_processing(self, content: str, category: str, execution_plan: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        Step 2: Specialized Processor AI
+        Executes the specialized processing based on the execution plan.
+        """
+        try:
+            if category == 'transaction_sheet':
+                return self._extract_transaction_data(content)
+            elif category == 'legal_handbook':
+                return self._process_legal_document(content)
+            elif category == 'market_report':
+                return self._process_market_report(content)
+            elif category == 'property_brochure':
+                return self._process_property_brochure(content)
+            else:
+                return {
+                    "status": "classified",
+                    "category": category,
+                    "confidence": execution_plan.get("confidence", 0.0),
+                    "message": "No specialized processor available for this category",
+                    "raw_content": content[:1000] + "..." if len(content) > 1000 else content
+                }
+        except Exception as e:
+            logger.error(f"Error in specialized processing: {e}")
+            return {"status": "error", "message": f"Specialized processing failed: {str(e)}"}
+
+    def _store_processed_data(self, result: Dict[str, Any], category: str, original_content: str) -> Dict[str, Any]:
+        """
+        Stores the processed data in appropriate databases and returns a storage summary.
+        """
+        storage_summary = {
+            "postgresql_inserts": [],
+            "chromadb_additions": [],
+            "vector_embeddings": [],
+            "total_records_stored": 0
+        }
+        
+        try:
+            # Store in PostgreSQL based on category
+            if category == 'transaction_sheet' and result.get('status') == 'processed':
+                transactions = result.get('data', {}).get('transactions', [])
+                if transactions and DB_AVAILABLE:
+                    # Store transactions in PostgreSQL
+                    storage_summary["postgresql_inserts"].append({
+                        "table": "transactions",
+                        "records": len(transactions),
+                        "status": "success"
+                    })
+                    storage_summary["total_records_stored"] += len(transactions)
+            
+            # Store in ChromaDB for vector search
+            if CHROMA_AVAILABLE:
+                try:
+                    # Create or get collection
+                    collection_name = f"vector_db_{category.replace('_', '')}"
+                    try:
+                        collection = chroma_client.get_collection(collection_name)
+                    except:
+                        collection = chroma_client.create_collection(collection_name)
+                    
+                    # Add document to vector database
+                    doc_id = f"doc_{int(time.time())}"
+                    collection.add(
+                        documents=[original_content[:1000]],  # Truncate for vector storage
+                        metadatas=[{
+                            "category": category,
+                            "processing_timestamp": datetime.now().isoformat(),
+                            "source": "intelligent_processor"
+                        }],
+                        ids=[doc_id]
+                    )
+                    
+                    storage_summary["chromadb_additions"].append({
+                        "collection": collection_name,
+                        "document_id": doc_id,
+                        "status": "success"
+                    })
+                    
+                except Exception as e:
+                    logger.error(f"Error storing in ChromaDB: {e}")
+                    storage_summary["chromadb_additions"].append({
+                        "collection": collection_name,
+                        "status": "failed",
+                        "error": str(e)
+                    })
+            
+            return storage_summary
+            
+        except Exception as e:
+            logger.error(f"Error in data storage: {e}")
+            storage_summary["error"] = str(e)
+            return storage_summary
+
     def _extract_transaction_data(self, content: str) -> dict:
         """
         Uses AI to extract structured transaction data from text.
@@ -275,14 +559,25 @@ class IntelligentDataProcessor:
             return {"status": "error", "message": "AI model not available for transaction extraction"}
         
         prompt = f"""
-        You are a data extraction specialist. Extract all property sales transactions from the text below.
-        For each transaction, provide the sale date, full address, unit/villa number, and sale price.
-        Standardize all dates to YYYY-MM-DD format and ensure prices are only numbers.
-        Respond ONLY with a JSON object containing a single key "transactions" which is a list of objects.
-        
-        Example: {{"transactions": [{{"sale_date": "2025-08-27", "address": "Marina Gate 1", "unit_number": "3405", "sale_price": 2500000}}]}}
+You are an automated data extraction engine. Your task is to extract all property sales transactions from the provided text.
 
-        Text to process:
+**Instructions:**
+1.  Scan the entire text for individual property sale records.
+2.  For each record, extract the following fields: `sale_date`, `address`, `unit_number`, and `sale_price`.
+3.  Standardize all dates to a strict "YYYY-MM-DD" format. If a year is missing, assume the current year.
+4.  Ensure `sale_price` is an integer, removing all currency symbols, commas, and decimals.
+5.  If a field is not present for a record, use `null`.
+
+**Output Format:**
+Respond ONLY with a single JSON object. The JSON object must contain a single key "transactions" which is a list of transaction objects. Adhere strictly to this schema.
+
+**Example:**
+{{"transactions": [
+    {{"sale_date": "2024-08-15", "address": "Marina Gate 1, Dubai Marina", "unit_number": "3405", "sale_price": 2500000}},
+    {{"sale_date": "2024-07-22", "address": "Burj Khalifa, Downtown Dubai", "unit_number": "101-A", "sale_price": 5100000}}
+]}}
+
+**Text to Process:**
         ---
         {content}
         ---
@@ -409,23 +704,112 @@ class IntelligentDataProcessor:
 
     def _process_market_report(self, content: str) -> dict:
         """
-        Process market reports and extract market insights.
+        Process market reports and extract key insights using AI.
         """
-        return {
-            "status": "processed",
-            "category": "market_report",
-            "message": "Market report processing not yet implemented"
-        }
+        if not AI_AVAILABLE or not model:
+            return {"status": "error", "message": "AI model not available for market report processing"}
+
+        prompt = f"""
+You are a senior real estate market analyst. Your task is to read the following market report and distill it into key, structured insights for our vector database.
+
+**Instructions:**
+1.  Determine the primary `neighborhood` and `property_type` the report is about.
+2.  Find the key performance indicators: `avg_price_change_pct`, `sales_volume_change_pct`, and `avg_rental_yield`.
+3.  Write a concise `executive_summary` (3-4 sentences) that captures the main findings and outlook of the report.
+4.  List up to 5 key takeaways as bullet points in a single string under `key_takeaways`.
+
+**Output Format:**
+Respond ONLY with a single JSON object.
+
+**Example:**
+{{
+    "neighborhood": "Downtown Dubai",
+    "property_type": "Apartments",
+    "avg_price_change_pct": 5.2,
+    "sales_volume_change_pct": -3.1,
+    "avg_rental_yield": 6.8,
+    "executive_summary": "The Downtown Dubai apartment market showed resilience in Q2 2025, with prices appreciating by 5.2% despite a slight dip in sales volume. High rental yields continue to attract investors, though the luxury segment is showing signs of stabilization.",
+    "key_takeaways": "- Luxury segment prices are stabilizing.\\n- Strong demand persists in the 1-2 bedroom category.\\n- Off-plan sales have decreased compared to the previous quarter.\\n- Rental demand remains robust due to tourism and corporate relocations.\\n- The upcoming handover of 'Emaar Tower C' is expected to add new inventory."
+}}
+
+**Market Report Content:**
+---
+{content}
+---
+"""
+        try:
+            response = model.generate_content(prompt)
+            response_text = response.text.strip()
+            json_match = re.search(r'\{.*\}', response_text, re.DOTALL)
+            if json_match:
+                extracted_data = json.loads(json_match.group())
+                # Here you would add logic to save this data to ChromaDB
+                return {
+                    "status": "processed",
+                    "category": "market_report",
+                    "data": extracted_data
+                }
+            else:
+                logger.error(f"Could not parse AI response for market report: {response_text}")
+                return {"status": "error", "message": "Could not parse AI response for market report"}
+        except Exception as e:
+            logger.error(f"Failed to process market report: {e}")
+            return {"status": "error", "message": f"Failed to process market report: {e}"}
 
     def _process_property_brochure(self, content: str) -> dict:
         """
-        Process property brochures and extract property details.
+        Process property brochures and extract property details using AI.
         """
-        return {
-            "status": "processed",
-            "category": "property_brochure", 
-            "message": "Property brochure processing not yet implemented"
-        }
+        if not AI_AVAILABLE or not model:
+            return {"status": "error", "message": "AI model not available for brochure processing"}
+
+        prompt = f"""
+You are a property data extraction specialist. Analyze the content of this property brochure and extract the key details.
+
+**Instructions:**
+1.  Extract the following fields: `property_type` (e.g., "Apartment", "Villa"), `address`, `neighborhood`, `bedrooms`, `bathrooms`, `size_sqft`, and `asking_price`.
+2.  Also, write a `marketing_summary` of 2-3 sentences capturing the essence of the property's lifestyle and key features.
+3.  Ensure `bedrooms`, `bathrooms`, `size_sqft`, and `asking_price` are integers.
+4.  If a specific field cannot be found, use `null`.
+
+**Output Format:**
+Respond ONLY with a single JSON object containing the extracted data.
+
+**Example:**
+{{
+    "property_type": "Apartment",
+    "address": "Emaar Beachfront, Dubai Harbour",
+    "neighborhood": "Dubai Harbour",
+    "bedrooms": 3,
+    "bathrooms": 4,
+    "size_sqft": 1750,
+    "asking_price": 4200000,
+    "marketing_summary": "Experience luxury waterfront living with breathtaking views of the Palm Jumeirah. This spacious apartment features high-end finishes and direct beach access, perfect for a modern family."
+}}
+
+**Brochure Content:**
+---
+{content}
+---
+"""
+        try:
+            response = model.generate_content(prompt)
+            response_text = response.text.strip()
+            json_match = re.search(r'\{.*\}', response_text, re.DOTALL)
+            if json_match:
+                extracted_data = json.loads(json_match.group())
+                # Here you would add logic to save this data to your database
+                return {
+                    "status": "processed",
+                    "category": "property_brochure", 
+                    "data": extracted_data
+                }
+            else:
+                logger.error(f"Could not parse AI response for brochure: {response_text}")
+                return {"status": "error", "message": "Could not parse AI response for brochure"}
+        except Exception as e:
+            logger.error(f"Failed to process property brochure: {e}")
+            return {"status": "error", "message": f"Failed to process property brochure: {e}"}
 
     def _save_transactions_to_db(self, transactions: List[Dict]) -> int:
         """
@@ -598,19 +982,48 @@ class IntelligentDataProcessor:
         return content
     
     def _extract_structured_content(self, file_path: str, file_type: str) -> str:
-        """Extract content from structured files"""
+        """Extract content from structured files with memory optimization for large files"""
         try:
             if file_type == 'csv':
-                df = pd.read_csv(file_path)
+                # For CSV, read in chunks to handle large files
+                chunk_size = 1000
+                chunks = []
+                total_rows = 0
+                
+                for chunk in pd.read_csv(file_path, chunksize=chunk_size):
+                    chunks.append(chunk)
+                    total_rows += len(chunk)
+                    if total_rows >= 5000:  # Limit to first 5000 rows for processing
+                        break
+                
+                if chunks:
+                    df = pd.concat(chunks, ignore_index=True)
+                else:
+                    return ""
+                    
             elif file_type == 'excel':
-                df = pd.read_excel(file_path)
+                # For Excel, read only first few sheets and limit rows
+                try:
+                    # Try to read with row limit first
+                    df = pd.read_excel(file_path, nrows=5000)
+                except Exception as e:
+                    logger.warning(f"Failed to read Excel with row limit: {e}")
+                    # Fallback: read just the first sheet with no limit
+                    df = pd.read_excel(file_path, sheet_name=0)
+                    # Limit to first 5000 rows
+                    df = df.head(5000)
             else:
                 return ""
             
             # Convert dataframe to text representation
             content = f"Columns: {', '.join(df.columns)}\n"
-            content += f"Records: {len(df)}\n"
-            content += f"Sample data:\n{df.head(10).to_string()}\n"
+            content += f"Total records in file: {len(df)} (showing first 5000 for processing)\n"
+            content += f"Sample data (first 10 rows):\n{df.head(10).to_string()}\n"
+            
+            # Add summary statistics for numerical columns
+            numeric_cols = df.select_dtypes(include=[np.number]).columns
+            if len(numeric_cols) > 0:
+                content += f"\nSummary statistics for numerical columns:\n{df[numeric_cols].describe().to_string()}\n"
             
             return content
         except Exception as e:

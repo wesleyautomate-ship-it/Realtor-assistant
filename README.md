@@ -1,189 +1,243 @@
-# 🏠 Dubai Real Estate RAG System
 
-**Enterprise-Grade AI-Powered Real Estate Intelligence Platform**
+# Dubai Real Estate AI Intelligence Platform
 
-A comprehensive AI-powered real estate assistant for Dubai property professionals featuring **Conversational CRM**, **Workflow Automation**, **Advanced Security**, and **Enterprise Monitoring**.
+A comprehensive AI-powered platform that revolutionizes Dubai's real estate industry through intelligent conversational AI, automated content generation, and advanced document processing. This platform serves real estate agents, investors, and clients by providing instant access to market insights, property information, and personalized recommendations through natural language conversations.
 
-## 🚀 **Quick Start**
+## High-Level Architecture
 
-### **1. Setup Database & Services**
-```bash
-# Setup database
-python scripts/setup_database.py
-
-# Start services
-python scripts/start_services.py
-
-# Start monitoring infrastructure
-docker-compose -f docker-compose.monitoring.yml up -d
+```mermaid
+graph TB
+    subgraph "Frontend Layer"
+        A[React Frontend<br/>Material-UI Components]
+    end
+    
+    subgraph "Backend Layer"
+        B[FastAPI Backend<br/>RESTful APIs]
+        C[AI Enhancement Manager<br/>Conversation Memory]
+        D[Intelligent Data Processor<br/>Document Classification]
+    end
+    
+    subgraph "Data Layer"
+        E[PostgreSQL DB<br/>User Data & Properties]
+        F[ChromaDB<br/>Vector Embeddings]
+        G[Redis Cache<br/>Session Management]
+    end
+    
+    subgraph "AI Services"
+        H[Google Gemini AI<br/>Natural Language Processing]
+    end
+    
+    A --> B
+    B --> C
+    B --> D
+    B --> E
+    B --> F
+    B --> G
+    C --> H
+    D --> H
+    B --> H
 ```
 
-### **2. Run Tests**
-```bash
-# Comprehensive test suite
-python scripts/test_system.py
+## Key Features
 
-# Phase-specific tests
-python test_phase1.py
-python test_phase2_implementation.py
-python backend/test_phase3.py
+### 🤖 **AI-Powered Conversational RAG**
+Advanced chat functionality that understands natural language queries about Dubai real estate. The system maintains conversation context, learns user preferences, and provides personalized responses with market insights, property recommendations, and investment advice.
+
+### 🚀 **Automated Content Generation Engine**
+Powered by `ai_manager.py`, this engine generates personalized content including:
+- Daily market briefings for agents
+- Social media posts and marketing materials
+- Client follow-up emails
+- Market reports and property brochures
+- Investment analysis and recommendations
+
+### 📄 **Intelligent Document Processing**
+The `intelligent_processor.py` system automatically:
+- Classifies documents by content (legal, listings, market reports, etc.)
+- Detects and merges duplicate properties
+- Extracts key information from PDFs, CSVs, and other formats
+- Validates data quality and completeness
+- Standardizes property names and addresses
+
+## Technology Stack
+
+| Category | Technology | Version | Purpose |
+|----------|------------|---------|---------|
+| **Frontend** | React | 18.2.0 | User interface |
+| | Material-UI | 5.18.0 | UI components |
+| | React Router | 6.30.1 | Navigation |
+| | Axios | 1.11.0 | HTTP client |
+| **Backend** | FastAPI | 0.104.1 | API framework |
+| | SQLAlchemy | 2.0.23 | ORM |
+| | Pydantic | 2.5.0+ | Data validation |
+| | Uvicorn | 0.24.0 | ASGI server |
+| **Databases** | PostgreSQL | 15 | Primary database |
+| | ChromaDB | 0.5.0+ | Vector database |
+| | Redis | 7-alpine | Caching |
+| **AI Services** | Google Gemini | 1.5-flash | Natural language processing |
+| | Google Generative AI | 0.3.2 | AI integration |
+| **Security** | JWT | 2.8.0 | Authentication |
+| | bcrypt | 4.0.1 | Password hashing |
+| | PyJWT | 2.8.0 | Token management |
+
+## Getting Started
+
+### Prerequisites
+- Python 3.9+
+- Node.js 18+
+- Docker Desktop
+- PostgreSQL 15+
+- Google Cloud API Key
+
+### 1. Clone the Repository
+```bash
+git clone <repository-url>
+cd "RAG web app"
 ```
 
-### **3. Deploy to Production**
+### 2. Set Up Environment
 ```bash
-python scripts/deploy.py
+# Create virtual environment
+python -m venv venv
+
+# Activate virtual environment
+# Windows:
+venv\Scripts\activate
+# macOS/Linux:
+source venv/bin/activate
+
+# Copy environment template
+copy env.example .env
 ```
 
-## 📚 **Documentation**
+### 3. Configure Environment Variables
+Edit `.env` file with your credentials:
+```env
+# Database Configuration
+DATABASE_URL=postgresql://admin:password123@localhost:5432/real_estate_db
 
-- **[Project Overview](docs/PROJECT_OVERVIEW.md)** - Complete system architecture
-- **[How The App Works](HOW_THE_APP_WORKS.md)** - Technical deep dive
-- **[Setup Instructions](SETUP_INSTRUCTIONS.md)** - Detailed setup guide
-- **[Production Deployment](docs/README_PROD.md)** - Production deployment
-- **[Monitoring & Observability](monitoring/README.md)** - Enterprise monitoring
-- **[Phase Implementation Summaries](PHASE1_IMPLEMENTATION_SUMMARY.md)** - Development phases
+# Google AI Configuration
+GOOGLE_API_KEY=your-google-api-key-here
 
-## 🏗️ **Architecture**
+# AI Model Configuration
+AI_MODEL=gemini-1.5-flash
 
-### **Technology Stack**
-- **Frontend**: React + Material-UI + TypeScript
-- **Backend**: FastAPI + Python + SQLAlchemy
-- **AI/ML**: Google Gemini + Custom RAG Pipeline + MCP Integration
-- **Databases**: PostgreSQL + ChromaDB + Redis
-- **Infrastructure**: Docker + Docker Compose + Cloud Deployment
-- **Security**: JWT + bcrypt + Role-Based Access Control
+# Server Configuration
+HOST=0.0.0.0
+PORT=8001
+DEBUG=True
 
-### **Core Components**
-- **RAG Service**: Intelligent document retrieval and generation
-- **Action Engine**: Conversational CRM workflow automation
-- **Intelligent Processor**: AI-powered document classification
-- **Security System**: Role-based access control and data segregation
-- **Performance Optimizer**: Multi-level caching and optimization
-- **Quality System**: Feedback and continuous improvement
-
-## ✨ **Key Features**
-
-### **🤖 AI-Powered Intelligence**
-- **Advanced RAG Pipeline**: Multi-intent recognition with 94.4% accuracy
-- **Conversational CRM**: Natural language workflow automation
-- **Intelligent Document Processing**: AI-powered classification and extraction
-- **Context-Aware Responses**: Dubai-specific real estate knowledge
-
-### **👥 Role-Based Experience**
-- **Client Interface**: Property search and market insights
-- **Agent Interface**: Lead management and workflow automation
-- **Admin Interface**: System monitoring and data management
-- **Employee Interface**: Internal tools and analytics
-
-### **🔒 Enterprise Security**
-- **Role-Based Access Control (RBAC)**: Comprehensive user permissions
-- **Data Segregation**: Secure client and property data isolation
-- **Session Management**: ChatGPT-style session isolation
-- **Audit Logging**: Complete access and change tracking
-
-### **⚡ Performance & Scalability**
-- **Multi-Level Caching**: Redis and in-memory optimization
-- **Batch Processing**: Efficient bulk operations
-- **Response Streaming**: Real-time user experience
-- **Performance Monitoring**: Real-time metrics and optimization
-
-### **📊 Advanced Analytics**
-- **Market Trends**: Dubai real estate market analysis
-- **Lead Analytics**: Conversion tracking and insights
-- **Performance Metrics**: System and user behavior analytics
-- **Quality Monitoring**: Response quality and user satisfaction
-
-### **🔄 Workflow Automation**
-- **Lead Status Management**: Natural language status updates
-- **Interaction Logging**: Automated client interaction tracking
-- **Follow-up Scheduling**: Intelligent appointment scheduling
-- **Action Confirmation**: Safe workflow execution
-
-## 🎯 **Recent Upgrades (v2.0.0)**
-
-### **Phase 1: Granular Data & Security Foundation** ✅
-- Database schema evolution with confidential data tables
-- Role-based access control and data segregation
-- Secure property status management
-- Comprehensive audit trails
-
-### **Phase 2: Intelligent AI Data Processor** ✅
-- AI-powered document classification
-- Structured data extraction from transactions and legal documents
-- Automated database integration
-- Enhanced file processing pipeline
-
-### **Phase 3: Conversational CRM & Workflow Automation** ✅
-- Natural language lead management
-- Automated interaction logging
-- Intelligent follow-up scheduling
-- Action confirmation workflow
-
-### **Enterprise Features** ✅
-- **Security & Data Segregation**: Complete RBAC implementation
-- **Session Management**: ChatGPT-style session isolation
-- **Performance Optimization**: Multi-level caching system
-- **Quality & Feedback**: Comprehensive feedback system
-
-## 🧪 **Testing & Quality Assurance**
-
-### **Comprehensive Test Suite**
-- **Agent Chat Test Suite**: Security and data segregation validation
-- **Chat Quality Test**: Response quality and accuracy testing
-- **Phase Implementation Tests**: Phase-specific functionality validation
-- **Performance Tests**: Load testing and optimization validation
-
-### **Quality Metrics**
-- **Multi-Intent Detection**: 94.4% accuracy
-- **Response Quality**: Comprehensive quality tracking
-- **Performance**: Real-time monitoring and optimization
-- **Security**: Complete access control validation
-
-## 📈 **Monitoring & Observability**
-
-### **Application Performance Monitoring (APM)**
-- Real-time performance metrics via Prometheus
-- Response time tracking and analysis
-- Memory and CPU usage monitoring
-- Database query performance tracking
-
-### **Access Monitoring Dashboards**
-- **Grafana**: http://localhost:3001 (admin/admin)
-- **Prometheus**: http://localhost:9090
-- **AlertManager**: http://localhost:9093
-- **Kibana**: http://localhost:5601 (if ELK enabled)
-
-## 🚀 **Development**
-
-```bash
-# Install dependencies
-cd backend && pip install -r requirements.txt
-cd frontend && npm install
-
-# Start development servers
-python scripts/start_services.py
-
-# Start monitoring (optional for development)
-docker-compose -f docker-compose.monitoring.yml up -d
+# Authentication Configuration
+SECRET_KEY=your-secret-key-change-in-production
+JWT_ALGORITHM=HS256
+ACCESS_TOKEN_EXPIRE_MINUTES=30
 ```
 
-## 🏭 **Production**
-
+### 4. Install Dependencies
 ```bash
-# Deploy to production
-python scripts/deploy.py
+# Install Python dependencies
+pip install -r requirements.txt
 
-# Start production services
-./start.sh
-
-# Start monitoring infrastructure
-docker-compose -f docker-compose.monitoring.yml up -d
+# Install frontend dependencies
+cd frontend
+npm install
+cd ..
 ```
 
-## 📞 **Support**
+### 5. Initialize Database
+```bash
+# Start PostgreSQL and create database
+# The application will auto-initialize tables on first run
+```
 
-For issues and questions, please check the documentation in the `docs/` directory and monitoring setup in the `monitoring/` directory.
+## Running the Application
 
----
+### Start All Services with Docker
+```bash
+# Start all services (recommended)
+docker-compose up -d
+```
 
-**Built with ❤️ for Dubai Real Estate Professionals**
+### Manual Startup (Alternative)
+```bash
+# Terminal 1: Start PostgreSQL and Redis
+docker-compose up postgres redis chromadb -d
+
+# Terminal 2: Start Backend
+cd backend
+uvicorn main_secure:app --host 0.0.0.0 --port 8001 --reload
+
+# Terminal 3: Start Frontend
+cd frontend
+npm start
+```
+
+### Access Points
+- **Frontend**: http://localhost:3000
+- **Backend API**: http://localhost:8001
+- **API Documentation**: http://localhost:8001/docs
+- **ReDoc Documentation**: http://localhost:8001/redoc
+
+## API Documentation
+
+The backend uses FastAPI with automatic OpenAPI documentation generation. When the server is running, you can access:
+
+- **Interactive API Docs**: http://localhost:8001/docs - Swagger UI for testing endpoints
+- **ReDoc Documentation**: http://localhost:8001/redoc - Alternative documentation view
+- **OpenAPI Schema**: http://localhost:8001/openapi.json - Raw OpenAPI specification
+
+The API includes endpoints for:
+- User authentication and session management
+- Chat conversations with AI
+- Property management and search
+- File upload and processing
+- Market data and analytics
+- Admin functions and monitoring
+
+## Development
+
+### Project Structure
+```
+├── backend/                 # FastAPI backend
+│   ├── main_secure.py      # Main application entry point
+│   ├── ai_manager.py       # AI enhancement manager
+│   ├── intelligent_processor.py  # Document processing
+│   ├── rag_service.py      # RAG implementation
+│   └── auth/               # Authentication modules
+├── frontend/               # React frontend
+│   ├── src/
+│   │   ├── components/     # React components
+│   │   ├── pages/          # Page components
+│   │   └── context/        # React context
+│   └── public/             # Static assets
+├── data/                   # Sample data and documents
+├── scripts/                # Utility scripts
+├── tests/                  # Test files
+└── docker-compose.yml      # Docker configuration
+```
+
+### Testing
+```bash
+# Run backend tests
+pytest
+
+# Run frontend tests
+cd frontend
+npm test
+```
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Add tests for new functionality
+5. Submit a pull request
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Support
+
+For support and questions, please refer to the project documentation or create an issue in the repository.

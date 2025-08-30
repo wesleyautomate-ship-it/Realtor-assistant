@@ -16,7 +16,7 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 logger = logging.getLogger(__name__)
 
 class ChromaDBPopulator:
-    def __init__(self, chroma_host: str = "localhost", chroma_port: int = 8002):
+    def __init__(self, chroma_host: str, chroma_port: int):
         self.chroma_client = chromadb.HttpClient(host=chroma_host, port=chroma_port)
         
         # Sample data for each collection
@@ -271,7 +271,16 @@ class ChromaDBPopulator:
 def main():
     """Main function to run ChromaDB population"""
     try:
-        populator = ChromaDBPopulator()
+        # Get ChromaDB connection details from environment variables
+        chroma_host = os.getenv("CHROMA_HOST")
+        chroma_port = os.getenv("CHROMA_PORT")
+
+        if not chroma_host or not chroma_port:
+            logger.error("❌ CHROMA_HOST or CHROMA_PORT environment variables not set.")
+            sys.exit(1)
+
+        # Pass the correct host and port to the populator
+        populator = ChromaDBPopulator(chroma_host=chroma_host, chroma_port=int(chroma_port))
         results = populator.run_population()
         
         print("\n" + "="*60)

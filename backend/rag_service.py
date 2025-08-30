@@ -38,6 +38,114 @@ class QueryIntent(Enum):
     SCHEDULE_FOLLOW_UP = "schedule_follow_up"
     GENERAL = "general"
 
+def get_system_prompt(user_role: str, intent: QueryIntent, retrieved_context: str, user_name: str = "User"):
+    """
+    Generates a dynamic system prompt based on user role, intent, and retrieved context.
+    """
+
+    # Base Persona and Core Directives
+    system_prompt = f"""
+You are "Dubai Realty AI," an expert-level real estate intelligence assistant for the Dubai property market. Your primary function is to synthesize and present information retrieved from our specialized databases to provide data-driven, accurate, and actionable insights.
+
+## CORE DIRECTIVES:
+1.  **Prioritize Retrieved Context**: Your primary source of truth is the **[RETRIEVED CONTEXT]** provided below. Base your entire response on this data. Do not invent information or use external knowledge.
+2.  **Data-Driven and Specific**: Always use specific figures, names, and statistics from the retrieved context. Instead of "high rental yields," state "rental yields between 5-8% in Dubai Marina for a 1-bedroom apartment."
+3.  **No Conversational Fluff**: For all substantive queries, immediately address the user's question. Avoid generic greetings or filler phrases, following the specific rules outlined in the 'Conversational Engagement' section below.
+4.  **Handle Insufficient Data**: If the retrieved context does not contain the answer, state that clearly. For example, "I do not have specific data on developer payment plans for that project at the moment." Do not attempt to guess.
+5.  **Structured and Professional Formatting**: Utilize Markdown (headers, bold keywords, bullet points, and tables) to create a clear, professional, and easy-to-read response.
+
+## CONVERSATIONAL ENGAGEMENT
+- **Initial Interaction**: On the very first message of a new conversation, you may use a brief, professional greeting, such as "Hello {user_name}."
+- **Responding to Greetings**: If the user's entire message is a simple greeting (e.g., "Hi," "Hello there"), respond politely and invite a query (e.g., "Hello. How can I assist you with the Dubai real estate market today?"). For these interactions, you do not need to use the full structured response format.
+- **Responding to Thanks**: If the user's message is solely an expression of gratitude (e.g., "Thank you," "Great, thanks"), respond concisely (e.g., "You're welcome. Is there anything else I can help with?").
+- **Default Behavior**: For ANY other query that contains a request for information, you must revert to the default 'No Fluff' behavior. Omit any greeting and proceed directly to the "Executive Summary."
+
+---
+
+## USER and INTENT ANALYSIS:
+-   **User Role**: {user_role.upper()}
+-   **Query Intent**: {intent.name}
+
+---
+
+## [RETRIEVED CONTEXT - Your Primary Source of Truth]
+This information has been sourced directly from our internal databases (PostgreSQL, ChromaDB) to answer the user's query.
+
+{retrieved_context}
+
+---
+
+## GOLD-STANDARD RESPONSE EXAMPLE
+
+**[EXAMPLE USER QUERY]**
+"I'm looking for a 2-bedroom apartment in Dubai Marina with a budget of around AED 2.5M. What are the trends there?"
+
+**[EXAMPLE AI RESPONSE]**
+### **1. Executive Summary**
+Two-bedroom apartments in Dubai Marina are in high demand, with average prices currently around AED 2.7M, slightly above your budget, and rental yields are strong at approximately 6.5%.
+
+### **2. Key Insights & Data Points**
+-   **Average Price (2BR)**: AED 2.7M
+-   **Price Appreciation (YTD)**: +18%
+-   **Average Rental Yield**: 6.5%
+-   **Key Developers**: Emaar, Damac, Nakheel
+
+### **3. Detailed Analysis & Market Context**
+The data shows significant year-to-date price appreciation in Dubai Marina, driven by its premium location and amenities. For clients, this indicates a competitive market but also a strong potential for capital growth. The 6.5% rental yield is attractive for investors looking for immediate returns. Emaar properties in the area, like Marina Shores, often command a premium due to their build quality and views.
+
+### **4. Actionable Recommendations**
+-   Consider exploring properties slightly above your budget to access higher-quality units.
+-   Look into buildings by Damac, as they may offer more competitive pricing compared to Emaar.
+-   Act relatively quickly, as the 18% price appreciation suggests the market is not slowing down.
+
+### **5. Next Steps**
+-   Request a curated list of available 2-bedroom apartments between AED 2.4M and 2.8M.
+-   Ask for a comparison with the nearby JBR area.
+-   Inquire about financing options for this budget.
+---
+
+## RESPONSE GENERATION INSTRUCTIONS:
+Based on the **[RETRIEVED CONTEXT]** and the user's role/intent, you MUST structure your response following this precise format.
+
+### **1. Executive Summary**
+(Provide a 1-2 sentence direct answer to the user's core question.)
+
+### **2. Key Insights & Data Points**
+(Use bullet points to highlight the most critical data from the retrieved context. Each point must be a specific, quantifiable fact.)
+-   **Data Point 1**: ...
+-   **Data Point 2**: ...
+-   **Data Point 3**: ...
+
+### **3. Detailed Analysis & Market Context**
+(Elaborate on the key insights. Explain the "why" behind the data, referencing current market conditions, trends, or regulatory factors mentioned in the context. This section should be tailored to the user's role.)
+{get_role_specific_guidance(user_role, intent)}
+
+### **4. Actionable Recommendations**
+(Provide specific, actionable steps the user should consider next. These should be logical conclusions derived *only* from the provided context.)
+
+### **5. Next Steps**
+(Suggest 2-3 clear, concise actions the user can take, such as "Request a detailed property comparison" or "Ask for financing options for properties in Business Bay.")
+"""
+    return system_prompt
+
+def get_role_specific_guidance(user_role: str, intent: QueryIntent):
+    """
+    Provides role- and intent-specific instructions for the Detailed Analysis section.
+    """
+    if user_role == "client":
+        return """
+        - **For the Client**: Focus on what the data means for their property search or investment. Explain pricing, compare neighborhood amenities, and clarify investment benefits like the Golden Visa or rental yields. If discussing properties, mention developers and unique features.
+        """
+    elif user_role == "agent":
+        return """
+        - **For the Agent**: Frame the analysis to provide a competitive edge. Highlight market trends, compare pricing with competing areas, and identify key selling points. Provide data that helps in client negotiations, property valuation, or lead generation strategies.
+        """
+    elif user_role == "admin":
+        return """
+        - **For the Admin**: Analyze the data from a business intelligence perspective. Summarize system performance, data quality, or user engagement metrics. Highlight trends that could inform business strategy or system improvements.
+        """
+    return ""
+
 @dataclass
 class QueryAnalysis:
     intent: QueryIntent
@@ -353,7 +461,7 @@ class ImprovedRAGService:
         context_items = []
         
         # Build SQL query based on parameters - use correct properties table
-        sql_parts = ["SELECT * FROM properties WHERE 1=1"]
+        sql_parts = ["SELECT id, title, description, price, location, property_type, bedrooms, bathrooms, area_sqft FROM properties WHERE 1=1"]
         sql_parts.append("AND listing_status = 'live'")  # This ensures only public listings are shown
         query_params = {}
         
@@ -562,30 +670,27 @@ class ImprovedRAGService:
         
         # Enhanced system prompt with specific Dubai real estate expertise
         system_prompt = f"""
-You are an expert Dubai real estate AI assistant with deep knowledge of the local market. Provide specific, data-driven responses with actual Dubai real estate information.
+You are an expert Dubai real estate AI assistant. Provide helpful, accurate responses based on available data.
 
 RESPONSE REQUIREMENTS:
-1. **Start with direct answer** - No conversational fillers like "Hello" or "I understand"
-2. **Use specific Dubai data** - Include actual prices, areas, developers, and market statistics
-3. **Structured formatting** - Use headers, bullet points, bold keywords, and tables
-4. **Actionable insights** - Provide specific next steps and recommendations
-5. **Dubai-specific context** - Reference actual neighborhoods, developers, and market conditions
+1. **Keep responses concise** - Answer directly without unnecessary elaboration
+2. **Use available data** - Only reference information from the provided context
+3. **Be honest about limitations** - If you don't have specific data, say so
+4. **Focus on user intent** - Match response length to query complexity
+5. **Avoid hallucination** - Don't make up specific prices, statistics, or data
 
-DUBAI REAL ESTATE CONTEXT:
-- **Popular Areas**: Dubai Marina (AED 1.2M-8M), Downtown Dubai (AED 1.5M-15M), Palm Jumeirah (AED 3M-50M), Business Bay (AED 800K-5M), JBR (AED 1M-6M), Dubai Hills Estate (AED 1.5M-12M)
-- **Developers**: Emaar, Damac, Nakheel, Sobha, Dubai Properties, Meraas, Azizi, Ellington
-- **Market Trends**: 2024 shows 15-20% appreciation, rental yields 5-8%, strong demand for 1-2BR apartments
-- **Investment Benefits**: Golden Visa eligibility, 0% income tax, high rental yields, strong capital appreciation
-- **Regulations**: RERA protection, escrow accounts, freehold ownership for expats in designated areas
+AVAILABLE CONTEXT:
+- Use only the information provided in the context below
+- If no relevant context is available, provide general guidance
+- Don't reference specific prices or statistics unless they're in the context
 
 USER ROLE: {user_role.upper()}
 
-RESPONSE FORMAT:
-**Direct Answer** (1-2 sentences)
-**Key Data Points** (bullet points with specific numbers)
-**Market Context** (current trends and conditions)
-**Recommendations** (specific actionable steps)
-**Next Steps** (what the user should do next)
+RESPONSE GUIDELINES:
+- For simple greetings: Brief, friendly response
+- For property queries: Use available property data
+- For market questions: Provide general guidance if no specific data available
+- For complex queries: Structured but concise response
 """
 
         # Role-specific context
@@ -672,6 +777,21 @@ IMPORTANT: Provide specific Dubai real estate information, actual prices, and ac
         
         try:
             with self.engine.connect() as conn:
+                # Check if table exists
+                check_sql = """
+                    SELECT EXISTS (
+                        SELECT FROM information_schema.tables 
+                        WHERE table_schema = 'public' 
+                        AND table_name = 'neighborhood_profiles'
+                    );
+                """
+                result = conn.execute(text(check_sql))
+                table_exists = result.scalar()
+                
+                if not table_exists:
+                    logger.info("Neighborhood profiles table does not exist, skipping neighborhood context")
+                    return context_items
+                
                 sql = """
                     SELECT name, description, price_ranges, rental_yields, amenities, pros, cons, source_file
                     FROM neighborhood_profiles 
@@ -714,6 +834,21 @@ IMPORTANT: Provide specific Dubai real estate information, actual prices, and ac
         
         try:
             with self.engine.connect() as conn:
+                # Check if table exists
+                check_sql = """
+                    SELECT EXISTS (
+                        SELECT FROM information_schema.tables 
+                        WHERE table_schema = 'public' 
+                        AND table_name = 'market_data'
+                    );
+                """
+                result = conn.execute(text(check_sql))
+                table_exists = result.scalar()
+                
+                if not table_exists:
+                    logger.info("Market data table does not exist, skipping market context")
+                    return context_items
+                
                 sql = """
                     SELECT content, type, source_file
                     FROM market_data 
@@ -898,8 +1033,8 @@ IMPORTANT: Provide specific Dubai real estate information, actual prices, and ac
         """Get relevant properties from database based on parameters"""
         context_items = []
         
-        # Build SQL query based on parameters
-        sql_parts = ["SELECT * FROM properties WHERE 1=1"]
+        # Build SQL query based on parameters - use correct column names
+        sql_parts = ["SELECT id, title, description, price, location, property_type, bedrooms, bathrooms, area_sqft FROM properties WHERE 1=1"]
         query_params = {}
         
         if not parameters:
@@ -907,18 +1042,24 @@ IMPORTANT: Provide specific Dubai real estate information, actual prices, and ac
         
         if 'budget_min' in parameters and 'budget_max' in parameters:
             sql_parts.append("AND price BETWEEN :budget_min AND :budget_max")
+            query_params['budget_min'] = parameters['budget_min']
+            query_params['budget_max'] = parameters['budget_max']
         
         if 'location' in parameters:
             sql_parts.append("AND location ILIKE :location")
+            query_params['location'] = f"%{parameters['location']}%"
         
         if 'property_type' in parameters:
             sql_parts.append("AND property_type ILIKE :property_type")
+            query_params['property_type'] = f"%{parameters['property_type']}%"
         
         if 'bedrooms' in parameters:
             sql_parts.append("AND bedrooms >= :bedrooms")
+            query_params['bedrooms'] = parameters['bedrooms']
         
         if 'bathrooms' in parameters:
             sql_parts.append("AND bathrooms >= :bathrooms")
+            query_params['bathrooms'] = parameters['bathrooms']
         
         sql_parts.append("ORDER BY price ASC LIMIT :limit")
         query_params['limit'] = max_items
@@ -930,12 +1071,14 @@ IMPORTANT: Provide specific Dubai real estate information, actual prices, and ac
                 
                 for row in result:
                     content = f"""
-                    Property: {row.address}
-                    Price: AED {row.price:,.0f}
-                    Type: {row.property_type}
-                    Bedrooms: {row.bedrooms}
-                    Bathrooms: {row.bathrooms}
-                    Location: {row.location}
+                    Property: {row.title or 'Untitled'}
+                    Price: AED {row.price:,.0f if row.price else 'Price on request'}
+                    Type: {row.property_type or 'Not specified'}
+                    Bedrooms: {row.bedrooms or 'Not specified'}
+                    Bathrooms: {row.bathrooms or 'Not specified'}
+                    Location: {row.location or 'Location not specified'}
+                    Area: {row.area_sqft or 'Not specified'} sqft
+                    Description: {row.description or 'No description available'}
                     """
                     
                     context_items.append(ContextItem(
@@ -944,12 +1087,13 @@ IMPORTANT: Provide specific Dubai real estate information, actual prices, and ac
                         relevance_score=0.9,
                         metadata={
                             'type': 'property',
-                            'address': row.address,
+                            'title': row.title,
                             'price': row.price,
                             'property_type': row.property_type,
                             'bedrooms': row.bedrooms,
                             'bathrooms': row.bathrooms,
-                            'location': row.location
+                            'location': row.location,
+                            'area_sqft': row.area_sqft
                         }
                     ))
                     
@@ -957,3 +1101,37 @@ IMPORTANT: Provide specific Dubai real estate information, actual prices, and ac
             logger.warning(f"Error getting property context: {e}")
         
         return context_items
+
+    def get_response(self, message: str, role: str = "client", session_id: str = None, user_name: str = "User") -> str:
+        """
+        Main method to generate a response using the RAG service.
+        This is the single source of truth for conversational AI responses.
+        """
+        try:
+            # 1. Analyze the query
+            analysis = self.analyze_query(message)
+            
+            # 2. Get relevant context
+            context_items = self.get_relevant_context(message, analysis, max_items=5)
+            
+            # 3. Build context string
+            context = self.build_context_string(context_items)
+            
+            # 4. Create improved prompt using the new system prompt
+            prompt = self.create_improved_prompt(message, analysis, context, role)
+            
+            # 5. Generate response using AI model
+            import google.generativeai as genai
+            from config.settings import GOOGLE_API_KEY
+            
+            genai.configure(api_key=GOOGLE_API_KEY)
+            model = genai.GenerativeModel('gemini-1.5-flash')
+            
+            response = model.generate_content(prompt)
+            response_text = response.text.strip()
+            
+            return response_text
+            
+        except Exception as e:
+            logger.error(f"Error generating response: {e}")
+            return f"I apologize, but I encountered an error while processing your request. Please try again or contact support if the issue persists."

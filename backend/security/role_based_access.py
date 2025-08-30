@@ -20,17 +20,13 @@ logger = logging.getLogger(__name__)
 
 class UserRole(Enum):
     """User roles with specific access levels"""
-    CLIENT = "client"
     AGENT = "agent"
-    EMPLOYEE = "employee"
     ADMIN = "admin"
 
 class DataAccessLevel(Enum):
     """Data access levels for different content types"""
     PUBLIC = "public"           # Available to all users
-    CLIENT = "client"           # Client-specific data
     AGENT = "agent"            # Agent-specific resources
-    INTERNAL = "internal"      # Employee/Admin only
     CONFIDENTIAL = "confidential"  # Admin only
 
 @dataclass
@@ -55,56 +51,56 @@ class RBACManager:
             # Property data
             "property_listings": AccessControl(
                 data_type="property_listings",
-                allowed_roles={UserRole.AGENT, UserRole.EMPLOYEE, UserRole.ADMIN},
+                allowed_roles={UserRole.AGENT, UserRole.ADMIN},
                 access_level=DataAccessLevel.PUBLIC
             ),
             "property_details": AccessControl(
                 data_type="property_details",
-                allowed_roles={UserRole.AGENT, UserRole.EMPLOYEE, UserRole.ADMIN},
+                allowed_roles={UserRole.AGENT, UserRole.ADMIN},
                 access_level=DataAccessLevel.PUBLIC
             ),
             
             # Client data
             "client_profiles": AccessControl(
                 data_type="client_profiles",
-                allowed_roles={UserRole.AGENT, UserRole.EMPLOYEE, UserRole.ADMIN},
-                access_level=DataAccessLevel.CLIENT,
+                allowed_roles={UserRole.AGENT, UserRole.ADMIN},
+                access_level=DataAccessLevel.AGENT,
                 session_isolation=True
             ),
             "client_preferences": AccessControl(
                 data_type="client_preferences",
-                allowed_roles={UserRole.AGENT, UserRole.EMPLOYEE, UserRole.ADMIN},
-                access_level=DataAccessLevel.CLIENT,
+                allowed_roles={UserRole.AGENT, UserRole.ADMIN},
+                access_level=DataAccessLevel.AGENT,
                 session_isolation=True
             ),
             
             # Agent resources
             "commission_structures": AccessControl(
                 data_type="commission_structures",
-                allowed_roles={UserRole.AGENT, UserRole.EMPLOYEE, UserRole.ADMIN},
+                allowed_roles={UserRole.AGENT, UserRole.ADMIN},
                 access_level=DataAccessLevel.AGENT
             ),
             "sales_resources": AccessControl(
                 data_type="sales_resources",
-                allowed_roles={UserRole.AGENT, UserRole.EMPLOYEE, UserRole.ADMIN},
+                allowed_roles={UserRole.AGENT, UserRole.ADMIN},
                 access_level=DataAccessLevel.AGENT
             ),
             "market_analysis": AccessControl(
                 data_type="market_analysis",
-                allowed_roles={UserRole.AGENT, UserRole.EMPLOYEE, UserRole.ADMIN},
+                allowed_roles={UserRole.AGENT, UserRole.ADMIN},
                 access_level=DataAccessLevel.AGENT
             ),
             
-            # Internal data
+            # Administrative data
             "financial_reports": AccessControl(
                 data_type="financial_reports",
-                allowed_roles={UserRole.EMPLOYEE, UserRole.ADMIN},
-                access_level=DataAccessLevel.INTERNAL
+                allowed_roles={UserRole.ADMIN},
+                access_level=DataAccessLevel.CONFIDENTIAL
             ),
             "company_policies": AccessControl(
                 data_type="company_policies",
-                allowed_roles={UserRole.EMPLOYEE, UserRole.ADMIN},
-                access_level=DataAccessLevel.INTERNAL
+                allowed_roles={UserRole.ADMIN},
+                access_level=DataAccessLevel.CONFIDENTIAL
             ),
             
             # Confidential data
@@ -134,8 +130,8 @@ class RBACManager:
                 logger.warning(f"User role {user_role} not allowed for data type {data_type}")
                 return False
             
-            # Check session isolation for client-specific data
-            if rule.session_isolation and rule.access_level == DataAccessLevel.CLIENT:
+            # Check session isolation for agent-specific client data
+            if rule.session_isolation and rule.access_level == DataAccessLevel.AGENT:
                 if not user_id or not session_id:
                     logger.warning(f"Session isolation required but missing user_id or session_id")
                     return False
@@ -175,12 +171,8 @@ class RBACManager:
             rule = self.access_rules[data_type]
             
             # Apply role-specific filtering
-            if user_role == UserRole.CLIENT:
-                return self._filter_for_client(data, data_type)
-            elif user_role == UserRole.AGENT:
+            if user_role == UserRole.AGENT:
                 return self._filter_for_agent(data, data_type)
-            elif user_role == UserRole.EMPLOYEE:
-                return self._filter_for_employee(data, data_type)
             elif user_role == UserRole.ADMIN:
                 return data  # Admin gets all data
             
@@ -190,39 +182,19 @@ class RBACManager:
             logger.error(f"Error filtering data by role: {e}")
             return []
     
-    def _filter_for_client(self, data: List[Dict], data_type: str) -> List[Dict]:
-        """Filter data for client role - only public information"""
-        filtered_data = []
-        
-        for item in data:
-            # Remove sensitive fields
-            safe_item = item.copy()
-            
-            # Remove internal fields
-            sensitive_fields = [
-                'commission_rate', 'agent_notes', 'internal_comments',
-                'cost_price', 'profit_margin', 'confidential_notes'
-            ]
-            
-            for field in sensitive_fields:
-                safe_item.pop(field, None)
-            
-            filtered_data.append(safe_item)
-        
-        return filtered_data
     
     def _filter_for_agent(self, data: List[Dict], data_type: str) -> List[Dict]:
         """Filter data for agent role - public + agent resources"""
         filtered_data = []
         
         for item in data:
-            # Agents can see most data but not confidential internal info
+            # Agents can see most data but not confidential admin info
             safe_item = item.copy()
             
-            # Remove confidential fields
+            # Remove confidential admin fields
             confidential_fields = [
                 'hr_notes', 'legal_issues', 'confidential_financials',
-                'internal_disputes', 'sensitive_legal_docs'
+                'internal_disputes', 'sensitive_legal_docs', 'admin_notes'
             ]
             
             for field in confidential_fields:
@@ -232,25 +204,6 @@ class RBACManager:
         
         return filtered_data
     
-    def _filter_for_employee(self, data: List[Dict], data_type: str) -> List[Dict]:
-        """Filter data for employee role - public + agent + internal"""
-        filtered_data = []
-        
-        for item in data:
-            # Employees can see most data but not confidential admin info
-            safe_item = item.copy()
-            
-            # Remove only confidential admin fields
-            admin_only_fields = [
-                'legal_issues', 'confidential_financials', 'hr_records'
-            ]
-            
-            for field in admin_only_fields:
-                safe_item.pop(field, None)
-            
-            filtered_data.append(safe_item)
-        
-        return filtered_data
     
     def get_allowed_data_types(self, user_role: UserRole) -> List[str]:
         """Get list of data types allowed for user role"""
@@ -278,12 +231,10 @@ class RBACManager:
         """Get access level for user role"""
         if user_role == UserRole.ADMIN:
             return "confidential"
-        elif user_role == UserRole.EMPLOYEE:
-            return "internal"
         elif user_role == UserRole.AGENT:
             return "agent"
         else:
-            return "client"
+            return "public"
     
     def audit_access(self, user_id: str, session_id: str, user_role: UserRole, 
                     data_type: str, action: str, success: bool) -> None:

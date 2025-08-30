@@ -24,10 +24,25 @@ engine = create_engine(
 # Create session factory
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
-@contextmanager
 def get_db() -> Generator[Session, None, None]:
     """
-    Database session context manager
+    Database session dependency for FastAPI
+    """
+    db = SessionLocal()
+    try:
+        yield db
+        db.commit()
+    except Exception as e:
+        db.rollback()
+        logger.error(f"Database error: {e}")
+        raise
+    finally:
+        db.close()
+
+@contextmanager
+def get_db_context() -> Generator[Session, None, None]:
+    """
+    Database session context manager (for non-FastAPI usage)
     """
     db = SessionLocal()
     try:
@@ -162,9 +177,10 @@ def check_db_connection():
     Check database connection
     """
     try:
-        with get_db() as db:
+        with get_db_context() as db:
             db.execute("SELECT 1")
         return True
     except Exception as e:
         logger.error(f"Database connection failed: {e}")
         return False
+
