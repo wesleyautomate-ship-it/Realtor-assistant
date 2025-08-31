@@ -100,10 +100,10 @@ const Chat = () => {
   ];
 
   useEffect(() => {
-    if (sessionId) {
+    if (sessionId && sessionId !== 'undefined') {
       setCurrentSessionId(sessionId);
       fetchConversationHistory();
-    } else {
+    } else if (!sessionId) {
       // If no session ID, create a new conversation
       createNewSession();
     }
@@ -162,8 +162,8 @@ const Chat = () => {
 
   const fetchConversationHistory = async () => {
     // Prevent fetching with undefined sessionId
-    if (!sessionId) {
-      console.log('No session ID available, skipping conversation history fetch');
+    if (!sessionId || sessionId === 'undefined') {
+      console.log('No valid session ID available, skipping conversation history fetch');
       return;
     }
 
@@ -171,18 +171,23 @@ const Chat = () => {
       setIsLoading(true);
       const response = await apiUtils.getConversationHistory(sessionId);
       
-      // Convert API response format to frontend format
+      // Convert API response format to frontend format and ensure proper ordering
       const convertedMessages = (response.messages || []).map(msg => ({
         id: msg.id,
         type: msg.role === 'user' ? 'user' : 'ai', // Convert 'role' to 'type'
-        content: msg.content,
+        content: msg.content || '', // Ensure content is never undefined
         timestamp: msg.timestamp,
         interactive: msg.interactive || false,
         suggestions: msg.suggestions || [],
         context_used: msg.context_used || [],
       }));
       
-      setMessages(convertedMessages);
+      // Sort messages by timestamp to ensure proper order
+      const sortedMessages = convertedMessages.sort((a, b) => 
+        new Date(a.timestamp) - new Date(b.timestamp)
+      );
+      
+      setMessages(sortedMessages);
     } catch (error) {
       console.log('Using mock conversation data');
       setMessages([]);
@@ -193,12 +198,28 @@ const Chat = () => {
 
   const sendMessage = async () => {
     if (!inputMessage.trim()) return;
+    
+    console.log('sendMessage called with sessionId:', sessionId);
+    console.log('sessionId type:', typeof sessionId);
+    console.log('sessionId === undefined:', sessionId === undefined);
+    console.log('sessionId === "undefined":', sessionId === 'undefined');
+    
+    if (!sessionId || sessionId === 'undefined') {
+      console.log('Session validation failed - showing warning');
+      setSnackbar({
+        open: true,
+        message: 'No active chat session. Please wait for session to be created.',
+        severity: 'warning',
+      });
+      return;
+    }
 
+    const currentTime = new Date();
     const userMessage = {
       id: Date.now(),
       type: 'user',
       content: inputMessage,
-      timestamp: new Date(),
+      timestamp: currentTime,
     };
 
     setMessages(prev => [...prev, userMessage]);
@@ -212,8 +233,8 @@ const Chat = () => {
       const aiMessage = {
         id: Date.now() + 1,
         type: 'ai',
-        content: response.response,
-        timestamp: new Date(),
+        content: response.response || 'I apologize, but I encountered an error processing your request.',
+        timestamp: new Date(currentTime.getTime() + 1000), // Ensure AI message comes after user message
         interactive: response.interactive || false,
         suggestions: response.suggestions || [],
         context_used: response.context_used || [],
@@ -348,22 +369,27 @@ const Chat = () => {
                   <ReactMarkdown
                     components={{
                       h1: ({ children }) => (
-                        <Typography variant="h5" sx={{ fontWeight: 600, mb: 1 }}>
+                        <Typography variant="h5" sx={{ fontWeight: 700, mb: 1.5, color: 'primary.main', borderBottom: '2px solid', borderColor: 'primary.main', pb: 0.5 }}>
                           {children}
                         </Typography>
                       ),
                       h2: ({ children }) => (
-                        <Typography variant="h6" sx={{ fontWeight: 600, mb: 1 }}>
+                        <Typography variant="h6" sx={{ fontWeight: 600, mb: 1, color: 'primary.main', mt: 2 }}>
                           {children}
                         </Typography>
                       ),
                       h3: ({ children }) => (
-                        <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 1 }}>
+                        <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 1, color: 'primary.main', mt: 1.5 }}>
+                          {children}
+                        </Typography>
+                      ),
+                      h4: ({ children }) => (
+                        <Typography variant="subtitle2" sx={{ fontWeight: 600, mb: 0.5, color: 'primary.main', mt: 1 }}>
                           {children}
                         </Typography>
                       ),
                       p: ({ children }) => (
-                        <Typography variant="body1" sx={{ mb: theme.spacing(1) }}>
+                        <Typography variant="body1" sx={{ mb: theme.spacing(1), lineHeight: 1.6 }}>
                           {children}
                         </Typography>
                       ),
@@ -372,16 +398,105 @@ const Chat = () => {
                           {children}
                         </Box>
                       ),
+                      ol: ({ children }) => (
+                        <Box component="ol" sx={{ pl: 2, mb: 1 }}>
+                          {children}
+                        </Box>
+                      ),
                       li: ({ children }) => (
-                        <Typography component="li" variant="body1">
+                        <Typography component="li" variant="body1" sx={{ mb: 0.5, lineHeight: 1.6 }}>
                           {children}
                         </Typography>
                       ),
                       strong: ({ children }) => (
-                        <Box component="span" sx={{ fontWeight: 600 }}>
+                        <Box component="span" sx={{ fontWeight: 700, color: 'primary.main', backgroundColor: 'primary.50', px: 0.5, borderRadius: 0.5 }}>
                           {children}
                         </Box>
                       ),
+                      em: ({ children }) => (
+                        <Box component="span" sx={{ fontStyle: 'italic', color: 'text.secondary' }}>
+                          {children}
+                        </Box>
+                      ),
+                      code: ({ children }) => (
+                        <Box
+                          component="code"
+                          sx={{
+                            bgcolor: 'grey.100',
+                            px: 1,
+                            py: 0.5,
+                            borderRadius: 1,
+                            fontFamily: 'monospace',
+                            fontSize: '0.875rem',
+                            border: '1px solid',
+                            borderColor: 'grey.300'
+                          }}
+                        >
+                          {children}
+                        </Box>
+                      ),
+                      blockquote: ({ children }) => (
+                        <Box
+                          sx={{
+                            borderLeft: 4,
+                            borderColor: 'primary.main',
+                            pl: 2,
+                            ml: 0,
+                            my: 1.5,
+                            bgcolor: 'primary.50',
+                            py: 1.5,
+                            borderRadius: 1,
+                            boxShadow: 1
+                          }}
+                        >
+                          {children}
+                        </Box>
+                      ),
+                      table: ({ children }) => (
+                        <Box
+                          component="table"
+                          sx={{
+                            width: '100%',
+                            borderCollapse: 'collapse',
+                            my: 2,
+                            border: '1px solid',
+                            borderColor: 'grey.300',
+                            borderRadius: 1,
+                            overflow: 'hidden'
+                          }}
+                        >
+                          {children}
+                        </Box>
+                      ),
+                      th: ({ children }) => (
+                        <Box
+                          component="th"
+                          sx={{
+                            bgcolor: 'primary.main',
+                            color: 'primary.contrastText',
+                            p: 1,
+                            textAlign: 'left',
+                            fontWeight: 600,
+                            border: '1px solid',
+                            borderColor: 'grey.300'
+                          }}
+                        >
+                          {children}
+                        </Box>
+                      ),
+                      td: ({ children }) => (
+                        <Box
+                          component="td"
+                          sx={{
+                            p: 1,
+                            border: '1px solid',
+                            borderColor: 'grey.300',
+                            bgcolor: 'background.paper'
+                          }}
+                        >
+                          {children}
+                        </Box>
+                      )
                     }}
                   >
                     {message.content}
@@ -431,7 +546,33 @@ const Chat = () => {
               )}
               
               <Typography variant="caption" color="text.secondary" sx={{ mt: 1, display: 'block' }}>
-                {new Date(message.timestamp).toLocaleTimeString()}
+                {(() => {
+                  // Parse the UTC timestamp from the database
+                  // The database stores UTC timestamps without timezone info
+                  // So we need to explicitly treat them as UTC
+                  const timestampStr = message.timestamp;
+                  let utcDate;
+                  
+                  // Handle different timestamp formats with proper type checking
+                  if (timestampStr && typeof timestampStr === 'string') {
+                    if (timestampStr.includes('T')) {
+                      // ISO format with T
+                      utcDate = new Date(timestampStr);
+                    } else {
+                      // PostgreSQL format: "2025-08-31 11:32:22.114730"
+                      // Add 'Z' to indicate UTC timezone
+                      utcDate = new Date(timestampStr + 'Z');
+                    }
+                  } else if (timestampStr instanceof Date) {
+                    // If it's already a Date object
+                    utcDate = timestampStr;
+                  } else {
+                    // Fallback to current time if timestamp is invalid
+                    utcDate = new Date();
+                  }
+                  
+                  return utcDate.toLocaleTimeString();
+                })()}
               </Typography>
             </CardContent>
           </Card>

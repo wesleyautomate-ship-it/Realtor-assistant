@@ -193,6 +193,10 @@ export const AppProvider = ({ children }) => {
       });
       const newConversation = response;
       
+      console.log('API Response for new conversation:', newConversation);
+      console.log('newConversation.session_id:', newConversation.session_id);
+      console.log('newConversation.id:', newConversation.id);
+      
       // Ensure the conversation has the correct structure
       const conversationData = {
         id: newConversation.session_id || newConversation.id,
@@ -203,6 +207,8 @@ export const AppProvider = ({ children }) => {
         message_count: newConversation.message_count || 0,
         is_active: newConversation.is_active !== false,
       };
+      
+      console.log('Processed conversation data:', conversationData);
       
       // Batch state updates to prevent multiple re-renders
       dispatch({ 

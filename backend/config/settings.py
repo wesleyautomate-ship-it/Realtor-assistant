@@ -46,7 +46,7 @@ DEBUG = os.getenv("DEBUG", "False").lower() == "true"
 ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://localhost:3001", 
-    "http://192.168.1.241:3001"
+    "http://192.168.1.241:3001",
     "https://*.ngrok.io",
     "https://*.ngrok-free.app",
     "http://*.ngrok.io",
@@ -56,7 +56,7 @@ ALLOWED_ORIGINS = [
 # File Upload Configuration
 UPLOAD_DIR = Path("uploads")
 UPLOAD_DIR.mkdir(exist_ok=True)
-ALLOWED_EXTENSIONS = {'.jpg', '.jpeg', '.png', '.gif', '.pdf', '.doc', '.docx', '.txt'}
+ALLOWED_EXTENSIONS = {'.jpg', '.jpeg', '.png', '.gif', '.pdf', '.doc', '.docx', '.txt', '.csv', '.xlsx', '.xls'}
 MAX_FILE_SIZE = 10 * 1024 * 1024  # 10MB
 
 # Cache Configuration

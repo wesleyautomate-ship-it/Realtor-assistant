@@ -16,7 +16,7 @@ import uuid
 
 # Import dependencies
 from config.settings import UPLOAD_DIR
-from rag_service import ImprovedRAGService
+from rag_service import EnhancedRAGService
 
 # Initialize RAG service lazily
 from config.settings import DATABASE_URL
@@ -26,7 +26,7 @@ def get_rag_service():
     global rag_service
     if rag_service is None:
         try:
-            rag_service = ImprovedRAGService(db_url=DATABASE_URL)
+            rag_service = EnhancedRAGService()
         except Exception as e:
             print(f"Warning: Could not initialize RAG service: {e}")
             return None

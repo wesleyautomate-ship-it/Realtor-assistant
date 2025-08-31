@@ -39,7 +39,7 @@ from werkzeug.utils import secure_filename
 
 # Import property management router
 from property_management import router as property_router
-from rag_service import ImprovedRAGService, QueryIntent
+from rag_service import EnhancedRAGService, QueryIntent
 from ai_manager import AIEnhancementManager
 # Processing services moved to file_processing_router.py
 # Performance services moved to performance_router.py
@@ -65,6 +65,7 @@ from feedback_router import router as feedback_router
 
 # Import admin router
 from admin_router import router as admin_router, ingest_router as admin_ingest_router
+from report_generation_router import router as report_router
 
 # Reelly service moved to reelly_router.py
 
@@ -137,6 +138,7 @@ app.include_router(performance_router)  # PERFORMANCE MONITORING ENDPOINTS
 app.include_router(feedback_router)  # USER FEEDBACK ENDPOINTS
 app.include_router(admin_router)  # ADMINISTRATIVE ENDPOINTS
 app.include_router(admin_ingest_router)  # DOCUMENT INGESTION ENDPOINTS
+app.include_router(report_router)  # REPORT GENERATION ENDPOINTS
 
 # Include async processing router
 if async_router:
@@ -224,11 +226,7 @@ def get_rag_service():
     global rag_service
     if rag_service is None:
         try:
-            rag_service = ImprovedRAGService(
-                db_url=DATABASE_URL,
-                chroma_host=CHROMA_HOST,
-                chroma_port=CHROMA_PORT
-            )
+            rag_service = EnhancedRAGService()
         except Exception as e:
             print(f"Warning: Could not initialize RAG service: {e}")
             return None

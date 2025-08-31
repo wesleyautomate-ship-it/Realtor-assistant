@@ -157,23 +157,54 @@ async def get_properties():
             for row in result:
                 row_data = list(row)
                 
-                # Map columns based on actual database structure
-                # The CSV was: address,price,bedrooms,bathrooms,square_feet,property_type,description
-                # So 7 columns total
+                # Handle different table schemas based on column count
                 property_obj = {}
                 
                 if len(row_data) == 7:
-                    # No auto-increment ID, direct mapping from CSV
-                    property_obj["address"] = row_data[0]  # Address
-                    property_obj["price"] = float(row_data[1]) if row_data[1] else None  # Price
-                    property_obj["bedrooms"] = row_data[2]  # Bedrooms
-                    property_obj["bathrooms"] = float(row_data[3]) if row_data[3] else None  # Bathrooms
-                    property_obj["square_feet"] = row_data[4]  # Square feet
-                    property_obj["property_type"] = row_data[5]  # Property type
-                    property_obj["description"] = row_data[6]  # Description
+                    # Original schema: address,price,bedrooms,bathrooms,square_feet,property_type,description
+                    property_obj = {
+                        "id": row_data[0] if len(row_data) > 0 else None,
+                        "title": row_data[0] if len(row_data) > 0 else "Untitled Property",
+                        "address": row_data[0] if len(row_data) > 0 else "Location not specified",
+                        "price": float(row_data[1]) if len(row_data) > 1 and row_data[1] else 0,
+                        "bedrooms": int(row_data[2]) if len(row_data) > 2 and row_data[2] else 0,
+                        "bathrooms": float(row_data[3]) if len(row_data) > 3 and row_data[3] else 0,
+                        "square_feet": int(row_data[4]) if len(row_data) > 4 and row_data[4] else 0,
+                        "property_type": row_data[5] if len(row_data) > 5 else "Unknown",
+                        "description": row_data[6] if len(row_data) > 6 else "No description available"
+                    }
+                elif len(row_data) >= 23:
+                    # New schema from property_listings.csv with 23+ columns
+                    # Based on debug output: [id, listing_id, title, property_type, bedrooms, bathrooms, area_sqft, price_aed, price_per_sqft, location, building, developer, agent_id, listing_status, listing_date, last_updated, views_count, furnished, parking_spaces, balcony, gym_access, pool_access, security, description, created_at]
+                    property_obj = {
+                        "id": row_data[0] if len(row_data) > 0 else None,
+                        "listing_id": row_data[1] if len(row_data) > 1 else "",
+                        "title": row_data[2] if len(row_data) > 2 else "Untitled Property",
+                        "property_type": row_data[3] if len(row_data) > 3 else "Unknown",
+                        "bedrooms": int(row_data[4]) if len(row_data) > 4 and row_data[4] is not None else 0,
+                        "bathrooms": int(row_data[5]) if len(row_data) > 5 and row_data[5] is not None else 0,
+                        "area_sqft": int(row_data[6]) if len(row_data) > 6 and row_data[6] is not None else 0,
+                        "price": float(row_data[7]) if len(row_data) > 7 and row_data[7] is not None else 0,
+                        "price_per_sqft": float(row_data[8]) if len(row_data) > 8 and row_data[8] is not None else 0,
+                        "location": row_data[9] if len(row_data) > 9 else "Location not specified",
+                        "building": row_data[10] if len(row_data) > 10 else "",
+                        "developer": row_data[11] if len(row_data) > 11 else "",
+                        "agent_id": row_data[12] if len(row_data) > 12 else "",
+                        "listing_status": row_data[13] if len(row_data) > 13 else "active",
+                        "description": row_data[23] if len(row_data) > 23 else "No description available"
+                    }
                 else:
-                    # Fallback for different structure
-                    property_obj = {"error": f"Unexpected column count: {len(row_data)}"}
+                    # Fallback for any other structure
+                    property_obj = {
+                        "id": row_data[0] if len(row_data) > 0 else None,
+                        "title": row_data[1] if len(row_data) > 1 else "Untitled Property",
+                        "address": row_data[2] if len(row_data) > 2 else "Location not specified",
+                        "price": float(row_data[3]) if len(row_data) > 3 and row_data[3] else 0,
+                        "bedrooms": int(row_data[4]) if len(row_data) > 4 and row_data[4] else 0,
+                        "bathrooms": float(row_data[5]) if len(row_data) > 5 and row_data[5] else 0,
+                        "property_type": row_data[6] if len(row_data) > 6 else "Unknown",
+                        "description": row_data[7] if len(row_data) > 7 else "No description available"
+                    }
                 
                 properties.append(property_obj)
             return {"properties": properties}

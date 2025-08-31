@@ -21,6 +21,8 @@ from auth.middleware import get_current_user
 from auth.models import User
 from database_manager import get_db_connection
 from config.settings import DATABASE_URL
+from rag_service import EnhancedRAGService
+from chat_report_integration import chat_report_integration
 
 # Initialize router
 router = APIRouter(prefix="/sessions", tags=["Chat Sessions"])
@@ -116,9 +118,9 @@ def get_ai_manager():
 def get_rag_service():
     """Get RAG service instance"""
     try:
-        from rag_service import ImprovedRAGService
+        from rag_service import EnhancedRAGService
         from config.settings import CHROMA_HOST, CHROMA_PORT
-        return ImprovedRAGService(DATABASE_URL, CHROMA_HOST, CHROMA_PORT)
+        return EnhancedRAGService()
     except Exception as e:
         print(f"Error initializing RAG service: {e}")
         return None
@@ -424,7 +426,7 @@ async def chat_with_session(
     request: ChatRequest,
     current_user: User = Depends(get_current_user)
 ):
-    """Enhanced chat endpoint with session management"""
+    """Enhanced chat endpoint with session management and Reelly API integration"""
     start_time = time.time()
     
     try:
@@ -449,12 +451,24 @@ async def chat_with_session(
             if current_user.role != "admin" and session_row[4] != current_user.id:
                 raise HTTPException(status_code=403, detail="Access denied to this session")
         
-        # Use RAG service as the single source of truth for conversational AI
-        response_text = rag_service.get_response(
-            message=request.message,
-            role=request.role,
-            session_id=session_id
-        )
+        # Check for report generation request first
+        report_request = chat_report_integration.detect_report_request(request.message)
+        
+        if report_request:
+            # Generate report
+            report_data = chat_report_integration.generate_report(report_request)
+            
+            if report_data:
+                response_text = chat_report_integration.format_report_response(report_data)
+            else:
+                response_text = "I'm sorry, I couldn't generate the report at this time. Please try again later."
+        else:
+            # Use enhanced RAG service with Reelly API integration
+            response_text = rag_service.get_response(
+                message=request.message,
+                role=request.role,
+                session_id=session_id
+            )
         
         # Save messages to database
         with get_db_connection() as conn:
@@ -475,7 +489,11 @@ async def chat_with_session(
             """), {
                 "conversation_id": session_row[0],
                 "content": response_text,
-                "metadata": json.dumps({"sources": ["Dubai Real Estate Database", "Market Analysis Reports"]})
+                "metadata": json.dumps({
+                    "sources": ["Dubai Real Estate Database", "Market Analysis Reports", "Reelly API"],
+                    "enhanced": True,
+                    "reelly_integration": True
+                })
             })
         
         # Track performance
@@ -490,18 +508,66 @@ async def chat_with_session(
             sources=[
                 {"source": "Dubai Real Estate Database", "relevance": 0.9},
                 {"source": "Market Analysis Reports", "relevance": 0.8},
-                {"source": "Property Listings", "relevance": 0.7}
+                {"source": "Reelly API - Live Data", "relevance": 0.95}
             ],
-            confidence=0.8,
-            intent="general",
-            metadata={"response_time": response_time}
+            confidence=0.85,
+            intent="enhanced_property_search",
+            metadata={
+                "response_time": response_time,
+                "enhanced": True,
+                "reelly_integration": True
+            }
         )
         
     except HTTPException:
         raise
     except Exception as e:
-        print(f"Error in chat endpoint: {e}")
+        print(f"Error in enhanced chat endpoint: {e}")
         raise HTTPException(status_code=500, detail=str(e))
+
+@router.post("/test-reelly")
+async def test_reelly_integration():
+    """Test endpoint to verify Reelly API integration"""
+    try:
+        from reelly_service import ReellyService
+        
+        reelly = ReellyService()
+        if not reelly.enabled:
+            return {
+                "status": "warning",
+                "message": "Reelly API not configured",
+                "enabled": False
+            }
+        
+        # Test basic property search
+        test_params = {
+            "property_type": "apartment",
+            "price_from": 2000000,
+            "price_to": 3000000,
+            "bedrooms_from": 2,
+            "bedrooms_to": 2,
+            "per_page": 5
+        }
+        
+        properties = reelly.search_properties(test_params)
+        
+        return {
+            "status": "success",
+            "message": f"Reelly API integration working. Found {len(properties)} properties",
+            "enabled": True,
+            "test_results": {
+                "properties_found": len(properties),
+                "sample_property": properties[0] if properties else None
+            }
+        }
+        
+    except Exception as e:
+        return {
+            "status": "error",
+            "message": f"Reelly API test failed: {str(e)}",
+            "enabled": False,
+            "error": str(e)
+        }
 
 @router.delete("/{session_id}")
 async def delete_chat_session(session_id: str):
@@ -591,7 +657,13 @@ async def get_conversation_history(session_id: str):
             messages = []
             for msg_row in messages_result.fetchall():
                 try:
-                    metadata = json.loads(msg_row[6]) if msg_row[6] else {}
+                    if msg_row[6]:
+                        if isinstance(msg_row[6], str):
+                            metadata = json.loads(msg_row[6])
+                        else:
+                            metadata = msg_row[6]
+                    else:
+                        metadata = {}
                 except (json.JSONDecodeError, TypeError):
                     print(f"Error parsing metadata for message {msg_row[0]}: {msg_row[6]}")
                     metadata = {}
@@ -624,9 +696,13 @@ async def get_conversation_history(session_id: str):
             # Temporarily disable AI manager to fix conversation endpoint
             summary_text = None
             
+            # Ensure we always return a valid response even if no messages
+            if not messages:
+                messages = []
+            
             return ChatHistoryResponse(
                 session_id=session_id,
-                title=session_row[3],
+                title=session_row[3] or "New Chat",
                 messages=messages,
                 user_preferences=user_preferences,
                 conversation_summary=summary_text

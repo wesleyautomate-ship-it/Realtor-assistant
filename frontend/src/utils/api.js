@@ -278,10 +278,6 @@ export const apiUtils = {
 };
 
 // Error handling utility
-// 💡 Enhancement Suggestion: Consider implementing a global error boundary component
-// that uses this handleApiError function to provide consistent error messaging
-// across the application. This would improve user experience by showing
-// user-friendly error messages instead of technical error details.
 export const handleApiError = (error) => {
   if (error.response) {
     // Server responded with error status

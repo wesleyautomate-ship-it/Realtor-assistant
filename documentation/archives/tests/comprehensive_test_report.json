@@ -1,0 +1,182 @@
+{
+  "timestamp": "2025-08-27T14:53:14.625686",
+  "test_duration": 1.0286064147949219,
+  "summary": {
+    "total_tests": 3,
+    "passed": 3,
+    "failed": 0,
+    "errors": 0,
+    "success_rate": 100.0
+  },
+  "detailed_results": {
+    "security": {
+      "role_based_access": {
+        "client": {
+          "status": "FAIL",
+          "error": "HTTP 404"
+        },
+        "agent": {
+          "status": "FAIL",
+          "error": "HTTP 404"
+        },
+        "employee": {
+          "status": "FAIL",
+          "error": "HTTP 404"
+        },
+        "admin": {
+          "status": "FAIL",
+          "error": "HTTP 404"
+        }
+      },
+      "session_isolation": {},
+      "data_filtering": {},
+      "access_auditing": {}
+    },
+    "session_management": {
+      "session_creation": {
+        "status": "PASS",
+        "sessions_created": 3
+      },
+      "session_isolation": {
+        "status": "PASS",
+        "session1_messages": 0,
+        "session2_messages": 0,
+        "contexts_different": false
+      },
+      "conversation_memory": {},
+      "session_cleanup": {}
+    },
+    "response_quality": {
+      "dubai_specific_content": {
+        "query_1": {
+          "status": "FAIL",
+          "error": "HTTP 404"
+        },
+        "query_2": {
+          "status": "FAIL",
+          "error": "HTTP 404"
+        },
+        "query_3": {
+          "status": "FAIL",
+          "error": "HTTP 404"
+        },
+        "query_4": {
+          "status": "FAIL",
+          "error": "HTTP 404"
+        }
+      },
+      "structured_responses": {},
+      "source_attribution": {},
+      "accuracy_metrics": {}
+    },
+    "performance": {
+      "response_times": {
+        "first_request": 0.021001577377319336,
+        "second_request": 0.013284683227539062,
+        "caching_improvement": 0.0077168941497802734
+      },
+      "caching_effectiveness": {},
+      "performance_metrics": {
+        "performance": {
+          "avg_response_time": 0,
+          "total_requests": 0,
+          "cache_hit_rate": 0.0,
+          "cache_hits": 0,
+          "cache_misses": 0
+        },
+        "costs": {
+          "total_cost": 0.0,
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "avg_cost_per_request": 0.0
+        },
+        "cache": {
+          "memory_cache_size": 0,
+          "redis_available": false
+        }
+      }
+    },
+    "agentic_features": {
+      "conversation_memory": {
+        "responses": [],
+        "context_retention_rate": 0
+      },
+      "context_retention": {},
+      "preference_learning": {},
+      "proactive_suggestions": {}
+    },
+    "data_retrieval": {
+      "rag_effectiveness": {
+        "query_1": {
+          "status": "FAIL",
+          "error": "HTTP 404"
+        },
+        "query_2": {
+          "status": "FAIL",
+          "error": "HTTP 404"
+        },
+        "query_3": {
+          "status": "FAIL",
+          "error": "HTTP 404"
+        },
+        "query_4": {
+          "status": "FAIL",
+          "error": "HTTP 404"
+        }
+      },
+      "data_accuracy": {},
+      "source_quality": {}
+    },
+    "feedback_system": {
+      "feedback_submission": {
+        "status": "PASS"
+      },
+      "feedback_analysis": {
+        "period_days": 30,
+        "feedback_stats": {
+          "thumbs_up": {
+            "accuracy": {
+              "count": 2,
+              "avg_rating": 5.0
+            }
+          }
+        },
+        "recent_feedback": [
+          {
+            "session_id": "4fe7f634-25e1-47b9-81c2-6672511251e8",
+            "user_role": "client",
+            "feedback_type": "thumbs_up",
+            "rating": 5,
+            "text_feedback": "Excellent response with specific Dubai data",
+            "category": "accuracy",
+            "created_at": "2025-08-27 10:53:14.449322"
+          },
+          {
+            "session_id": "b2ca96cd-2ae7-4998-814d-8042782669b8",
+            "user_role": "client",
+            "feedback_type": "thumbs_up",
+            "rating": 5,
+            "text_feedback": "Excellent response with specific Dubai data",
+            "category": "accuracy",
+            "created_at": "2025-08-27 10:50:06.674122"
+          }
+        ],
+        "quality_metrics": {
+          "satisfaction_rate": 100.0,
+          "accuracy_thumbs_up": 5.0
+        },
+        "total_feedback": 2
+      },
+      "quality_metrics": {
+        "recommendations": []
+      }
+    },
+    "multi_user": {
+      "concurrent_users": {},
+      "data_isolation": {
+        "responses_unique": true
+      },
+      "role_specific_responses": {}
+    }
+  }
+}

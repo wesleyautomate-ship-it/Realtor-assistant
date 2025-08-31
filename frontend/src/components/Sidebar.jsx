@@ -17,7 +17,6 @@ import {
   Snackbar,
   Alert,
   CircularProgress,
-  ,
   useMediaQuery,
   Stack,
   Skeleton,
@@ -69,7 +68,15 @@ const Sidebar = ({ open, onToggle, onClose, isMobile }) => {
       console.log('Creating new chat...');
       const newConversation = await createNewConversation();
       console.log('New conversation created:', newConversation);
+      console.log('newConversation.id:', newConversation.id);
+      console.log('newConversation.id type:', typeof newConversation.id);
       console.log('Navigating to:', `/chat/${newConversation.id}`);
+      
+      if (!newConversation.id) {
+        console.error('No valid session ID in newConversation:', newConversation);
+        throw new Error('Failed to create session - no session ID returned');
+      }
+      
       navigate(`/chat/${newConversation.id}`);
     } catch (error) {
       console.error('Failed to create new chat:', error);
@@ -305,9 +312,27 @@ const Sidebar = ({ open, onToggle, onClose, isMobile }) => {
                         conversation.created_at && (
                           <Typography variant="caption" color="text.secondary">
                             {(() => {
-                              const date = new Date(conversation.created_at);
+                              // Parse the UTC timestamp from the database
+                              // The database stores UTC timestamps without timezone info
+                              // So we need to explicitly treat them as UTC
+                              const timestampStr = conversation.created_at;
+                              let utcDate;
+                              
+                              // Handle different timestamp formats
+                              if (timestampStr.includes('T')) {
+                                // ISO format with T
+                                utcDate = new Date(timestampStr);
+                              } else {
+                                // PostgreSQL format: "2025-08-31 11:32:22.114730"
+                                // Add 'Z' to indicate UTC timezone
+                                utcDate = new Date(timestampStr + 'Z');
+                              }
+                              
                               const now = new Date();
-                              const diffInHours = (now - date) / (1000 * 60 * 60);
+                              
+                              // Calculate the time difference in milliseconds
+                              const diffInMs = now.getTime() - utcDate.getTime();
+                              const diffInHours = diffInMs / (1000 * 60 * 60);
                               
                               if (diffInHours < 1) {
                                 return 'Just now';
@@ -318,7 +343,7 @@ const Sidebar = ({ open, onToggle, onClose, isMobile }) => {
                                 const days = Math.floor(diffInHours / 24);
                                 return `${days} day${days > 1 ? 's' : ''} ago`;
                               } else {
-                                return date.toLocaleDateString();
+                                return utcDate.toLocaleDateString();
                               }
                             })()}
                           </Typography>
