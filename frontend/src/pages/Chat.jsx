@@ -198,7 +198,7 @@ const Chat = () => {
 
   const sendMessage = async () => {
     if (!inputMessage.trim()) return;
-    
+
     console.log('sendMessage called with sessionId:', sessionId);
     console.log('sessionId type:', typeof sessionId);
     console.log('sessionId === undefined:', sessionId === undefined);

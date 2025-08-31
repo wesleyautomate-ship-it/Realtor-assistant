@@ -464,11 +464,11 @@ async def chat_with_session(
                 response_text = "I'm sorry, I couldn't generate the report at this time. Please try again later."
         else:
             # Use enhanced RAG service with Reelly API integration
-            response_text = rag_service.get_response(
-                message=request.message,
-                role=request.role,
-                session_id=session_id
-            )
+        response_text = rag_service.get_response(
+            message=request.message,
+            role=request.role,
+            session_id=session_id
+        )
         
         # Save messages to database
         with get_db_connection() as conn:

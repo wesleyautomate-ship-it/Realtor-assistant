@@ -188,7 +188,7 @@ class EnhancedRAGService:
         
         # Initialize Reelly service
         if RELLY_AVAILABLE:
-            self.reelly_service = ReellyService()
+                self.reelly_service = ReellyService()
             logger.info("✅ Reelly API service initialized for enhanced property data")
         else:
             self.reelly_service = None
@@ -397,9 +397,9 @@ class EnhancedRAGService:
                     parameters['budget_max'] = budget * 1000000  # Convert to AED
                     parameters['budget_min'] = 0  # No minimum
                 else:
-                    # Set budget range (±20%)
-                    parameters['budget_min'] = budget * 0.8
-                    parameters['budget_max'] = budget * 1.2
+                # Set budget range (±20%)
+                parameters['budget_min'] = budget * 0.8
+                parameters['budget_max'] = budget * 1.2
             except:
                 pass
         
@@ -451,7 +451,7 @@ class EnhancedRAGService:
         if analysis.intent == QueryIntent.PROPERTY_SEARCH:
             prop_context = self._get_property_context(analysis.parameters, max_items)
             context_items.extend(prop_context)
-            
+        
             # For property search, focus on properties, not market analysis
             # Only add minimal market context if specifically requested
         
@@ -520,12 +520,12 @@ class EnhancedRAGService:
                 all_results = []
                 for q_var in query_variations[:3]:  # Use top 3 variations
                     try:
-                        results = collection.query(
+                results = collection.query(
                             query_texts=[q_var],
                             n_results=max_items * 2
-                        )
+                )
                 
-                        if results['documents'] and results['documents'][0]:
+                if results['documents'] and results['documents'][0]:
                             all_results.extend(results['documents'][0])
                     except Exception as e:
                         logger.warning(f"Error querying collection {collection_name} with variation '{q_var}': {e}")
@@ -612,8 +612,8 @@ class EnhancedRAGService:
                         property_type = row.property_type or "Not specified"
                         
                         property_info = f"Location: {location}, Price: {price_str}, Bedrooms: {bedrooms}, Bathrooms: {bathrooms}, Type: {property_type}"
-                        if row.description:
-                            property_info += f", Description: {row.description}"
+                    if row.description:
+                        property_info += f", Description: {row.description}"
                     except Exception as format_error:
                         logger.warning(f"Error formatting property info: {format_error}")
                         property_info = f"Property in {row.location or 'Unknown location'}"
@@ -1193,7 +1193,7 @@ IMPORTANT: Provide specific Dubai real estate information, actual prices, and ac
                         area_sqft = row.area_sqft or 'Not specified'
                         description = row.description or 'No description available'
                         
-                        content = f"""
+                    content = f"""
                         Property: {title}
                         Price: {price_str}
                         Type: {property_type}
