@@ -250,8 +250,8 @@ The system uses 10 specialized vector collections:
 DATABASE_URL=postgresql://admin:password123@localhost:5432/real_estate_db
 
 # AI Services
-GOOGLE_API_KEY=your_google_gemini_api_key
-REELLY_API_KEY=your_reelly_api_key  # Optional
+GOOGLE_API_KEY=AIzaSyAocEBBwmq_eZ1Dy5RT9S7Kkfyw8nNibmM
+REELLY_API_KEY=reelly-ca193726-B8UWmLERvIIp-S_PuqiJ5vkXKFcBM3Fv  # Optional
 
 # ChromaDB
 CHROMA_HOST=localhost
@@ -263,7 +263,7 @@ REDIS_PORT=6379
 REDIS_DB=0
 
 # JWT Authentication
-JWT_SECRET_KEY=your_super_secret_jwt_key
+JWT_SECRET_KEY=e093b4726d3097764be917a8ac782c53
 JWT_ALGORITHM=HS256
 JWT_ACCESS_TOKEN_EXPIRE_MINUTES=30
 JWT_REFRESH_TOKEN_EXPIRE_DAYS=7

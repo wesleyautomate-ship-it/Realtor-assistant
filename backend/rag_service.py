@@ -1042,24 +1042,18 @@ IMPORTANT: Provide specific Dubai real estate information, actual prices, and ac
         
         if 'budget_min' in parameters and 'budget_max' in parameters:
             sql_parts.append("AND price BETWEEN :budget_min AND :budget_max")
-            query_params['budget_min'] = parameters['budget_min']
-            query_params['budget_max'] = parameters['budget_max']
         
         if 'location' in parameters:
             sql_parts.append("AND location ILIKE :location")
-            query_params['location'] = f"%{parameters['location']}%"
         
         if 'property_type' in parameters:
             sql_parts.append("AND property_type ILIKE :property_type")
-            query_params['property_type'] = f"%{parameters['property_type']}%"
         
         if 'bedrooms' in parameters:
             sql_parts.append("AND bedrooms >= :bedrooms")
-            query_params['bedrooms'] = parameters['bedrooms']
         
         if 'bathrooms' in parameters:
             sql_parts.append("AND bathrooms >= :bathrooms")
-            query_params['bathrooms'] = parameters['bathrooms']
         
         sql_parts.append("ORDER BY price ASC LIMIT :limit")
         query_params['limit'] = max_items

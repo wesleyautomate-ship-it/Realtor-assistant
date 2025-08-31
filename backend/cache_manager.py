@@ -335,3 +335,6 @@ class CacheManager:
             
         except Exception as e:
             return {"status": "unhealthy", "message": str(e)}
+
+# Global cache manager instance
+cache_manager = CacheManager()

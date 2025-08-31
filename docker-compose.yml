@@ -1,28 +1,28 @@
 services:
-  # PostgreSQL Database
+  # PostgreSQL Database (Different port and database name)
   postgres:
     image: postgres:15
     environment:
-      POSTGRES_DB: real_estate_db
+      POSTGRES_DB: real_estate_db_copy
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: password123
     ports:
-      - "5432:5432"
+      - "5433:5432"  # Different port to avoid conflict
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - postgres_data_copy:/var/lib/postgresql/data
     networks:
       - rag-network
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U admin -d real_estate_db"]
+      test: ["CMD-SHELL", "pg_isready -U admin -d real_estate_db_copy"]
       interval: 10s
       timeout: 5s
       retries: 5
 
-  # Redis Cache
+  # Redis Cache (Different port)
   redis:
     image: redis:7-alpine
     ports:
-      - "6379:6379"
+      - "6380:6379"  # Different port to avoid conflict
     networks:
       - rag-network
     healthcheck:
@@ -31,13 +31,13 @@ services:
       timeout: 5s
       retries: 5
 
-  # ChromaDB for document embeddings
+  # ChromaDB for document embeddings (Different port)
   chromadb:
     image: chromadb/chroma:latest
     ports:
-      - "8002:8000"
+      - "8004:8000"  # Different port to avoid conflict
     volumes:
-      - chroma_data:/chroma/chroma
+      - chroma_data_copy:/chroma/chroma
     networks:
       - rag-network
 
@@ -45,11 +45,11 @@ services:
   backend:
     build: ./backend
     ports:
-      - "8003:8001"  # Changed host port to 8003 to avoid conflict with ChromaDB
+      - "8002:8001"  # Different port to avoid conflict
     env_file:
       - ./backend/.env.docker
     environment:
-      - DATABASE_URL=postgresql://admin:password123@postgres:5432/real_estate_db
+      - DATABASE_URL=postgresql://admin:password123@postgres:5432/real_estate_db_copy
       - CHROMA_HOST=chromadb
       - CHROMA_PORT=8000
       - REDIS_HOST=redis
@@ -57,7 +57,7 @@ services:
       - REDIS_URL=redis://redis:6379/0
       - GOOGLE_API_KEY=${GOOGLE_API_KEY}
       - REELLY_API_KEY=${REELLY_API_KEY}
-      - SECRET_KEY=dubai-real-estate-rag-secret-key-2024-production
+      - SECRET_KEY=dubai-real-estate-rag-secret-key-2024-copy
     depends_on:
       postgres:
         condition: service_healthy
@@ -75,9 +75,9 @@ services:
   frontend:
     build: ./frontend
     ports:
-      - "3000:3000"
+      - "3001:3000"  # Different port to avoid conflict
     environment:
-      - REACT_APP_API_URL=http://localhost:8003
+      - REACT_APP_API_URL=http://localhost:8002
     depends_on:
       - backend
     volumes:
@@ -88,8 +88,8 @@ services:
     restart: unless-stopped
 
 volumes:
-  postgres_data:
-  chroma_data:
+  postgres_data_copy:
+  chroma_data_copy:
 
 networks:
   rag-network:
