@@ -64,7 +64,7 @@ class ErrorBoundary extends React.Component {
     if (this.state.hasError) {
       // Custom fallback UI
       return (
-        <Container maxWidth="md" sx={{ py: theme.spacing(4) }}>
+        <Container maxWidth="md" sx={{ py: 4 }}>
           <Paper 
             elevation={3} 
             sx={{ 
@@ -85,7 +85,7 @@ class ErrorBoundary extends React.Component {
               Something went wrong
             </Typography>
             
-            <Typography variant="body1" color="text.secondary" sx={{ mb: theme.spacing(3) }}>
+            <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
               We're sorry, but something unexpected happened. Our team has been notified.
             </Typography>
 
@@ -95,7 +95,7 @@ class ErrorBoundary extends React.Component {
                 <strong>Error ID:</strong> {this.state.errorId}
               </Typography>
               {this.state.error && (
-                <Typography variant="body2" component="div" sx={{ mt: theme.spacing(1) }}>
+                <Typography variant="body2" component="div" sx={{ mt: 1 }}>
                   <strong>Message:</strong> {this.state.error.message}
                 </Typography>
               )}

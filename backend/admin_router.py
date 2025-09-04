@@ -6,7 +6,7 @@ to maintain frontend compatibility while following the secure architecture
 patterns of main_secure.py.
 """
 
-from fastapi import APIRouter, HTTPException, UploadFile, File, Form
+from fastapi import APIRouter, HTTPException, UploadFile, File, Form, Depends
 from pydantic import BaseModel
 from typing import List, Dict, Any, Optional
 from pathlib import Path
@@ -14,9 +14,13 @@ from datetime import datetime
 import shutil
 import uuid
 
+# Import secure authentication
+from auth.middleware import get_current_user, require_admin
+from auth.models import User
+
 # Import dependencies
 from config.settings import UPLOAD_DIR
-from rag_service import ImprovedRAGService
+from rag_service import EnhancedRAGService
 
 # Initialize RAG service lazily
 from config.settings import DATABASE_URL
@@ -26,7 +30,7 @@ def get_rag_service():
     global rag_service
     if rag_service is None:
         try:
-            rag_service = ImprovedRAGService(db_url=DATABASE_URL)
+            rag_service = EnhancedRAGService()
         except Exception as e:
             print(f"Warning: Could not initialize RAG service: {e}")
             return None
@@ -58,7 +62,7 @@ class DocumentIngestionResponse(BaseModel):
 # Router Endpoints
 
 @router.get("/files")
-async def get_admin_files():
+async def get_admin_files(current_user: User = Depends(require_admin)):
     """Get list of uploaded files for admin management"""
     try:
         from database_manager import get_db_connection
@@ -100,7 +104,7 @@ async def get_admin_files():
         raise HTTPException(status_code=500, detail=str(e))
 
 @router.delete("/files/{file_id}")
-async def delete_file(file_id: int):
+async def delete_file(file_id: int, current_user: User = Depends(require_admin)):
     """Delete a file from the system"""
     try:
         from database_manager import get_db_connection
@@ -135,7 +139,7 @@ async def delete_file(file_id: int):
         raise HTTPException(status_code=500, detail=str(e))
 
 @router.post("/trigger-daily-briefing", response_model=DailyBriefingResponse)
-async def trigger_daily_briefing():
+async def trigger_daily_briefing(current_user: User = Depends(require_admin)):
     """Manually trigger daily briefing generation for testing"""
     try:
         from scheduler import DailyBriefingScheduler
@@ -153,7 +157,8 @@ async def trigger_daily_briefing():
 async def upload_document_for_ingestion(
     file: UploadFile = File(...),
     document_type: str = Form("general"),
-    priority: str = Form("normal")
+    priority: str = Form("normal"),
+    current_user: User = Depends(get_current_user)
 ):
     """
     Upload a document for ingestion into the RAG system

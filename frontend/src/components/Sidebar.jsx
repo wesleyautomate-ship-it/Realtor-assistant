@@ -17,7 +17,6 @@ import {
   Snackbar,
   Alert,
   CircularProgress,
-  ,
   useMediaQuery,
   Stack,
   Skeleton,
@@ -33,12 +32,13 @@ import {
   Menu as MenuIcon,
   Close as CloseIcon,
   Chat as ChatIcon,
+  Keyboard as KeyboardIcon,
 } from '@mui/icons-material';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAppContext } from '../context/AppContext';
 import { apiUtils, handleApiError } from '../utils/api';
 
-const Sidebar = ({ open, onToggle, onClose, isMobile }) => {
+const Sidebar = ({ open, onToggle, onClose, isMobile, onOpenCommandBar }) => {
   const theme = useTheme();
   const navigate = useNavigate();
   const location = useLocation();
@@ -69,7 +69,15 @@ const Sidebar = ({ open, onToggle, onClose, isMobile }) => {
       console.log('Creating new chat...');
       const newConversation = await createNewConversation();
       console.log('New conversation created:', newConversation);
+      console.log('newConversation.id:', newConversation.id);
+      console.log('newConversation.id type:', typeof newConversation.id);
       console.log('Navigating to:', `/chat/${newConversation.id}`);
+      
+      if (!newConversation.id) {
+        console.error('No valid session ID in newConversation:', newConversation);
+        throw new Error('Failed to create session - no session ID returned');
+      }
+      
       navigate(`/chat/${newConversation.id}`);
     } catch (error) {
       console.error('Failed to create new chat:', error);
@@ -81,6 +89,13 @@ const Sidebar = ({ open, onToggle, onClose, isMobile }) => {
       });
     } finally {
       setIsCreatingChat(false);
+    }
+  };
+
+  // Handle command bar opening
+  const handleOpenCommandBar = () => {
+    if (onOpenCommandBar) {
+      onOpenCommandBar();
     }
   };
 
@@ -110,9 +125,9 @@ const Sidebar = ({ open, onToggle, onClose, isMobile }) => {
   // Navigation items based on user role
   const navigationItems = [
     {
-      text: 'Dashboard',
+      text: 'AI Copilot',
       icon: <DashboardIcon />,
-      path: '/dashboard',
+      path: '/hub',
       show: true,
     },
     {
@@ -195,6 +210,43 @@ const Sidebar = ({ open, onToggle, onClose, isMobile }) => {
         >
           New Chat
         </Button>
+      </Box>
+
+      {/* AI Command Bar Button */}
+      <Box sx={{ px: theme.spacing(2), mb: theme.spacing(2) }}>
+        <Button
+          fullWidth
+          variant="outlined"
+          startIcon={<KeyboardIcon />}
+          onClick={handleOpenCommandBar}
+          sx={{
+            borderRadius: 2,
+            py: 1.5,
+            textTransform: 'none',
+            fontWeight: 600,
+            borderColor: 'primary.main',
+            color: 'primary.main',
+            '&:hover': {
+              backgroundColor: 'primary.main',
+              color: 'primary.contrastText',
+              borderColor: 'primary.main',
+            },
+          }}
+        >
+          AI Command Bar
+        </Button>
+        <Typography 
+          variant="caption" 
+          color="text.secondary" 
+          sx={{ 
+            display: 'block', 
+            textAlign: 'center', 
+            mt: 0.5,
+            fontSize: '0.7rem'
+          }}
+        >
+          Press Ctrl+K to open
+        </Typography>
       </Box>
 
       {/* Navigation */}
@@ -305,9 +357,27 @@ const Sidebar = ({ open, onToggle, onClose, isMobile }) => {
                         conversation.created_at && (
                           <Typography variant="caption" color="text.secondary">
                             {(() => {
-                              const date = new Date(conversation.created_at);
+                              // Parse the UTC timestamp from the database
+                              // The database stores UTC timestamps without timezone info
+                              // So we need to explicitly treat them as UTC
+                              const timestampStr = conversation.created_at;
+                              let utcDate;
+                              
+                              // Handle different timestamp formats
+                              if (timestampStr.includes('T')) {
+                                // ISO format with T
+                                utcDate = new Date(timestampStr);
+                              } else {
+                                // PostgreSQL format: "2025-08-31 11:32:22.114730"
+                                // Add 'Z' to indicate UTC timezone
+                                utcDate = new Date(timestampStr + 'Z');
+                              }
+                              
                               const now = new Date();
-                              const diffInHours = (now - date) / (1000 * 60 * 60);
+                              
+                              // Calculate the time difference in milliseconds
+                              const diffInMs = now.getTime() - utcDate.getTime();
+                              const diffInHours = diffInMs / (1000 * 60 * 60);
                               
                               if (diffInHours < 1) {
                                 return 'Just now';
@@ -318,7 +388,7 @@ const Sidebar = ({ open, onToggle, onClose, isMobile }) => {
                                 const days = Math.floor(diffInHours / 24);
                                 return `${days} day${days > 1 ? 's' : ''} ago`;
                               } else {
-                                return date.toLocaleDateString();
+                                return utcDate.toLocaleDateString();
                               }
                             })()}
                           </Typography>

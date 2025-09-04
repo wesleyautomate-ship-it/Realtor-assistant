@@ -9,7 +9,8 @@ services:
     ports:
       - "5433:5432"  # Different port to avoid conflict
     volumes:
-      - postgres_data_copy:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data
+      - ./backend/init_database.py:/docker-entrypoint-initdb.d/init_database.py:ro
     networks:
       - rag-network
     healthcheck:
@@ -40,6 +41,12 @@ services:
       - chroma_data_copy:/chroma/chroma
     networks:
       - rag-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/v1/heartbeat"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
 
   # FastAPI Backend
   backend:
@@ -47,9 +54,9 @@ services:
     ports:
       - "8002:8001"  # Different port to avoid conflict
     env_file:
-      - ./backend/.env.docker
+      - ./docker.env
     environment:
-      - DATABASE_URL=postgresql://admin:password123@postgres:5432/real_estate_db_copy
+      - DATABASE_URL=${DATABASE_URL:-postgresql://admin:password123@postgres:5432/real_estate_db}
       - CHROMA_HOST=chromadb
       - CHROMA_PORT=8000
       - REDIS_HOST=redis
@@ -57,7 +64,10 @@ services:
       - REDIS_URL=redis://redis:6379/0
       - GOOGLE_API_KEY=${GOOGLE_API_KEY}
       - REELLY_API_KEY=${REELLY_API_KEY}
-      - SECRET_KEY=dubai-real-estate-rag-secret-key-2024-copy
+      - SECRET_KEY=${SECRET_KEY}
+      - ENABLE_BLUEPRINT_2=true
+      - NURTURING_SCHEDULER_ENABLED=true
+      - DOCUMENT_GENERATION_ENABLED=true
     depends_on:
       postgres:
         condition: service_healthy
@@ -67,9 +77,17 @@ services:
         condition: service_started
     volumes:
        - ./backend:/app
+       - backend_logs:/app/logs
+       - backend_uploads:/app/uploads
     networks:
       - rag-network
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import requests; requests.get('http://localhost:8001/health', timeout=5)"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
 
   # React Frontend
   frontend:
@@ -79,7 +97,8 @@ services:
     environment:
       - REACT_APP_API_URL=http://localhost:8002
     depends_on:
-      - backend
+      backend:
+        condition: service_healthy
     volumes:
       - ./frontend:/app
       - /app/node_modules
@@ -87,9 +106,39 @@ services:
       - rag-network
     restart: unless-stopped
 
+  # Test Runner Service (for Blueprint 2.0 testing)
+  test-runner:
+    build: ./backend
+    env_file:
+      - ./docker.env
+    environment:
+      - DATABASE_URL=postgresql://admin:password123@postgres:5432/real_estate_db
+      - CHROMA_HOST=chromadb
+      - CHROMA_PORT=8000
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - GOOGLE_API_KEY=AIzaSyAocEBBwmq_eZ1Dy5RT9S7Kkfyw8nNibmM
+      - REELLY_API_KEY=${REELLY_API_KEY:-your_reelly_api_key_here}
+      - SECRET_KEY=332534d98fbf5ea7b5251e8078506a45
+      - ENABLE_BLUEPRINT_2=true
+    depends_on:
+      postgres:
+        condition: service_healthy
+      backend:
+        condition: service_healthy
+    volumes:
+      - ./backend:/app
+    networks:
+      - rag-network
+    command: ["python", "test_blueprint_2.py"]
+    profiles:
+      - test
+
 volumes:
-  postgres_data_copy:
-  chroma_data_copy:
+  postgres_data:
+  chroma_data:
+  backend_logs:
+  backend_uploads:
 
 networks:
   rag-network:

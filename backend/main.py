@@ -17,7 +17,7 @@ and role-based access control.
 - Secure session management
 """
 
-from fastapi import FastAPI, HTTPException, UploadFile, File, Form
+from fastapi import FastAPI, HTTPException, UploadFile, File, Form, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import List, Union, Dict, Any
@@ -39,7 +39,6 @@ from werkzeug.utils import secure_filename
 
 # Import property management router
 from property_management import router as property_router
-from rag_service import ImprovedRAGService, QueryIntent
 from ai_manager import AIEnhancementManager
 # Processing services moved to file_processing_router.py
 # Performance services moved to performance_router.py
@@ -65,6 +64,10 @@ from feedback_router import router as feedback_router
 
 # Import admin router
 from admin_router import router as admin_router, ingest_router as admin_ingest_router
+from report_generation_router import router as report_router
+
+# Import rag_service after routers to avoid circular imports
+from rag_service import EnhancedRAGService, QueryIntent
 
 # Reelly service moved to reelly_router.py
 
@@ -79,10 +82,66 @@ except Exception as e:
     print(f"⚠️ Async processing router not loaded: {e}")
     async_router = None
 
+# Import Blueprint 2.0 routers
+try:
+    from documents_router import router as documents_router
+    print("✅ Documents router loaded successfully")
+except Exception as e:
+    print(f"⚠️ Documents router not loaded: {e}")
+    documents_router = None
+
+try:
+    from nurturing_router import router as nurturing_router
+    print("✅ Nurturing router loaded successfully")
+except Exception as e:
+    print(f"⚠️ Nurturing router not loaded: {e}")
+    nurturing_router = None
+
+# Import Advanced Chat router
+try:
+    from advanced_chat_router import router as advanced_chat_router
+    print("✅ Advanced Chat router loaded successfully")
+except Exception as e:
+    print(f"⚠️ Advanced Chat router not loaded: {e}")
+    advanced_chat_router = None
+
+# Import ML Insights router
+try:
+    from ml_insights_router import ml_insights_router
+    print("✅ ML Insights router loaded successfully")
+except Exception as e:
+    print(f"⚠️ ML Insights router not loaded: {e}")
+    ml_insights_router = None
+
+# Import ML Advanced router
+try:
+    from ml_advanced_router import ml_advanced_router
+    print("✅ ML Advanced router loaded successfully")
+except Exception as e:
+    print(f"⚠️ ML Advanced router not loaded: {e}")
+    ml_advanced_router = None
+
+# Import ML WebSocket router
+try:
+    from ml_websocket_router import ml_websocket_router
+    print("✅ ML WebSocket router loaded successfully")
+except Exception as e:
+    print(f"⚠️ ML WebSocket router not loaded: {e}")
+    ml_websocket_router = None
+
+# Import nurturing scheduler
+try:
+    from nurturing_scheduler import start_nurturing_scheduler, stop_nurturing_scheduler
+    print("✅ Nurturing scheduler loaded successfully")
+except Exception as e:
+    print(f"⚠️ Nurturing scheduler not loaded: {e}")
+    start_nurturing_scheduler = None
+    stop_nurturing_scheduler = None
+
 # Import authentication modules
 from auth.routes import router as auth_router
 from auth.database import init_db
-from auth.middleware import AuthMiddleware
+from auth.middleware import AuthMiddleware, get_current_user
 
 # Import secure sessions router
 from secure_sessions import router as secure_sessions_router
@@ -137,13 +196,42 @@ app.include_router(performance_router)  # PERFORMANCE MONITORING ENDPOINTS
 app.include_router(feedback_router)  # USER FEEDBACK ENDPOINTS
 app.include_router(admin_router)  # ADMINISTRATIVE ENDPOINTS
 app.include_router(admin_ingest_router)  # DOCUMENT INGESTION ENDPOINTS
+app.include_router(report_router)  # REPORT GENERATION ENDPOINTS
 
 # Include async processing router
 if async_router:
     app.include_router(async_router)
-    print("✅ Async processing router included successfully")
+
+# Include Blueprint 2.0 routers
+if documents_router:
+    app.include_router(documents_router)  # DOCUMENT VIEWING ENDPOINTS
+
+if nurturing_router:
+    app.include_router(nurturing_router)  # LEAD NURTURING ENDPOINTS
+
+# Include Advanced Chat router
+if advanced_chat_router:
+    app.include_router(advanced_chat_router)  # ADVANCED CHAT ENDPOINTS
+    print("✅ Advanced Chat router included successfully")
 else:
-    print("⚠️ Async processing router not included")
+    print("⚠️ Advanced Chat router not included")
+
+# Include ML Insights router
+if ml_insights_router:
+    app.include_router(ml_insights_router)  # ML INSIGHTS ENDPOINTS
+    print("✅ ML Insights router included successfully")
+
+# Include ML Advanced router
+if ml_advanced_router:
+    app.include_router(ml_advanced_router)  # ML ADVANCED ENDPOINTS
+    print("✅ ML Advanced router included successfully")
+
+# Include ML WebSocket router
+if ml_websocket_router:
+    app.include_router(ml_websocket_router)  # ML WEBSOCKET ENDPOINTS
+    print("✅ ML WebSocket router included successfully")
+else:
+    print("⚠️ ML Insights router not included")
 
 # Include admin routes
 include_rag_monitoring_routes(app)
@@ -224,11 +312,7 @@ def get_rag_service():
     global rag_service
     if rag_service is None:
         try:
-            rag_service = ImprovedRAGService(
-                db_url=DATABASE_URL,
-                chroma_host=CHROMA_HOST,
-                chroma_port=CHROMA_PORT
-            )
+            rag_service = EnhancedRAGService()
         except Exception as e:
             print(f"Warning: Could not initialize RAG service: {e}")
             return None
@@ -240,7 +324,7 @@ ai_enhancement_manager = AIEnhancementManager(DATABASE_URL, model)
 # Performance services moved to performance_router.py
 
 # Initialize Action Engine
-action_engine = ActionEngine(SessionLocal(), 1)  # Default admin user
+action_engine = ActionEngine()  # No parameters needed for basic initialization
 
 # Response models (moved to chat_sessions_router.py)
 class FileUploadResponse(BaseModel):
@@ -253,36 +337,13 @@ class FileUploadResponse(BaseModel):
 # Health check endpoint
 @app.get("/health")
 async def health_check():
-    """Health check endpoint"""
-    try:
-        # Check database connection
-        with get_db_connection() as conn:
-                conn.execute(text("SELECT 1"))
-        
-        # Check ChromaDB connection
-        chroma_client = chromadb.HttpClient(host=CHROMA_HOST, port=CHROMA_PORT)
-        chroma_client.heartbeat()
-        
-        # Check Redis connection
-        try:
-            from cache_manager import CacheManager
-            cache_manager = CacheManager()
-            cache_status = cache_manager.get_cache_status()
-            print("✅ Cache manager initialized successfully")
-        except Exception as e:
-            print(f"⚠️ Cache manager not available: {e}")
-            cache_manager = None
-            cache_status = {"status": "unavailable"}
-        
-        return {
-            "status": "running", 
-            "database": "connected",
-            "chromadb": "connected",
-            "cache": cache_status,
-            "timestamp": datetime.now().isoformat()
-        }
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+    """Health check endpoint for Docker"""
+    return {
+        "status": "healthy",
+        "timestamp": datetime.now().isoformat(),
+        "version": "2.0.0",
+        "blueprint_2_enabled": True
+    }
 
 # Root endpoint
 @app.get("/")
@@ -467,6 +528,146 @@ async def execute_action(request: ActionExecuteRequest):
     except Exception as e:
         print(f"Error in execute_action: {e}")
         raise HTTPException(status_code=500, detail=str(e))
+
+# User agenda endpoint - alias for nurturing router
+@app.get("/users/me/agenda")
+async def get_user_agenda(current_user = Depends(get_current_user)):
+    """Get user agenda - redirects to nurturing router"""
+    try:
+        # Import here to avoid circular imports
+        from sqlalchemy import text
+        from datetime import datetime
+        
+        with engine.connect() as conn:
+            # Get scheduled follow-ups for today
+            follow_ups_result = conn.execute(text("""
+                SELECT l.id, l.name, l.email, l.next_follow_up_at, l.nurture_status
+                FROM leads l
+                WHERE l.agent_id = :agent_id
+                AND l.next_follow_up_at::date = CURRENT_DATE
+                AND l.status NOT IN ('closed', 'lost')
+                ORDER BY l.next_follow_up_at ASC
+            """), {'agent_id': current_user.id})
+            
+            follow_ups = []
+            for row in follow_ups_result.fetchall():
+                follow_ups.append({
+                    "lead_id": row.id,
+                    "lead_name": row.name,
+                    "lead_email": row.email,
+                    "scheduled_time": row.next_follow_up_at.isoformat() if row.next_follow_up_at else None,
+                    "nurture_status": row.nurture_status,
+                    "type": "scheduled_follow_up"
+                })
+            
+            # Get leads needing attention
+            attention_result = conn.execute(text("""
+                SELECT l.id, l.name, l.email, l.last_contacted_at, l.nurture_status
+                FROM leads l
+                WHERE l.agent_id = :agent_id
+                AND (l.last_contacted_at IS NULL OR 
+                     l.last_contacted_at < NOW() - INTERVAL '5 days')
+                AND l.status NOT IN ('closed', 'lost')
+                AND l.nurture_status != 'Closed'
+                ORDER BY l.last_contacted_at ASC NULLS FIRST
+                LIMIT 5
+            """), {'agent_id': current_user.id})
+            
+            attention_needed = []
+            for row in attention_result.fetchall():
+                attention_needed.append({
+                    "lead_id": row.id,
+                    "lead_name": row.name,
+                    "lead_email": row.email,
+                    "last_contacted": row.last_contacted_at.isoformat() if row.last_contacted_at else None,
+                    "nurture_status": row.nurture_status,
+                    "type": "needs_attention"
+                })
+            
+            # Get unread notifications
+            notifications_result = conn.execute(text("""
+                SELECT id, notification_type, title, message, related_lead_id, 
+                       priority, created_at
+                FROM notifications
+                WHERE user_id = :user_id AND is_read = FALSE
+                ORDER BY created_at DESC
+                LIMIT 10
+            """), {'user_id': current_user.id})
+            
+            notifications = []
+            for row in notifications_result.fetchall():
+                notifications.append({
+                    "id": row.id,
+                    "notification_type": row.notification_type,
+                    "title": row.title,
+                    "message": row.message,
+                    "related_lead_id": row.related_lead_id,
+                    "priority": row.priority,
+                    "created_at": row.created_at.isoformat() if row.created_at else None
+                })
+            
+            return {
+                "date": datetime.now().date().isoformat(),
+                "scheduled_follow_ups": follow_ups,
+                "leads_needing_attention": attention_needed,
+                "notifications": notifications,
+                "summary": {
+                    "total_follow_ups": len(follow_ups),
+                    "leads_needing_attention": len(attention_needed),
+                    "unread_notifications": len(notifications)
+                }
+            }
+            
+    except Exception as e:
+        print(f"Error getting user agenda: {e}")
+        raise HTTPException(status_code=500, detail="Error retrieving agenda")
+
+# Task status endpoint - alias for async processing router
+@app.get("/async/processing-status/{taskId}")
+async def get_task_status(taskId: str):
+    """Get task status - redirects to async processing router"""
+    try:
+        # Import here to avoid circular imports
+        from async_processing import get_processing_status
+        
+        # Call the async processing router function with the correct parameter name
+        return await get_processing_status(taskId)
+        
+    except Exception as e:
+        print(f"Error in task status endpoint: {e}")
+        raise HTTPException(status_code=500, detail="Error retrieving task status")
+
+# Startup and shutdown events
+@app.on_event("startup")
+async def startup_event():
+    """Startup event handler"""
+    print("🚀 Starting Dubai Real Estate RAG Chat System...")
+    
+    # Start nurturing scheduler
+    if start_nurturing_scheduler:
+        try:
+            import asyncio
+            asyncio.create_task(start_nurturing_scheduler())
+            print("✅ Proactive nurturing scheduler started successfully")
+        except Exception as e:
+            print(f"⚠️ Nurturing scheduler warning: {e}")
+    
+    print("🎉 Dubai Real Estate RAG Chat System started successfully!")
+
+@app.on_event("shutdown")
+async def shutdown_event():
+    """Shutdown event handler"""
+    print("🛑 Shutting down Dubai Real Estate RAG Chat System...")
+    
+    # Stop nurturing scheduler
+    if stop_nurturing_scheduler:
+        try:
+            stop_nurturing_scheduler()
+            print("✅ Proactive nurturing scheduler stopped successfully")
+        except Exception as e:
+            print(f"⚠️ Nurturing scheduler shutdown warning: {e}")
+    
+    print("👋 Dubai Real Estate RAG Chat System shutdown complete!")
 
 if __name__ == "__main__":
     import uvicorn

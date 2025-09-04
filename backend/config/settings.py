@@ -43,20 +43,31 @@ PORT = int(os.getenv("PORT", "8001"))
 DEBUG = os.getenv("DEBUG", "False").lower() == "true"
 
 # CORS Configuration
-ALLOWED_ORIGINS = [
-    "http://localhost:3000",
-    "http://localhost:3001", 
-    "http://192.168.1.241:3001"
-    "https://*.ngrok.io",
-    "https://*.ngrok-free.app",
-    "http://*.ngrok.io",
-    "http://*.ngrok-free.app",
-]
+if os.getenv("ENVIRONMENT") == "production":
+    ALLOWED_ORIGINS = [
+        "https://yourdomain.com",
+        "https://www.yourdomain.com",
+    ]
+elif os.getenv("ENVIRONMENT") == "staging":
+    ALLOWED_ORIGINS = [
+        "https://staging.yourdomain.com",
+        "https://*.ngrok-free.app",  # For testing
+    ]
+else:  # development
+    ALLOWED_ORIGINS = [
+        "http://localhost:3000",
+        "http://localhost:3001", 
+        "http://192.168.1.241:3001",
+        "https://*.ngrok.io",
+        "https://*.ngrok-free.app",
+        "http://*.ngrok.io",
+        "http://*.ngrok-free.app",
+    ]
 
 # File Upload Configuration
 UPLOAD_DIR = Path("uploads")
 UPLOAD_DIR.mkdir(exist_ok=True)
-ALLOWED_EXTENSIONS = {'.jpg', '.jpeg', '.png', '.gif', '.pdf', '.doc', '.docx', '.txt'}
+ALLOWED_EXTENSIONS = {'.jpg', '.jpeg', '.png', '.gif', '.pdf', '.doc', '.docx', '.txt', '.csv', '.xlsx', '.xls'}
 MAX_FILE_SIZE = 10 * 1024 * 1024  # 10MB
 
 # Cache Configuration
@@ -123,7 +134,13 @@ def get_settings() -> Settings:
 # Validation
 def validate_settings():
     """Validate critical settings"""
-    required_vars = ["DATABASE_URL"]
+    required_vars = [
+        "DATABASE_URL", 
+        "CHROMA_HOST", 
+        "CHROMA_PORT", 
+        "REDIS_URL",
+        "GOOGLE_API_KEY"
+    ]
     missing_vars = [var for var in required_vars if not os.getenv(var)]
     
     if missing_vars:

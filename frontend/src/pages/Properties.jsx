@@ -20,6 +20,7 @@ import {
   CircularProgress,
   Alert,
   Snackbar,
+  Pagination,
   useMediaQuery,
   useTheme,
   Stack,
@@ -41,6 +42,7 @@ import {
   FavoriteBorder as FavoriteBorderIcon,
   Assessment as AssessmentIcon,
   Phone as PhoneIcon,
+  Home as HomeIcon,
 } from '@mui/icons-material';
 import { useAppContext } from '../context/AppContext';
 import { apiUtils, handleApiError } from '../utils/api';
@@ -57,6 +59,8 @@ const Properties = () => {
   const [viewMode, setViewMode] = useState('grid');
   const [showFilters, setShowFilters] = useState(!isMobile);
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'info' });
+  const [currentPage, setCurrentPage] = useState(1);
+  const [propertiesPerPage] = useState(20); // Limit to 20 properties per page
   const [filters, setFilters] = useState({
     search: '',
     location: '',
@@ -76,10 +80,25 @@ const Properties = () => {
       setLoading(true);
       setError(null);
       
+      console.log('Fetching properties with params:', filterParams);
       const response = await apiUtils.getProperties(filterParams);
-      setProperties(response.properties || []);
+      console.log('Properties response:', response);
+      
+      // Limit initial load to prevent browser crash
+      const allProperties = response.properties || [];
+      const limitedProperties = allProperties.slice(0, 100); // Only load first 100 properties initially
+      
+      setProperties(limitedProperties);
+      
+      // If there are more properties, load them in the background
+      if (allProperties.length > 100) {
+        setTimeout(() => {
+          setProperties(allProperties);
+        }, 1000);
+      }
     } catch (error) {
-      console.log('No properties data available');
+      console.error('Error fetching properties:', error);
+      setError(error.message);
       setProperties([]);
     } finally {
       setLoading(false);
@@ -110,6 +129,7 @@ const Properties = () => {
       bedrooms: newFilters.bedrooms,
     };
 
+    setCurrentPage(1); // Reset to first page when filters change
     await fetchProperties(filterParams);
   };
 
@@ -131,6 +151,7 @@ const Properties = () => {
       bedrooms: newFilters.bedrooms,
     };
 
+    setCurrentPage(1); // Reset to first page when filters change
     await fetchProperties(filterParams);
   };
 
@@ -227,6 +248,17 @@ const Properties = () => {
     
     return matchesSearch && matchesLocation && matchesType && matchesBedrooms && matchesPrice;
   });
+
+  // Pagination logic
+  const indexOfLastProperty = currentPage * propertiesPerPage;
+  const indexOfFirstProperty = indexOfLastProperty - propertiesPerPage;
+  const currentProperties = filteredProperties.slice(indexOfFirstProperty, indexOfLastProperty);
+  const totalPages = Math.ceil(filteredProperties.length / propertiesPerPage);
+
+  const handlePageChange = (event, value) => {
+    setCurrentPage(value);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   const PropertyCard = ({ property }) => (
     <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
@@ -466,6 +498,20 @@ const Properties = () => {
     return <PropertySkeleton />;
   }
 
+  if (error) {
+    return (
+      <Box sx={{ p: 4, textAlign: 'center' }}>
+        <Alert severity="error" sx={{ mb: 2 }}>
+          <Typography variant="h6">Error Loading Properties</Typography>
+          <Typography variant="body2">{error}</Typography>
+        </Alert>
+        <Button variant="contained" onClick={() => fetchProperties()}>
+          Retry
+        </Button>
+      </Box>
+    );
+  }
+
   return (
     <Box>
       {/* Header */}
@@ -474,7 +520,7 @@ const Properties = () => {
           Properties
         </Typography>
         <Typography variant="body1" color="text.secondary">
-          Browse {filteredProperties.length} properties in Dubai
+          Browse {filteredProperties.length} properties in Dubai (showing {currentProperties.length} per page)
         </Typography>
       </Box>
 
@@ -579,7 +625,7 @@ const Properties = () => {
           {/* View Toggle and Results */}
           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
             <Typography variant="body2" color="text.secondary">
-              Showing {filteredProperties.length} properties
+              Showing {currentProperties.length} of {filteredProperties.length} properties
             </Typography>
             <ToggleButtonGroup
               value={viewMode}
@@ -602,7 +648,7 @@ const Properties = () => {
           {/* Properties Grid/List */}
           {viewMode === 'grid' && (
             <Grid container spacing={3}>
-              {filteredProperties.map((property) => (
+              {currentProperties.map((property) => (
                 <Grid item xs={12} sm={6} lg={4} key={property.id}>
                   <PropertyCard property={property} />
                 </Grid>
@@ -612,7 +658,7 @@ const Properties = () => {
 
           {viewMode === 'list' && (
             <Box>
-              {filteredProperties.map((property) => (
+              {currentProperties.map((property) => (
                 <PropertyListItem key={property.id} property={property} />
               ))}
             </Box>
@@ -635,6 +681,21 @@ const Properties = () => {
                 Try adjusting your filters to see more results
               </Typography>
             </Card>
+          )}
+
+          {/* Pagination */}
+          {filteredProperties.length > 0 && totalPages > 1 && (
+            <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
+              <Pagination
+                count={totalPages}
+                page={currentPage}
+                onChange={handlePageChange}
+                color="primary"
+                size="large"
+                showFirstButton
+                showLastButton
+              />
+            </Box>
           )}
         </Grid>
       </Grid>

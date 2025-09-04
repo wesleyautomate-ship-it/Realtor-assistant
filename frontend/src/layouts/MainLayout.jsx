@@ -1,45 +1,32 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
-import { Box, useTheme, useMediaQuery, CircularProgress, Skeleton, Fade, Stack } from '@mui/material';
-import Sidebar from '../components/Sidebar';
+import { Box, CircularProgress, Skeleton, Fade, Stack } from '@mui/material';
 import { useAppContext } from '../context/AppContext';
+import GlobalCommandBar from '../components/GlobalCommandBar';
 
 const MainLayout = () => {
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-  const [sidebarOpen, setSidebarOpen] = useState(true); // Always start open
   const { currentUser, isLoading } = useAppContext();
+  const [commandBarOpen, setCommandBarOpen] = useState(false);
 
-  // Handle responsive sidebar state
+  // Global keyboard shortcut for Command Bar (Ctrl+K or Cmd+K)
   useEffect(() => {
-    if (isMobile) {
-      // On mobile, load saved state or default to closed
-      const savedState = localStorage.getItem('sidebarOpen');
-      setSidebarOpen(savedState !== null ? JSON.parse(savedState) : false);
-    } else {
-      // On desktop, always keep sidebar open
-      setSidebarOpen(true);
-    }
-  }, [isMobile]);
+    const handleKeyDown = (event) => {
+      if ((event.ctrlKey || event.metaKey) && event.key === 'k') {
+        event.preventDefault();
+        setCommandBarOpen(true);
+      }
+    };
 
-  const handleSidebarToggle = useCallback(() => {
-    // Only allow toggle on mobile
-    if (isMobile) {
-      setSidebarOpen(prev => {
-        const newState = !prev;
-        localStorage.setItem('sidebarOpen', JSON.stringify(newState));
-        return newState;
-      });
-    }
-  }, [isMobile]);
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
 
-  const handleSidebarClose = useCallback(() => {
-    // Only close sidebar on mobile
-    if (isMobile) {
-      setSidebarOpen(false);
-      localStorage.setItem('sidebarOpen', 'false');
-    }
-  }, [isMobile]);
+  // Handle command execution
+  const handleCommandExecuted = (result) => {
+    console.log('Command executed:', result);
+    // TODO: Handle command results (e.g., show notifications, navigate, etc.)
+    setCommandBarOpen(false);
+  };
 
   if (isLoading) {
     return (
@@ -61,47 +48,23 @@ const MainLayout = () => {
   }
 
   return (
-    <Box sx={{ display: 'flex', height: '100vh', overflow: 'hidden' }}>
-      {/* Sidebar */}
-      {currentUser && (
-        <Sidebar
-          open={sidebarOpen}
-          onToggle={handleSidebarToggle}
-          onClose={handleSidebarClose}
-          isMobile={isMobile}
-        />
-      )}
-
-      {/* Main content area */}
+    <Box sx={{ height: '100vh', overflow: 'hidden' }}>
+      {/* Global Command Bar */}
+      <GlobalCommandBar
+        open={commandBarOpen}
+        onClose={() => setCommandBarOpen(false)}
+        onCommandExecuted={handleCommandExecuted}
+      />
+      
+      {/* Content */}
       <Box
         component="main"
         sx={{
-          flexGrow: 1,
-          display: 'flex',
-          flexDirection: 'column',
-          overflow: 'hidden',
+          height: '100%',
           backgroundColor: 'background.default',
-          transition: theme.transitions.create(['margin', 'width'], {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.leavingScreen,
-          }),
-          ...(!isMobile && currentUser && {
-            marginLeft: '280px', // Sidebar width
-            width: `calc(100% - 280px)`,
-          }),
         }}
       >
-        {/* Content */}
-        <Box
-          sx={{
-            flex: 1,
-            overflow: 'auto',
-            p: theme.spacing(3),
-            backgroundColor: 'background.default',
-          }}
-        >
-          <Outlet />
-        </Box>
+        <Outlet />
       </Box>
     </Box>
   );

@@ -6,6 +6,7 @@ Addresses core issues: conversational tone, data presentation, information archi
 
 import os
 import re
+import time
 from typing import List, Dict, Any, Optional, Tuple
 import chromadb
 from sqlalchemy import create_engine, text
@@ -32,6 +33,12 @@ class QueryIntent(Enum):
     REGULATORY_QUESTION = "regulatory_question"
     NEIGHBORHOOD_QUESTION = "neighborhood_question"
     DEVELOPER_QUESTION = "developer_question"
+    # Report Generation Intents
+    REPORT_GENERATION = "report_generation"
+    MARKET_REPORT = "market_report"
+    CMA_REPORT = "cma_report"
+    LISTING_PRESENTATION = "listing_presentation"
+    TERMS_CONDITIONS = "terms_conditions"
     # New Action Intents for Phase 3
     UPDATE_LEAD = "update_lead"
     LOG_INTERACTION = "log_interaction"
@@ -45,14 +52,17 @@ def get_system_prompt(user_role: str, intent: QueryIntent, retrieved_context: st
 
     # Base Persona and Core Directives
     system_prompt = f"""
-You are "Dubai Realty AI," an expert-level real estate intelligence assistant for the Dubai property market. Your primary function is to synthesize and present information retrieved from our specialized databases to provide data-driven, accurate, and actionable insights.
+You are "Dubai Realty AI," an expert-level real estate intelligence assistant for the Dubai property market. Your primary function is to synthesize and present information retrieved from our comprehensive local databases (8,000+ properties, market data, transactions, policies) to provide data-driven, accurate, and actionable insights.
 
 ## CORE DIRECTIVES:
-1.  **Prioritize Retrieved Context**: Your primary source of truth is the **[RETRIEVED CONTEXT]** provided below. Base your entire response on this data. Do not invent information or use external knowledge.
+1.  **Prioritize Local Database**: Our local database contains 8,000+ properties, 50,000+ transactions, market data, policies, and comprehensive real estate information. This is your primary and most reliable source of information.
 2.  **Data-Driven and Specific**: Always use specific figures, names, and statistics from the retrieved context. Instead of "high rental yields," state "rental yields between 5-8% in Dubai Marina for a 1-bedroom apartment."
 3.  **No Conversational Fluff**: For all substantive queries, immediately address the user's question. Avoid generic greetings or filler phrases, following the specific rules outlined in the 'Conversational Engagement' section below.
-4.  **Handle Insufficient Data**: If the retrieved context does not contain the answer, state that clearly. For example, "I do not have specific data on developer payment plans for that project at the moment." Do not attempt to guess.
+4.  **Handle Insufficient Data**: If the retrieved context does not contain the answer, state that clearly. For example, "I do not have specific data on that property in our database at the moment." Do not attempt to guess.
 5.  **Structured and Professional Formatting**: Utilize Markdown (headers, bold keywords, bullet points, and tables) to create a clear, professional, and easy-to-read response.
+6.  **Use Local Data Sources**: When presenting data, clearly indicate that this information comes from our comprehensive local database with 8,000+ properties and extensive market data.
+7.  **Enhanced Context Understanding**: Analyze the user's query deeply and provide comprehensive, multi-faceted responses that address both explicit and implicit needs.
+8.  **Proactive Insights**: Offer additional relevant information that the user might not have asked for but would find valuable.
 
 ## CONVERSATIONAL ENGAGEMENT
 - **Initial Interaction**: On the very first message of a new conversation, you may use a brief, professional greeting, such as "Hello {user_name}."
@@ -75,40 +85,10 @@ This information has been sourced directly from our internal databases (PostgreS
 
 ---
 
-## GOLD-STANDARD RESPONSE EXAMPLE
-
-**[EXAMPLE USER QUERY]**
-"I'm looking for a 2-bedroom apartment in Dubai Marina with a budget of around AED 2.5M. What are the trends there?"
-
-**[EXAMPLE AI RESPONSE]**
-### **1. Executive Summary**
-Two-bedroom apartments in Dubai Marina are in high demand, with average prices currently around AED 2.7M, slightly above your budget, and rental yields are strong at approximately 6.5%.
-
-### **2. Key Insights & Data Points**
--   **Average Price (2BR)**: AED 2.7M
--   **Price Appreciation (YTD)**: +18%
--   **Average Rental Yield**: 6.5%
--   **Key Developers**: Emaar, Damac, Nakheel
-
-### **3. Detailed Analysis & Market Context**
-The data shows significant year-to-date price appreciation in Dubai Marina, driven by its premium location and amenities. For clients, this indicates a competitive market but also a strong potential for capital growth. The 6.5% rental yield is attractive for investors looking for immediate returns. Emaar properties in the area, like Marina Shores, often command a premium due to their build quality and views.
-
-### **4. Actionable Recommendations**
--   Consider exploring properties slightly above your budget to access higher-quality units.
--   Look into buildings by Damac, as they may offer more competitive pricing compared to Emaar.
--   Act relatively quickly, as the 18% price appreciation suggests the market is not slowing down.
-
-### **5. Next Steps**
--   Request a curated list of available 2-bedroom apartments between AED 2.4M and 2.8M.
--   Ask for a comparison with the nearby JBR area.
--   Inquire about financing options for this budget.
----
-
-## RESPONSE GENERATION INSTRUCTIONS:
-Based on the **[RETRIEVED CONTEXT]** and the user's role/intent, you MUST structure your response following this precise format.
+## ENHANCED RESPONSE STRUCTURE
 
 ### **1. Executive Summary**
-(Provide a 1-2 sentence direct answer to the user's core question.)
+(Provide a 2-3 sentence direct answer to the user's core question with key insights.)
 
 ### **2. Key Insights & Data Points**
 (Use bullet points to highlight the most critical data from the retrieved context. Each point must be a specific, quantifiable fact.)
@@ -123,8 +103,47 @@ Based on the **[RETRIEVED CONTEXT]** and the user's role/intent, you MUST struct
 ### **4. Actionable Recommendations**
 (Provide specific, actionable steps the user should consider next. These should be logical conclusions derived *only* from the provided context.)
 
-### **5. Next Steps**
+### **5. Proactive Insights**
+(Offer 2-3 additional insights or suggestions that the user might not have explicitly asked for but would find valuable based on their query and role.)
+
+### **6. Next Steps**
 (Suggest 2-3 clear, concise actions the user can take, such as "Request a detailed property comparison" or "Ask for financing options for properties in Business Bay.")
+
+## SPECIAL INSTRUCTIONS FOR PROPERTY SEARCH:
+If the user is searching for specific properties (QueryIntent.PROPERTY_SEARCH), focus on listing the actual properties found in the database with their key details like price, location, bedrooms, and features. Present the properties clearly and concisely rather than providing market analysis.
+
+**FOR PROPERTY SEARCH QUERIES ONLY**: Instead of the standard structured format above, directly list the properties found in the database. Use this format:
+
+### **Available Properties**
+
+**Property 1: [Property Name]**
+- **Location:** [Location]
+- **Price:** [Price]
+- **Bedrooms:** [Number]
+- **Bathrooms:** [Number]
+- **Size:** [Size] sq ft
+- **Type:** [Property Type]
+- **Description:** [Brief description]
+
+**Property 2: [Property Name]**
+- **Location:** [Location]
+- **Price:** [Price]
+- **Bedrooms:** [Number]
+- **Bathrooms:** [Number]
+- **Size:** [Size] sq ft
+- **Type:** [Property Type]
+- **Description:** [Brief description]
+
+[Continue for all properties found...]
+
+## RESPONSE QUALITY ENHANCEMENTS:
+- **Be Comprehensive**: Address all aspects of the user's query, including implicit needs
+- **Provide Context**: Explain market conditions, trends, and factors affecting decisions
+- **Offer Alternatives**: Suggest related options or areas the user might consider
+- **Include Timing**: Mention market timing considerations when relevant
+- **Highlight Opportunities**: Point out unique advantages or opportunities
+- **Address Concerns**: Proactively address potential concerns or risks
+- **Use Visual Elements**: Employ emojis, bold text, and structured formatting for clarity
 """
     return system_prompt
 
@@ -160,41 +179,65 @@ class ContextItem:
     relevance_score: float
     metadata: Dict[str, Any]
 
-class ImprovedRAGService:
-    def __init__(self, db_url: str, chroma_host: str = "localhost", chroma_port: int = 8002):
-        self.engine = create_engine(db_url)
-        self.chroma_client = chromadb.HttpClient(host=chroma_host, port=chroma_port)
+class EnhancedRAGService:
+    def __init__(self):
+        self.engine = create_engine(os.getenv("DATABASE_URL"))
         
-        # Initialize Reelly service for hybrid search
+        # Enhanced ChromaDB initialization with retry logic
+        self.chroma_client = self._initialize_chroma_client()
+        
+        # Initialize Reelly service
         if RELLY_AVAILABLE:
-            try:
-                self.reelly_service = ReellyService()
-                logger.info("✅ Reelly service integrated for hybrid search")
-            except Exception as e:
-                logger.error(f"Failed to initialize Reelly service: {e}")
-                self.reelly_service = None
+            self.reelly_service = ReellyService()
+            logger.info("✅ Reelly API service initialized for enhanced property data")
         else:
             self.reelly_service = None
+            logger.warning("⚠️ Reelly API service not available - using local data only")
         
-        # Enhanced intent classification patterns
+        # Initialize intent patterns
         self.intent_patterns = {
             QueryIntent.PROPERTY_SEARCH: [
-                r'\b(buy|rent|purchase|find|search|looking for|need)\b.*\b(property|house|apartment|condo|villa|home)\b',
-                r'\b(bedroom|bathroom|price|budget|location|area)\b',
-                r'\b(show me|display|list)\b.*\b(properties|houses|apartments)\b',
-                r'\b(dubai marina|downtown|palm jumeirah|business bay|jbr|jumeirah|dubai hills|arabian ranches)\b.*\b(property|apartment|villa)\b'
+                r'\b(looking for|searching for|find|need)\b.*\b(apartment|villa|house|property|home)\b',
+                r'\b(budget|price|cost)\b.*\b(\d+)\b.*\b(million|thousand|k|m)\b',
+                r'\b(bedroom|bed)\b.*\b(\d+)\b',
+                r'\b(bathroom|bath)\b.*\b(\d+)\b',
+                r'\b(dubai marina|downtown|palm jumeirah|business bay)\b.*\b(property|apartment|villa)\b'
             ],
             QueryIntent.MARKET_INFO: [
-                r'\b(market|trend|price|investment|rental|yield|forecast|growth|appreciation)\b',
-                r'\b(how much|what is the price|market value|property prices)\b',
-                r'\b(area|neighborhood|community)\b.*\b(market|trends|prices)\b',
-                r'\b(dubai real estate|property market|real estate trends)\b'
+                r'\b(market|trend|price|appreciation|rental yield|investment)\b',
+                r'\b(how is|what is the|tell me about)\b.*\b(market|trend)\b',
+                r'\b(price|cost)\b.*\b(trend|change|increase|decrease)\b'
+            ],
+            QueryIntent.REPORT_GENERATION: [
+                r'\b(create|generate|make|build)\b.*\b(report|analysis|presentation)\b',
+                r'\b(can you|please|would you)\b.*\b(create|generate|make)\b.*\b(report|analysis)\b',
+                r'\b(market report|cma|comparative market analysis|listing presentation)\b',
+                r'\b(terms|conditions|agreement)\b.*\b(generate|create|draft)\b'
+            ],
+            QueryIntent.MARKET_REPORT: [
+                r'\b(market report|market analysis|market study)\b',
+                r'\b(create|generate|make)\b.*\b(market report)\b',
+                r'\b(area|neighborhood|location)\b.*\b(market|trend|analysis)\b'
+            ],
+            QueryIntent.CMA_REPORT: [
+                r'\b(cma|comparative market analysis|property valuation)\b',
+                r'\b(create|generate|make)\b.*\b(cma|comparative)\b',
+                r'\b(property value|valuation|price estimate)\b'
+            ],
+            QueryIntent.LISTING_PRESENTATION: [
+                r'\b(listing presentation|property brochure|property presentation)\b',
+                r'\b(create|generate|make)\b.*\b(presentation|brochure)\b',
+                r'\b(property marketing|listing materials)\b'
+            ],
+            QueryIntent.TERMS_CONDITIONS: [
+                r'\b(terms|conditions|agreement|contract)\b',
+                r'\b(create|generate|draft)\b.*\b(terms|conditions|agreement)\b',
+                r'\b(legal|contractual|deal terms)\b'
             ],
             QueryIntent.INVESTMENT_QUESTION: [
-                r'\b(investment|roi|return|profit|yield|capital appreciation)\b',
-                r'\b(golden visa|residency|visa)\b.*\b(property|investment)\b',
-                r'\b(foreign|international|expat)\b.*\b(invest|buy|purchase)\b',
-                r'\b(rental yield|investment return|property investment)\b'
+                r'\b(investment|roi|return|yield|profit)\b',
+                r'\b(rental|rent|tenant)\b',
+                r'\b(buy|sell|hold)\b.*\b(property|investment)\b'
             ],
             QueryIntent.REGULATORY_QUESTION: [
                 r'\b(law|regulation|rera|escrow|legal|compliance)\b',
@@ -243,13 +286,16 @@ class ImprovedRAGService:
         # Entity extraction patterns
         self.entity_patterns = {
             'budget': [
+                r'under\s+(\d+)\s*(?:k|thousand|million|m)',
+                r'less\s+than\s+(\d+)\s*(?:k|thousand|million|m)',
+                r'below\s+(\d+)\s*(?:k|thousand|million|m)',
                 r'\$?(\d{1,3}(?:,\d{3})*(?:\.\d{2})?)\s*(?:k|thousand|million|m)?',
                 r'(\d+)\s*(?:k|thousand|million|m)\s*(?:dollars?|aed)?',
                 r'budget.*?(\d{1,3}(?:,\d{3})*(?:\.\d{2})?)',
                 r'price.*?(\d{1,3}(?:,\d{3})*(?:\.\d{2})?)'
             ],
             'location': [
-                r'\b(dubai marina|downtown|palm jumeirah|business bay|jbr|jumeirah)\b',
+                r'\b(dubai marina|downtown|palm jumeirah|business bay|jbr|jumeirah|marina)\b',
                 r'\b(area|neighborhood|location)\b.*?\b(\w+(?:\s+\w+)*)\b',
                 r'in\s+(\w+(?:\s+\w+)*)',
                 r'(\w+(?:\s+\w+)*)\s+area'
@@ -288,6 +334,26 @@ class ImprovedRAGService:
                 r'\b(client|lead)\b.*\b(mentioned|said|expressed)\s+(.+)'
             ]
         }
+    
+    def _initialize_chroma_client(self, max_retries=5, retry_delay=2):
+        """Initialize ChromaDB client with retry logic"""
+        for attempt in range(max_retries):
+            try:
+                client = chromadb.HttpClient(
+                    host=os.getenv("CHROMA_HOST", "localhost"),
+                    port=int(os.getenv("CHROMA_PORT", "8000"))
+                )
+                # Test connection
+                client.heartbeat()
+                logger.info("✅ ChromaDB client initialized successfully")
+                return client
+            except Exception as e:
+                logger.warning(f"⚠️ ChromaDB connection attempt {attempt + 1} failed: {e}")
+                if attempt < max_retries - 1:
+                    time.sleep(retry_delay)
+                else:
+                    logger.error("❌ Failed to connect to ChromaDB after all retries")
+                    raise
 
     def analyze_query(self, query: str) -> QueryAnalysis:
         """Analyze user query to extract intent, entities, and parameters"""
@@ -345,9 +411,15 @@ class ImprovedRAGService:
                 else:
                     budget = float(budget_str.replace(',', ''))
                 
-                # Set budget range (±20%)
-                parameters['budget_min'] = budget * 0.8
-                parameters['budget_max'] = budget * 1.2
+                # Check if query contains "under", "less than", "below" for max budget
+                query_lower = query.lower()
+                if any(word in query_lower for word in ['under', 'less than', 'below']):
+                    parameters['budget_max'] = budget * 1000000  # Convert to AED
+                    parameters['budget_min'] = 0  # No minimum
+                else:
+                    # Set budget range (±20%)
+                    parameters['budget_min'] = budget * 0.8
+                    parameters['budget_max'] = budget * 1.2
             except:
                 pass
         
@@ -375,26 +447,39 @@ class ImprovedRAGService:
         
         return parameters
 
-    def get_relevant_context(self, query: str, analysis: QueryAnalysis, max_items: int = 5) -> List[ContextItem]:
-        """Get relevant context from multiple sources based on query analysis"""
+    def get_reelly_property_data(self, analysis: QueryAnalysis) -> List[ContextItem]:
+        """
+        Get real-time property data from Reelly API based on query analysis
+        """
+        # Reelly API is not configured, return empty list
+        logger.info("Reelly API not available, using local database instead")
+        return []
+
+    def get_market_insights_from_reelly(self, location: str = None) -> List[ContextItem]:
+        """
+        Get market insights from Reelly API
+        """
+        # Reelly API is not configured, return empty list
+        logger.info("Reelly API not available, using local database instead")
+        return []
+
+    def get_relevant_context(self, query: str, analysis: QueryAnalysis, max_items: int = 8) -> List[ContextItem]:
+        """Get relevant context from multiple sources based on query analysis with enhanced retrieval"""
         context_items = []
         
-        # 1. Get relevant documents from ChromaDB
-        doc_context = self._get_document_context(query, analysis.intent, max_items)
-        context_items.extend(doc_context)
-        
-        # 2. Get relevant properties from internal database
+        # 1. Get relevant properties from our comprehensive local database (8,000+ properties)
         if analysis.intent == QueryIntent.PROPERTY_SEARCH:
-            prop_context = self._get_property_context(analysis.parameters, max_items * 2)
-            context_items.extend(prop_context)
-        else:
             prop_context = self._get_property_context(analysis.parameters, max_items)
             context_items.extend(prop_context)
         
-        # 3. Get LIVE context from Reelly API for property searches
-        if analysis.intent == QueryIntent.PROPERTY_SEARCH and self.reelly_service and self.reelly_service.is_enabled():
-            reelly_context = self._get_reelly_property_context(analysis.parameters, max_items)
-            context_items.extend(reelly_context)
+            # For property search, focus on properties, not market analysis
+            # Only add minimal market context if specifically requested
+        
+        # 2. Enhanced document retrieval from ChromaDB with multiple query variations
+        # Skip document context for property search to focus on actual properties
+        if analysis.intent != QueryIntent.PROPERTY_SEARCH:
+            doc_context = self._get_enhanced_document_context(query, analysis.intent, max_items)
+            context_items.extend(doc_context)
         
         # 4. Get relevant neighborhoods and market data
         if analysis.intent in [QueryIntent.NEIGHBORHOOD_QUESTION, QueryIntent.MARKET_INFO]:
@@ -404,12 +489,22 @@ class ImprovedRAGService:
             market_context = self._get_market_context(query, max_items)
             context_items.extend(market_context)
         
-        # 5. Sort all combined context items by relevance and return the best ones
+        # 5. Get additional market insights for investment questions
+        if analysis.intent == QueryIntent.INVESTMENT_QUESTION:
+            investment_context = self._get_investment_context(query, max_items)
+            context_items.extend(investment_context)
+        
+        # 6. Get agent-specific data for agent support queries
+        if analysis.intent == QueryIntent.AGENT_SUPPORT:
+            agent_context = self._get_agent_context(query, max_items)
+            context_items.extend(agent_context)
+        
+        # 7. Sort all combined context items by relevance and return the best ones
         context_items.sort(key=lambda x: x.relevance_score, reverse=True)
         return context_items[:max_items]
 
-    def _get_document_context(self, query: str, intent: QueryIntent, max_items: int) -> List[ContextItem]:
-        """Get relevant documents from ChromaDB collections"""
+    def _get_enhanced_document_context(self, query: str, intent: QueryIntent, max_items: int) -> List[ContextItem]:
+        """Get relevant documents from ChromaDB collections with enhanced query variations"""
         context_items = []
         
         # Enhanced collection mapping to use ALL specialized collections
@@ -427,28 +522,50 @@ class ImprovedRAGService:
         
         collections = collection_mapping.get(intent, ["comprehensive_data"])
         
+        # Create multiple query variations for better context retrieval
+        query_variations = [
+            query,
+            query.replace("apartment", "property").replace("villa", "property"),
+            query.replace("dubai marina", "marina").replace("downtown", "downtown dubai"),
+            query + " dubai real estate",
+            query + " market trends",
+            query + " investment"
+        ]
+        
         for collection_name in collections:
             try:
                 collection = self.chroma_client.get_collection(collection_name)
-                results = collection.query(
-                    query_texts=[query],
-                    n_results=max_items * 2  # Get more results to filter better
-                )
                 
-                if results['documents'] and results['documents'][0]:
-                    for i, doc in enumerate(results['documents'][0]):
-                        score = 1.0 - (results['distances'][0][i] if results['distances'] and results['distances'][0] else 0.5)
-                        metadata = results['metadatas'][0][i] if results['metadatas'] and results['metadatas'][0] else {}
+                # Query with multiple variations
+                all_results = []
+                for q_var in query_variations[:3]:  # Use top 3 variations
+                    try:
+                        results = collection.query(
+                            query_texts=[q_var],
+                            n_results=max_items * 2
+                        )
                         
-                        # Boost score for specific data types
-                        if metadata.get('type') in ['properties', 'neighborhoods', 'market_data']:
-                            score += 0.2
+                        if results['documents'] and results['documents'][0]:
+                            all_results.extend(results['documents'][0])
+                    except Exception as e:
+                        logger.warning(f"Error querying collection {collection_name} with variation '{q_var}': {e}")
+                        continue
+                
+                # Remove duplicates and add to context
+                seen_docs = set()
+                for doc in all_results:
+                    if doc not in seen_docs:
+                        seen_docs.add(doc)
+                        # Calculate relevance score based on query similarity
+                        score = 0.8
+                        if any(keyword in doc.lower() for keyword in query.lower().split()):
+                            score += 0.1
                         
                         context_items.append(ContextItem(
                             content=doc,
                             source=f"chroma_{collection_name}",
                             relevance_score=score,
-                            metadata=metadata
+                            metadata={"type": "document", "collection": collection_name}
                         ))
             except Exception as e:
                 logger.warning(f"Error querying collection {collection_name}: {e}")
@@ -456,12 +573,16 @@ class ImprovedRAGService:
         
         return context_items
 
+    def _get_document_context(self, query: str, intent: QueryIntent, max_items: int) -> List[ContextItem]:
+        """Legacy method - now calls enhanced version"""
+        return self._get_enhanced_document_context(query, intent, max_items)
+
     def _get_property_context(self, parameters: Dict[str, Any], max_items: int) -> List[ContextItem]:
         """Get relevant properties from database based on parameters"""
         context_items = []
         
-        # Build SQL query based on parameters - use correct properties table
-        sql_parts = ["SELECT id, title, description, price, location, property_type, bedrooms, bathrooms, area_sqft FROM properties WHERE 1=1"]
+        # Build SQL query based on parameters - use correct properties table with our 25-column schema
+        sql_parts = ["SELECT id, title, description, price_aed as price, location, property_type, bedrooms, bathrooms, area_sqft, price_per_sqft, listing_status FROM properties WHERE 1=1"]
         sql_parts.append("AND listing_status = 'live'")  # This ensures only public listings are shown
         query_params = {}
         
@@ -470,11 +591,11 @@ class ImprovedRAGService:
             sql_parts.append("AND price > 0")
         
         if 'budget_min' in parameters and 'budget_max' in parameters:
-            sql_parts.append("AND price BETWEEN :budget_min AND :budget_max")
+            sql_parts.append("AND price_aed BETWEEN :budget_min AND :budget_max")
             query_params['budget_min'] = parameters['budget_min']
             query_params['budget_max'] = parameters['budget_max']
         elif 'budget_max' in parameters:
-            sql_parts.append("AND price <= :budget_max")
+            sql_parts.append("AND price_aed <= :budget_max")
             query_params['budget_max'] = parameters['budget_max']
         
         if 'location' in parameters:
@@ -493,7 +614,7 @@ class ImprovedRAGService:
             sql_parts.append("AND bathrooms >= :bathrooms")
             query_params['bathrooms'] = parameters['bathrooms']
         
-        sql_parts.append("ORDER BY price ASC LIMIT :limit")
+        sql_parts.append("ORDER BY price_aed ASC LIMIT :limit")
         query_params['limit'] = max_items * 2  # Get more to filter better
         
         sql = " ".join(sql_parts)
@@ -502,9 +623,21 @@ class ImprovedRAGService:
             with self.engine.connect() as conn:
                 result = conn.execute(text(sql), query_params)
                 for row in result:
-                    property_info = f"Address: {row.address}, Price: ${row.price:,.0f}, Bedrooms: {row.bedrooms}, Bathrooms: {row.bathrooms}, Type: {row.property_type}"
-                    if row.description:
-                        property_info += f", Description: {row.description}"
+                    try:
+                        # Handle null values safely
+                        location = row.location or "Location not specified"
+                        price_str = f"${row.price:,.0f}" if row.price and row.price > 0 else "Price on request"
+                        bedrooms = row.bedrooms or "Not specified"
+                        bathrooms = row.bathrooms or "Not specified"
+                        property_type = row.property_type or "Not specified"
+                        
+                        property_info = f"Location: {location}, Price: {price_str}, Bedrooms: {bedrooms}, Bathrooms: {bathrooms}, Type: {property_type}"
+                        
+                        if row.description:
+                            property_info += f", Description: {row.description}"
+                    except Exception as e:
+                        logger.warning(f"Error formatting property info: {e}")
+                        property_info = f"Property in {row.location or 'Unknown location'}"
                     
                     # Calculate relevance score based on parameter match
                     relevance_score = self._calculate_property_relevance(row, parameters)
@@ -514,7 +647,7 @@ class ImprovedRAGService:
                         source="database_properties",
                         relevance_score=relevance_score,
                         metadata={
-                            'address': row.address,
+                            'location': row.location,
                             'price': float(row.price) if row.price else 0,
                             'bedrooms': row.bedrooms,
                             'bathrooms': float(row.bathrooms) if row.bathrooms else 0,
@@ -539,8 +672,8 @@ class ImprovedRAGService:
                 score += 0.1
         
         # Location relevance
-        if 'location' in parameters and property_row.address:
-            if parameters['location'].lower() in property_row.address.lower():
+        if 'location' in parameters and property_row.location:
+            if parameters['location'].lower() in property_row.location.lower():
                 score += 0.2
         
         # Property type relevance
@@ -1034,14 +1167,16 @@ IMPORTANT: Provide specific Dubai real estate information, actual prices, and ac
         context_items = []
         
         # Build SQL query based on parameters - use correct column names
-        sql_parts = ["SELECT id, title, description, price, location, property_type, bedrooms, bathrooms, area_sqft FROM properties WHERE 1=1"]
+        sql_parts = ["SELECT id, title, description, price_aed as price, location, property_type, bedrooms, bathrooms, area_sqft FROM properties WHERE 1=1"]
         query_params = {}
         
         if not parameters:
-            sql_parts.append("AND price > 0")
+            sql_parts.append("AND price_aed > 0")
         
         if 'budget_min' in parameters and 'budget_max' in parameters:
-            sql_parts.append("AND price BETWEEN :budget_min AND :budget_max")
+            sql_parts.append("AND price_aed BETWEEN :budget_min AND :budget_max")
+            query_params['budget_min'] = parameters['budget_min']
+            query_params['budget_max'] = parameters['budget_max']
         
         if 'location' in parameters:
             sql_parts.append("AND location ILIKE :location")
@@ -1055,7 +1190,7 @@ IMPORTANT: Provide specific Dubai real estate information, actual prices, and ac
         if 'bathrooms' in parameters:
             sql_parts.append("AND bathrooms >= :bathrooms")
         
-        sql_parts.append("ORDER BY price ASC LIMIT :limit")
+        sql_parts.append("ORDER BY price_aed ASC LIMIT :limit")
         query_params['limit'] = max_items
         
         try:
@@ -1064,16 +1199,30 @@ IMPORTANT: Provide specific Dubai real estate information, actual prices, and ac
                 result = conn.execute(text(sql), query_params)
                 
                 for row in result:
-                    content = f"""
-                    Property: {row.title or 'Untitled'}
-                    Price: AED {row.price:,.0f if row.price else 'Price on request'}
-                    Type: {row.property_type or 'Not specified'}
-                    Bedrooms: {row.bedrooms or 'Not specified'}
-                    Bathrooms: {row.bathrooms or 'Not specified'}
-                    Location: {row.location or 'Location not specified'}
-                    Area: {row.area_sqft or 'Not specified'} sqft
-                    Description: {row.description or 'No description available'}
-                    """
+                    try:
+                        # Handle null values safely
+                        title = row.title or 'Untitled'
+                        price_str = f"AED {row.price:,.0f}" if row.price and row.price > 0 else 'Price on request'
+                        property_type = row.property_type or 'Not specified'
+                        bedrooms = row.bedrooms or 'Not specified'
+                        bathrooms = row.bathrooms or 'Not specified'
+                        location = row.location or 'Location not specified'
+                        area_sqft = row.area_sqft or 'Not specified'
+                        description = row.description or 'No description available'
+                        
+                        content = f"""
+                        Property: {title}
+                        Price: {price_str}
+                        Type: {property_type}
+                        Bedrooms: {bedrooms}
+                        Bathrooms: {bathrooms}
+                        Location: {location}
+                        Area: {area_sqft} sqft
+                        Description: {description}
+                        """
+                    except Exception as format_error:
+                        logger.warning(f"Error formatting property content: {format_error}")
+                        content = f"Property in {row.location or 'Unknown location'}"
                     
                     context_items.append(ContextItem(
                         content=content,
@@ -1096,6 +1245,122 @@ IMPORTANT: Provide specific Dubai real estate information, actual prices, and ac
         
         return context_items
 
+    def _get_investment_context(self, query: str, max_items: int) -> List[ContextItem]:
+        """Get investment-specific context for investment questions"""
+        context_items = []
+        
+        try:
+            with self.engine.connect() as conn:
+                # Get market performance data
+                market_query = text("""
+                    SELECT location, property_type, avg_price, avg_rent, price_appreciation, rental_yield
+                    FROM market_data 
+                    WHERE location ILIKE :query OR property_type ILIKE :query
+                    ORDER BY price_appreciation DESC
+                    LIMIT :limit
+                """)
+                
+                market_results = conn.execute(market_query, {
+                    "query": f"%{query}%",
+                    "limit": max_items
+                })
+                
+                for row in market_results:
+                    content = f"📈 **Investment Opportunity**: {row[0]} - {row[1]} | 💰 Avg Price: {row[2]} | 🏠 Avg Rent: {row[3]} | 📊 Appreciation: {row[4]}% | 💸 Yield: {row[5]}%"
+                    context_items.append(ContextItem(
+                        content=content,
+                        source="market_data",
+                        relevance_score=0.85,
+                        metadata={"type": "investment_data"}
+                    ))
+                
+                # Get transaction insights
+                transaction_query = text("""
+                    SELECT property_type, location, avg_days_on_market, transaction_count, avg_price_per_sqft
+                    FROM transactions 
+                    WHERE location ILIKE :query OR property_type ILIKE :query
+                    GROUP BY property_type, location
+                    ORDER BY transaction_count DESC
+                    LIMIT :limit
+                """)
+                
+                transaction_results = conn.execute(transaction_query, {
+                    "query": f"%{query}%",
+                    "limit": max_items
+                })
+                
+                for row in transaction_results:
+                    content = f"🔄 **Market Activity**: {row[0]} in {row[1]} | ⏱️ Avg Days: {row[2]} | 📊 Transactions: {row[3]} | 💰 Price/sqft: {row[4]}"
+                    context_items.append(ContextItem(
+                        content=content,
+                        source="transactions",
+                        relevance_score=0.80,
+                        metadata={"type": "transaction_data"}
+                    ))
+                    
+        except Exception as e:
+            logger.warning(f"Error getting investment context: {e}")
+        
+        return context_items
+
+    def _get_agent_context(self, query: str, max_items: int) -> List[ContextItem]:
+        """Get agent-specific context for agent support queries"""
+        context_items = []
+        
+        try:
+            with self.engine.connect() as conn:
+                # Get lead insights
+                leads_query = text("""
+                    SELECT lead_source, status, avg_budget, preferred_location, property_type, conversion_rate
+                    FROM leads 
+                    WHERE preferred_location ILIKE :query OR property_type ILIKE :query
+                    GROUP BY lead_source, status, avg_budget, preferred_location, property_type
+                    ORDER BY conversion_rate DESC
+                    LIMIT :limit
+                """)
+                
+                leads_results = conn.execute(leads_query, {
+                    "query": f"%{query}%",
+                    "limit": max_items
+                })
+                
+                for row in leads_results:
+                    content = f"👥 **Lead Insights**: {row[0]} | 📊 Status: {row[1]} | 💰 Avg Budget: {row[2]} | 📍 Location: {row[3]} | 🏠 Type: {row[4]} | 🎯 Conversion: {row[5]}%"
+                    context_items.append(ContextItem(
+                        content=content,
+                        source="leads",
+                        relevance_score=0.85,
+                        metadata={"type": "lead_data"}
+                    ))
+                
+                # Get agent performance data
+                performance_query = text("""
+                    SELECT agent_name, total_sales, avg_commission, success_rate, avg_deal_size
+                    FROM agent_performance 
+                    WHERE agent_name ILIKE :query OR specializations ILIKE :query
+                    ORDER BY total_sales DESC
+                    LIMIT :limit
+                """)
+                
+                performance_results = conn.execute(performance_query, {
+                    "query": f"%{query}%",
+                    "limit": max_items
+                })
+                
+                for row in performance_results:
+                    content = f"🏆 **Agent Performance**: {row[0]} | 📈 Sales: {row[1]} | 💰 Commission: {row[2]} | 🎯 Success Rate: {row[3]}% | 💎 Avg Deal: {row[4]}"
+                    context_items.append(ContextItem(
+                        content=content,
+                        source="agent_performance",
+                        relevance_score=0.80,
+                        metadata={"type": "performance_data"}
+                    ))
+                    
+        except Exception as e:
+            logger.warning(f"Error getting agent context: {e}")
+        
+        return context_items
+
     def get_response(self, message: str, role: str = "client", session_id: str = None, user_name: str = "User") -> str:
         """
         Main method to generate a response using the RAG service.
@@ -1105,23 +1370,42 @@ IMPORTANT: Provide specific Dubai real estate information, actual prices, and ac
             # 1. Analyze the query
             analysis = self.analyze_query(message)
             
-            # 2. Get relevant context
-            context_items = self.get_relevant_context(message, analysis, max_items=5)
+            # 2. Get relevant context with enhanced retrieval
+            context_items = self.get_relevant_context(message, analysis, max_items=8)
             
-            # 3. Build context string
-            context = self.build_context_string(context_items)
+            # 3. Build enhanced context string
+            context = self.build_structured_context(context_items)
             
-            # 4. Create improved prompt using the new system prompt
-            prompt = self.create_improved_prompt(message, analysis, context, role)
+            # 4. Create enhanced prompt using the improved system prompt
+            system_prompt = get_system_prompt(role, analysis.intent, context, user_name)
             
-            # 5. Generate response using AI model
+            # 5. Build the complete prompt
+            full_prompt = f"""
+{system_prompt}
+
+## USER QUERY:
+{message}
+
+## RESPONSE:
+"""
+            
+            # 6. Generate response using AI model with enhanced parameters
             import google.generativeai as genai
             from config.settings import GOOGLE_API_KEY
             
             genai.configure(api_key=GOOGLE_API_KEY)
             model = genai.GenerativeModel('gemini-1.5-flash')
             
-            response = model.generate_content(prompt)
+            # Enhanced generation parameters for better quality
+            response = model.generate_content(
+                full_prompt,
+                generation_config=genai.types.GenerationConfig(
+                    temperature=0.3,  # Lower temperature for more focused responses
+                    top_p=0.9,
+                    top_k=40,
+                    max_output_tokens=2048,  # Allow longer, more detailed responses
+                )
+            )
             response_text = response.text.strip()
             
             return response_text
