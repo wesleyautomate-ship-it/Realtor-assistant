@@ -32,12 +32,13 @@ import {
   Menu as MenuIcon,
   Close as CloseIcon,
   Chat as ChatIcon,
+  Keyboard as KeyboardIcon,
 } from '@mui/icons-material';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAppContext } from '../context/AppContext';
 import { apiUtils, handleApiError } from '../utils/api';
 
-const Sidebar = ({ open, onToggle, onClose, isMobile }) => {
+const Sidebar = ({ open, onToggle, onClose, isMobile, onOpenCommandBar }) => {
   const theme = useTheme();
   const navigate = useNavigate();
   const location = useLocation();
@@ -91,6 +92,13 @@ const Sidebar = ({ open, onToggle, onClose, isMobile }) => {
     }
   };
 
+  // Handle command bar opening
+  const handleOpenCommandBar = () => {
+    if (onOpenCommandBar) {
+      onOpenCommandBar();
+    }
+  };
+
   // Handle conversation selection
   const handleConversationSelect = (sessionId) => {
     setCurrentSessionId(sessionId);
@@ -117,9 +125,9 @@ const Sidebar = ({ open, onToggle, onClose, isMobile }) => {
   // Navigation items based on user role
   const navigationItems = [
     {
-      text: 'Dashboard',
+      text: 'AI Copilot',
       icon: <DashboardIcon />,
-      path: '/dashboard',
+      path: '/hub',
       show: true,
     },
     {
@@ -202,6 +210,43 @@ const Sidebar = ({ open, onToggle, onClose, isMobile }) => {
         >
           New Chat
         </Button>
+      </Box>
+
+      {/* AI Command Bar Button */}
+      <Box sx={{ px: theme.spacing(2), mb: theme.spacing(2) }}>
+        <Button
+          fullWidth
+          variant="outlined"
+          startIcon={<KeyboardIcon />}
+          onClick={handleOpenCommandBar}
+          sx={{
+            borderRadius: 2,
+            py: 1.5,
+            textTransform: 'none',
+            fontWeight: 600,
+            borderColor: 'primary.main',
+            color: 'primary.main',
+            '&:hover': {
+              backgroundColor: 'primary.main',
+              color: 'primary.contrastText',
+              borderColor: 'primary.main',
+            },
+          }}
+        >
+          AI Command Bar
+        </Button>
+        <Typography 
+          variant="caption" 
+          color="text.secondary" 
+          sx={{ 
+            display: 'block', 
+            textAlign: 'center', 
+            mt: 0.5,
+            fontSize: '0.7rem'
+          }}
+        >
+          Press Ctrl+K to open
+        </Typography>
       </Box>
 
       {/* Navigation */}

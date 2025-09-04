@@ -84,9 +84,7 @@ class UserPreferencesUpdate(BaseModel):
 class ChatRequest(BaseModel):
     """Chat request model"""
     message: str
-    user_id: Optional[str] = None
     session_id: Optional[str] = None
-    role: str = "client"
     file_upload: Optional[Dict[str, Any]] = None
 
 class ChatResponse(BaseModel):
@@ -464,11 +462,11 @@ async def chat_with_session(
                 response_text = "I'm sorry, I couldn't generate the report at this time. Please try again later."
         else:
             # Use enhanced RAG service with Reelly API integration
-        response_text = rag_service.get_response(
-            message=request.message,
-            role=request.role,
-            session_id=session_id
-        )
+            response_text = rag_service.get_response(
+                message=request.message,
+                role=current_user.role,
+                session_id=session_id
+            )
         
         # Save messages to database
         with get_db_connection() as conn:
@@ -734,7 +732,7 @@ async def chat_with_rag(
         # Use RAG service as the single source of truth for conversational AI
         response_text = rag_service.get_response(
             message=request.message,
-            role=request.role,
+            role=current_user.role,
             session_id=request.session_id
         )
         

@@ -6,6 +6,7 @@ Addresses core issues: conversational tone, data presentation, information archi
 
 import os
 import re
+import time
 from typing import List, Dict, Any, Optional, Tuple
 import chromadb
 from sqlalchemy import create_engine, text
@@ -181,14 +182,13 @@ class ContextItem:
 class EnhancedRAGService:
     def __init__(self):
         self.engine = create_engine(os.getenv("DATABASE_URL"))
-        self.chroma_client = chromadb.HttpClient(
-            host=os.getenv("CHROMA_HOST", "localhost"),
-            port=int(os.getenv("CHROMA_PORT", "8000"))
-        )
+        
+        # Enhanced ChromaDB initialization with retry logic
+        self.chroma_client = self._initialize_chroma_client()
         
         # Initialize Reelly service
         if RELLY_AVAILABLE:
-                self.reelly_service = ReellyService()
+            self.reelly_service = ReellyService()
             logger.info("✅ Reelly API service initialized for enhanced property data")
         else:
             self.reelly_service = None
@@ -334,6 +334,26 @@ class EnhancedRAGService:
                 r'\b(client|lead)\b.*\b(mentioned|said|expressed)\s+(.+)'
             ]
         }
+    
+    def _initialize_chroma_client(self, max_retries=5, retry_delay=2):
+        """Initialize ChromaDB client with retry logic"""
+        for attempt in range(max_retries):
+            try:
+                client = chromadb.HttpClient(
+                    host=os.getenv("CHROMA_HOST", "localhost"),
+                    port=int(os.getenv("CHROMA_PORT", "8000"))
+                )
+                # Test connection
+                client.heartbeat()
+                logger.info("✅ ChromaDB client initialized successfully")
+                return client
+            except Exception as e:
+                logger.warning(f"⚠️ ChromaDB connection attempt {attempt + 1} failed: {e}")
+                if attempt < max_retries - 1:
+                    time.sleep(retry_delay)
+                else:
+                    logger.error("❌ Failed to connect to ChromaDB after all retries")
+                    raise
 
     def analyze_query(self, query: str) -> QueryAnalysis:
         """Analyze user query to extract intent, entities, and parameters"""
@@ -397,9 +417,9 @@ class EnhancedRAGService:
                     parameters['budget_max'] = budget * 1000000  # Convert to AED
                     parameters['budget_min'] = 0  # No minimum
                 else:
-                # Set budget range (±20%)
-                parameters['budget_min'] = budget * 0.8
-                parameters['budget_max'] = budget * 1.2
+                    # Set budget range (±20%)
+                    parameters['budget_min'] = budget * 0.8
+                    parameters['budget_max'] = budget * 1.2
             except:
                 pass
         
@@ -520,12 +540,12 @@ class EnhancedRAGService:
                 all_results = []
                 for q_var in query_variations[:3]:  # Use top 3 variations
                     try:
-                results = collection.query(
+                        results = collection.query(
                             query_texts=[q_var],
                             n_results=max_items * 2
-                )
-                
-                if results['documents'] and results['documents'][0]:
+                        )
+                        
+                        if results['documents'] and results['documents'][0]:
                             all_results.extend(results['documents'][0])
                     except Exception as e:
                         logger.warning(f"Error querying collection {collection_name} with variation '{q_var}': {e}")
@@ -612,10 +632,11 @@ class EnhancedRAGService:
                         property_type = row.property_type or "Not specified"
                         
                         property_info = f"Location: {location}, Price: {price_str}, Bedrooms: {bedrooms}, Bathrooms: {bathrooms}, Type: {property_type}"
-                    if row.description:
-                        property_info += f", Description: {row.description}"
-                    except Exception as format_error:
-                        logger.warning(f"Error formatting property info: {format_error}")
+                        
+                        if row.description:
+                            property_info += f", Description: {row.description}"
+                    except Exception as e:
+                        logger.warning(f"Error formatting property info: {e}")
                         property_info = f"Property in {row.location or 'Unknown location'}"
                     
                     # Calculate relevance score based on parameter match
@@ -1193,7 +1214,7 @@ IMPORTANT: Provide specific Dubai real estate information, actual prices, and ac
                         area_sqft = row.area_sqft or 'Not specified'
                         description = row.description or 'No description available'
                         
-                    content = f"""
+                        content = f"""
                         Property: {title}
                         Price: {price_str}
                         Type: {property_type}

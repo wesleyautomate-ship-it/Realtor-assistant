@@ -8,6 +8,8 @@ const initialState = {
   currentSessionId: null,
   isLoading: true,
   error: null,
+  sessionWarning: null, // New: Session expiry warning
+  sessionExpiryTime: null, // New: Session expiry timestamp
 };
 
 // Action types
@@ -20,6 +22,9 @@ const ACTIONS = {
   ADD_CONVERSATION: 'ADD_CONVERSATION',
   UPDATE_CONVERSATION: 'UPDATE_CONVERSATION',
   CLEAR_ERROR: 'CLEAR_ERROR',
+  SET_SESSION_WARNING: 'SET_SESSION_WARNING', // New
+  CLEAR_SESSION_WARNING: 'CLEAR_SESSION_WARNING', // New
+  SET_SESSION_EXPIRY: 'SET_SESSION_EXPIRY', // New
 };
 
 // Reducer function
@@ -49,6 +54,12 @@ const appReducer = (state, action) => {
       };
     case ACTIONS.CLEAR_ERROR:
       return { ...state, error: null };
+    case ACTIONS.SET_SESSION_WARNING:
+      return { ...state, sessionWarning: action.payload };
+    case ACTIONS.CLEAR_SESSION_WARNING:
+      return { ...state, sessionWarning: null };
+    case ACTIONS.SET_SESSION_EXPIRY:
+      return { ...state, sessionExpiryTime: action.payload };
     default:
       return state;
   }
@@ -64,7 +75,141 @@ export const AppProvider = ({ children }) => {
   // Use centralized API client
   const apiClient = useMemo(() => api, []);
 
+  // Session management utilities
+  const getTokenExpiryTime = useCallback((token) => {
+    if (!token) return null;
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      return payload.exp * 1000; // Convert to milliseconds
+    } catch (error) {
+      console.error('Error parsing token:', error);
+      return null;
+    }
+  }, []);
 
+  const isTokenExpiringSoon = useCallback((token, warningMinutes = 5) => {
+    const expiryTime = getTokenExpiryTime(token);
+    if (!expiryTime) return false;
+    
+    const warningTime = expiryTime - (warningMinutes * 60 * 1000);
+    return Date.now() >= warningTime;
+  }, [getTokenExpiryTime]);
+
+  const isTokenExpired = useCallback((token) => {
+    const expiryTime = getTokenExpiryTime(token);
+    if (!expiryTime) return true;
+    return Date.now() >= expiryTime;
+  }, [getTokenExpiryTime]);
+
+  // Session warning management
+  const checkSessionExpiry = useCallback(() => {
+    const token = localStorage.getItem('authToken');
+    if (!token || !state.currentUser) {
+      dispatch({ type: ACTIONS.CLEAR_SESSION_WARNING });
+      return;
+    }
+
+    if (isTokenExpired(token)) {
+      // Token is expired, logout immediately
+      logout();
+      return;
+    }
+
+    if (isTokenExpiringSoon(token, 5)) { // 5 minutes warning
+      const expiryTime = getTokenExpiryTime(token);
+      const minutesLeft = Math.ceil((expiryTime - Date.now()) / (60 * 1000));
+      
+      dispatch({ 
+        type: ACTIONS.SET_SESSION_WARNING, 
+        payload: {
+          message: `Your session will expire in ${minutesLeft} minute${minutesLeft !== 1 ? 's' : ''}. Please save your work.`,
+          minutesLeft,
+          expiryTime
+        }
+      });
+    } else {
+      dispatch({ type: ACTIONS.CLEAR_SESSION_WARNING });
+    }
+  }, [state.currentUser, isTokenExpired, isTokenExpiringSoon, getTokenExpiryTime]);
+
+  // Auto-refresh token functionality
+  const refreshToken = useCallback(async () => {
+    try {
+      const response = await apiClient.post('/auth/refresh');
+      const { access_token } = response;
+      
+      localStorage.setItem('authToken', access_token);
+      
+      // Update session expiry time
+      const expiryTime = getTokenExpiryTime(access_token);
+      dispatch({ type: ACTIONS.SET_SESSION_EXPIRY, payload: expiryTime });
+      
+      // Clear session warning
+      dispatch({ type: ACTIONS.CLEAR_SESSION_WARNING });
+      
+      console.log('Token refreshed successfully');
+      return true;
+    } catch (error) {
+      console.error('Token refresh failed:', error);
+      return false;
+    }
+  }, [apiClient, getTokenExpiryTime]);
+
+  // Enhanced error handling with context-specific messages
+  const handleApiError = useCallback((error, context = 'general') => {
+    let userMessage = 'An unexpected error occurred. Please try again.';
+    
+    if (error.response) {
+      const { status, data } = error.response;
+      
+      switch (status) {
+        case 401:
+          if (context === 'login') {
+            userMessage = 'Invalid email or password. Please check your credentials and try again.';
+          } else if (context === 'session') {
+            userMessage = 'Your session has expired. Please log in again.';
+          } else {
+            userMessage = 'Please log in to continue.';
+          }
+          break;
+        case 403:
+          if (context === 'admin') {
+            userMessage = 'You need administrator privileges to access this feature.';
+          } else if (context === 'document') {
+            userMessage = 'You can only access your own documents.';
+          } else if (context === 'lead') {
+            userMessage = 'You can only manage your own leads.';
+          } else {
+            userMessage = 'You do not have permission to perform this action.';
+          }
+          break;
+        case 404:
+          if (context === 'document') {
+            userMessage = 'The requested document was not found or has been deleted.';
+          } else if (context === 'session') {
+            userMessage = 'The requested chat session was not found.';
+          } else {
+            userMessage = 'The requested resource was not found.';
+          }
+          break;
+        case 422:
+          userMessage = data.detail || 'Please check your input and try again.';
+          break;
+        case 429:
+          userMessage = 'Too many requests. Please wait a moment and try again.';
+          break;
+        case 500:
+          userMessage = 'Server error. Please try again later or contact support if the problem persists.';
+          break;
+        default:
+          userMessage = data.detail || `Request failed with status ${status}`;
+      }
+    } else if (error.request) {
+      userMessage = 'Network error. Please check your connection and try again.';
+    }
+    
+    return userMessage;
+  }, []);
 
   // Check authentication status on app load
   useEffect(() => {
@@ -72,13 +217,30 @@ export const AppProvider = ({ children }) => {
       const token = localStorage.getItem('authToken');
       
       if (token) {
+        // Check if token is already expired
+        if (isTokenExpired(token)) {
+          localStorage.removeItem('authToken');
+          localStorage.removeItem('userId');
+          localStorage.removeItem('userRole');
+          dispatch({ type: ACTIONS.SET_CURRENT_USER, payload: null });
+          dispatch({ type: ACTIONS.SET_LOADING, payload: false });
+          return;
+        }
+
         try {
-          // Try to validate token with backend
+          // Try to validate token with backend and get complete user object
           const response = await apiClient.get('/auth/me');
           dispatch({ type: ACTIONS.SET_CURRENT_USER, payload: response });
+          
+          // Set session expiry time
+          const expiryTime = getTokenExpiryTime(token);
+          dispatch({ type: ACTIONS.SET_SESSION_EXPIRY, payload: expiryTime });
+          
         } catch (error) {
           // Token is invalid, clear it
           localStorage.removeItem('authToken');
+          localStorage.removeItem('userId');
+          localStorage.removeItem('userRole');
           dispatch({ type: ACTIONS.SET_CURRENT_USER, payload: null });
         }
       }
@@ -87,7 +249,20 @@ export const AppProvider = ({ children }) => {
     };
 
     checkAuthStatus();
-  }, [apiClient]); // Add apiClient dependency since it's now memoized
+  }, [apiClient, isTokenExpired, getTokenExpiryTime]);
+
+  // Session expiry monitoring
+  useEffect(() => {
+    if (!state.currentUser) return;
+
+    // Check session expiry every minute
+    const interval = setInterval(checkSessionExpiry, 60000);
+    
+    // Also check immediately
+    checkSessionExpiry();
+
+    return () => clearInterval(interval);
+  }, [state.currentUser, checkSessionExpiry]);
 
   // Fetch conversations from the backend with pagination and caching
   const fetchConversations = useCallback(async (page = 1, limit = 20, useCache = true) => {
@@ -127,14 +302,15 @@ export const AppProvider = ({ children }) => {
       return response;
     } catch (error) {
       console.error('Error fetching conversations:', error);
+      const userMessage = handleApiError(error, 'session');
       dispatch({ 
         type: ACTIONS.SET_ERROR, 
-        payload: 'Failed to fetch conversations' 
+        payload: userMessage
       });
     } finally {
       dispatch({ type: ACTIONS.SET_LOADING, payload: false });
     }
-  }, [apiClient, state.isLoading]);
+  }, [apiClient, state.isLoading, handleApiError]);
 
   // Fetch recent conversations for quick loading
   const fetchRecentConversations = useCallback(async (days = 7, limit = 20) => {
@@ -173,14 +349,15 @@ export const AppProvider = ({ children }) => {
       return response;
     } catch (error) {
       console.error('Error fetching recent conversations:', error);
+      const userMessage = handleApiError(error, 'session');
       dispatch({ 
         type: ACTIONS.SET_ERROR, 
-        payload: 'Failed to fetch recent conversations' 
+        payload: userMessage
       });
     } finally {
       dispatch({ type: ACTIONS.SET_LOADING, payload: false });
     }
-  }, [apiClient, state.isLoading]);
+  }, [apiClient, state.isLoading, handleApiError]);
 
   // Create new conversation with optimized state management
   const createNewConversation = async () => {
@@ -188,7 +365,6 @@ export const AppProvider = ({ children }) => {
       // Don't set global loading for conversation creation to avoid UI freezing
       const response = await apiClient.post('/sessions', {
         title: "New Chat",
-        role: state.currentUser?.role || "agent",
         user_preferences: {}
       });
       const newConversation = response;
@@ -219,9 +395,10 @@ export const AppProvider = ({ children }) => {
       return conversationData;
     } catch (error) {
       console.error('Error creating conversation:', error);
+      const userMessage = handleApiError(error, 'session');
       dispatch({ 
         type: ACTIONS.SET_ERROR, 
-        payload: 'Failed to create new conversation' 
+        payload: userMessage
       });
       throw error;
     }
@@ -239,9 +416,10 @@ export const AppProvider = ({ children }) => {
       dispatch({ type: ACTIONS.UPDATE_CONVERSATION, payload: response });
     } catch (error) {
       console.error('Error updating conversation title:', error);
+      const userMessage = handleApiError(error, 'session');
       dispatch({ 
         type: ACTIONS.SET_ERROR, 
-        payload: 'Failed to update conversation title' 
+        payload: userMessage
       });
     }
   };
@@ -261,9 +439,10 @@ export const AppProvider = ({ children }) => {
       }
     } catch (error) {
       console.error('Error deleting conversation:', error);
+      const userMessage = handleApiError(error, 'session');
       dispatch({ 
         type: ACTIONS.SET_ERROR, 
-        payload: 'Failed to delete conversation' 
+        payload: userMessage
       });
     }
   };
@@ -273,17 +452,26 @@ export const AppProvider = ({ children }) => {
     dispatch({ type: ACTIONS.CLEAR_ERROR });
   };
 
+  // Clear session warning
+  const clearSessionWarning = () => {
+    dispatch({ type: ACTIONS.CLEAR_SESSION_WARNING });
+  };
+
   // Set current user
   const setCurrentUser = (user) => {
     dispatch({ type: ACTIONS.SET_CURRENT_USER, payload: user });
   };
 
-  // Logout function
+  // Enhanced logout function
   const logout = () => {
     localStorage.removeItem('authToken');
+    localStorage.removeItem('userId');
+    localStorage.removeItem('userRole');
     dispatch({ type: ACTIONS.SET_CURRENT_USER, payload: null });
     dispatch({ type: ACTIONS.SET_CONVERSATIONS, payload: [] });
     dispatch({ type: ACTIONS.SET_CURRENT_SESSION, payload: null });
+    dispatch({ type: ACTIONS.CLEAR_SESSION_WARNING });
+    dispatch({ type: ACTIONS.SET_SESSION_EXPIRY, payload: null });
   };
 
   // Load conversations when user is authenticated - with proper dependency management
@@ -308,6 +496,10 @@ export const AppProvider = ({ children }) => {
     setCurrentUser,
     logout,
     clearError,
+    clearSessionWarning,
+    refreshToken,
+    handleApiError,
+    checkSessionExpiry,
   }), [
     state,
     api,
@@ -320,6 +512,10 @@ export const AppProvider = ({ children }) => {
     setCurrentUser,
     logout,
     clearError,
+    clearSessionWarning,
+    refreshToken,
+    handleApiError,
+    checkSessionExpiry,
   ]);
 
   return (

@@ -42,7 +42,7 @@ def hash_password(password: str) -> str:
 
 def verify_password(password: str, password_hash: str) -> bool:
     """
-    Verify a password against its hash
+    Verify a password against its hash using bcrypt
     
     Args:
         password: Plain text password to verify
@@ -52,10 +52,7 @@ def verify_password(password: str, password_hash: str) -> bool:
         True if password matches, False otherwise
     """
     try:
-        # TEMPORARY: Simple string comparison for debugging
-        # TODO: Restore bcrypt verification after login issues resolved
-        logger.info(f"DEBUG: Comparing password '{password}' with stored '{password_hash}'")
-        return password == password_hash
+        return bcrypt.checkpw(password.encode("utf-8"), password_hash.encode("utf-8"))
     except Exception as e:
         logger.error(f"Password verification failed: {e}")
         return False

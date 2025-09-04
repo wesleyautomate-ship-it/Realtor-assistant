@@ -88,9 +88,7 @@ export const apiUtils = {
     try {
       const payload = {
         message,
-        user_id: localStorage.getItem('userId'),
         session_id: sessionId,
-        role: localStorage.getItem('userRole') || 'agent',
       };
 
       if (fileUpload) {
@@ -106,7 +104,7 @@ export const apiUtils = {
   },
 
   // File upload API
-  uploadFile: async (file, sessionId = null, role = 'agent') => {
+  uploadFile: async (file, sessionId = null) => {
     try {
       const formData = new FormData();
       formData.append('file', file);
@@ -114,8 +112,6 @@ export const apiUtils = {
       if (sessionId) {
         formData.append('session_id', sessionId);
       }
-      
-      formData.append('role', role);
 
       const response = await api.post('/ingest/upload', formData, {
         headers: {
@@ -171,7 +167,6 @@ export const apiUtils = {
     try {
       const response = await api.post('/sessions', {
         title: "New Chat",
-        role: "client",
         user_preferences: {}
       });
       return response.data;
@@ -272,6 +267,126 @@ export const apiUtils = {
       return response.data;
     } catch (error) {
       console.error('Error getting processing status:', error);
+      throw error;
+    }
+  },
+
+  // Agenda API
+  getAgenda: async () => {
+    try {
+      const response = await api.get('/users/me/agenda');
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching agenda:', error);
+      throw error;
+    }
+  },
+
+  // Global Command API
+  sendGlobalCommand: async (message) => {
+    try {
+      // Create a default session if needed or use existing session
+      const response = await api.post('/sessions/default/chat', {
+        message,
+        session_id: 'default'
+      });
+      return response.data;
+    } catch (error) {
+      console.error('Error sending global command:', error);
+      throw error;
+    }
+  },
+
+  // Advanced Chat: Entity Detection and Context API
+  detectEntities: async (message) => {
+    try {
+      const response = await api.post('/advanced-chat/ai/detect-entities', {
+        message,
+        conversation_id: null // Will be set by the component
+      });
+      return response.data;
+    } catch (error) {
+      console.error('Error detecting entities:', error);
+      throw error;
+    }
+  },
+
+  fetchEntityContext: async (entityType, entityId) => {
+    try {
+      const response = await api.get(`/advanced-chat/context/${entityType}/${entityId}`);
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching entity context:', error);
+      throw error;
+    }
+  },
+
+  getPropertyDetails: async (propertyId) => {
+    try {
+      const response = await api.get(`/advanced-chat/properties/${propertyId}/details`);
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching property details:', error);
+      throw error;
+    }
+  },
+
+  getClientInfo: async (clientId) => {
+    try {
+      const response = await api.get(`/advanced-chat/clients/${clientId}`);
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching client info:', error);
+      throw error;
+    }
+  },
+
+  getMarketContext: async (location, propertyType) => {
+    try {
+      const params = new URLSearchParams();
+      if (location) params.append('location', location);
+      if (propertyType) params.append('property_type', propertyType);
+      
+      const response = await api.get(`/advanced-chat/market/context?${params.toString()}`);
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching market context:', error);
+      throw error;
+    }
+  },
+
+  batchFetchContext: async (entities) => {
+    try {
+      const response = await api.post('/advanced-chat/context/batch', {
+        entities: entities.map(entity => ({
+          type: entity.type,
+          id: entity.id,
+          name: entity.name
+        }))
+      });
+      return response.data;
+    } catch (error) {
+      console.error('Error batch fetching context:', error);
+      throw error;
+    }
+  },
+
+  clearContextCache: async () => {
+    try {
+      const response = await api.delete('/advanced-chat/context/cache/clear');
+      return response.data;
+    } catch (error) {
+      console.error('Error clearing context cache:', error);
+      throw error;
+    }
+  },
+
+  getAdvancedChatHealth: async () => {
+    try {
+      const response = await api.get('/advanced-chat/health');
+      return response.data;
+    } catch (error) {
+      console.error('Error checking Advanced Chat health:', error);
       throw error;
     }
   },

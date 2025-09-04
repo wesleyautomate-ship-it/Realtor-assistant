@@ -8,6 +8,7 @@ connection pooling, and automatic cleanup to prevent application crashes.
 import logging
 from contextlib import contextmanager
 from typing import Generator, Optional
+from fastapi import HTTPException
 from sqlalchemy import create_engine, text
 from sqlalchemy.engine import Connection
 from sqlalchemy.exc import SQLAlchemyError, OperationalError, DisconnectionError
@@ -150,5 +151,4 @@ def get_database_stats() -> dict:
             "error": str(e)
         }
 
-# Import HTTPException for error handling
-from fastapi import HTTPException
+

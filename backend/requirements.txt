@@ -13,9 +13,46 @@ scikit-learn==1.3.2
 spacy==3.7.2
 textblob==0.17.1
 
-# Data Processing
+# Advanced ML Models
+xgboost>=1.7.0
+lightgbm>=4.0.0
+catboost>=1.2.0
+joblib>=1.3.0
+
+# Data Processing & Visualization
 pandas>=2.0.0
-numpy==1.24.3
+numpy>=1.24.0
+scipy>=1.10.0
+matplotlib>=3.7.0
+seaborn>=0.12.0
+plotly>=5.15.0
+
+# Time Series Analysis
+statsmodels>=0.14.0
+prophet>=1.1.0
+
+# Deep Learning (optional)
+tensorflow>=2.13.0
+torch>=2.0.0
+
+# Feature Engineering
+feature-engine>=1.6.0
+category-encoders>=2.6.0
+
+# Model Deployment & Validation
+pickle-mixin>=1.0.2
+great-expectations>=0.17.0
+
+# Performance Monitoring
+mlflow>=2.5.0
+wandb>=0.15.0
+
+# Additional Utilities
+tqdm>=4.65.0
+python-dateutil>=2.8.0
+pytz>=2023.3
+
+# HTTP & File Processing
 python-multipart==0.0.6
 
 # Document Processing
@@ -34,6 +71,9 @@ redis==5.0.1
 asyncpg==0.29.0
 aiohttp==3.9.1
 
+# Task Queue and Background Processing
+celery==5.3.4
+
 # Security & Authentication
 bcrypt==4.0.1
 PyJWT==2.8.0
@@ -42,6 +82,7 @@ cryptography==41.0.7
 
 # HTTP & API
 requests==2.31.0
+tenacity==8.2.3
 
 # Scheduling
 APScheduler==3.10.4
@@ -51,3 +92,6 @@ werkzeug==2.3.7
 fuzzywuzzy==0.18.0
 python-Levenshtein==0.21.1
 dateparser==1.2.0
+
+# System dependencies (for Docker)
+# curl is installed via apt-get in Dockerfile

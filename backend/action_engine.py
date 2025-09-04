@@ -1,365 +1,422 @@
 #!/usr/bin/env python3
 """
-AI Action Engine for Conversational CRM & Workflow Automation
-============================================================
-
-This module handles natural language commands to perform CRM actions
-such as updating lead status, logging interactions, and scheduling follow-ups.
+Enhanced Action Engine for Blueprint 2.0: Proactive AI Copilot
+Handles proactive lead nurturing, follow-up suggestions, and context retrieval
 """
 
-import re
 import logging
-from typing import Dict, List, Optional, Tuple, Any
-from dataclasses import dataclass
 from datetime import datetime, timedelta
-from sqlalchemy.orm import Session
-from sqlalchemy import text
-import dateparser
+from typing import Dict, Any, List, Optional
+from sqlalchemy import create_engine, text
+import json
+import os
+from dotenv import load_dotenv
 
-from rag_service import QueryIntent
+# Load environment variables
+load_dotenv()
 
 logger = logging.getLogger(__name__)
 
-@dataclass
-class ActionPlan:
-    """Represents a plan for an action to be executed"""
-    action_type: str
-    lead_id: Optional[int] = None
-    details: Dict[str, Any] = None
-    confirmation_message: str = ""
-    requires_confirmation: bool = True
+# Initialize database connection
+db_url = os.getenv('DATABASE_URL', 'postgresql://admin:password123@localhost:5432/real_estate_db')
+engine = create_engine(db_url)
 
 class ActionEngine:
-    """
-    Core action engine that handles CRM workflow automation
-    """
+    """Enhanced action engine for proactive lead nurturing"""
     
-    def __init__(self, db_session: Session, agent_id: int):
-        self.db = db_session
-        self.agent_id = agent_id
+    def __init__(self, ai_model=None):
+        self.ai_model = ai_model
         
-        # Valid lead statuses
-        self.valid_statuses = [
-            'new', 'contacted', 'qualified', 'negotiating', 'closed_won', 'closed_lost', 'follow_up'
-        ]
-        
-        # Interaction types
-        self.interaction_types = [
-            'call', 'email', 'meeting', 'viewing', 'proposal', 'negotiation', 'closing'
-        ]
-
-    def _find_lead_by_name(self, name: str) -> Optional[Dict]:
-        """Securely finds a lead belonging to the current agent"""
+        # Import Celery tasks
         try:
-            result = self.db.execute(text("""
-                SELECT id, name, status, email, phone 
-                FROM leads 
-                WHERE agent_id = :agent_id 
-                AND name ILIKE :name_pattern
-                ORDER BY created_at DESC
-                LIMIT 1
-            """), {
-                "agent_id": self.agent_id,
-                "name_pattern": f"%{name}%"
-            })
-            
-            row = result.fetchone()
-            if row:
-                return {
-                    "id": row[0],
-                    "name": row[1],
-                    "status": row[2],
-                    "email": row[3],
-                    "phone": row[4]
+            from tasks.ai_commands import execute_ai_command, get_task_status
+            self.execute_ai_command_task = execute_ai_command
+            self.get_task_status_task = get_task_status
+            logger.info("✅ Celery tasks imported successfully")
+        except ImportError as e:
+            logger.warning(f"⚠️ Celery tasks not available: {e}")
+            self.execute_ai_command_task = None
+            self.get_task_status_task = None
+    
+    def get_follow_up_context(self, lead_id: int) -> Dict[str, Any]:
+        """
+        Retrieves the last 5 interactions for a lead to help generate a follow-up script.
+        """
+        try:
+            with engine.connect() as conn:
+                # Get lead profile
+                lead_result = conn.execute(text("""
+                    SELECT id, name, email, phone, status, budget_min, budget_max, 
+                           preferred_areas, property_type, last_contacted_at, 
+                           next_follow_up_at, nurture_status, notes
+                    FROM leads 
+                    WHERE id = :lead_id
+                """), {'lead_id': lead_id})
+                
+                lead_row = lead_result.fetchone()
+                if not lead_row:
+                    return {"error": "Lead not found"}
+                
+                lead_profile = {
+                    "id": lead_row.id,
+                    "name": lead_row.name,
+                    "email": lead_row.email,
+                    "phone": lead_row.phone,
+                    "status": lead_row.status,
+                    "budget_min": float(lead_row.budget_min) if lead_row.budget_min else None,
+                    "budget_max": float(lead_row.budget_max) if lead_row.budget_max else None,
+                    "preferred_areas": json.loads(lead_row.preferred_areas) if lead_row.preferred_areas and isinstance(lead_row.preferred_areas, str) else [],
+                    "property_type": lead_row.property_type,
+                    "last_contacted_at": lead_row.last_contacted_at.isoformat() if lead_row.last_contacted_at else None,
+                    "next_follow_up_at": lead_row.next_follow_up_at.isoformat() if lead_row.next_follow_up_at else None,
+                    "nurture_status": lead_row.nurture_status,
+                    "notes": lead_row.notes
                 }
-            return None
-        except Exception as e:
-            logger.error(f"Error finding lead by name: {e}")
-            return None
-
-    def _parse_datetime(self, datetime_str: str) -> Optional[datetime]:
-        """Parse natural language datetime strings"""
+                
+                # Get recent interaction history
+                history_result = conn.execute(text("""
+                    SELECT id, content, created_at, scheduled_for
+                    FROM lead_history 
+                    WHERE lead_id = :lead_id 
+                    ORDER BY created_at DESC 
+                    LIMIT 5
+                """), {'lead_id': lead_id})
+                
+                history = []
+                for row in history_result.fetchall():
+                    history.append({
+                        "id": row.id,
+                        "interaction_type": "note",  # Default to note since column doesn't exist yet
+                        "content": row.content,
+                        "created_at": row.created_at.isoformat() if row.created_at else None,
+                        "scheduled_for": row.scheduled_for.isoformat() if row.scheduled_for else None
+                    })
+                
+                return {
+                    "profile": lead_profile,
+                    "history": history,
+                    "days_since_last_contact": self._calculate_days_since_contact(lead_profile.get("last_contacted_at"))
+                }
+        
+    except Exception as e:
+        logger.error(f"Error getting follow-up context for lead {lead_id}: {e}")
+        return {"error": f"Failed to retrieve lead context: {str(e)}"}
+    
+    def execute_ai_command(self, command: str, user_id: int, context: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
+        """
+        Execute an AI command asynchronously using Celery task queue
+        
+        Args:
+            command: The AI command to execute
+            user_id: ID of the user who issued the command
+            context: Additional context for the command
+            
+        Returns:
+            Dict containing task information
+        """
         try:
-            # Handle common patterns
-            if 'tomorrow' in datetime_str.lower():
-                base_date = datetime.now() + timedelta(days=1)
-            elif 'next week' in datetime_str.lower():
-                base_date = datetime.now() + timedelta(days=7)
-            else:
-                base_date = datetime.now()
+            if not self.execute_ai_command_task:
+                logger.error("Celery tasks not available")
+                return {"error": "Task queue not available"}
             
-            # Extract time if present
-            time_match = re.search(r'(\d{1,2}(?::\d{2})?\s*[ap]m)', datetime_str.lower())
-            if time_match:
-                time_str = time_match.group(1)
-                parsed_time = dateparser.parse(time_str, settings={'PREFER_DATES_FROM': 'future'})
-                if parsed_time:
-                    return datetime.combine(base_date.date(), parsed_time.time())
+            # Queue the task for asynchronous execution
+            task = self.execute_ai_command_task.delay(command, user_id, context)
             
-            return base_date
+            logger.info(f"AI command queued for execution: {task.id}")
+            
+            return {
+                "status": "queued",
+                "task_id": task.id,
+                "command": command,
+                "user_id": user_id,
+                "message": "Command has been queued for processing"
+            }
+            
         except Exception as e:
-            logger.error(f"Error parsing datetime: {e}")
-            return None
+            logger.error(f"Error queuing AI command: {e}")
+            return {"error": f"Failed to queue command: {str(e)}"}
+    
+    def get_task_status(self, task_id: str) -> Dict[str, Any]:
+        """
+        Get the status of a queued task
+        
+        Args:
+            task_id: The Celery task ID
+            
+        Returns:
+            Dict containing task status and result
+        """
+        try:
+            if not self.get_task_status_task:
+                logger.error("Celery tasks not available")
+                return {"error": "Task queue not available"}
+            
+            # Get task status
+            status_result = self.get_task_status_task.delay(task_id)
+            status = status_result.get()
+            
+            return status
+            
+        except Exception as e:
+            logger.error(f"Error getting task status: {e}")
+            return {"error": f"Failed to get task status: {str(e)}"}
+    
+    def create_nurture_suggestion(self, lead_id: int) -> Dict[str, Any]:
+        """
+        Generate follow-up suggestions based on lead context and history.
+        """
+        try:
+            context = self.get_follow_up_context(lead_id)
+            if "error" in context:
+                return context
+            
+            lead_profile = context["profile"]
+            history = context["history"]
+            days_since_contact = context["days_since_last_contact"]
+            
+            # Generate suggestion based on context
+            suggestion = self._generate_nurture_suggestion(lead_profile, history, days_since_contact)
+            
+            return {
+                "lead_id": lead_id,
+                "lead_name": lead_profile["name"],
+                "suggestion": suggestion,
+                "urgency": self._calculate_urgency(days_since_contact, lead_profile["nurture_status"]),
+                "recommended_action": self._get_recommended_action(lead_profile, history),
+                "context_summary": self._create_context_summary(lead_profile, history)
+            }
+            
+        except Exception as e:
+            logger.error(f"Error creating nurture suggestion for lead {lead_id}: {e}")
+            return {"error": f"Failed to create nurture suggestion: {str(e)}"}
+    
+    def schedule_follow_up(self, lead_id: int, follow_up_date: datetime, 
+                          interaction_type: str = "follow_up", notes: str = "") -> Dict[str, Any]:
+        """
+        Schedule a future follow-up interaction for a lead.
+        """
+        try:
+            with engine.connect() as conn:
+                # Add to lead history as scheduled interaction
+                conn.execute(text("""
+                    INSERT INTO lead_history 
+                    (lead_id, agent_id, interaction_type, content, scheduled_for, created_at)
+                    VALUES (:lead_id, :agent_id, :interaction_type, :content, :scheduled_for, NOW())
+            """), {
+                    'lead_id': lead_id,
+                    'agent_id': 1,  # Default agent ID - in production, get from auth
+                    'interaction_type': interaction_type,
+                    'content': notes,
+                    'scheduled_for': follow_up_date
+                })
+                
+                # Update lead's next follow-up date
+                conn.execute(text("""
+                UPDATE leads 
+                    SET next_follow_up_at = :follow_up_date, 
+                        updated_at = NOW()
+                    WHERE id = :lead_id
+            """), {
+                    'follow_up_date': follow_up_date,
+                    'lead_id': lead_id
+                })
+                
+                conn.commit()
+                
+                return {
+                    "success": True,
+                    "message": f"Follow-up scheduled for {follow_up_date.strftime('%B %d, %Y at %I:%M %p')}",
+                    "lead_id": lead_id,
+                    "scheduled_date": follow_up_date.isoformat()
+                }
+            
+        except Exception as e:
+            logger.error(f"Error scheduling follow-up for lead {lead_id}: {e}")
+            return {"error": f"Failed to schedule follow-up: {str(e)}"}
+    
+    def log_interaction(self, lead_id: int, interaction_type: str, content: str, 
+                       agent_id: int = 1) -> Dict[str, Any]:
+        """
+        Log a new interaction with a lead.
+        """
+        try:
+            with engine.connect() as conn:
+                # Add interaction to history
+                conn.execute(text("""
+                    INSERT INTO lead_history 
+                    (lead_id, agent_id, interaction_type, content, created_at)
+                    VALUES (:lead_id, :agent_id, :interaction_type, :content, NOW())
+            """), {
+                    'lead_id': lead_id,
+                    'agent_id': agent_id,
+                    'interaction_type': interaction_type,
+                    'content': content
+                })
+                
+                # Update lead's last contacted timestamp
+                conn.execute(text("""
+                UPDATE leads 
+                    SET last_contacted_at = NOW(), 
+                        updated_at = NOW()
+                    WHERE id = :lead_id
+                """), {'lead_id': lead_id})
+                
+                conn.commit()
+                
+                return {
+                    "success": True,
+                    "message": "Interaction logged successfully",
+                    "lead_id": lead_id,
+                    "interaction_type": interaction_type,
+                    "logged_at": datetime.now().isoformat()
+                }
+            
+        except Exception as e:
+            logger.error(f"Error logging interaction for lead {lead_id}: {e}")
+            return {"error": f"Failed to log interaction: {str(e)}"}
+    
+    def get_leads_needing_follow_up(self, agent_id: int = None, days_threshold: int = 5) -> List[Dict[str, Any]]:
+        """
+        Get leads that need follow-up based on last contact date and nurture status.
+        """
+        try:
+            with engine.connect() as conn:
+                query = """
+                    SELECT id, name, email, phone, status, nurture_status, 
+                           last_contacted_at, next_follow_up_at, notes
+                    FROM leads 
+                    WHERE (last_contacted_at IS NULL OR 
+                           last_contacted_at < NOW() - INTERVAL ':days_threshold days')
+                    AND status NOT IN ('closed', 'lost')
+                    AND nurture_status != 'Closed'
+                """
+                
+                params = {'days_threshold': days_threshold}
+                
+                if agent_id:
+                    query += " AND agent_id = :agent_id"
+                    params['agent_id'] = agent_id
+                
+                query += " ORDER BY last_contacted_at ASC NULLS FIRST"
+                
+                result = conn.execute(text(query), params)
+                
+                leads = []
+                for row in result.fetchall():
+                    leads.append({
+                        "id": row.id,
+                        "name": row.name,
+                        "email": row.email,
+                        "phone": row.phone,
+                        "status": row.status,
+                        "nurture_status": row.nurture_status,
+                        "last_contacted_at": row.last_contacted_at.isoformat() if row.last_contacted_at else None,
+                        "next_follow_up_at": row.next_follow_up_at.isoformat() if row.next_follow_up_at else None,
+                        "notes": row.notes,
+                        "days_since_contact": self._calculate_days_since_contact(row.last_contacted_at)
+                    })
+                
+                return leads
+            
+        except Exception as e:
+            logger.error(f"Error getting leads needing follow-up: {e}")
+            return []
+    
+    def _calculate_days_since_contact(self, last_contacted_at) -> int:
+        """Calculate days since last contact"""
+        if not last_contacted_at:
+            return 999  # Never contacted
+        
+        if isinstance(last_contacted_at, str):
+            last_contacted_at = datetime.fromisoformat(last_contacted_at.replace('Z', '+00:00'))
+        
+        return (datetime.now() - last_contacted_at).days
+    
+    def _generate_nurture_suggestion(self, lead_profile: dict, history: list, days_since_contact: int) -> str:
+        """Generate nurture suggestion based on context"""
+        if self.ai_model:
+            # Use AI to generate personalized suggestion
+            prompt = f"""
+Generate a personalized follow-up suggestion for a real estate lead.
 
-    def prepare_action(self, intent: QueryIntent, entities: Dict[str, Any]) -> ActionPlan:
-        """
-        Prepares a plan for an action and a confirmation message for the agent.
-        """
-        if intent == QueryIntent.UPDATE_LEAD:
-            return self._prepare_update_lead_action(entities)
-        elif intent == QueryIntent.LOG_INTERACTION:
-            return self._prepare_log_interaction_action(entities)
-        elif intent == QueryIntent.SCHEDULE_FOLLOW_UP:
-            return self._prepare_schedule_follow_up_action(entities)
+**Lead Profile:**
+- Name: {lead_profile['name']}
+- Status: {lead_profile['status']}
+- Property Type: {lead_profile['property_type']}
+- Budget: AED {lead_profile['budget_min']:,.0f} - {lead_profile['budget_max']:,.0f}
+- Preferred Areas: {', '.join(lead_profile['preferred_areas'])}
+- Days Since Last Contact: {days_since_contact}
+
+**Recent Interactions:**
+{json.dumps(history, indent=2)}
+
+**Requirements:**
+- Generate a 2-3 sentence personalized follow-up suggestion
+- Be specific to their property preferences and budget
+- Reference previous interactions if relevant
+- Suggest next steps
+- Keep tone professional but warm
+
+Suggestion:
+"""
+            try:
+                response = self.ai_model.generate_content(prompt)
+                return response.text.strip()
+            except Exception as e:
+                logger.error(f"Error generating AI suggestion: {e}")
+        
+        # Fallback to rule-based suggestion
+        return self._get_rule_based_suggestion(lead_profile, history, days_since_contact)
+    
+    def _get_rule_based_suggestion(self, lead_profile: dict, history: list, days_since_contact: int) -> str:
+        """Generate rule-based nurture suggestion"""
+        if days_since_contact > 30:
+            return f"It's been over a month since you last contacted {lead_profile['name']}. Consider reaching out with new property listings in their preferred areas ({', '.join(lead_profile['preferred_areas'])}) within their budget range."
+        elif days_since_contact > 14:
+            return f"Follow up with {lead_profile['name']} about their property search. They're interested in {lead_profile['property_type']} properties in {', '.join(lead_profile['preferred_areas'])}."
+        elif days_since_contact > 7:
+            return f"Check in with {lead_profile['name']} to see if they have any questions about the properties we discussed or if they'd like to schedule viewings."
         else:
-            return ActionPlan(
-                action_type="unknown",
-                confirmation_message="I'm not sure how to handle that request.",
-                requires_confirmation=False
-            )
-
-    def _prepare_update_lead_action(self, entities: Dict[str, Any]) -> ActionPlan:
-        """Prepare action plan for updating lead status"""
-        lead_name = entities.get('lead_name')
-        new_status = entities.get('new_status')
+            return f"Send a quick follow-up to {lead_profile['name']} to maintain engagement and offer additional assistance with their property search."
+    
+    def _calculate_urgency(self, days_since_contact: int, nurture_status: str) -> str:
+        """Calculate urgency level for follow-up"""
+        if days_since_contact > 30:
+            return "high"
+        elif days_since_contact > 14:
+            return "medium"
+        elif days_since_contact > 7:
+            return "low"
+        else:
+            return "normal"
+    
+    def _get_recommended_action(self, lead_profile: dict, history: list) -> str:
+        """Get recommended action based on lead context"""
+        if not history:
+            return "Initial contact - introduce yourself and understand their requirements"
         
-        if not lead_name or not new_status:
-            return ActionPlan(
-                action_type="update_lead",
-                confirmation_message="I need both a client name and a new status to update a lead. Please provide both.",
-                requires_confirmation=False
-            )
+        last_interaction = history[0]
+        if last_interaction["interaction_type"] == "viewing_log":
+            return "Follow up on viewing feedback and next steps"
+        elif last_interaction["interaction_type"] == "email":
+            return "Check if they received your email and have any questions"
+        elif last_interaction["interaction_type"] == "call":
+            return "Send follow-up email summarizing the call and next steps"
+        else:
+            return "General follow-up to maintain engagement"
+    
+    def _create_context_summary(self, lead_profile: dict, history: list) -> str:
+        """Create a summary of lead context"""
+        summary = f"{lead_profile['name']} is looking for {lead_profile['property_type']} properties"
         
-        # Find the lead
-        lead = self._find_lead_by_name(lead_name)
-        if not lead:
-            return ActionPlan(
-                action_type="update_lead",
-                confirmation_message=f"I couldn't find a lead named '{lead_name}' in your database. Please check the name and try again.",
-                requires_confirmation=False
-            )
+        if lead_profile['preferred_areas']:
+            summary += f" in {', '.join(lead_profile['preferred_areas'])}"
         
-        # Validate status
-        if new_status.lower() not in self.valid_statuses:
-            valid_statuses_str = ", ".join(self.valid_statuses)
-            return ActionPlan(
-                action_type="update_lead",
-                confirmation_message=f"'{new_status}' is not a valid status. Valid statuses are: {valid_statuses_str}",
-                requires_confirmation=False
-            )
+        if lead_profile['budget_min'] and lead_profile['budget_max']:
+            summary += f" with a budget of AED {lead_profile['budget_min']:,.0f} - {lead_profile['budget_max']:,.0f}"
         
-        # Check if status is already the same
-        if lead['status'] == new_status.lower():
-            return ActionPlan(
-                action_type="update_lead",
-                confirmation_message=f"Lead '{lead['name']}' is already marked as '{new_status}'.",
-                requires_confirmation=False
-            )
+        if history:
+            summary += f". Last interaction was {history[0]['interaction_type']} on {history[0]['created_at'][:10]}"
         
-        return ActionPlan(
-            action_type="update_lead",
-            lead_id=lead['id'],
-            details={
-                "status": new_status.lower(),
-                "lead_name": lead['name'],
-                "current_status": lead['status']
-            },
-            confirmation_message=f"Okay, I will update the status for lead '{lead['name']}' from '{lead['status']}' to '{new_status}'. Shall I proceed?",
-            requires_confirmation=True
-        )
-
-    def _prepare_log_interaction_action(self, entities: Dict[str, Any]) -> ActionPlan:
-        """Prepare action plan for logging an interaction"""
-        lead_name = entities.get('lead_name')
-        interaction_notes = entities.get('interaction_notes')
-        
-        if not lead_name:
-            return ActionPlan(
-                action_type="log_interaction",
-                confirmation_message="I need a client name to log an interaction. Please specify which client this interaction was with.",
-                requires_confirmation=False
-            )
-        
-        # Find the lead
-        lead = self._find_lead_by_name(lead_name)
-        if not lead:
-            return ActionPlan(
-                action_type="log_interaction",
-                confirmation_message=f"I couldn't find a lead named '{lead_name}' in your database. Please check the name and try again.",
-                requires_confirmation=False
-            )
-        
-        # Determine interaction type from notes
-        interaction_type = 'general'
-        if interaction_notes:
-            notes_lower = interaction_notes.lower()
-            if any(word in notes_lower for word in ['call', 'phone', 'telephone']):
-                interaction_type = 'call'
-            elif any(word in notes_lower for word in ['meeting', 'appointment', 'visit']):
-                interaction_type = 'meeting'
-            elif any(word in notes_lower for word in ['viewing', 'property', 'show']):
-                interaction_type = 'viewing'
-            elif any(word in notes_lower for word in ['email', 'mail']):
-                interaction_type = 'email'
-        
-        return ActionPlan(
-            action_type="log_interaction",
-            lead_id=lead['id'],
-            details={
-                "interaction_type": interaction_type,
-                "notes": interaction_notes or "Interaction logged via chat",
-                "lead_name": lead['name']
-            },
-            confirmation_message=f"I will log a {interaction_type} interaction for '{lead['name']}' with the note: '{interaction_notes or 'No specific notes provided'}'. Shall I proceed?",
-            requires_confirmation=True
-        )
-
-    def _prepare_schedule_follow_up_action(self, entities: Dict[str, Any]) -> ActionPlan:
-        """Prepare action plan for scheduling a follow-up"""
-        lead_name = entities.get('lead_name')
-        task_datetime = entities.get('task_datetime')
-        
-        if not lead_name:
-            return ActionPlan(
-                action_type="schedule_follow_up",
-                confirmation_message="I need a client name to schedule a follow-up. Please specify which client this is for.",
-                requires_confirmation=False
-            )
-        
-        # Find the lead
-        lead = self._find_lead_by_name(lead_name)
-        if not lead:
-            return ActionPlan(
-                action_type="schedule_follow_up",
-                confirmation_message=f"I couldn't find a lead named '{lead_name}' in your database. Please check the name and try again.",
-                requires_confirmation=False
-            )
-        
-        # Parse datetime
-        scheduled_time = None
-        if task_datetime:
-            scheduled_time = self._parse_datetime(task_datetime)
-        
-        if not scheduled_time:
-            # Default to tomorrow at 10 AM
-            scheduled_time = datetime.now() + timedelta(days=1)
-            scheduled_time = scheduled_time.replace(hour=10, minute=0, second=0, microsecond=0)
-        
-        return ActionPlan(
-            action_type="schedule_follow_up",
-            lead_id=lead['id'],
-            details={
-                "scheduled_time": scheduled_time,
-                "lead_name": lead['name'],
-                "appointment_type": "follow_up"
-            },
-            confirmation_message=f"I will schedule a follow-up for '{lead['name']}' on {scheduled_time.strftime('%B %d, %Y at %I:%M %p')}. Shall I proceed?",
-            requires_confirmation=True
-        )
-
-    def execute_action(self, plan: ActionPlan) -> str:
-        """
-        Executes the confirmed action plan against the database.
-        """
-        try:
-            if plan.action_type == "update_lead":
-                return self._execute_update_lead(plan)
-            elif plan.action_type == "log_interaction":
-                return self._execute_log_interaction(plan)
-            elif plan.action_type == "schedule_follow_up":
-                return self._execute_schedule_follow_up(plan)
-            else:
-                return "Action could not be completed - unknown action type."
-        except Exception as e:
-            logger.error(f"Error executing action: {e}")
-            return f"Error executing action: {str(e)}"
-
-    def _execute_update_lead(self, plan: ActionPlan) -> str:
-        """Execute lead status update"""
-        try:
-            # Log the change in lead_history
-            self.db.execute(text("""
-                INSERT INTO lead_history (lead_id, status_from, status_to, changed_by_agent_id)
-                VALUES (:lead_id, :status_from, :status_to, :agent_id)
-            """), {
-                "lead_id": plan.lead_id,
-                "status_from": plan.details["current_status"],
-                "status_to": plan.details["status"],
-                "agent_id": self.agent_id
-            })
-            
-            # Update the lead status
-            self.db.execute(text("""
-                UPDATE leads 
-                SET status = :new_status, updated_at = CURRENT_TIMESTAMP
-                WHERE id = :lead_id AND agent_id = :agent_id
-            """), {
-                "new_status": plan.details["status"],
-                "lead_id": plan.lead_id,
-                "agent_id": self.agent_id
-            })
-            
-            self.db.commit()
-            return f"✅ Done! The status for {plan.details['lead_name']} has been updated from '{plan.details['current_status']}' to '{plan.details['status']}'."
-            
-        except Exception as e:
-            self.db.rollback()
-            logger.error(f"Error updating lead: {e}")
-            return f"❌ Error updating lead status: {str(e)}"
-
-    def _execute_log_interaction(self, plan: ActionPlan) -> str:
-        """Execute interaction logging"""
-        try:
-            # Log the interaction
-            self.db.execute(text("""
-                INSERT INTO client_interactions (lead_id, agent_id, interaction_type, notes, interaction_date)
-                VALUES (:lead_id, :agent_id, :interaction_type, :notes, CURRENT_TIMESTAMP)
-            """), {
-                "lead_id": plan.lead_id,
-                "agent_id": self.agent_id,
-                "interaction_type": plan.details["interaction_type"],
-                "notes": plan.details["notes"]
-            })
-            
-            # Update last_contacted timestamp on lead
-            self.db.execute(text("""
-                UPDATE leads 
-                SET last_contacted = CURRENT_TIMESTAMP, updated_at = CURRENT_TIMESTAMP
-                WHERE id = :lead_id AND agent_id = :agent_id
-            """), {
-                "lead_id": plan.lead_id,
-                "agent_id": self.agent_id
-            })
-            
-            self.db.commit()
-            return f"✅ Done! I've logged a {plan.details['interaction_type']} interaction for {plan.details['lead_name']} with the note: '{plan.details['notes']}'"
-            
-        except Exception as e:
-            self.db.rollback()
-            logger.error(f"Error logging interaction: {e}")
-            return f"❌ Error logging interaction: {str(e)}"
-
-    def _execute_schedule_follow_up(self, plan: ActionPlan) -> str:
-        """Execute follow-up scheduling"""
-        try:
-            # Schedule the appointment
-            self.db.execute(text("""
-                INSERT INTO appointments (agent_id, client_name, appointment_date, appointment_time, appointment_type, notes, status)
-                VALUES (:agent_id, :client_name, :appointment_date, :appointment_time, :appointment_type, :notes, 'scheduled')
-            """), {
-                "agent_id": self.agent_id,
-                "client_name": plan.details["lead_name"],
-                "appointment_date": plan.details["scheduled_time"].date(),
-                "appointment_time": plan.details["scheduled_time"].time(),
-                "appointment_type": plan.details["appointment_type"],
-                "notes": f"Follow-up scheduled via chat interface"
-            })
-            
-            self.db.commit()
-            return f"✅ Done! I've scheduled a follow-up for {plan.details['lead_name']} on {plan.details['scheduled_time'].strftime('%B %d, %Y at %I:%M %p')}."
-            
-        except Exception as e:
-            self.db.rollback()
-            logger.error(f"Error scheduling follow-up: {e}")
-            return f"❌ Error scheduling follow-up: {str(e)}"
+        return summary
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Test script for Phase 3: Conversational CRM & Workflow Automation
+Test script for Advanced Chat: Conversational CRM & Workflow Automation
 """
 
 import sys
@@ -81,7 +81,7 @@ def test_action_engine():
 
 def main():
     """Run all tests"""
-    print("🧪 Testing Phase 3: Conversational CRM & Workflow Automation")
+    print("🧪 Testing Advanced Chat: Conversational CRM & Workflow Automation")
     print("=" * 60)
     
     tests = [

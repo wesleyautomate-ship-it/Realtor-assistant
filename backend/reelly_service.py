@@ -11,6 +11,8 @@ from typing import List, Dict, Any, Optional
 from functools import lru_cache
 from datetime import datetime, timedelta
 import json
+import tenacity
+from tenacity import retry, stop_after_attempt, wait_exponential
 
 logger = logging.getLogger(__name__)
 
@@ -31,6 +33,13 @@ class ReellyService:
             self.enabled = True
             logger.info("✅ Reelly API service initialized successfully")
 
+    @retry(
+        stop=stop_after_attempt(3),
+        wait=wait_exponential(multiplier=1, min=4, max=10),
+        retry=tenacity.retry_if_exception_type(
+            (requests.exceptions.RequestException, requests.exceptions.Timeout)
+        )
+    )
     def _make_request(self, endpoint: str, params: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
         """Helper function to make authenticated requests to the Reelly API."""
         if not self.enabled:
@@ -47,16 +56,20 @@ class ReellyService:
             url = f"{self.base_url}{endpoint}"
             logger.debug(f"Making request to Reelly API: {url}")
             
-            response = requests.get(url, headers=headers, params=params, timeout=30)
+            # Reduced timeout for faster failure detection
+            response = requests.get(url, headers=headers, params=params, timeout=15)
             response.raise_for_status()
             
             data = response.json()
             logger.debug(f"Reelly API response: {len(data.get('data', []))} items")
             return data
             
+        except requests.exceptions.Timeout:
+            logger.error(f"Timeout calling Reelly API endpoint '{endpoint}'")
+            raise
         except requests.exceptions.RequestException as e:
             logger.error(f"Error calling Reelly API endpoint '{endpoint}': {e}")
-            return {}
+            raise
         except json.JSONDecodeError as e:
             logger.error(f"Error parsing Reelly API response: {e}")
             return {}

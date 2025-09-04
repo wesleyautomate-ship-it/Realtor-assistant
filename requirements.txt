@@ -39,6 +39,7 @@ cryptography==41.0.7
 
 # HTTP & API
 requests==2.31.0
+tenacity==8.2.3
 
 # Scheduling
 APScheduler==3.10.4

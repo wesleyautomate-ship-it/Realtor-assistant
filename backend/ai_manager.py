@@ -1171,3 +1171,35 @@ FORMAT: Return the complete message ready to send.
             "property_brochure",
             "cma"
         ]
+    
+    # Blueprint 2.0: HTML Document Generation Methods
+    
+    def generate_cma_html_document(self, subject_property: dict, comparable_properties: list, agent_id: int) -> Dict[str, Any]:
+        """Generate HTML CMA document with preview summary"""
+        try:
+            from document_generator import DocumentGenerator
+            document_generator = DocumentGenerator(self.db_url, self.model)
+            return document_generator.generate_cma_html(subject_property, comparable_properties, agent_id)
+        except Exception as e:
+            logger.error(f"Error generating CMA HTML document: {e}")
+            return {"error": f"Unable to generate CMA HTML document: {str(e)}"}
+    
+    def generate_brochure_html_document(self, property_details: dict, agent_id: int) -> Dict[str, Any]:
+        """Generate HTML property brochure with preview summary"""
+        try:
+            from document_generator import DocumentGenerator
+            document_generator = DocumentGenerator(self.db_url, self.model)
+            return document_generator.generate_brochure_html(property_details, agent_id)
+        except Exception as e:
+            logger.error(f"Error generating brochure HTML document: {e}")
+            return {"error": f"Unable to generate brochure HTML document: {str(e)}"}
+    
+    def get_document_preview(self, document_id: int) -> Dict[str, Any]:
+        """Get document preview data"""
+        try:
+            from document_generator import DocumentGenerator
+            document_generator = DocumentGenerator(self.db_url, self.model)
+            return document_generator.get_document(document_id)
+        except Exception as e:
+            logger.error(f"Error getting document preview: {e}")
+            return {"error": f"Unable to get document preview: {str(e)}"}

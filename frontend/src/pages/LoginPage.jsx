@@ -26,6 +26,7 @@ import {
 } from '@mui/icons-material';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAppContext } from '../context/AppContext';
+import { api } from '../utils/apiClient';
 
 const LoginPage = () => {
   const theme = useTheme();
@@ -34,7 +35,7 @@ const LoginPage = () => {
   
   const navigate = useNavigate();
   const location = useLocation();
-  const { api, currentUser, setCurrentUser } = useAppContext();
+  const { currentUser, setCurrentUser, handleApiError } = useAppContext();
   
   const [formData, setFormData] = useState({
     email: '',
@@ -99,15 +100,9 @@ const LoginPage = () => {
     } catch (error) {
       console.error('Login error:', error);
       
-      if (error.response?.status === 401) {
-        setError('Invalid email or password');
-      } else if (error.response?.status === 422) {
-        setError('Please check your input and try again');
-      } else if (error.response?.data?.detail) {
-        setError(error.response.data.detail);
-      } else {
-        setError('Login failed. Please try again.');
-      }
+      // Use enhanced error handling from context
+      const userMessage = handleApiError(error, 'login');
+      setError(userMessage);
     } finally {
       setLoading(false);
     }
@@ -121,15 +116,15 @@ const LoginPage = () => {
       // Demo login - in production, this would be a real API call
       const demoUsers = {
         agent: {
-          id: 1,
-          name: 'John Doe',
-          email: 'john@example.com',
+          id: 2,
+          name: 'Wesley Agent',
+          email: 'wesley@dubai-estate.com',
           role: 'agent',
         },
         admin: {
-          id: 2,
-          name: 'Admin User',
-          email: 'admin@example.com',
+          id: 1,
+          name: 'System Administrator',
+          email: 'admin@dubai-estate.com',
           role: 'admin',
         },
       };
