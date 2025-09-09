@@ -120,13 +120,9 @@ def create_simple_session_chat_endpoint(app):
             user_id = session_info["user_id"]
             message = request.message
             
-            # Import enhanced AI manager for better response quality
-            try:
-                from ai_manager_enhanced import EnhancedAIEnhancementManager
-                ai_manager = EnhancedAIEnhancementManager()
-            except ImportError:
-                from ai_manager import AIEnhancementManager
-                ai_manager = AIEnhancementManager()
+            # Import AI manager for enhanced response quality
+            from ai_manager import AIEnhancementManager
+            ai_manager = AIEnhancementManager()
             
             # Create enhanced prompt for better responses
             enhanced_prompt = f"""

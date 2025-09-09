@@ -3,13 +3,23 @@ Authentication models for Dubai Real Estate RAG System
 """
 
 from sqlalchemy import Column, Integer, String, Boolean, DateTime, Text, ForeignKey, Table
-from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 from datetime import datetime
 import uuid
 
-Base = declarative_base()
+from models import Base
+
+# Import Brokerage model to resolve relationship
+try:
+    from models.brokerage_models import Brokerage
+except ImportError:
+    # If Brokerage model is not available, define a placeholder
+    class Brokerage(Base):
+        __tablename__ = "brokerages"
+        id = Column(Integer, primary_key=True, index=True)
+        name = Column(String(255), nullable=False, index=True)
+        users = relationship("User", back_populates="brokerage")
 
 # Association tables for many-to-many relationships
 role_permissions = Table(
@@ -35,7 +45,8 @@ class User(Base):
     password_hash = Column(String(255), nullable=False)
     first_name = Column(String(100), nullable=False)
     last_name = Column(String(100), nullable=False)
-    role = Column(String(50), default='client')  # client, agent, employee, admin
+    role = Column(String(50), default='client')  # client, agent, employee, admin, brokerage_owner
+    brokerage_id = Column(Integer, ForeignKey('brokerages.id'), nullable=True, index=True)
     is_active = Column(Boolean, default=True)
     email_verified = Column(Boolean, default=False)
     email_verification_token = Column(String(255), unique=True, nullable=True)
@@ -50,6 +61,22 @@ class User(Base):
     # Relationships
     sessions = relationship("UserSession", back_populates="user", cascade="all, delete-orphan")
     user_roles_rel = relationship("Role", secondary=user_roles, back_populates="users")
+    brokerage = relationship("Brokerage", back_populates="users")
+    team_performance = relationship("TeamPerformance", back_populates="agent", cascade="all, delete-orphan")
+    created_knowledge = relationship("KnowledgeBase", back_populates="creator", cascade="all, delete-orphan")
+    created_workflows = relationship("WorkflowAutomation", back_populates="creator", cascade="all, delete-orphan")
+    created_nurturing_sequences = relationship("ClientNurturing", back_populates="creator", cascade="all, delete-orphan")
+    created_compliance_rules = relationship("ComplianceRule", back_populates="creator", cascade="all, delete-orphan")
+    consistency_metrics = relationship("AgentConsistencyMetric", back_populates="agent", cascade="all, delete-orphan")
+    activity_analytics = relationship("UserActivityAnalytic", back_populates="user", cascade="all, delete-orphan")
+    developer_settings = relationship("DeveloperPanelSetting", back_populates="user", cascade="all, delete-orphan")
+    
+    # AI Assistant relationships
+    ai_requests = relationship("AIRequest", foreign_keys="AIRequest.agent_id", cascade="all, delete-orphan")
+    human_expert_profile = relationship("HumanExpert", back_populates="user", uselist=False, cascade="all, delete-orphan")
+    voice_requests = relationship("VoiceRequest", back_populates="agent", cascade="all, delete-orphan")
+    task_automations = relationship("TaskAutomation", back_populates="agent", cascade="all, delete-orphan")
+    created_nurturing_sequences_ai = relationship("SmartNurturingSequence", back_populates="creator", cascade="all, delete-orphan")
     
     def __repr__(self):
         return f"<User(id={self.id}, email='{self.email}', role='{self.role}')>"

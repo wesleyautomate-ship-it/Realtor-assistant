@@ -47,13 +47,13 @@ import {
 } from '@mui/icons-material';
 
 // Phase 4B API integration
-import { useAuth } from '../../context/AuthContext';
-import { apiClient } from '../../utils/apiClient';
+import { useAppContext } from '../../context/AppContext';
+import { api } from '../../utils/apiClient';
 import AdvancedMLPanel from './AdvancedMLPanel';
 
 const AIInsightsPanel = () => {
   const theme = useTheme();
-  const { user } = useAuth();
+  const { currentUser: user } = useAppContext();
   const [expanded, setExpanded] = useState(true);
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState(0);
@@ -112,8 +112,8 @@ const AIInsightsPanel = () => {
     try {
       // Load market alerts and opportunities
       const [alerts, opps] = await Promise.all([
-        apiClient.get('/ml/notifications/market-alerts'),
-        apiClient.get('/ml/notifications/opportunities')
+        api.get('/ml/notifications/market-alerts'),
+        api.get('/ml/notifications/opportunities')
       ]);
       
       setMarketAlerts(alerts.data || []);
@@ -154,7 +154,7 @@ const AIInsightsPanel = () => {
 
   const loadAutomatedReports = async () => {
     try {
-      const response = await apiClient.get('/ml/reports/history?limit=10');
+      const response = await api.get('/ml/reports/history?limit=10');
       return response.data || [];
     } catch (error) {
       console.error('Failed to load automated reports:', error);
@@ -164,7 +164,7 @@ const AIInsightsPanel = () => {
 
   const loadSmartNotifications = async () => {
     try {
-      const response = await apiClient.get(`/ml/notifications/user/${user?.id}?status=active&limit=20`);
+      const response = await api.get(`/ml/notifications/user/${user?.id}?status=active&limit=20`);
       return response.data || [];
     } catch (error) {
       console.error('Failed to load smart notifications:', error);
@@ -174,7 +174,7 @@ const AIInsightsPanel = () => {
 
   const loadPerformanceMetrics = async () => {
     try {
-      const response = await apiClient.get(`/ml/analytics/agent-performance/${user?.id}?period=monthly&include_comparison=true`);
+      const response = await api.get(`/ml/analytics/agent-performance/${user?.id}?period=monthly&include_comparison=true`);
       return response.data;
     } catch (error) {
       console.error('Failed to load performance metrics:', error);
@@ -185,7 +185,7 @@ const AIInsightsPanel = () => {
   const generateAutomatedReport = async (reportType, location, propertyType) => {
     setLoading(true);
     try {
-      const response = await apiClient.post('/ml/reports/generate', {
+      const response = await api.post('/ml/reports/generate', {
         report_type: reportType,
         location: location,
         property_type: propertyType,

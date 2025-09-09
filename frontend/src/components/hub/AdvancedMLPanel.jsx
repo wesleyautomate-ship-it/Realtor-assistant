@@ -50,12 +50,11 @@ import {
   Speed as SpeedIcon,
   Memory as MemoryIcon
 } from '@mui/icons-material';
-import { useAuth } from '../../contexts/AuthContext';
-import { apiClient } from '../../utils/apiClient';
-import { toast } from 'react-toastify';
+import { useAppContext } from '../../context/AppContext';
+import { api } from '../../utils/apiClient';
 
 const AdvancedMLPanel = () => {
-  const { user } = useAuth();
+  const { currentUser: user } = useAppContext();
   const [models, setModels] = useState({});
   const [modelStatus, setModelStatus] = useState({});
   const [performance, setPerformance] = useState({});
@@ -97,20 +96,20 @@ const AdvancedMLPanel = () => {
       setLoading(true);
       
       // Load models status
-      const statusResponse = await apiClient.get('/ml/advanced/models/status');
+      const statusResponse = await api.get('/ml/advanced/models/status');
       setModelStatus(statusResponse.data);
       
       // Load performance metrics
-      const performanceResponse = await apiClient.get('/ml/advanced/models/performance');
+      const performanceResponse = await api.get('/ml/advanced/models/performance');
       setPerformance(performanceResponse.data);
       
       // Load insights
-      const insightsResponse = await apiClient.get('/ml/advanced/models/insights');
+      const insightsResponse = await api.get('/ml/advanced/models/insights');
       setInsights(insightsResponse.data);
       
     } catch (error) {
       console.error('Error loading ML models data:', error);
-      toast.error('Failed to load ML models data');
+      console.error('Failed to load ML models data');
     } finally {
       setLoading(false);
     }
@@ -120,10 +119,10 @@ const AdvancedMLPanel = () => {
     try {
       setTrainingStatus(prev => ({ ...prev, [modelName]: 'training' }));
       
-      const response = await apiClient.post(`/ml/advanced/models/train/${modelName}`);
+      const response = await api.post(`/ml/advanced/models/train/${modelName}`);
       
       if (response.data.status === 'success') {
-        toast.success(`Training started for ${modelName} model`);
+        console.success(`Training started for ${modelName} model`);
         setTrainingStatus(prev => ({ ...prev, [modelName]: 'started' }));
         
         // Poll for completion
@@ -131,7 +130,7 @@ const AdvancedMLPanel = () => {
       }
     } catch (error) {
       console.error(`Error training ${modelName}:`, error);
-      toast.error(`Failed to start training for ${modelName}`);
+      console.error(`Failed to start training for ${modelName}`);
       setTrainingStatus(prev => ({ ...prev, [modelName]: 'error' }));
     }
   };
@@ -140,10 +139,10 @@ const AdvancedMLPanel = () => {
     try {
       setLoading(true);
       
-      const response = await apiClient.post('/ml/advanced/models/train-all');
+      const response = await api.post('/ml/advanced/models/train-all');
       
       if (response.data.status === 'success') {
-        toast.success(`Training started for ${response.data.models.length} models`);
+        console.success(`Training started for ${response.data.models.length} models`);
         
         // Update status for all models
         const newStatus = {};
@@ -159,7 +158,7 @@ const AdvancedMLPanel = () => {
       }
     } catch (error) {
       console.error('Error training all models:', error);
-      toast.error('Failed to start training for all models');
+      console.error('Failed to start training for all models');
     } finally {
       setLoading(false);
     }
@@ -171,7 +170,7 @@ const AdvancedMLPanel = () => {
     
     const poll = async () => {
       try {
-        const response = await apiClient.get('/ml/advanced/models/performance', {
+        const response = await api.get('/ml/advanced/models/performance', {
           params: { model_name: modelName }
         });
         
@@ -180,7 +179,7 @@ const AdvancedMLPanel = () => {
         if (modelPerformance && modelPerformance.performance && modelPerformance.performance.r2) {
           // Training completed
           setTrainingStatus(prev => ({ ...prev, [modelName]: 'completed' }));
-          toast.success(`${modelName} model training completed!`);
+          console.success(`${modelName} model training completed!`);
           
           // Refresh data
           setTimeout(() => {
@@ -195,7 +194,7 @@ const AdvancedMLPanel = () => {
           setTimeout(poll, 10000); // Poll every 10 seconds
         } else {
           setTrainingStatus(prev => ({ ...prev, [modelName]: 'timeout' }));
-          toast.warning(`${modelName} model training timed out`);
+          console.warning(`${modelName} model training timed out`);
         }
         
       } catch (error) {
@@ -216,10 +215,10 @@ const AdvancedMLPanel = () => {
     try {
       setTrainingStatus(prev => ({ ...prev, [modelName]: 'optimizing' }));
       
-      const response = await apiClient.post(`/ml/advanced/models/optimize/${modelName}`);
+      const response = await api.post(`/ml/advanced/models/optimize/${modelName}`);
       
       if (response.data.status === 'success') {
-        toast.success(`Hyperparameter optimization started for ${modelName}`);
+        console.success(`Hyperparameter optimization started for ${modelName}`);
         setTrainingStatus(prev => ({ ...prev, [modelName]: 'optimizing' }));
         
         // Poll for completion
@@ -227,7 +226,7 @@ const AdvancedMLPanel = () => {
       }
     } catch (error) {
       console.error(`Error optimizing ${modelName}:`, error);
-      toast.error(`Failed to start optimization for ${modelName}`);
+      console.error(`Failed to start optimization for ${modelName}`);
       setTrainingStatus(prev => ({ ...prev, [modelName]: 'error' }));
     }
   };
@@ -236,17 +235,17 @@ const AdvancedMLPanel = () => {
     try {
       setLoading(true);
       
-      const response = await apiClient.post('/ml/advanced/models/generate-training-data', {
+      const response = await api.post('/ml/advanced/models/generate-training-data', {
         num_samples: 10000
       });
       
       if (response.data.status === 'success') {
-        toast.success(`Generated ${response.data.samples_count} training samples`);
+        console.success(`Generated ${response.data.samples_count} training samples`);
         loadModelsData(); // Refresh data
       }
     } catch (error) {
       console.error('Error generating training data:', error);
-      toast.error('Failed to generate training data');
+      console.error('Failed to generate training data');
     } finally {
       setLoading(false);
     }
@@ -256,18 +255,18 @@ const AdvancedMLPanel = () => {
     try {
       setLoading(true);
       
-      const response = await apiClient.post('/ml/advanced/predict/property-price', {
+      const response = await api.post('/ml/advanced/predict/property-price', {
         property_features: propertyFeatures,
         model_name: selectedModel
       });
       
       if (response.data.status === 'success') {
         setPredictionResult(response.data.prediction);
-        toast.success('Property price prediction completed!');
+        console.success('Property price prediction completed!');
       }
     } catch (error) {
       console.error('Error making prediction:', error);
-      toast.error('Failed to make property price prediction');
+      console.error('Failed to make property price prediction');
     } finally {
       setLoading(false);
     }

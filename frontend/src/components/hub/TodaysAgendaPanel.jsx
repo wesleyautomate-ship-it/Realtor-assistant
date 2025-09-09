@@ -26,11 +26,11 @@ import {
   Refresh as RefreshIcon,
   Add as AddIcon,
 } from '@mui/icons-material';
-import { useAuth } from '../../context/AuthContext';
-import { apiClient } from '../../utils/apiClient';
+import { useAppContext } from '../../context/AppContext';
+import { api } from '../../utils/apiClient';
 
 const TodaysAgendaPanel = () => {
-  const { user } = useAuth();
+  const { currentUser: user } = useAppContext();
   const [agenda, setAgenda] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -46,7 +46,7 @@ const TodaysAgendaPanel = () => {
       
       // Try to fetch from backend first
       try {
-        const response = await apiClient.get('/users/me/agenda');
+        const response = await api.get('/users/me/agenda');
         setAgenda(response.data || []);
       } catch (apiError) {
         console.log('Using mock agenda data');

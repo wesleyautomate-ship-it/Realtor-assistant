@@ -53,7 +53,7 @@ import {
   Schedule as ScheduleIcon,
   PlayArrow as PlayArrowIcon
 } from '@mui/icons-material';
-import { apiUtils } from '../utils/api';
+import { api } from '../utils/apiClient';
 
 const AdminFilesNew = () => {
   const theme = useTheme();
@@ -83,7 +83,7 @@ const AdminFilesNew = () => {
   const fetchFiles = async () => {
     try {
       setLoading(true);
-      const response = await apiUtils.getAdminFiles();
+      const response = await api.getAdminFiles();
       setFiles(response.files || []);
     } catch (error) {
       console.error('Error fetching files:', error);
@@ -104,7 +104,7 @@ const AdminFilesNew = () => {
       setUploading(true);
 
       // Use the new async API function
-      const result = await apiUtils.uploadFileAsync(
+      const result = await api.uploadFileAsync(
         uploadForm.file,
         uploadForm.instructions
       );
@@ -150,7 +150,7 @@ const AdminFilesNew = () => {
   const startTaskPolling = (taskId) => {
     const interval = setInterval(async () => {
       try {
-        const taskStatus = await apiUtils.getProcessingStatus(taskId);
+        const taskStatus = await api.getProcessingStatus(taskId);
         
         setProcessingTasks(prev => ({
           ...prev,

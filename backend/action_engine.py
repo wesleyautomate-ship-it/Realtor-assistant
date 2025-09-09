@@ -97,10 +97,9 @@ class ActionEngine:
                     "history": history,
                     "days_since_last_contact": self._calculate_days_since_contact(lead_profile.get("last_contacted_at"))
                 }
-        
-    except Exception as e:
-        logger.error(f"Error getting follow-up context for lead {lead_id}: {e}")
-        return {"error": f"Failed to retrieve lead context: {str(e)}"}
+        except Exception as e:
+            logger.error(f"Error getting follow-up context for lead {lead_id}: {e}")
+            return {"error": f"Failed to retrieve lead context: {str(e)}"}
     
     def execute_ai_command(self, command: str, user_id: int, context: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
         """

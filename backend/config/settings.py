@@ -16,7 +16,7 @@ BASE_DIR = Path(__file__).parent.parent.parent
 # Database Configuration
 DATABASE_URL = os.getenv(
     "DATABASE_URL", 
-    "postgresql://postgres:password123@localhost:5432/real_estate_db"
+    "postgresql://admin:password123@localhost:5432/real_estate_db"
 )
 
 # ChromaDB Configuration
@@ -29,10 +29,7 @@ if not GOOGLE_API_KEY:
     GOOGLE_API_KEY = "AIzaSyAocEBBwmq_eZ1Dy5RT9S7Kkfyw8nNibmM"
     print("⚠️  Using fallback API key - set GOOGLE_API_KEY in .env for production")
 
-# Reelly API Configuration
-REELLY_API_KEY = os.getenv("REELLY_API_KEY")
-if not REELLY_API_KEY:
-    print("⚠️  REELLY_API_KEY not set - Reelly integration will be disabled")
+# Reelly API removed
 
 # AI Model Configuration
 AI_MODEL = os.getenv("AI_MODEL", "gemini-1.5-flash")
@@ -89,6 +86,7 @@ BATCH_SIZE = int(os.getenv("BATCH_SIZE", "50"))
 SECRET_KEY = os.getenv("SECRET_KEY", "your-secret-key-change-in-production")
 ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", "30"))
 JWT_ALGORITHM = os.getenv("JWT_ALGORITHM", "HS256")
+ALGORITHM = JWT_ALGORITHM  # Alias for backward compatibility
 JWT_REFRESH_TOKEN_EXPIRE_DAYS = int(os.getenv("JWT_REFRESH_TOKEN_EXPIRE_DAYS", "7"))
 BCRYPT_ROUNDS = int(os.getenv("BCRYPT_ROUNDS", "12"))
 RATE_LIMIT_REQUESTS_PER_MINUTE = int(os.getenv("RATE_LIMIT_REQUESTS_PER_MINUTE", "60"))
@@ -119,7 +117,7 @@ class Settings:
         self.max_workers = MAX_WORKERS
         self.batch_size = BATCH_SIZE
         self.secret_key = SECRET_KEY
-        self.reelly_api_key = REELLY_API_KEY
+        # Reelly API removed
         self.is_production = IS_PRODUCTION
         self.jwt_algorithm = JWT_ALGORITHM
         self.jwt_refresh_token_expire_days = JWT_REFRESH_TOKEN_EXPIRE_DAYS
@@ -156,7 +154,7 @@ __all__ = [
     'UPLOAD_DIR', 'ALLOWED_EXTENSIONS', 'MAX_FILE_SIZE',
     'REDIS_URL', 'CACHE_TTL', 'LOG_LEVEL', 'LOG_FILE',
     'MAX_WORKERS', 'BATCH_SIZE', 'SECRET_KEY', 'IS_PRODUCTION',
-    'JWT_ALGORITHM', 'JWT_REFRESH_TOKEN_EXPIRE_DAYS', 'BCRYPT_ROUNDS',
+    'JWT_ALGORITHM', 'ALGORITHM', 'JWT_REFRESH_TOKEN_EXPIRE_DAYS', 'BCRYPT_ROUNDS',
     'RATE_LIMIT_REQUESTS_PER_MINUTE', 'RATE_LIMIT_LOGIN_ATTEMPTS',
     'validate_settings', 'Settings', 'get_settings'
 ]

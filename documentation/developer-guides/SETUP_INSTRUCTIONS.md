@@ -67,8 +67,7 @@ CHROMA_PORT=8000
 # Google AI Configuration
 GOOGLE_API_KEY=your-google-api-key-here
 
-# Reelly API Configuration
-REELLY_API_KEY=your-reelly-api-key-here
+# Reelly API removed
 
 # AI Model Configuration
 AI_MODEL=gemini-1.5-flash
@@ -154,13 +153,7 @@ docker run -p 8000:8000 chromadb/chroma:latest
    - Click "Create Credentials" > "API Key"
    - Copy the API key to your `.env` file
 
-### **6. Reelly API Setup**
-
-1. **Go to [Reelly](https://reelly.com/)**
-2. **Sign up for an account**
-3. **Navigate to API section**
-4. **Generate API key**
-5. **Add to your `.env` file**
+### **6. Reelly API Setup** - REMOVED
 
 ---
 
@@ -384,7 +377,7 @@ DATABASE_URL=postgresql://user:password@host:port/database
 CHROMA_HOST=your-chromadb-host
 CHROMA_PORT=8000
 GOOGLE_API_KEY=your-production-google-api-key
-REELLY_API_KEY=your-production-reelly-api-key
+# Reelly API removed
 JWT_SECRET_KEY=your-production-jwt-secret
 SECRET_KEY=your-production-secret-key
 ENVIRONMENT=production
@@ -524,7 +517,7 @@ client = chromadb.Client(chromadb.config.Settings(
 - [ ] PostgreSQL installed and running
 - [ ] ChromaDB running
 - [ ] Google Cloud API key configured
-- [ ] Reelly API key configured
+- [ ] Reelly API removed
 - [ ] Environment variables set
 - [ ] Backend server running on port 8001
 - [ ] Frontend server running on port 3000

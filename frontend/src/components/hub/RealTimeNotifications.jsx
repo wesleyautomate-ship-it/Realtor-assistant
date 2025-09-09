@@ -33,11 +33,11 @@ import {
   Refresh as RefreshIcon,
   Settings as SettingsIcon,
 } from '@mui/icons-material';
-import { useAuth } from '../../context/AuthContext';
+import { useAppContext } from '../../context/AppContext';
 
 const RealTimeNotifications = () => {
   const theme = useTheme();
-  const { user } = useAuth();
+  const { currentUser: user } = useAppContext();
   const [notifications, setNotifications] = useState([]);
   const [unreadCount, setUnreadCount] = useState(0);
   const [expanded, setExpanded] = useState(false);
@@ -57,7 +57,7 @@ const RealTimeNotifications = () => {
 
     try {
       // In production, this would be your WebSocket server URL
-      const wsUrl = process.env.REACT_APP_WS_URL || `ws://localhost:8000/ws/notifications/${user.id}`;
+      const wsUrl = process.env.REACT_APP_WS_URL || `ws://localhost:8003/ws/notifications/${user.id}`;
       
       wsRef.current = new WebSocket(wsUrl);
       
@@ -146,6 +146,9 @@ const RealTimeNotifications = () => {
         break;
       case 'pong':
         // Server responded to ping
+        break;
+      case 'heartbeat':
+        // Server heartbeat - no action needed
         break;
       default:
         console.log('Unknown WebSocket message type:', data.type);

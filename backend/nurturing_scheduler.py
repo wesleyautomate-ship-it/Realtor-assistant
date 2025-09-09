@@ -153,7 +153,7 @@ class NurturingScheduler:
                 # Get scheduled interactions for the next hour
                 result = conn.execute(text("""
                     SELECT lh.id, lh.lead_id, lh.interaction_type, lh.content, 
-                           lh.scheduled_for, l.name as lead_name, l.agent_id,
+                           lh.scheduled_for, l.client_name as lead_name, l.agent_id,
                            u.first_name, u.last_name
                     FROM lead_history lh
                     JOIN leads l ON lh.lead_id = l.id
@@ -282,7 +282,7 @@ class NurturingScheduler:
             with engine.connect() as conn:
                 # Get leads needing attention
                 result = conn.execute(text("""
-                    SELECT l.id, l.name, l.email, l.agent_id, l.last_contacted_at,
+                    SELECT l.id, l.client_name, l.client_email, l.agent_id, l.last_contacted_at,
                            l.nurture_status, l.status
                     FROM leads l
                     WHERE (l.last_contacted_at IS NULL OR 
@@ -297,8 +297,8 @@ class NurturingScheduler:
                 for row in result.fetchall():
                     leads.append({
                         "lead_id": row.id,
-                        "lead_name": row.name,
-                        "lead_email": row.email,
+                        "lead_name": row.client_name,
+                        "lead_email": row.client_email,
                         "agent_id": row.agent_id,
                         "last_contacted": row.last_contacted_at.isoformat() if row.last_contacted_at else None,
                         "nurture_status": row.nurture_status,

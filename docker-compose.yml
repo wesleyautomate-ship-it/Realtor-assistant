@@ -3,18 +3,18 @@ services:
   postgres:
     image: postgres:15
     environment:
-      POSTGRES_DB: real_estate_db_copy
+      POSTGRES_DB: real_estate_db
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: password123
     ports:
-      - "5433:5432"  # Different port to avoid conflict
+      - "5432:5432"  # Standard PostgreSQL port
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./backend/init_database.py:/docker-entrypoint-initdb.d/init_database.py:ro
     networks:
       - rag-network
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U admin -d real_estate_db_copy"]
+      test: ["CMD-SHELL", "pg_isready -U admin -d real_estate_db"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -23,7 +23,7 @@ services:
   redis:
     image: redis:7-alpine
     ports:
-      - "6380:6379"  # Different port to avoid conflict
+      - "6379:6379"  # Standard Redis port
     networks:
       - rag-network
     healthcheck:
@@ -36,9 +36,9 @@ services:
   chromadb:
     image: chromadb/chroma:latest
     ports:
-      - "8004:8000"  # Different port to avoid conflict
+      - "8002:8000"  # ChromaDB port
     volumes:
-      - chroma_data_copy:/chroma/chroma
+      - chroma_data:/chroma/chroma
     networks:
       - rag-network
     healthcheck:
@@ -52,19 +52,34 @@ services:
   backend:
     build: ./backend
     ports:
-      - "8002:8001"  # Different port to avoid conflict
+      - "8003:8001"  # Standard backend port
     env_file:
       - ./docker.env
     environment:
-      - DATABASE_URL=${DATABASE_URL:-postgresql://admin:password123@postgres:5432/real_estate_db}
+      - DATABASE_URL=postgresql://admin:password123@postgres:5432/real_estate_db
       - CHROMA_HOST=chromadb
       - CHROMA_PORT=8000
       - REDIS_HOST=redis
       - REDIS_PORT=6379
       - REDIS_URL=redis://redis:6379/0
-      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
-      - REELLY_API_KEY=${REELLY_API_KEY}
-      - SECRET_KEY=${SECRET_KEY}
+      - GOOGLE_API_KEY=AIzaSyAocEBBwmq_eZ1Dy5RT9S7Kkfyw8nNibmM
+      - SECRET_KEY=your-secret-key-change-in-production-make-it-long-and-random-123456789
+      - JWT_ALGORITHM=HS256
+      - ALGORITHM=HS256
+      - ACCESS_TOKEN_EXPIRE_MINUTES=30
+      - JWT_REFRESH_TOKEN_EXPIRE_DAYS=7
+      - BCRYPT_ROUNDS=12
+      - HOST=0.0.0.0
+      - PORT=8001
+      - DEBUG=true
+      - AI_MODEL=gemini-1.5-flash
+      - CACHE_TTL=3600
+      - LOG_LEVEL=INFO
+      - MAX_WORKERS=4
+      - BATCH_SIZE=50
+      - RATE_LIMIT_REQUESTS_PER_MINUTE=60
+      - RATE_LIMIT_LOGIN_ATTEMPTS=5
+      - MAX_FILE_SIZE=10485760
       - ENABLE_BLUEPRINT_2=true
       - NURTURING_SCHEDULER_ENABLED=true
       - DOCUMENT_GENERATION_ENABLED=true
@@ -93,9 +108,9 @@ services:
   frontend:
     build: ./frontend
     ports:
-      - "3001:3000"  # Different port to avoid conflict
+      - "3000:3000"  # Standard frontend port
     environment:
-      - REACT_APP_API_URL=http://localhost:8002
+      - REACT_APP_API_URL=http://localhost:8003
     depends_on:
       backend:
         condition: service_healthy
@@ -118,7 +133,7 @@ services:
       - REDIS_HOST=redis
       - REDIS_PORT=6379
       - GOOGLE_API_KEY=AIzaSyAocEBBwmq_eZ1Dy5RT9S7Kkfyw8nNibmM
-      - REELLY_API_KEY=${REELLY_API_KEY:-your_reelly_api_key_here}
+      # Reelly API removed
       - SECRET_KEY=332534d98fbf5ea7b5251e8078506a45
       - ENABLE_BLUEPRINT_2=true
     depends_on:

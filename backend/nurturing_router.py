@@ -52,7 +52,7 @@ async def get_user_agenda(current_user: User = Depends(get_current_user)):
         with engine.connect() as conn:
             # Get scheduled follow-ups for today
             follow_ups_result = conn.execute(text("""
-                SELECT l.id, l.name, l.email, l.next_follow_up_at, l.nurture_status
+                SELECT l.id, l.client_name, l.client_email, l.next_follow_up_at, l.nurture_status
                 FROM leads l
                 WHERE l.agent_id = :agent_id
                 AND l.next_follow_up_at::date = CURRENT_DATE
@@ -64,8 +64,8 @@ async def get_user_agenda(current_user: User = Depends(get_current_user)):
             for row in follow_ups_result.fetchall():
                 follow_ups.append({
                     "lead_id": row.id,
-                    "lead_name": row.name,
-                    "lead_email": row.email,
+                    "lead_name": row.client_name,
+                    "lead_email": row.client_email,
                     "scheduled_time": row.next_follow_up_at.isoformat() if row.next_follow_up_at else None,
                     "nurture_status": row.nurture_status,
                     "type": "scheduled_follow_up"
@@ -73,7 +73,7 @@ async def get_user_agenda(current_user: User = Depends(get_current_user)):
             
             # Get leads needing attention
             attention_result = conn.execute(text("""
-                SELECT l.id, l.name, l.email, l.last_contacted_at, l.nurture_status
+                SELECT l.id, l.client_name, l.client_email, l.last_contacted_at, l.nurture_status
                 FROM leads l
                 WHERE l.agent_id = :agent_id
                 AND (l.last_contacted_at IS NULL OR 
@@ -88,8 +88,8 @@ async def get_user_agenda(current_user: User = Depends(get_current_user)):
             for row in attention_result.fetchall():
                 attention_needed.append({
                     "lead_id": row.id,
-                    "lead_name": row.name,
-                    "lead_email": row.email,
+                    "lead_name": row.client_name,
+                    "lead_email": row.client_email,
                     "last_contacted": row.last_contacted_at.isoformat() if row.last_contacted_at else None,
                     "nurture_status": row.nurture_status,
                     "type": "needs_attention"

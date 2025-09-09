@@ -153,13 +153,13 @@ export const SPACING_SCALE = {
 };
 
 export const BORDER_RADIUS = {
-  // Consistent border radius values
-  xs: '0.25rem',    // 4px
-  sm: '0.5rem',     // 8px
-  md: '0.75rem',    // 12px
-  lg: '1rem',       // 16px
-  xl: '1.5rem',     // 24px
-  round: '50%'      // Circular
+  // Consistent border radius values (numbers for MUI compatibility)
+  xs: 4,    // 4px
+  sm: 8,    // 8px
+  md: 12,   // 12px
+  lg: 16,   // 16px
+  xl: 24,   // 24px
+  round: '50%'      // Circular (keep as string for special case)
 };
 
 export const SHADOWS = {

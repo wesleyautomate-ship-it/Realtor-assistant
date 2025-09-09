@@ -70,7 +70,7 @@ import {
   Close as CloseIcon,
 } from '@mui/icons-material';
 import { useAppContext } from '../context/AppContext';
-import { apiUtils, handleApiError } from '../utils/api';
+import { api } from '../utils/apiClient';
 
 const AdminFiles = () => {
   const { currentUser } = useAppContext();
@@ -124,7 +124,7 @@ const AdminFiles = () => {
     try {
       setLoading(true);
       setError(null);
-      const response = await apiUtils.getAdminFiles();
+      const response = await api.getAdminFiles();
       setFiles(response.files || []);
       
       // Calculate stats from real data

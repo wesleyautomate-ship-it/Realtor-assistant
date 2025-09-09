@@ -22,7 +22,7 @@ import {
   Keyboard as KeyboardIcon,
   Lightbulb as LightbulbIcon,
 } from '@mui/icons-material';
-import { apiUtils, handleApiError } from '../utils/api';
+import { api } from '../utils/apiClient';
 
 const GlobalCommandBar = ({ 
   open, 
@@ -90,7 +90,7 @@ const GlobalCommandBar = ({
       setError(null);
       setSuccess(null);
 
-      const result = await apiUtils.sendGlobalCommand(command.trim());
+      const result = await api.sendGlobalCommand(command.trim());
       
       setSuccess('Command executed successfully!');
       
@@ -105,7 +105,7 @@ const GlobalCommandBar = ({
 
     } catch (error) {
       console.error('Error executing command:', error);
-      const errorMessage = handleApiError(error);
+      const errorMessage = error.message || 'An error occurred';
       setError(errorMessage);
     } finally {
       setLoading(false);

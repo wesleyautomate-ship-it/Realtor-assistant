@@ -298,11 +298,14 @@ export const apiUtils = {
   },
 
   // Advanced Chat: Entity Detection and Context API
-  detectEntities: async (message) => {
+  detectEntities: async (message, sessionId) => {
     try {
-      const response = await api.post('/advanced-chat/ai/detect-entities', {
+      if (!sessionId) {
+        throw new Error('Session ID is required for entity detection');
+      }
+      const response = await api.post(`/sessions/${sessionId}/advanced/detect-entities`, {
         message,
-        conversation_id: null // Will be set by the component
+        session_id: sessionId
       });
       return response.data;
     } catch (error) {
@@ -311,9 +314,12 @@ export const apiUtils = {
     }
   },
 
-  fetchEntityContext: async (entityType, entityId) => {
+  fetchEntityContext: async (entityType, entityId, sessionId) => {
     try {
-      const response = await api.get(`/advanced-chat/context/${entityType}/${entityId}`);
+      if (!sessionId) {
+        throw new Error('Session ID is required for entity context fetching');
+      }
+      const response = await api.get(`/sessions/${sessionId}/advanced/context/${entityType}/${entityId}`);
       return response.data;
     } catch (error) {
       console.error('Error fetching entity context:', error);
@@ -321,9 +327,12 @@ export const apiUtils = {
     }
   },
 
-  getPropertyDetails: async (propertyId) => {
+  getPropertyDetails: async (propertyId, sessionId) => {
     try {
-      const response = await api.get(`/advanced-chat/properties/${propertyId}/details`);
+      if (!sessionId) {
+        throw new Error('Session ID is required for property details');
+      }
+      const response = await api.get(`/sessions/${sessionId}/advanced/properties/${propertyId}/details`);
       return response.data;
     } catch (error) {
       console.error('Error fetching property details:', error);
@@ -331,9 +340,12 @@ export const apiUtils = {
     }
   },
 
-  getClientInfo: async (clientId) => {
+  getClientInfo: async (clientId, sessionId) => {
     try {
-      const response = await api.get(`/advanced-chat/clients/${clientId}`);
+      if (!sessionId) {
+        throw new Error('Session ID is required for client info');
+      }
+      const response = await api.get(`/sessions/${sessionId}/advanced/clients/${clientId}`);
       return response.data;
     } catch (error) {
       console.error('Error fetching client info:', error);
@@ -341,13 +353,16 @@ export const apiUtils = {
     }
   },
 
-  getMarketContext: async (location, propertyType) => {
+  getMarketContext: async (location, propertyType, sessionId) => {
     try {
+      if (!sessionId) {
+        throw new Error('Session ID is required for market context');
+      }
       const params = new URLSearchParams();
       if (location) params.append('location', location);
       if (propertyType) params.append('property_type', propertyType);
       
-      const response = await api.get(`/advanced-chat/market/context?${params.toString()}`);
+      const response = await api.get(`/sessions/${sessionId}/advanced/market/context?${params.toString()}`);
       return response.data;
     } catch (error) {
       console.error('Error fetching market context:', error);
@@ -355,9 +370,12 @@ export const apiUtils = {
     }
   },
 
-  batchFetchContext: async (entities) => {
+  batchFetchContext: async (entities, sessionId) => {
     try {
-      const response = await api.post('/advanced-chat/context/batch', {
+      if (!sessionId) {
+        throw new Error('Session ID is required for batch context');
+      }
+      const response = await api.post(`/sessions/${sessionId}/advanced/context/batch`, {
         entities: entities.map(entity => ({
           type: entity.type,
           id: entity.id,
@@ -371,9 +389,12 @@ export const apiUtils = {
     }
   },
 
-  clearContextCache: async () => {
+  clearContextCache: async (sessionId) => {
     try {
-      const response = await api.delete('/advanced-chat/context/cache/clear');
+      if (!sessionId) {
+        throw new Error('Session ID is required for cache clearing');
+      }
+      const response = await api.delete(`/sessions/${sessionId}/advanced/context/cache/clear`);
       return response.data;
     } catch (error) {
       console.error('Error clearing context cache:', error);
@@ -381,9 +402,12 @@ export const apiUtils = {
     }
   },
 
-  getAdvancedChatHealth: async () => {
+  getAdvancedChatHealth: async (sessionId) => {
     try {
-      const response = await api.get('/advanced-chat/health');
+      if (!sessionId) {
+        throw new Error('Session ID is required for health check');
+      }
+      const response = await api.get(`/sessions/${sessionId}/advanced/health`);
       return response.data;
     } catch (error) {
       console.error('Error checking Advanced Chat health:', error);

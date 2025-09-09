@@ -31,12 +31,15 @@ import {
   Logout as LogoutIcon,
   Menu as MenuIcon,
   Close as CloseIcon,
+  SmartToy as SmartToyIcon,
+  Settings as SettingsIcon,
   Chat as ChatIcon,
   Keyboard as KeyboardIcon,
+  People as PeopleIcon,
 } from '@mui/icons-material';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAppContext } from '../context/AppContext';
-import { apiUtils, handleApiError } from '../utils/api';
+import { api } from '../utils/apiClient';
 
 const Sidebar = ({ open, onToggle, onClose, isMobile, onOpenCommandBar }) => {
   const theme = useTheme();
@@ -81,7 +84,7 @@ const Sidebar = ({ open, onToggle, onClose, isMobile, onOpenCommandBar }) => {
       navigate(`/chat/${newConversation.id}`);
     } catch (error) {
       console.error('Failed to create new chat:', error);
-      const errorMessage = handleApiError(error);
+      const errorMessage = error.message || 'An error occurred';
       setSnackbar({
         open: true,
         message: `Failed to create new chat: ${errorMessage}`,
@@ -122,12 +125,18 @@ const Sidebar = ({ open, onToggle, onClose, isMobile, onOpenCommandBar }) => {
     navigate('/login');
   };
 
-  // Navigation items based on user role
+  // Simplified navigation items - only 3 main sections
   const navigationItems = [
     {
-      text: 'AI Copilot',
+      text: 'Hub',
       icon: <DashboardIcon />,
       path: '/hub',
+      show: true,
+    },
+    {
+      text: 'Clients',
+      icon: <PeopleIcon />,
+      path: '/clients',
       show: true,
     },
     {
@@ -135,18 +144,6 @@ const Sidebar = ({ open, onToggle, onClose, isMobile, onOpenCommandBar }) => {
       icon: <HomeIcon />,
       path: '/properties',
       show: true,
-    },
-    {
-      text: 'File Hub',
-      icon: <FolderIcon />,
-      path: '/admin/files',
-      show: currentUser?.role === 'admin',
-    },
-    {
-      text: 'Client Management',
-      icon: <HomeIcon />,
-      path: '/clients',
-      show: currentUser?.role === 'agent',
     },
   ];
 
@@ -212,28 +209,28 @@ const Sidebar = ({ open, onToggle, onClose, isMobile, onOpenCommandBar }) => {
         </Button>
       </Box>
 
-      {/* AI Command Bar Button */}
+      {/* AI Command - Primary Assistant Entry Point */}
       <Box sx={{ px: theme.spacing(2), mb: theme.spacing(2) }}>
         <Button
           fullWidth
-          variant="outlined"
-          startIcon={<KeyboardIcon />}
+          variant="contained"
+          startIcon={<SmartToyIcon />}
           onClick={handleOpenCommandBar}
           sx={{
             borderRadius: 2,
-            py: 1.5,
+            py: 2,
             textTransform: 'none',
-            fontWeight: 600,
-            borderColor: 'primary.main',
-            color: 'primary.main',
+            fontWeight: 700,
+            fontSize: '1rem',
+            background: 'linear-gradient(135deg, #1976d2 0%, #42a5f5 100%)',
+            boxShadow: '0 4px 12px rgba(25, 118, 210, 0.3)',
             '&:hover': {
-              backgroundColor: 'primary.main',
-              color: 'primary.contrastText',
-              borderColor: 'primary.main',
+              background: 'linear-gradient(135deg, #1565c0 0%, #1976d2 100%)',
+              boxShadow: '0 6px 16px rgba(25, 118, 210, 0.4)',
             },
           }}
         >
-          AI Command Bar
+          AI COMMAND
         </Button>
         <Typography 
           variant="caption" 
@@ -242,10 +239,22 @@ const Sidebar = ({ open, onToggle, onClose, isMobile, onOpenCommandBar }) => {
             display: 'block', 
             textAlign: 'center', 
             mt: 0.5,
+            fontSize: '0.75rem',
+            fontWeight: 500
+          }}
+        >
+          Your AI Copilot awaits
+        </Typography>
+        <Typography 
+          variant="caption" 
+          color="text.secondary" 
+          sx={{ 
+            display: 'block', 
+            textAlign: 'center', 
             fontSize: '0.7rem'
           }}
         >
-          Press Ctrl+K to open
+          Press Ctrl+K anytime
         </Typography>
       </Box>
 

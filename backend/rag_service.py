@@ -14,13 +14,7 @@ import logging
 from dataclasses import dataclass
 from enum import Enum
 
-# Import Reelly service
-try:
-    from reelly_service import ReellyService
-    RELLY_AVAILABLE = True
-except ImportError:
-    ReellyService = None
-    RELLY_AVAILABLE = False
+# Reelly service removed
 
 logger = logging.getLogger(__name__)
 
@@ -186,13 +180,7 @@ class EnhancedRAGService:
         # Enhanced ChromaDB initialization with retry logic
         self.chroma_client = self._initialize_chroma_client()
         
-        # Initialize Reelly service
-        if RELLY_AVAILABLE:
-            self.reelly_service = ReellyService()
-            logger.info("✅ Reelly API service initialized for enhanced property data")
-        else:
-            self.reelly_service = None
-            logger.warning("⚠️ Reelly API service not available - using local data only")
+        # Reelly service removed
         
         # Initialize intent patterns
         self.intent_patterns = {
@@ -447,21 +435,7 @@ class EnhancedRAGService:
         
         return parameters
 
-    def get_reelly_property_data(self, analysis: QueryAnalysis) -> List[ContextItem]:
-        """
-        Get real-time property data from Reelly API based on query analysis
-        """
-        # Reelly API is not configured, return empty list
-        logger.info("Reelly API not available, using local database instead")
-        return []
-
-    def get_market_insights_from_reelly(self, location: str = None) -> List[ContextItem]:
-        """
-        Get market insights from Reelly API
-        """
-        # Reelly API is not configured, return empty list
-        logger.info("Reelly API not available, using local database instead")
-        return []
+    # Reelly methods removed
 
     def get_relevant_context(self, query: str, analysis: QueryAnalysis, max_items: int = 8) -> List[ContextItem]:
         """Get relevant context from multiple sources based on query analysis with enhanced retrieval"""
@@ -693,44 +667,7 @@ class EnhancedRAGService:
         
         return min(score, 1.0)
 
-    def _get_reelly_property_context(self, parameters: Dict[str, Any], max_items: int) -> List[ContextItem]:
-        """Fetches and formats property context from the Reelly API."""
-        reelly_items = []
-        
-        if not self.reelly_service or not self.reelly_service.is_enabled():
-            return reelly_items
-        
-        try:
-            logger.info(f"Fetching live properties from Reelly API with params: {parameters}")
-            properties = self.reelly_service.search_properties(parameters)
-            
-            for prop in properties[:max_items]:
-                # Format the property data for display
-                formatted_prop = self.reelly_service.format_property_for_display(prop)
-                
-                # Create content string for the context
-                content = (
-                    f"LIVE LISTING (Reelly Network): {formatted_prop.get('title', 'N/A')}. "
-                    f"Price: {formatted_prop.get('price', {}).get('formatted', 'N/A')}. "
-                    f"Beds: {formatted_prop.get('bedrooms', 'N/A')}. "
-                    f"Listed by: Agent {formatted_prop.get('agent', {}).get('name', 'N/A')} "
-                    f"from {formatted_prop.get('agent', {}).get('company', 'N/A')}. "
-                    f"Address: {formatted_prop.get('address', 'N/A')}"
-                )
-                
-                reelly_items.append(ContextItem(
-                    content=content,
-                    source="reelly_api_live",
-                    relevance_score=0.95,  # Give live data a higher score
-                    metadata=formatted_prop
-                ))
-                
-            logger.info(f"Successfully fetched {len(reelly_items)} live properties from Reelly API")
-            
-        except Exception as e:
-            logger.error(f"Failed to get context from Reelly API: {e}")
-        
-        return reelly_items
+    # Reelly property context method removed
 
     def build_structured_context(self, context_items: List[ContextItem]) -> str:
         """Build a structured, scannable context string"""
@@ -739,7 +676,6 @@ class EnhancedRAGService:
         
         # Separate different types of data
         properties = [item for item in context_items if item.source == 'database_properties']
-        reelly_properties = [item for item in context_items if item.source == 'reelly_api_live']
         neighborhoods = [item for item in context_items if item.source == 'comprehensive_neighborhoods']
         market_data = [item for item in context_items if item.source == 'comprehensive_market_data']
         documents = [item for item in context_items if item.source.startswith('chroma_')]
@@ -758,18 +694,7 @@ class EnhancedRAGService:
                 context_parts.append(f"   • Bathrooms: {metadata.get('bathrooms', 'N/A')}")
                 context_parts.append("")
         
-        # Reelly live properties section
-        if reelly_properties:
-            context_parts.append("**LIVE PROPERTY LISTINGS (Reelly Network):**")
-            for i, prop in enumerate(reelly_properties[:5], 1):  # Limit to top 5
-                metadata = prop.metadata
-                context_parts.append(f"{i}. **{metadata.get('title', 'N/A')}**")
-                context_parts.append(f"   • Price: {metadata.get('price', {}).get('formatted', 'N/A')}")
-                context_parts.append(f"   • Type: {metadata.get('property_type', 'N/A')}")
-                context_parts.append(f"   • Bedrooms: {metadata.get('bedrooms', 'N/A')}")
-                context_parts.append(f"   • Agent: {metadata.get('agent', {}).get('name', 'N/A')} ({metadata.get('agent', {}).get('company', 'N/A')})")
-                context_parts.append(f"   • Address: {metadata.get('address', 'N/A')}")
-                context_parts.append("")
+        # Reelly section removed
         
         # Market data section
         if market_data:

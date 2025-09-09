@@ -12,10 +12,14 @@ import SessionWarning from './components/SessionWarning';
 
 // Lazy load page components for better performance
 const Dashboard = React.lazy(() => import('./pages/Dashboard'));
-const AgentHub = React.lazy(() => import('./components/hub/AgentHub'));
+const BrokerageDashboard = React.lazy(() => import('./pages/BrokerageDashboard'));
+const AIAssistant = React.lazy(() => import('./pages/AIAssistant'));
+const DeveloperDashboard = React.lazy(() => import('./pages/DeveloperDashboard'));
+const HubDashboard = React.lazy(() => import('./components/hub/HubDashboard'));
 const Chat = React.lazy(() => import('./pages/Chat'));
 const Properties = React.lazy(() => import('./pages/Properties'));
 const AdminFiles = React.lazy(() => import('./pages/AdminFiles'));
+const TeamManagement = React.lazy(() => import('./components/team/TeamManagement'));
 
 // Loading fallback component
 const PageLoader = () => (
@@ -62,7 +66,7 @@ const App = () => {
             element={
               <ErrorBoundary>
                 <Suspense fallback={<PageLoader />}>
-                  <AgentHub />
+                  <HubDashboard />
                 </Suspense>
               </ErrorBoundary>
             } 
@@ -73,6 +77,46 @@ const App = () => {
               <ErrorBoundary>
                 <Suspense fallback={<PageLoader />}>
                   <Dashboard />
+                </Suspense>
+              </ErrorBoundary>
+            } 
+          />
+          <Route 
+            path="brokerage-dashboard" 
+            element={
+              <ErrorBoundary>
+                <Suspense fallback={<PageLoader />}>
+                  <BrokerageDashboard />
+                </Suspense>
+              </ErrorBoundary>
+            } 
+          />
+          <Route 
+            path="ai-assistant" 
+            element={
+              <ErrorBoundary>
+                <Suspense fallback={<PageLoader />}>
+                  <AIAssistant />
+                </Suspense>
+              </ErrorBoundary>
+            } 
+          />
+          <Route 
+            path="developer-dashboard" 
+            element={
+              <ErrorBoundary>
+                <Suspense fallback={<PageLoader />}>
+                  <DeveloperDashboard />
+                </Suspense>
+              </ErrorBoundary>
+            } 
+          />
+          <Route 
+            path="team/management" 
+            element={
+              <ErrorBoundary>
+                <Suspense fallback={<PageLoader />}>
+                  <TeamManagement />
                 </Suspense>
               </ErrorBoundary>
             } 

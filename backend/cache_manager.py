@@ -257,6 +257,97 @@ class CacheManager:
             logger.error(f"Error retrieving cached frequent query: {e}")
             return None
     
+    def cache_property_search(self, search_params: Dict[str, Any], results: List[Dict[str, Any]], ttl: int = 1800) -> bool:
+        """Cache property search results for faster retrieval"""
+        if not self.cache_enabled:
+            return False
+        
+        try:
+            cache_key = self._generate_cache_key("property_search", search_params)
+            
+            cache_data = {
+                "results": results,
+                "search_params": search_params,
+                "timestamp": datetime.now().isoformat(),
+                "ttl": ttl
+            }
+            
+            serialized_data = self._serialize_data(cache_data)
+            self.redis_client.setex(cache_key, ttl, serialized_data)
+            
+            logger.debug(f"Cached property search: {cache_key}")
+            return True
+            
+        except Exception as e:
+            logger.error(f"Error caching property search: {e}")
+            return False
+    
+    def get_cached_property_search(self, search_params: Dict[str, Any]) -> Optional[List[Dict[str, Any]]]:
+        """Retrieve cached property search results"""
+        if not self.cache_enabled:
+            return None
+        
+        try:
+            cache_key = self._generate_cache_key("property_search", search_params)
+            
+            cached_data = self.redis_client.get(cache_key)
+            if cached_data:
+                cache_data = self._deserialize_data(cached_data)
+                logger.debug(f"Cache hit for property search: {cache_key}")
+                return cache_data["results"]
+            
+            return None
+            
+        except Exception as e:
+            logger.error(f"Error retrieving cached property search: {e}")
+            return None
+    
+    def cache_market_data(self, area: str, property_type: str, data: Dict[str, Any], ttl: int = 3600) -> bool:
+        """Cache market data for specific area and property type"""
+        if not self.cache_enabled:
+            return False
+        
+        try:
+            cache_key = f"market_data:{area}:{property_type}"
+            
+            cache_data = {
+                "data": data,
+                "area": area,
+                "property_type": property_type,
+                "timestamp": datetime.now().isoformat(),
+                "ttl": ttl
+            }
+            
+            serialized_data = self._serialize_data(cache_data)
+            self.redis_client.setex(cache_key, ttl, serialized_data)
+            
+            logger.debug(f"Cached market data: {cache_key}")
+            return True
+            
+        except Exception as e:
+            logger.error(f"Error caching market data: {e}")
+            return False
+    
+    def get_cached_market_data(self, area: str, property_type: str) -> Optional[Dict[str, Any]]:
+        """Retrieve cached market data"""
+        if not self.cache_enabled:
+            return None
+        
+        try:
+            cache_key = f"market_data:{area}:{property_type}"
+            
+            cached_data = self.redis_client.get(cache_key)
+            if cached_data:
+                cache_data = self._deserialize_data(cached_data)
+                logger.debug(f"Cache hit for market data: {cache_key}")
+                return cache_data["data"]
+            
+            return None
+            
+        except Exception as e:
+            logger.error(f"Error retrieving cached market data: {e}")
+            return None
+    
     def invalidate_cache_pattern(self, pattern: str) -> bool:
         """Invalidate cache entries matching a pattern"""
         if not self.cache_enabled:

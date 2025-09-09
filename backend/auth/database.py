@@ -13,11 +13,12 @@ from config.settings import DATABASE_URL
 # Configure logging
 logger = logging.getLogger(__name__)
 
-# Create database engine
+# Create database engine with better connection management
 engine = create_engine(
     DATABASE_URL,
     poolclass=StaticPool,
     pool_pre_ping=True,
+    pool_recycle=3600,  # Recycle connections every hour
     echo=False  # Set to True for SQL debugging
 )
 
@@ -28,16 +29,25 @@ def get_db() -> Generator[Session, None, None]:
     """
     Database session dependency for FastAPI
     """
-    db = SessionLocal()
+    db = None
     try:
+        db = SessionLocal()
         yield db
         db.commit()
     except Exception as e:
-        db.rollback()
+        if db:
+            try:
+                db.rollback()
+            except Exception as rollback_error:
+                logger.error(f"Database rollback error: {rollback_error}")
         logger.error(f"Database error: {e}")
         raise
     finally:
-        db.close()
+        if db:
+            try:
+                db.close()
+            except Exception as close_error:
+                logger.error(f"Database close error: {close_error}")
 
 @contextmanager
 def get_db_context() -> Generator[Session, None, None]:

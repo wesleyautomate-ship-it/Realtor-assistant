@@ -92,7 +92,17 @@ def get_current_user(
         
         # Get user from database
         user_id = int(payload.get("sub"))
-        user = db.query(User).filter(User.id == user_id).first()
+        try:
+            user = db.query(User).filter(User.id == user_id).first()
+        except Exception as db_error:
+            logger.error(f"Database error in authentication: {db_error}")
+            # If database is unavailable, create a minimal user object from token
+            user = User(
+                id=user_id,
+                email=payload.get("email", "unknown@example.com"),
+                role=payload.get("role", "agent"),
+                is_active=True
+            )
         
         if not user:
             raise HTTPException(

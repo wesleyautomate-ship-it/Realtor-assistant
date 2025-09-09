@@ -1,3 +1,12 @@
+# Dubai Real Estate RAG Chat System - Dependencies
+# 
+# This file serves as the main requirements file for the project.
+# For development, use: pip install -r requirements.txt
+# For production, use: pip install -r backend/requirements.txt
+#
+# The backend/requirements.txt contains the complete dependency list
+# including all ML libraries and advanced features.
+
 # Core Framework
 fastapi==0.104.1
 uvicorn==0.24.0
@@ -46,3 +55,6 @@ APScheduler==3.10.4
 
 # Utilities
 werkzeug==2.3.7
+
+# For complete dependencies including ML libraries, see:
+# backend/requirements.txt

@@ -28,6 +28,21 @@ ON leads(assigned_agent_id, nurture_status);
 CREATE INDEX IF NOT EXISTS idx_properties_agent_status 
 ON properties(agent_id, listing_status);
 
+-- Properties: Location + Type + Price (High-traffic property search)
+CREATE INDEX IF NOT EXISTS idx_properties_location_type_price 
+ON properties(location, property_type, price_aed) 
+WHERE listing_status = 'live';
+
+-- Properties: Price Range + Bedrooms (Budget-based search)
+CREATE INDEX IF NOT EXISTS idx_properties_price_bedrooms 
+ON properties(price_aed, bedrooms) 
+WHERE listing_status = 'live' AND price_aed > 0;
+
+-- Properties: Area + Property Type (Location-based search)
+CREATE INDEX IF NOT EXISTS idx_properties_area_type 
+ON properties(area_sqft, property_type) 
+WHERE listing_status = 'live';
+
 -- Conversations: User + Active Status + Created Date
 CREATE INDEX IF NOT EXISTS idx_conversations_user_active_created 
 ON conversations(user_id, is_active, created_at);
@@ -51,6 +66,18 @@ ON ml_performance_analytics USING GIN (metrics);
 -- ML Market Intelligence: Trend Indicators JSONB
 CREATE INDEX IF NOT EXISTS idx_ml_market_trends_gin 
 ON ml_market_intelligence USING GIN (trend_indicators);
+
+-- Properties: Features JSONB (for property amenities and features)
+CREATE INDEX IF NOT EXISTS idx_properties_features_gin 
+ON properties USING GIN (features);
+
+-- Market Data: Market Context JSONB
+CREATE INDEX IF NOT EXISTS idx_market_data_context_gin 
+ON market_data USING GIN (market_context);
+
+-- Neighborhood Profiles: Amenities JSONB
+CREATE INDEX IF NOT EXISTS idx_neighborhood_amenities_gin 
+ON neighborhood_profiles USING GIN (amenities);
 
 -- ML Model Performance: Feature Importance JSONB
 CREATE INDEX IF NOT EXISTS idx_ml_model_features_gin 

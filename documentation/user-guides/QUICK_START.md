@@ -62,8 +62,7 @@ GRANT ALL PRIVILEGES ON DATABASE real_estate_db TO admin;
 ## 🔑 **Required API Keys**
 
 1. **Google Cloud Console** → APIs & Services → Credentials → Create API Key
-2. **Reelly** → Sign up → Get API key
-3. **Add both to `.env` file**
+2. **Add to `.env` file**
 
 ## 🐳 **Docker Commands**
 

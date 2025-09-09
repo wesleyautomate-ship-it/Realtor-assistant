@@ -19,6 +19,7 @@ from .utils import (
 )
 from .middleware import rate_limit, log_audit_event
 from .rate_limiter import rate_limiter
+# from .simple_dev_auth import get_or_create_dev_user, create_dev_login_response, is_development_mode
 
 logger = logging.getLogger(__name__)
 
@@ -731,3 +732,180 @@ async def get_current_user_profile(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Failed to get user profile"
         )
+
+# Development-only endpoints
+@router.post("/dev-login", response_model=TokenResponse)
+async def dev_login(
+    role: str = "agent",
+    db: Session = Depends(get_db)
+):
+    """
+    Development-only login endpoint
+    
+    This endpoint bypasses normal authentication for development purposes.
+    It should NEVER be available in production.
+    
+    Args:
+        role: User role (admin, agent, employee)
+        db: Database session
+        
+    Returns:
+        TokenResponse with development user data
+    """
+    try:
+        # Check if we're in development mode (you can add more sophisticated checks)
+        import os
+        if os.getenv("DEBUG", "false").lower() != "true":
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Development login not available in production"
+            )
+        
+        # Create or get development user
+        dev_email = f"dev_{role}@realestate.com"
+        user = db.query(User).filter(User.email == dev_email).first()
+        
+        if not user:
+            # Create development user
+            user = User(
+                email=dev_email,
+                password_hash=hash_password("dev123"),  # Default dev password
+                first_name=f"Dev {role.title()}",
+                last_name="User",
+                role=role,
+                is_active=True,
+                email_verified=True,
+                created_at=datetime.utcnow()
+            )
+            db.add(user)
+            db.flush()
+        
+        # Generate tokens
+        access_token = generate_access_token(user.id, user.email, user.role)
+        refresh_token = generate_refresh_token(user.id)
+        
+        # Create session
+        session = UserSession(
+            user_id=user.id,
+            session_token=access_token,
+            refresh_token=refresh_token,
+            ip_address="127.0.0.1",
+            user_agent="dev-client",
+            expires_at=datetime.utcnow() + timedelta(minutes=30),
+            created_at=datetime.utcnow()
+        )
+        
+        db.add(session)
+        db.commit()
+        
+        logger.info(f"Development login successful for role: {role}")
+        
+        return TokenResponse(
+            access_token=access_token,
+            refresh_token=refresh_token,
+            expires_in=30 * 60,
+            user={
+                "id": user.id,
+                "email": user.email,
+                "first_name": user.first_name,
+                "last_name": user.last_name,
+                "role": user.role,
+                "is_active": user.is_active,
+                "email_verified": user.email_verified
+            }
+        )
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Development login error: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Development login failed"
+        )
+
+@router.get("/dev-users")
+async def get_dev_users():
+    """
+    Get available development users
+    
+    Returns:
+        List of available development user roles
+    """
+    import os
+    if os.getenv("DEBUG", "false").lower() != "true":
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Development endpoint not available in production"
+        )
+    
+    return {
+        "available_roles": ["admin", "agent", "employee"],
+        "description": "Development users for testing different permission levels"
+    }
+# async def dev_login(
+#     role: str = "agent",
+#     db: Session = Depends(get_db)
+# ):
+#     """
+#     Development-only login endpoint
+#     
+#     This endpoint bypasses normal authentication for development purposes.
+#     It should NEVER be available in production.
+#     
+#     Args:
+#         role: User role (admin, agent, employee)
+#         db: Database session
+#         
+#     Returns:
+#         TokenResponse with development user data
+#     """
+#     try:
+#         if not is_development_mode():
+#             raise HTTPException(
+#                 status_code=status.HTTP_403_FORBIDDEN,
+#                 detail="Development login not available in production"
+#             )
+#         
+#         # Get or create development user
+#         user = get_or_create_dev_user(db, role)
+#         if not user:
+#             raise HTTPException(
+#                 status_code=status.HTTP_400_BAD_REQUEST,
+#                 detail=f"Invalid development role: {role}"
+#             )
+#         
+#         # Create login response
+#         login_data = create_dev_login_response(user)
+#         
+#         logger.info(f"Development login successful for role: {role}")
+#         
+#         return TokenResponse(**login_data)
+#         
+#     except HTTPException:
+#         raise
+#     except Exception as e:
+#         logger.error(f"Development login error: {e}")
+#         raise HTTPException(
+#             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+#             detail="Development login failed"
+#         )
+
+# @router.get("/dev-users")
+# async def get_dev_users():
+#     """
+#     Get available development users
+#     
+#     Returns:
+#         List of available development user roles
+#     """
+#     if not is_development_mode():
+#         raise HTTPException(
+#             status_code=status.HTTP_403_FORBIDDEN,
+#             detail="Development endpoint not available in production"
+#         )
+#     
+#     return {
+#         "available_roles": ["admin", "agent", "employee"],
+#         "description": "Development users for testing different permission levels"
+#     }

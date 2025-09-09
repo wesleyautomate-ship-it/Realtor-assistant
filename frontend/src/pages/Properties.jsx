@@ -45,7 +45,7 @@ import {
   Home as HomeIcon,
 } from '@mui/icons-material';
 import { useAppContext } from '../context/AppContext';
-import { apiUtils, handleApiError } from '../utils/api';
+import { api } from '../utils/apiClient';
 
 const Properties = () => {
   const theme = useTheme();
@@ -81,7 +81,7 @@ const Properties = () => {
       setError(null);
       
       console.log('Fetching properties with params:', filterParams);
-      const response = await apiUtils.getProperties(filterParams);
+      const response = await api.getProperties(filterParams);
       console.log('Properties response:', response);
       
       // Limit initial load to prevent browser crash
@@ -167,7 +167,7 @@ const Properties = () => {
       );
 
       // Call API to update favorite status
-      await apiUtils.executeAction('toggle-favorite', {
+      await api.executeAction('toggle-favorite', {
         property_id: propertyId,
         user_id: currentUser?.id,
       });
@@ -187,7 +187,7 @@ const Properties = () => {
         )
       );
 
-      const errorMessage = handleApiError(error);
+      const errorMessage = error.message || 'An error occurred';
       setSnackbar({
         open: true,
         message: `Failed to update favorite: ${errorMessage}`,
@@ -204,7 +204,7 @@ const Properties = () => {
         severity: 'info',
       });
 
-      const result = await apiUtils.executeAction(action, {
+      const result = await api.executeAction(action, {
         property_id: propertyId,
         user_id: currentUser?.id,
       });
@@ -217,7 +217,7 @@ const Properties = () => {
 
       console.log(`${action} result:`, result);
     } catch (error) {
-      const errorMessage = handleApiError(error);
+      const errorMessage = error.message || 'An error occurred';
       setSnackbar({
         open: true,
         message: `Failed to execute ${action}: ${errorMessage}`,

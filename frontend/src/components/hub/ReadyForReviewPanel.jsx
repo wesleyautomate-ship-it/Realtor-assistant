@@ -27,18 +27,18 @@ import {
   CheckCircle as CheckCircleIcon,
   Visibility as VisibilityIcon,
   Edit as EditIcon,
-  Approve as ApproveIcon,
-  Reject as RejectIcon,
+  CheckCircle as ApproveIcon,
+  Cancel as RejectIcon,
   Refresh as RefreshIcon,
   Description as DescriptionIcon,
   Assessment as AssessmentIcon,
   TrendingUp as TrendingUpIcon,
 } from '@mui/icons-material';
-import { useAuth } from '../../context/AuthContext';
-import { apiClient } from '../../utils/apiClient';
+import { useAppContext } from '../../context/AppContext';
+import { api } from '../../utils/apiClient';
 
 const ReadyForReviewPanel = () => {
-  const { user } = useAuth();
+  const { currentUser: user } = useAppContext();
   const [reviewItems, setReviewItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -56,7 +56,7 @@ const ReadyForReviewPanel = () => {
       
       // Try to fetch from backend first
       try {
-        const response = await apiClient.get('/ml/automated-reports/ready-for-review');
+        const response = await api.get('/ml/automated-reports/ready-for-review');
         setReviewItems(response.data || []);
       } catch (apiError) {
         console.log('Using mock review data');

@@ -27,6 +27,8 @@ import {
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAppContext } from '../context/AppContext';
 import { api } from '../utils/apiClient';
+import DevLoginPanel from '../components/DevLoginPanel';
+import { isDevelopment, AUTO_LOGIN_CONFIG, performDevLogin, devUtils } from '../config/development';
 
 const LoginPage = () => {
   const theme = useTheme();
@@ -54,6 +56,29 @@ const LoginPage = () => {
       navigate(from, { replace: true });
     }
   }, [currentUser, navigate, location]);
+
+  // Development auto-login using demo system
+  useEffect(() => {
+    const performAutoLogin = async () => {
+      // Check if auto-login is enabled in localStorage
+      const autoLoginEnabled = localStorage.getItem('dev-auto-login') === 'true';
+      const defaultRole = localStorage.getItem('dev-default-role') || 'agent';
+      
+      if (process.env.NODE_ENV === 'development' && autoLoginEnabled && !currentUser) {
+        try {
+          console.log(`🚀 Auto-login enabled for role: ${defaultRole}`);
+          
+          // Use the demo login system for auto-login
+          await handleDemoLogin(defaultRole);
+          
+        } catch (error) {
+          console.log('Auto-login failed, continuing to normal login page');
+        }
+      }
+    };
+
+    performAutoLogin();
+  }, [currentUser]);
 
   const handleInputChange = (field) => (event) => {
     setFormData(prev => ({
@@ -113,33 +138,55 @@ const LoginPage = () => {
     setError('');
 
     try {
-      // Demo login - in production, this would be a real API call
+      // Enhanced demo users for development
       const demoUsers = {
         agent: {
           id: 2,
-          name: 'Wesley Agent',
           email: 'wesley@dubai-estate.com',
+          first_name: 'Wesley',
+          last_name: 'Agent',
           role: 'agent',
+          is_active: true,
+          email_verified: true
         },
         admin: {
           id: 1,
-          name: 'System Administrator',
           email: 'admin@dubai-estate.com',
+          first_name: 'System',
+          last_name: 'Administrator',
           role: 'admin',
+          is_active: true,
+          email_verified: true
         },
+        employee: {
+          id: 3,
+          email: 'employee@dubai-estate.com',
+          first_name: 'Development',
+          last_name: 'Employee',
+          role: 'employee',
+          is_active: true,
+          email_verified: true
+        }
       };
 
       const user = demoUsers[role];
       
       // Simulate API delay
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      await new Promise(resolve => setTimeout(resolve, 500));
       
-      // Store demo token
-      localStorage.setItem('authToken', `demo-token-${role}`);
+      // Store demo token with longer expiry for development
+      const demoToken = `demo-token-${role}-${Date.now()}`;
+      localStorage.setItem('authToken', demoToken);
+      localStorage.setItem('demo-user-role', role);
       
       // Update global state
       setCurrentUser(user);
       setIsAuthenticated(true);
+      
+      // Show development indicator
+      if (process.env.NODE_ENV === 'development') {
+        console.log(`🚀 Demo login successful as ${role}`);
+      }
       
       // Redirect to dashboard
       navigate('/dashboard', { replace: true });
@@ -263,27 +310,66 @@ const LoginPage = () => {
             <Typography variant="body2" color="text.secondary" sx={{ mb: 2, textAlign: 'center' }}>
               Or try a demo account:
             </Typography>
-            <Box sx={{ display: 'flex', gap: 1 }}>
+            <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
               <Button
-                fullWidth
                 variant="outlined"
                 onClick={() => handleDemoLogin('agent')}
                 disabled={loading}
-                sx={{ py: theme.spacing(1) }}
+                sx={{ py: theme.spacing(1), flex: 1, minWidth: '120px' }}
               >
                 Demo Agent
               </Button>
               <Button
-                fullWidth
                 variant="outlined"
                 onClick={() => handleDemoLogin('admin')}
                 disabled={loading}
-                sx={{ py: theme.spacing(1) }}
+                sx={{ py: theme.spacing(1), flex: 1, minWidth: '120px' }}
               >
                 Demo Admin
               </Button>
+              <Button
+                variant="outlined"
+                onClick={() => handleDemoLogin('employee')}
+                disabled={loading}
+                sx={{ py: theme.spacing(1), flex: 1, minWidth: '120px' }}
+              >
+                Demo Employee
+              </Button>
             </Box>
+            
+            {/* Development Auto-Login Toggle */}
+            {process.env.NODE_ENV === 'development' && (
+              <Box sx={{ mt: 2, textAlign: 'center' }}>
+                <Button
+                  size="small"
+                  variant="text"
+                  onClick={() => {
+                    const enabled = localStorage.getItem('dev-auto-login') === 'true';
+                    localStorage.setItem('dev-auto-login', (!enabled).toString());
+                    localStorage.setItem('dev-default-role', 'agent');
+                    alert(enabled ? 'Auto-login disabled' : 'Auto-login enabled for agent role');
+                  }}
+                  sx={{ fontSize: '0.75rem' }}
+                >
+                  {localStorage.getItem('dev-auto-login') === 'true' ? '🔓 Disable Auto-Login' : '🔒 Enable Auto-Login'}
+                </Button>
+              </Box>
+            )}
           </Box>
+
+          {/* Development Login Panel */}
+          {isDevelopment() && (
+            <Box sx={{ mt: theme.spacing(3) }}>
+              <DevLoginPanel 
+                onLoginSuccess={(loginData) => {
+                  setCurrentUser(loginData.user);
+                  setIsAuthenticated(true);
+                  const from = location.state?.from?.pathname || '/dashboard';
+                  navigate(from, { replace: true });
+                }}
+              />
+            </Box>
+          )}
 
           {/* Footer */}
           <Box sx={{ textAlign: 'center' }}>

@@ -44,10 +44,12 @@ import {
 import ReactMarkdown from 'react-markdown';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useAppContext } from '../context/AppContext';
-import { apiUtils, handleApiError } from '../utils/api';
+import { api } from '../utils/apiClient';
 import ContextualSidePanel from '../components/chat/ContextualSidePanel';
 import PropertyCard from '../components/chat/PropertyCard';
 import ContentPreviewCard from '../components/chat/ContentPreviewCard';
+import PropertyDetectionCard from '../components/property/PropertyDetectionCard';
+import DocumentProcessingCard from '../components/document/DocumentProcessingCard';
 
 const Chat = () => {
   const theme = useTheme();
@@ -77,6 +79,11 @@ const Chat = () => {
   const [entityDetectionLoading, setEntityDetectionLoading] = useState(false);
   const [contextData, setContextData] = useState({});
   const [contextLoadingStates, setContextLoadingStates] = useState({});
+  
+  // Enhanced property detection state
+  const [detectedProperty, setDetectedProperty] = useState(null);
+  const [documentProcessingResult, setDocumentProcessingResult] = useState(null);
+  const [propertyDetectionLoading, setPropertyDetectionLoading] = useState(false);
 
   // Contextual help examples
   const helpExamples = [
@@ -110,6 +117,14 @@ const Chat = () => {
         "Analyze this property document for key details",
         "Extract important information from this contract",
         "Summarize the main points from this market report",
+      ]
+    },
+    {
+      title: "Property Detection",
+      examples: [
+        "Create a CMA for 413 Collective Tower",
+        "Generate market report for Business Bay apartments",
+        "Analyze property in Dubai Marina building",
       ]
     }
   ];
@@ -170,7 +185,7 @@ const Chat = () => {
   const detectEntitiesInMessage = useCallback(async (messageContent) => {
     try {
       setEntityDetectionLoading(true);
-      const response = await apiUtils.detectEntities(messageContent);
+      const response = await api.detectEntities(messageContent, sessionId);
       
       if (response.entities && response.entities.length > 0) {
         setDetectedEntities(prev => {
@@ -189,7 +204,7 @@ const Chat = () => {
     } finally {
       setEntityDetectionLoading(false);
     }
-  }, []);
+  }, [sessionId]);
 
   // Phase 3B: Fetch context for entities
   const fetchContextForEntities = useCallback(async (entities) => {
@@ -197,7 +212,7 @@ const Chat = () => {
       try {
         setContextLoadingStates(prev => ({ ...prev, [entity.id]: true }));
         
-        const context = await apiUtils.fetchEntityContext(entity.type, entity.id);
+        const context = await api.fetchEntityContext(entity.type, entity.id, sessionId);
         
         setContextData(prev => ({
           ...prev,
@@ -210,7 +225,7 @@ const Chat = () => {
         setContextLoadingStates(prev => ({ ...prev, [entity.id]: false }));
       }
     }
-  }, []);
+  }, [sessionId]);
 
   // Phase 3B: Handle entity click
   const handleEntityClick = useCallback((entity) => {
@@ -235,12 +250,12 @@ const Chat = () => {
 
     try {
       setIsLoading(true);
-      const newSession = await apiUtils.createSession();
+      const newSession = await api.createSession();
       console.log('Created new session:', newSession);
       navigate(`/chat/${newSession.session_id}`);
     } catch (error) {
       console.error('Error creating new session:', error);
-      const errorMessage = handleApiError(error);
+      const errorMessage = error.message || 'An error occurred';
       setError(errorMessage);
       setSnackbar({
         open: true,
@@ -261,7 +276,7 @@ const Chat = () => {
 
     try {
       setIsLoading(true);
-      const response = await apiUtils.getConversationHistory(sessionId);
+      const response = await api.getConversationHistory(sessionId);
       
       // Convert API response format to frontend format and ensure proper ordering
       const convertedMessages = (response.messages || []).map(msg => ({
@@ -295,7 +310,7 @@ const Chat = () => {
       }
     } catch (error) {
       console.error('Error fetching conversation history:', error);
-      const errorMessage = handleApiError(error);
+      const errorMessage = error.message || 'An error occurred';
       setError(errorMessage);
       setSnackbar({
         open: true,
@@ -322,7 +337,22 @@ const Chat = () => {
     setIsLoading(true);
 
     try {
-      const response = await apiUtils.sendMessage(sessionId, inputMessage, uploadedFile);
+      // Try to detect property information from the message
+      setPropertyDetectionLoading(true);
+      try {
+        const propertyDetection = await api.detectProperty(inputMessage);
+        if (propertyDetection && propertyDetection.confidence > 0.3) {
+          setDetectedProperty(propertyDetection);
+        }
+      } catch (detectionError) {
+        console.log('Property detection failed:', detectionError);
+        // Don't show error to user, just continue with normal chat
+      } finally {
+        setPropertyDetectionLoading(false);
+      }
+
+      // Send message with enhanced property detection and entity detection
+      const response = await api.sendMessageWithPropertyDetection(sessionId, inputMessage, uploadedFile, true);
       
       const aiMessage = {
         id: response.message_id || Date.now().toString(),
@@ -335,13 +365,17 @@ const Chat = () => {
         // Phase 3B: Add rich content support
         rich_content: response.rich_content || null,
         entities_detected: response.entities_detected || [],
+        // Enhanced property detection
+        detected_property: response.detected_property || null,
+        building_specific_data: response.building_specific_data || null,
       };
 
       setMessages(prev => [...prev, aiMessage]);
       setUploadedFile(null);
+      setDocumentProcessingResult(null);
     } catch (error) {
       console.error('Error sending message:', error);
-      const errorMessage = handleApiError(error);
+      const errorMessage = error.message || 'An error occurred';
       setError(errorMessage);
       setSnackbar({
         open: true,
@@ -359,21 +393,30 @@ const Chat = () => {
 
     setUploading(true);
     try {
-      const response = await apiUtils.uploadFile(file, sessionId);
+      // First upload the file
+      const uploadResponse = await api.uploadFile(file, sessionId);
+      
+      // Then process the document for property information
+      const processingResponse = await api.processDocument(file, sessionId);
+      
       setUploadedFile({
-        id: response.file_id,
+        id: uploadResponse.file_id,
         name: file.name,
         size: file.size,
       });
+      
+      // Store document processing results
+      setDocumentProcessingResult(processingResponse);
+      
       setUploadDialogOpen(false);
       setSnackbar({
         open: true,
-        message: 'File uploaded successfully!',
+        message: 'File uploaded and processed successfully!',
         severity: 'success',
       });
     } catch (error) {
       console.error('Error uploading file:', error);
-      const errorMessage = handleApiError(error);
+      const errorMessage = error.message || 'An error occurred';
       setSnackbar({
         open: true,
         message: errorMessage,
@@ -390,6 +433,38 @@ const Chat = () => {
 
   const handleCloseSnackbar = () => {
     setSnackbar({ ...snackbar, open: false });
+  };
+
+  // Enhanced property detection handlers
+  const handlePropertyClick = (property) => {
+    const propertyPrompt = `Tell me more about ${property.building_name || property.address} in ${property.community || 'Dubai'}`;
+    setInputMessage(propertyPrompt);
+  };
+
+  const handlePropertyViewDetails = (property) => {
+    // Navigate to property details or show in modal
+    console.log('View property details:', property);
+    setSnackbar({
+      open: true,
+      message: 'Property details feature coming soon!',
+      severity: 'info',
+    });
+  };
+
+  const handleDocumentUseInChat = (extractedProperty) => {
+    if (extractedProperty && extractedProperty.building_name) {
+      const documentPrompt = `Create a CMA for ${extractedProperty.building_name} in ${extractedProperty.community || 'Dubai'}`;
+      setInputMessage(documentPrompt);
+    }
+  };
+
+  const handleDocumentView = (processingResult) => {
+    console.log('View document:', processingResult);
+    setSnackbar({
+      open: true,
+      message: 'Document viewer feature coming soon!',
+      severity: 'info',
+    });
   };
 
   // Phase 3B: Render rich content components
@@ -458,6 +533,29 @@ const Chat = () => {
                   {/* Phase 3B: Render rich content if available */}
                   {message.rich_content && renderRichContent(message.rich_content)}
                   
+                  {/* Enhanced property detection display */}
+                  {message.detected_property && (
+                    <Box sx={{ mt: 2 }}>
+                      <PropertyDetectionCard
+                        detectedProperty={message.detected_property}
+                        onPropertyClick={handlePropertyClick}
+                        onViewDetails={handlePropertyViewDetails}
+                        showActions={true}
+                      />
+                    </Box>
+                  )}
+                  
+                  {/* Building-specific data display */}
+                  {message.building_specific_data && (
+                    <Box sx={{ mt: 2 }}>
+                      <Alert severity="info" sx={{ mb: 2 }}>
+                        <Typography variant="body2">
+                          <strong>Building-Specific Analysis:</strong> This report includes data from {message.building_specific_data.comparable_count || 0} comparable properties in the same building.
+                        </Typography>
+                      </Alert>
+                    </Box>
+                  )}
+                  
                   {/* Regular markdown content */}
                   <ReactMarkdown
                     components={{
@@ -497,17 +595,17 @@ const Chat = () => {
                         </Typography>
                       ),
                       strong: ({ children }) => (
-                        <Box component="span" sx={{ fontWeight: 700, color: 'primary.main', backgroundColor: 'primary.50', px: 0.5, borderRadius: 0.5 }}>
+                        <Typography component="span" sx={{ fontWeight: 700, color: 'primary.main', backgroundColor: 'primary.50', px: 0.5, borderRadius: 0.5 }}>
                           {children}
-                        </Box>
+                        </Typography>
                       ),
                       em: ({ children }) => (
-                        <Box component="span" sx={{ fontStyle: 'italic', color: 'text.secondary' }}>
+                        <Typography component="span" sx={{ fontStyle: 'italic', color: 'text.secondary' }}>
                           {children}
-                        </Box>
+                        </Typography>
                       ),
                       code: ({ children }) => (
-                        <Box
+                        <Typography
                           component="code"
                           sx={{
                             bgcolor: 'grey.100',
@@ -521,7 +619,7 @@ const Chat = () => {
                           }}
                         >
                           {children}
-                        </Box>
+                        </Typography>
                       ),
                       blockquote: ({ children }) => (
                         <Box
@@ -723,7 +821,7 @@ const Chat = () => {
           
           {/* Phase 3B: Context Panel Toggle */}
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-            {entityDetectionLoading && (
+            {(entityDetectionLoading || propertyDetectionLoading) && (
               <CircularProgress size={20} />
             )}
             <Tooltip title={contextPanelVisible ? "Hide Context Panel" : "Show Context Panel"}>
@@ -800,12 +898,39 @@ const Chat = () => {
                 </Typography>
                 <IconButton
                   size="small"
-                  onClick={() => setUploadedFile(null)}
+                  onClick={() => {
+                    setUploadedFile(null);
+                    setDocumentProcessingResult(null);
+                  }}
                   sx={{ color: 'inherit' }}
                 >
                   <CloseIcon fontSize="small" />
                 </IconButton>
               </Box>
+            </Box>
+          )}
+
+          {/* Document Processing Results */}
+          {documentProcessingResult && (
+            <Box sx={{ px: 3, py: 2 }}>
+              <DocumentProcessingCard
+                processingResult={documentProcessingResult}
+                onViewDocument={handleDocumentView}
+                onUseInChat={handleDocumentUseInChat}
+                showActions={true}
+              />
+            </Box>
+          )}
+
+          {/* Property Detection Results */}
+          {detectedProperty && (
+            <Box sx={{ px: 3, py: 2 }}>
+              <PropertyDetectionCard
+                detectedProperty={detectedProperty}
+                onPropertyClick={handlePropertyClick}
+                onViewDetails={handlePropertyViewDetails}
+                showActions={true}
+              />
             </Box>
           )}
 

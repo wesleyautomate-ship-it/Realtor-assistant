@@ -162,6 +162,126 @@ export const api = {
       throw createApiError(error);
     }
   },
+
+  // Property Detection API
+  detectProperty: async (message) => {
+    try {
+      const response = await apiClient.post('/property/detect', { message });
+      return response.data;
+    } catch (error) {
+      throw createApiError(error);
+    }
+  },
+
+  // Document Processing API
+  processDocument: async (file, sessionId = null) => {
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+      if (sessionId) {
+        formData.append('session_id', sessionId);
+      }
+
+      const response = await apiClient.post('/document/process', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      return response.data;
+    } catch (error) {
+      throw createApiError(error);
+    }
+  },
+
+  // Property Search API
+  searchProperties: async (filters = {}) => {
+    try {
+      const params = new URLSearchParams();
+      Object.entries(filters).forEach(([key, value]) => {
+        if (value !== null && value !== undefined && value !== '') {
+          params.append(key, value);
+        }
+      });
+      
+      const response = await apiClient.get(`/properties/search?${params.toString()}`);
+      return response.data;
+    } catch (error) {
+      throw createApiError(error);
+    }
+  },
+
+  // Building-Specific Data API
+  getBuildingData: async (buildingName, community = null) => {
+    try {
+      const params = new URLSearchParams();
+      params.append('building_name', buildingName);
+      if (community) {
+        params.append('community', community);
+      }
+      
+      const response = await apiClient.get(`/properties/building?${params.toString()}`);
+      return response.data;
+    } catch (error) {
+      throw createApiError(error);
+    }
+  },
+
+  // Community Market Data API
+  getCommunityMarketData: async (community) => {
+    try {
+      const response = await apiClient.get(`/market/community/${encodeURIComponent(community)}`);
+      return response.data;
+    } catch (error) {
+      throw createApiError(error);
+    }
+  },
+
+  // Enhanced Chat API with Property Detection and Entity Detection
+  sendMessageWithPropertyDetection: async (sessionId, message, fileUpload = null, detectEntities = true) => {
+    try {
+      const payload = {
+        message,
+        session_id: sessionId,
+        enable_property_detection: true,
+        detect_entities: detectEntities,
+      };
+
+      if (fileUpload) {
+        payload.file_upload = { file_id: fileUpload.id };
+      }
+
+      const response = await apiClient.post(`/sessions/${sessionId}/chat`, payload);
+      return response.data;
+    } catch (error) {
+      throw createApiError(error);
+    }
+  },
+
+  // Entity Detection API
+  detectEntities: async (message, sessionId) => {
+    try {
+      if (!sessionId) {
+        throw new Error('Session ID is required for entity detection');
+      }
+      const response = await apiClient.post(`/sessions/${sessionId}/advanced/detect-entities`, { message });
+      return response.data;
+    } catch (error) {
+      throw createApiError(error);
+    }
+  },
+
+  // Entity Context API
+  fetchEntityContext: async (entityType, entityId, sessionId) => {
+    try {
+      if (!sessionId) {
+        throw new Error('Session ID is required for entity context fetching');
+      }
+      const response = await apiClient.get(`/sessions/${sessionId}/advanced/context/${entityType}/${entityId}`);
+      return response.data;
+    } catch (error) {
+      throw createApiError(error);
+    }
+  },
 };
 
 // Helper function to create consistent error objects
