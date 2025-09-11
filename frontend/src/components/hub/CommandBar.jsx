@@ -16,6 +16,8 @@ import {
   Divider,
   Tooltip,
 } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+import { useAppContext } from '../../context/AppContext';
 import {
   Mic as MicIcon,
   MicOff as MicOffIcon,
@@ -33,6 +35,8 @@ import {
 
 const CommandBar = ({ onSendMessage, suggestions = [], placeholder = "Ask me to generate a CMA, compare properties, or analyze compliance..." }) => {
   const theme = useTheme();
+  const navigate = useNavigate();
+  const { logout } = useAppContext();
   const [input, setInput] = useState('');
   const [isListening, setIsListening] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
@@ -47,7 +51,9 @@ const CommandBar = ({ onSendMessage, suggestions = [], placeholder = "Ask me to 
     "Check RERA compliance for new listing",
     "Analyze market trends for 3-bedroom villas",
     "Create client follow-up sequence",
-    "Find properties under 2M AED with high ROI potential"
+    "Find properties under 2M AED with high ROI potential",
+    "Try: 'Log me out' or 'Update profile'",
+    "Voice commands: 'Go to profile' or 'Open settings'"
   ];
 
   // Quick action templates
@@ -83,8 +89,51 @@ const CommandBar = ({ onSendMessage, suggestions = [], placeholder = "Ask me to 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (input.trim()) {
-      onSendMessage(input.trim());
+      processCommand(input.trim());
       setInput('');
+    }
+  };
+
+  // Process voice and text commands
+  const processCommand = (command) => {
+    const lowerCommand = command.toLowerCase();
+    
+    // Voice commands for logout
+    if (lowerCommand.includes('log me out') || lowerCommand.includes('logout') || lowerCommand.includes('sign out')) {
+      handleLogout();
+      return;
+    }
+    
+    // Voice commands for profile
+    if (lowerCommand.includes('update profile') || lowerCommand.includes('edit profile') || lowerCommand.includes('go to profile')) {
+      navigate('/profile');
+      return;
+    }
+    
+    // Voice commands for settings
+    if (lowerCommand.includes('settings') || lowerCommand.includes('preferences')) {
+      navigate('/settings');
+      return;
+    }
+    
+    // Default: send to AI assistant
+    if (onSendMessage) {
+      onSendMessage(command);
+    }
+  };
+
+  const handleLogout = async () => {
+    try {
+      // Call backend logout endpoint
+      const { api } = await import('../../utils/apiClient');
+      await api.post('/auth/logout');
+    } catch (error) {
+      console.error('Logout API call failed:', error);
+      // Continue with logout even if API call fails
+    } finally {
+      // Clear local storage and state
+      logout();
+      navigate('/login');
     }
   };
 

@@ -189,11 +189,19 @@ class AIRequestProcessingService:
             # Update request with AI response
             request.ai_response = ai_response["content"]
             request.ai_confidence = ai_response["confidence"]
-            request.status = RequestStatus.AI_COMPLETE
-            self.db.commit()
             
-            # Assign human expert for review
-            await self._assign_human_expert(request_id)
+            # Check if this is a contract-related request that needs human review
+            if self._requires_human_review(request):
+                request.status = RequestStatus.AI_COMPLETE
+                self.db.commit()
+                # Assign human expert for contract review
+                await self._assign_human_expert(request_id)
+            else:
+                # For all other content, mark as completed directly
+                request.status = RequestStatus.COMPLETED
+                request.actual_completion = datetime.utcnow()
+                self.db.commit()
+                logger.info(f"AI content generated and completed directly for request {request_id}")
             
             logger.info(f"AI processing completed for request {request_id}")
             
@@ -247,6 +255,26 @@ class AIRequestProcessingService:
                 "content": "I apologize, but I encountered an error processing your request. Please try again or contact support.",
                 "confidence": 0.0
             }
+    
+    def _requires_human_review(self, request: AIRequest) -> bool:
+        """Determine if a request requires human review (only for contracts)"""
+        # Only contract-related requests need human review
+        contract_keywords = [
+            'contract', 'agreement', 'lease', 'purchase', 'sale', 
+            'legal', 'terms', 'conditions', 'clause', 'liability',
+            'warranty', 'indemnity', 'breach', 'termination'
+        ]
+        
+        # Check request content for contract-related keywords
+        request_text = (request.request_content or "").lower()
+        if any(keyword in request_text for keyword in contract_keywords):
+            return True
+            
+        # Check request type - compliance might include contracts
+        if request.request_type == RequestType.COMPLIANCE:
+            return True
+            
+        return False
     
     async def _assign_human_expert(self, request_id: int) -> None:
         """Assign a human expert for review"""

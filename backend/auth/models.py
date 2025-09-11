@@ -73,6 +73,7 @@ class User(Base):
     
     # AI Assistant relationships
     ai_requests = relationship("AIRequest", foreign_keys="AIRequest.agent_id", cascade="all, delete-orphan")
+    ai_requests_new = relationship("AIRequestNew", foreign_keys="AIRequestNew.user_id", back_populates="user", cascade="all, delete-orphan")
     human_expert_profile = relationship("HumanExpert", back_populates="user", uselist=False, cascade="all, delete-orphan")
     voice_requests = relationship("VoiceRequest", back_populates="agent", cascade="all, delete-orphan")
     task_automations = relationship("TaskAutomation", back_populates="agent", cascade="all, delete-orphan")

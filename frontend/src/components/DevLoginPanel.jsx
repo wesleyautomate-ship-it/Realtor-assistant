@@ -20,7 +20,8 @@ import {
   DeveloperMode as DevIcon,
   Login as LoginIcon,
   Security as SecurityIcon,
-  Info as InfoIcon
+  Info as InfoIcon,
+  Logout as LogoutIcon
 } from '@mui/icons-material';
 
 import { 
@@ -32,8 +33,12 @@ import {
   AUTO_LOGIN_CONFIG,
   devUtils
 } from '../config/development';
+import { useAppContext } from '../context/AppContext';
+import { useNavigate } from 'react-router-dom';
 
 const DevLoginPanel = ({ onLoginSuccess, onClose }) => {
+  const navigate = useNavigate();
+  const { logout, currentUser } = useAppContext();
   const [selectedRole, setSelectedRole] = useState(AUTO_LOGIN_CONFIG.defaultRole);
   const [autoLoginEnabled, setAutoLoginEnabled] = useState(AUTO_LOGIN_CONFIG.enabled);
   const [rememberChoice, setRememberChoice] = useState(AUTO_LOGIN_CONFIG.rememberChoice);
@@ -101,6 +106,28 @@ const DevLoginPanel = ({ onLoginSuccess, onClose }) => {
     setAutoLoginEnabled(enabled);
     if (!enabled) {
       clearDevAutoLogin();
+    }
+  };
+
+  const handleDevLogout = async () => {
+    try {
+      // Call backend logout endpoint
+      const { api } = await import('../utils/apiClient');
+      await api.post('/auth/logout');
+    } catch (error) {
+      console.error('Dev logout API call failed:', error);
+      // Continue with logout even if API call fails
+    } finally {
+      // Clear development auto-login settings
+      clearDevAutoLogin();
+      
+      // Clear local storage and state
+      logout();
+      
+      // Navigate to login page
+      navigate('/login');
+      
+      devUtils.log('Development logout successful');
     }
   };
 
@@ -194,9 +221,34 @@ const DevLoginPanel = ({ onLoginSuccess, onClose }) => {
             {loading ? 'Logging in...' : 'Quick Dev Login'}
           </Button>
 
+          {/* Logout Button - Only show if user is logged in */}
+          {currentUser && (
+            <Button
+              variant="outlined"
+              fullWidth
+              onClick={handleDevLogout}
+              startIcon={<LogoutIcon />}
+              sx={{ 
+                mt: 1,
+                borderColor: 'error.main',
+                color: 'error.main',
+                '&:hover': {
+                  borderColor: 'error.dark',
+                  backgroundColor: 'error.light',
+                  color: 'error.contrastText',
+                },
+              }}
+            >
+              Dev Logout
+            </Button>
+          )}
+
           <Typography variant="caption" color="text.secondary" textAlign="center">
             <InfoIcon sx={{ fontSize: 14, mr: 0.5, verticalAlign: 'middle' }} />
-            This will automatically log you in as a {selectedRole} user
+            {currentUser 
+              ? `Currently logged in as ${currentUser.role || 'user'}`
+              : `This will automatically log you in as a ${selectedRole} user`
+            }
           </Typography>
         </Stack>
       </CardContent>

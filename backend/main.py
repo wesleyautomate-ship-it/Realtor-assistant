@@ -246,6 +246,14 @@ if ai_assistant_router:
 else:
     print("⚠️ AI Assistant router not included")
 
+# Include new AI request router
+try:
+    from routers.ai_request_router import router as ai_request_router
+    app.include_router(ai_request_router)  # NEW AI REQUEST ENDPOINTS
+    print("✅ AI Request router included successfully")
+except ImportError as e:
+    print(f"⚠️ AI Request router not included: {e}")
+
 # Include Phase 3 advanced router
 if phase3_advanced_router:
     app.include_router(phase3_advanced_router)  # PHASE 3 ADVANCED ENDPOINTS

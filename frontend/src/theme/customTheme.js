@@ -1,17 +1,9 @@
 import { createTheme } from '@mui/material/styles';
-import { 
-  PRIORITY_COLORS, 
-  STATUS_COLORS, 
-  TYPOGRAPHY_SCALE, 
-  SPACING_SCALE, 
-  BORDER_RADIUS, 
-  SHADOWS, 
-  TRANSITIONS 
-} from './designSystem';
 
-// Create custom theme extending Material-UI's default theme
+// Mobile-first modern theme with dark mode support
 export const customTheme = createTheme({
   palette: {
+    mode: 'dark', // Enable dark mode
     primary: {
       main: '#1976d2',
       light: '#42a5f5',
@@ -25,28 +17,36 @@ export const customTheme = createTheme({
       contrastText: '#ffffff',
     },
     success: {
-      main: PRIORITY_COLORS.low.primary,
-      light: PRIORITY_COLORS.low.light,
-      dark: PRIORITY_COLORS.low.dark,
-      contrastText: PRIORITY_COLORS.low.contrast,
+      main: '#4caf50',
+      light: '#81c784',
+      dark: '#388e3c',
+      contrastText: '#ffffff',
     },
     warning: {
-      main: PRIORITY_COLORS.medium.primary,
-      light: PRIORITY_COLORS.medium.light,
-      dark: PRIORITY_COLORS.medium.dark,
-      contrastText: PRIORITY_COLORS.medium.contrast,
+      main: '#ff9800',
+      light: '#ffb74d',
+      dark: '#f57c00',
+      contrastText: '#ffffff',
     },
     error: {
-      main: PRIORITY_COLORS.high.primary,
-      light: PRIORITY_COLORS.high.light,
-      dark: PRIORITY_COLORS.high.dark,
-      contrastText: PRIORITY_COLORS.high.contrast,
+      main: '#f44336',
+      light: '#e57373',
+      dark: '#d32f2f',
+      contrastText: '#ffffff',
     },
     info: {
-      main: PRIORITY_COLORS.ai.primary,
-      light: PRIORITY_COLORS.ai.light,
-      dark: PRIORITY_COLORS.ai.dark,
-      contrastText: PRIORITY_COLORS.ai.contrast,
+      main: '#2196f3',
+      light: '#64b5f6',
+      dark: '#1976d2',
+      contrastText: '#ffffff',
+    },
+    background: {
+      default: '#1a1a2e', // Dark background
+      paper: '#2d2d44', // Dark card background
+    },
+    text: {
+      primary: '#ffffff',
+      secondary: '#b0b0b0',
     },
     grey: {
       50: '#fafafa',
@@ -85,102 +85,112 @@ export const customTheme = createTheme({
       '"Segoe UI Symbol"',
     ].join(','),
     h1: {
-      ...TYPOGRAPHY_SCALE.h1,
+      fontSize: '2.5rem',
+      fontWeight: 700,
+      lineHeight: 1.2,
       color: '#212121',
     },
     h2: {
-      ...TYPOGRAPHY_SCALE.h2,
+      fontSize: '2rem',
+      fontWeight: 600,
+      lineHeight: 1.3,
       color: '#212121',
     },
     h3: {
-      ...TYPOGRAPHY_SCALE.h3,
+      fontSize: '1.75rem',
+      fontWeight: 600,
+      lineHeight: 1.3,
       color: '#212121',
     },
     h4: {
-      ...TYPOGRAPHY_SCALE.h4,
+      fontSize: '1.5rem',
+      fontWeight: 600,
+      lineHeight: 1.4,
       color: '#212121',
     },
     h5: {
-      ...TYPOGRAPHY_SCALE.h5,
+      fontSize: '1.25rem',
+      fontWeight: 600,
+      lineHeight: 1.4,
       color: '#212121',
     },
     h6: {
-      ...TYPOGRAPHY_SCALE.h6,
+      fontSize: '1.125rem',
+      fontWeight: 600,
+      lineHeight: 1.4,
       color: '#212121',
     },
     subtitle1: {
-      ...TYPOGRAPHY_SCALE.subtitle1,
+      fontSize: '1rem',
+      fontWeight: 500,
+      lineHeight: 1.5,
       color: '#616161',
     },
     subtitle2: {
-      ...TYPOGRAPHY_SCALE.subtitle2,
+      fontSize: '0.875rem',
+      fontWeight: 500,
+      lineHeight: 1.5,
       color: '#616161',
     },
     body1: {
-      ...TYPOGRAPHY_SCALE.body1,
+      fontSize: '1rem',
+      fontWeight: 400,
+      lineHeight: 1.6,
       color: '#212121',
     },
     body2: {
-      ...TYPOGRAPHY_SCALE.body2,
+      fontSize: '0.875rem',
+      fontWeight: 400,
+      lineHeight: 1.6,
       color: '#616161',
     },
     caption: {
-      ...TYPOGRAPHY_SCALE.caption,
+      fontSize: '0.75rem',
+      fontWeight: 400,
+      lineHeight: 1.5,
       color: '#9e9e9e',
     },
     button: {
-      ...TYPOGRAPHY_SCALE.button,
+      fontSize: '0.875rem',
       fontWeight: 600,
+      textTransform: 'none',
     },
   },
-  spacing: (factor) => {
-    // Convert our spacing scale to Material-UI's spacing function
-    const spacingMap = {
-      0: SPACING_SCALE.xs,
-      1: SPACING_SCALE.sm,
-      2: SPACING_SCALE.md,
-      3: SPACING_SCALE.lg,
-      4: SPACING_SCALE.xl,
-      5: SPACING_SCALE.xxl,
-      6: SPACING_SCALE.xxxl,
-    };
-    return spacingMap[factor] || `${factor * 8}px`;
-  },
+  spacing: 8,
   shape: {
-    borderRadius: BORDER_RADIUS.md,
+    borderRadius: 12,
   },
   shadows: [
-    SHADOWS.none,
-    SHADOWS.xs,
-    SHADOWS.sm,
-    SHADOWS.md,
-    SHADOWS.lg,
-    SHADOWS.xl,
-    SHADOWS.xxl,
-    SHADOWS.xxl,
-    SHADOWS.xxl,
-    SHADOWS.xxl,
-    SHADOWS.xxl,
-    SHADOWS.xxl,
-    SHADOWS.xxl,
-    SHADOWS.xxl,
-    SHADOWS.xxl,
-    SHADOWS.xxl,
-    SHADOWS.xxl,
-    SHADOWS.xxl,
-    SHADOWS.xxl,
-    SHADOWS.xxl,
-    SHADOWS.xxl,
-    SHADOWS.xxl,
-    SHADOWS.xxl,
-    SHADOWS.xxl,
-    SHADOWS.xxl,
-    SHADOWS.xxl,
+    'none',
+    '0px 2px 4px rgba(0, 0, 0, 0.1)',
+    '0px 4px 8px rgba(0, 0, 0, 0.1)',
+    '0px 8px 16px rgba(0, 0, 0, 0.1)',
+    '0px 12px 24px rgba(0, 0, 0, 0.1)',
+    '0px 16px 32px rgba(0, 0, 0, 0.1)',
+    '0px 20px 40px rgba(0, 0, 0, 0.1)',
+    '0px 24px 48px rgba(0, 0, 0, 0.1)',
+    '0px 28px 56px rgba(0, 0, 0, 0.1)',
+    '0px 32px 64px rgba(0, 0, 0, 0.1)',
+    '0px 36px 72px rgba(0, 0, 0, 0.1)',
+    '0px 40px 80px rgba(0, 0, 0, 0.1)',
+    '0px 44px 88px rgba(0, 0, 0, 0.1)',
+    '0px 48px 96px rgba(0, 0, 0, 0.1)',
+    '0px 52px 104px rgba(0, 0, 0, 0.1)',
+    '0px 56px 112px rgba(0, 0, 0, 0.1)',
+    '0px 60px 120px rgba(0, 0, 0, 0.1)',
+    '0px 64px 128px rgba(0, 0, 0, 0.1)',
+    '0px 68px 136px rgba(0, 0, 0, 0.1)',
+    '0px 72px 144px rgba(0, 0, 0, 0.1)',
+    '0px 76px 152px rgba(0, 0, 0, 0.1)',
+    '0px 80px 160px rgba(0, 0, 0, 0.1)',
+    '0px 84px 168px rgba(0, 0, 0, 0.1)',
+    '0px 88px 176px rgba(0, 0, 0, 0.1)',
+    '0px 92px 184px rgba(0, 0, 0, 0.1)',
   ],
   transitions: {
     create: (props, options) => {
-      const duration = options?.duration || 250;
-      const easing = options?.easing || 'ease-in-out';
+      const duration = options?.duration || 300;
+      const easing = options?.easing || 'cubic-bezier(0.4, 0, 0.2, 1)';
       const delay = options?.delay || 0;
       
       if (Array.isArray(props)) {
@@ -211,19 +221,19 @@ export const customTheme = createTheme({
     MuiButton: {
       styleOverrides: {
         root: {
-          borderRadius: BORDER_RADIUS.md,
+          borderRadius: 12,
           textTransform: 'none',
           fontWeight: 600,
-          transition: TRANSITIONS.normal,
+          transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
           '&:hover': {
             transform: 'translateY(-1px)',
-            boxShadow: SHADOWS.md,
+            boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
           },
         },
         contained: {
-          boxShadow: SHADOWS.sm,
+          boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
           '&:hover': {
-            boxShadow: SHADOWS.md,
+            boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
           },
         },
         outlined: {
@@ -232,16 +242,28 @@ export const customTheme = createTheme({
             borderWidth: '2px',
           },
         },
+        sizeSmall: {
+          padding: '6px 16px',
+          fontSize: '0.875rem',
+        },
+        sizeMedium: {
+          padding: '8px 24px',
+          fontSize: '0.875rem',
+        },
+        sizeLarge: {
+          padding: '12px 32px',
+          fontSize: '1rem',
+        },
       },
     },
     MuiCard: {
       styleOverrides: {
         root: {
-          borderRadius: BORDER_RADIUS.lg,
-          boxShadow: SHADOWS.sm,
-          transition: TRANSITIONS.normal,
+          borderRadius: 16,
+          boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
+          transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
           '&:hover': {
-            boxShadow: SHADOWS.md,
+            boxShadow: '0px 8px 16px rgba(0, 0, 0, 0.1)',
             transform: 'translateY(-2px)',
           },
         },
@@ -250,33 +272,37 @@ export const customTheme = createTheme({
     MuiPaper: {
       styleOverrides: {
         root: {
-          borderRadius: BORDER_RADIUS.md,
+          borderRadius: 12,
         },
         elevation1: {
-          boxShadow: SHADOWS.xs,
+          boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
         },
         elevation2: {
-          boxShadow: SHADOWS.sm,
+          boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
         },
         elevation3: {
-          boxShadow: SHADOWS.md,
+          boxShadow: '0px 8px 16px rgba(0, 0, 0, 0.1)',
         },
         elevation4: {
-          boxShadow: SHADOWS.lg,
+          boxShadow: '0px 12px 24px rgba(0, 0, 0, 0.1)',
         },
         elevation5: {
-          boxShadow: SHADOWS.xl,
+          boxShadow: '0px 16px 32px rgba(0, 0, 0, 0.1)',
         },
       },
     },
     MuiChip: {
       styleOverrides: {
         root: {
-          borderRadius: BORDER_RADIUS.round,
+          borderRadius: 20,
           fontWeight: 500,
         },
         outlined: {
           borderWidth: '1.5px',
+        },
+        sizeSmall: {
+          height: 24,
+          fontSize: '0.75rem',
         },
       },
     },
@@ -284,7 +310,12 @@ export const customTheme = createTheme({
       styleOverrides: {
         root: {
           '& .MuiOutlinedInput-root': {
-            borderRadius: BORDER_RADIUS.md,
+            borderRadius: 12,
+            '&:hover': {
+              '& .MuiOutlinedInput-notchedOutline': {
+                borderColor: '#1976d2',
+              },
+            },
           },
         },
       },
@@ -292,15 +323,15 @@ export const customTheme = createTheme({
     MuiDialog: {
       styleOverrides: {
         paper: {
-          borderRadius: BORDER_RADIUS.lg,
-          boxShadow: SHADOWS.xl,
+          borderRadius: 16,
+          boxShadow: '0px 16px 32px rgba(0, 0, 0, 0.1)',
         },
       },
     },
     MuiAlert: {
       styleOverrides: {
         root: {
-          borderRadius: BORDER_RADIUS.md,
+          borderRadius: 12,
           fontWeight: 500,
         },
       },
@@ -308,29 +339,64 @@ export const customTheme = createTheme({
     MuiLinearProgress: {
       styleOverrides: {
         root: {
-          borderRadius: BORDER_RADIUS.round,
+          borderRadius: 20,
           height: '8px',
         },
         bar: {
-          borderRadius: BORDER_RADIUS.round,
+          borderRadius: 20,
+        },
+      },
+    },
+    MuiBottomNavigation: {
+      styleOverrides: {
+        root: {
+          backgroundColor: '#ffffff',
+          borderTop: '1px solid #e0e0e0',
+        },
+      },
+    },
+    MuiBottomNavigationAction: {
+      styleOverrides: {
+        root: {
+          '&.Mui-selected': {
+            color: '#1976d2',
+          },
+        },
+      },
+    },
+    MuiFab: {
+      styleOverrides: {
+        root: {
+          borderRadius: 16,
+          boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
+          '&:hover': {
+            boxShadow: '0px 8px 16px rgba(0, 0, 0, 0.1)',
+            transform: 'scale(1.05)',
+          },
+        },
+      },
+    },
+    MuiIconButton: {
+      styleOverrides: {
+        root: {
+          borderRadius: 12,
+          transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+          '&:hover': {
+            backgroundColor: 'rgba(25, 118, 210, 0.08)',
+          },
         },
       },
     },
   },
+  breakpoints: {
+    values: {
+      xs: 0,
+      sm: 600,
+      md: 900,
+      lg: 1200,
+      xl: 1536,
+    },
+  },
 });
 
-// Export priority and status color getters for easy access
-export const getPriorityColor = (priority) => {
-  return PRIORITY_COLORS[priority] || PRIORITY_COLORS.neutral;
-};
-
-export const getStatusColor = (status) => {
-  return STATUS_COLORS[status] || STATUS_COLORS.neutral;
-};
-
-export const getAIScoreColor = (score) => {
-  if (score >= 90) return PRIORITY_COLORS.low.primary;
-  if (score >= 80) return PRIORITY_COLORS.medium.primary;
-  if (score >= 70) return PRIORITY_COLORS.ai.primary;
-  return PRIORITY_COLORS.high.primary;
-};
+export default customTheme;

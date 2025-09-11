@@ -1,48 +1,44 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Box,
+  BottomNavigation,
+  BottomNavigationAction,
+  Paper,
+  IconButton,
+  Avatar,
+  Typography,
   Drawer,
   List,
   ListItem,
   ListItemButton,
   ListItemIcon,
   ListItemText,
-  Typography,
-  Button,
   Divider,
-  IconButton,
-  Avatar,
+  Button,
   Chip,
   useTheme,
-  Snackbar,
-  Alert,
-  CircularProgress,
   useMediaQuery,
   Stack,
-  Skeleton,
-  Fade,
-  Grow
+  CircularProgress,
 } from '@mui/material';
 import {
-  Add as AddIcon,
-  Dashboard as DashboardIcon,
   Home as HomeIcon,
-  Folder as FolderIcon,
-  Logout as LogoutIcon,
+  Chat as ChatIcon,
+  Dashboard as DashboardIcon,
+  People as PeopleIcon,
+  Description as DescriptionIcon,
   Menu as MenuIcon,
   Close as CloseIcon,
+  Add as AddIcon,
+  Logout as LogoutIcon,
   SmartToy as SmartToyIcon,
-  Settings as SettingsIcon,
-  Chat as ChatIcon,
-  Keyboard as KeyboardIcon,
-  People as PeopleIcon,
 } from '@mui/icons-material';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAppContext } from '../context/AppContext';
-import { api } from '../utils/apiClient';
 
-const Sidebar = ({ open, onToggle, onClose, isMobile, onOpenCommandBar }) => {
+const MobileNavigation = () => {
   const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const navigate = useNavigate();
   const location = useLocation();
   const { 
@@ -55,139 +51,107 @@ const Sidebar = ({ open, onToggle, onClose, isMobile, onOpenCommandBar }) => {
     isLoading 
   } = useAppContext();
 
-  const [snackbar, setSnackbar] = React.useState({ open: false, message: '', severity: 'info' });
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [isCreatingChat, setIsCreatingChat] = useState(false);
 
-  const sidebarWidth = 280;
-
-  const [isCreatingChat, setIsCreatingChat] = React.useState(false);
-
-  // Handle new chat creation with debouncing
-  const handleNewChat = async () => {
-    if (isCreatingChat) {
-      return; // Prevent multiple simultaneous requests
+  // Navigation items for bottom navigation - matching the mockup exactly
+  const navigationItems = [
+    {
+      label: 'Home',
+      icon: <HomeIcon />,
+      path: '/dashboard',
+      value: 'home'
+    },
+    {
+      label: 'People',
+      icon: <PeopleIcon />,
+      path: '/contacts',
+      value: 'people'
+    },
+    {
+      label: 'Chat',
+      icon: <ChatIcon />,
+      path: '/chat',
+      value: 'chat'
+    },
+    {
+      label: 'Reports',
+      icon: <DescriptionIcon />,
+      path: '/reports',
+      value: 'reports'
+    },
+    {
+      label: 'List',
+      icon: <DashboardIcon />,
+      path: '/hub',
+      value: 'list'
     }
+  ];
+
+  // Get current navigation value based on path
+  const getCurrentValue = () => {
+    const path = location.pathname;
+    if (path.startsWith('/dashboard')) return 'home';
+    if (path.startsWith('/contacts')) return 'people';
+    if (path.startsWith('/chat')) return 'chat';
+    if (path.startsWith('/reports')) return 'reports';
+    if (path.startsWith('/hub')) return 'list';
+    return 'home'; // Default to home
+  };
+
+  const handleNavigationChange = (event, newValue) => {
+    const item = navigationItems.find(item => item.value === newValue);
+    if (item) {
+      navigate(item.path);
+    }
+  };
+
+  const handleNewChat = async () => {
+    if (isCreatingChat) return;
 
     try {
       setIsCreatingChat(true);
-      console.log('Creating new chat...');
       const newConversation = await createNewConversation();
-      console.log('New conversation created:', newConversation);
-      console.log('newConversation.id:', newConversation.id);
-      console.log('newConversation.id type:', typeof newConversation.id);
-      console.log('Navigating to:', `/chat/${newConversation.id}`);
-      
-      if (!newConversation.id) {
-        console.error('No valid session ID in newConversation:', newConversation);
-        throw new Error('Failed to create session - no session ID returned');
-      }
-      
       navigate(`/chat/${newConversation.id}`);
+      setDrawerOpen(false);
     } catch (error) {
       console.error('Failed to create new chat:', error);
-      const errorMessage = error.message || 'An error occurred';
-      setSnackbar({
-        open: true,
-        message: `Failed to create new chat: ${errorMessage}`,
-        severity: 'error',
-      });
     } finally {
       setIsCreatingChat(false);
     }
   };
 
-  // Handle command bar opening
-  const handleOpenCommandBar = () => {
-    if (onOpenCommandBar) {
-      onOpenCommandBar();
-    }
-  };
-
-  // Handle conversation selection
   const handleConversationSelect = (sessionId) => {
     setCurrentSessionId(sessionId);
     navigate(`/chat/${sessionId}`);
-    if (isMobile) {
-      onClose();
-    }
+    setDrawerOpen(false);
   };
 
-  // Handle navigation
-  const handleNavigation = (path) => {
-    navigate(path);
-    if (isMobile) {
-      onClose();
-    }
-  };
-
-  // Handle logout
   const handleLogout = () => {
     logout();
     navigate('/login');
   };
 
-  // Simplified navigation items - only 3 main sections
-  const navigationItems = [
-    {
-      text: 'Hub',
-      icon: <DashboardIcon />,
-      path: '/hub',
-      show: true,
-    },
-    {
-      text: 'Clients',
-      icon: <PeopleIcon />,
-      path: '/clients',
-      show: true,
-    },
-    {
-      text: 'Properties',
-      icon: <HomeIcon />,
-      path: '/properties',
-      show: true,
-    },
-  ];
-
-  // Ensure conversations is an array
+  // Conversations list
   const conversationsList = Array.isArray(conversations) ? conversations : [];
 
-  const handleCloseSnackbar = () => {
-    setSnackbar({ ...snackbar, open: false });
-  };
-
-  // Sidebar content
-  const sidebarContent = (
-    <Box
-      sx={{
-        width: sidebarWidth,
-        height: '100%',
-        display: 'flex',
-        flexDirection: 'column',
-        backgroundColor: 'background.paper',
-        borderRight: `1px solid ${theme.palette.divider}`,
-      }}
-    >
+  // Side drawer content
+  const drawerContent = (
+    <Box sx={{ width: 280, height: '100%', display: 'flex', flexDirection: 'column' }}>
       {/* Header */}
-      <Box
-        sx={{
-          p: 2,
-          borderBottom: `1px solid ${theme.palette.divider}`,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-        }}
-      >
-        <Typography variant="h6" sx={{ fontWeight: 600, color: 'primary.main' }}>
-          Dubai RAG
-        </Typography>
-        {isMobile && (
-          <IconButton onClick={onClose} size="small">
+      <Box sx={{ p: 2, borderBottom: 1, borderColor: 'divider' }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <Typography variant="h6" sx={{ fontWeight: 600, color: 'primary.main' }}>
+            Laura
+          </Typography>
+          <IconButton onClick={() => setDrawerOpen(false)} size="small">
             <CloseIcon />
           </IconButton>
-        )}
+        </Box>
       </Box>
 
       {/* New Chat Button */}
-      <Box sx={{ p: theme.spacing(2) }}>
+      <Box sx={{ p: 2 }}>
         <Button
           fullWidth
           variant="contained"
@@ -209,13 +173,16 @@ const Sidebar = ({ open, onToggle, onClose, isMobile, onOpenCommandBar }) => {
         </Button>
       </Box>
 
-      {/* AI Command - Primary Assistant Entry Point */}
-      <Box sx={{ px: theme.spacing(2), mb: theme.spacing(2) }}>
+      {/* AI Command Button */}
+      <Box sx={{ px: 2, mb: 2 }}>
         <Button
           fullWidth
           variant="contained"
           startIcon={<SmartToyIcon />}
-          onClick={handleOpenCommandBar}
+          onClick={() => {
+            navigate('/chat');
+            setDrawerOpen(false);
+          }}
           sx={{
             borderRadius: 2,
             py: 2,
@@ -245,58 +212,6 @@ const Sidebar = ({ open, onToggle, onClose, isMobile, onOpenCommandBar }) => {
         >
           Your AI Copilot awaits
         </Typography>
-        <Typography 
-          variant="caption" 
-          color="text.secondary" 
-          sx={{ 
-            display: 'block', 
-            textAlign: 'center', 
-            fontSize: '0.7rem'
-          }}
-        >
-          Press Ctrl+K anytime
-        </Typography>
-      </Box>
-
-      {/* Navigation */}
-      <Box sx={{ px: 2, mb: 2 }}>
-        <List dense>
-          {navigationItems
-            .filter(item => item.show)
-            .map((item) => (
-              <ListItem key={item.text} disablePadding>
-                <ListItemButton
-                  onClick={() => handleNavigation(item.path)}
-                  selected={location.pathname === item.path}
-                  sx={{
-                    borderRadius: 1,
-                    mb: 0.5,
-                    '&.Mui-selected': {
-                      backgroundColor: 'primary.light',
-                      color: 'primary.contrastText',
-                      '&:hover': {
-                        backgroundColor: 'primary.main',
-                      },
-                    },
-                  }}
-                >
-                  <ListItemIcon
-                    sx={{
-                      color: location.pathname === item.path ? 'inherit' : 'text.secondary',
-                    }}
-                  >
-                    {item.icon}
-                  </ListItemIcon>
-                  <ListItemText 
-                    primary={item.text}
-                    primaryTypographyProps={{
-                      fontWeight: location.pathname === item.path ? 600 : 400,
-                    }}
-                  />
-                </ListItemButton>
-              </ListItem>
-            ))}
-        </List>
       </Box>
 
       <Divider />
@@ -305,7 +220,7 @@ const Sidebar = ({ open, onToggle, onClose, isMobile, onOpenCommandBar }) => {
       <Box sx={{ flex: 1, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
         <Box sx={{ px: 2, py: 1.5 }}>
           <Typography variant="subtitle2" color="text.secondary" sx={{ fontWeight: 600 }}>
-            Recent
+            Recent Chats
           </Typography>
         </Box>
         
@@ -366,25 +281,16 @@ const Sidebar = ({ open, onToggle, onClose, isMobile, onOpenCommandBar }) => {
                         conversation.created_at && (
                           <Typography variant="caption" color="text.secondary">
                             {(() => {
-                              // Parse the UTC timestamp from the database
-                              // The database stores UTC timestamps without timezone info
-                              // So we need to explicitly treat them as UTC
                               const timestampStr = conversation.created_at;
                               let utcDate;
                               
-                              // Handle different timestamp formats
                               if (timestampStr.includes('T')) {
-                                // ISO format with T
                                 utcDate = new Date(timestampStr);
                               } else {
-                                // PostgreSQL format: "2025-08-31 11:32:22.114730"
-                                // Add 'Z' to indicate UTC timezone
                                 utcDate = new Date(timestampStr + 'Z');
                               }
                               
                               const now = new Date();
-                              
-                              // Calculate the time difference in milliseconds
                               const diffInMs = now.getTime() - utcDate.getTime();
                               const diffInHours = diffInMs / (1000 * 60 * 60);
                               
@@ -393,7 +299,7 @@ const Sidebar = ({ open, onToggle, onClose, isMobile, onOpenCommandBar }) => {
                               } else if (diffInHours < 24) {
                                 const hours = Math.floor(diffInHours);
                                 return `${hours} hour${hours > 1 ? 's' : ''} ago`;
-                              } else if (diffInHours < 168) { // 7 days
+                              } else if (diffInHours < 168) {
                                 const days = Math.floor(diffInHours / 24);
                                 return `${days} day${days > 1 ? 's' : ''} ago`;
                               } else {
@@ -415,15 +321,8 @@ const Sidebar = ({ open, onToggle, onClose, isMobile, onOpenCommandBar }) => {
       <Divider />
 
       {/* User Profile Section */}
-      <Box sx={{ p: theme.spacing(2) }}>
-        <Box
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: 1.5,
-            mb: 1,
-          }}
-        >
+      <Box sx={{ p: 2 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 2 }}>
           <Avatar
             sx={{
               width: 32,
@@ -475,81 +374,101 @@ const Sidebar = ({ open, onToggle, onClose, isMobile, onOpenCommandBar }) => {
     </Box>
   );
 
+  if (!isMobile) {
+    return null; // Don't render on desktop
+  }
+
   return (
     <>
-      {/* Mobile Drawer */}
-      {isMobile ? (
-        <Drawer
-          variant="temporary"
-          open={open}
-          onClose={onClose}
-          ModalProps={{
-            keepMounted: true, // Better mobile performance
-          }}
+      {/* Mobile Bottom Navigation */}
+      <Paper 
+        sx={{ 
+          position: 'fixed', 
+          bottom: 0, 
+          left: 0, 
+          right: 0, 
+          zIndex: theme.zIndex.appBar,
+          borderTop: 1,
+          borderColor: 'divider',
+          boxShadow: '0 -2px 8px rgba(0,0,0,0.1)'
+        }} 
+        elevation={3}
+      >
+        <BottomNavigation
+          value={getCurrentValue()}
+          onChange={handleNavigationChange}
           sx={{
-            '& .MuiDrawer-paper': {
-              width: sidebarWidth,
-              boxSizing: 'border-box',
+            '& .MuiBottomNavigationAction-root': {
+              minWidth: 'auto',
+              padding: '6px 8px 8px',
+              '&.Mui-selected': {
+                color: 'primary.main',
+              },
+            },
+            '& .MuiBottomNavigationAction-label': {
+              fontSize: '0.7rem',
+              fontWeight: 500,
+              '&.Mui-selected': {
+                fontSize: '0.7rem',
+                fontWeight: 600,
+              },
             },
           }}
         >
-          {sidebarContent}
-        </Drawer>
-      ) : (
-        /* Desktop Drawer */
-        <Drawer
-          variant="persistent"
-          open={open}
-          sx={{
-            '& .MuiDrawer-paper': {
-              width: sidebarWidth,
-              boxSizing: 'border-box',
-            },
-          }}
-        >
-          {sidebarContent}
-        </Drawer>
-      )}
+          {navigationItems.map((item) => (
+            <BottomNavigationAction
+              key={item.value}
+              label={item.label}
+              icon={item.icon}
+              value={item.value}
+            />
+          ))}
+        </BottomNavigation>
+      </Paper>
 
       {/* Mobile Menu Button */}
-      {isMobile && (
-        <Box
+      <Box
+        sx={{
+          position: 'fixed',
+          top: 16,
+          left: 16,
+          zIndex: theme.zIndex.drawer + 1,
+        }}
+      >
+        <IconButton
+          onClick={() => setDrawerOpen(true)}
           sx={{
-            position: 'fixed',
-            top: 16,
-            left: 16,
-            zIndex: theme.zIndex.drawer + 1,
+            backgroundColor: 'background.paper',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+            '&:hover': {
+              backgroundColor: 'background.paper',
+              boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+            },
           }}
         >
-          <IconButton
-            onClick={onToggle}
-            sx={{
-              backgroundColor: 'background.paper',
-              boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-              '&:hover': {
-                backgroundColor: 'background.paper',
-                boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
-              },
-            }}
-          >
-            <MenuIcon />
-          </IconButton>
-        </Box>
-      )}
+          <MenuIcon />
+        </IconButton>
+      </Box>
 
-      {/* Snackbar for notifications */}
-      <Snackbar
-        open={snackbar.open}
-        autoHideDuration={6000}
-        onClose={handleCloseSnackbar}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+      {/* Mobile Drawer */}
+      <Drawer
+        variant="temporary"
+        open={drawerOpen}
+        onClose={() => setDrawerOpen(false)}
+        ModalProps={{
+          keepMounted: true,
+        }}
+        sx={{
+          '& .MuiDrawer-paper': {
+            width: 280,
+            boxSizing: 'border-box',
+          },
+        }}
       >
-        <Alert onClose={handleCloseSnackbar} severity={snackbar.severity} sx={{ width: '100%' }}>
-          {snackbar.message}
-        </Alert>
-      </Snackbar>
+        {drawerContent}
+      </Drawer>
     </>
   );
 };
 
-export default Sidebar;
+export default MobileNavigation;

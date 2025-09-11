@@ -200,8 +200,61 @@ const LoginPage = () => {
 
   if (isAuthenticated) {
     return (
-      <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh">
-        <CircularProgress />
+      <Box 
+        sx={{
+          minHeight: '100vh',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          background: 'linear-gradient(135deg, #1976d2 0%, #42a5f5 100%)',
+          p: 2,
+        }}
+      >
+        <Card
+          sx={{
+            maxWidth: 400,
+            width: '100%',
+            boxShadow: '0 8px 32px rgba(0,0,0,0.1)',
+            borderRadius: 3,
+          }}
+        >
+          <CardContent sx={{ p: theme.spacing(4), textAlign: 'center' }}>
+            <BusinessIcon sx={{ fontSize: 48, color: 'primary.main', mb: 2 }} />
+            <Typography variant="h5" sx={{ fontWeight: 600, mb: 2 }}>
+              Already Logged In
+            </Typography>
+            <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
+              You are already authenticated. Redirecting to dashboard...
+            </Typography>
+            <CircularProgress sx={{ mb: 3 }} />
+            <Button
+              variant="outlined"
+              onClick={async () => {
+                try {
+                  await api.post('/auth/logout');
+                } catch (error) {
+                  console.error('Logout API call failed:', error);
+                } finally {
+                  localStorage.removeItem('authToken');
+                  localStorage.removeItem('userId');
+                  localStorage.removeItem('userRole');
+                  setCurrentUser(null);
+                  setIsAuthenticated(false);
+                }
+              }}
+              sx={{ 
+                borderColor: 'error.main',
+                color: 'error.main',
+                '&:hover': {
+                  borderColor: 'error.dark',
+                  backgroundColor: 'error.light',
+                },
+              }}
+            >
+              Logout & Return to Login
+            </Button>
+          </CardContent>
+        </Card>
       </Box>
     );
   }

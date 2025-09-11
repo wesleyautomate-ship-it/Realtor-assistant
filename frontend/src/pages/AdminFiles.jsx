@@ -35,7 +35,6 @@ import {
   TextField,
   Snackbar,
   // Enhanced upload components
-  DropzoneArea,
   ListItemAvatar,
   Avatar,
   Divider,

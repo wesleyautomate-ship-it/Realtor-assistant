@@ -51,6 +51,7 @@ class Brokerage(Base):
     team_performance = relationship("TeamPerformance", back_populates="brokerage", cascade="all, delete-orphan")
     knowledge_base = relationship("KnowledgeBase", back_populates="brokerage", cascade="all, delete-orphan")
     brand_assets = relationship("BrandAsset", back_populates="brokerage", cascade="all, delete-orphan")
+    ai_brand_assets = relationship("AIBrandAsset", back_populates="brokerage", cascade="all, delete-orphan")
     workflow_automation = relationship("WorkflowAutomation", back_populates="brokerage", cascade="all, delete-orphan")
     client_nurturing = relationship("ClientNurturing", back_populates="brokerage", cascade="all, delete-orphan")
     compliance_rules = relationship("ComplianceRule", back_populates="brokerage", cascade="all, delete-orphan")
@@ -65,6 +66,7 @@ class Brokerage(Base):
     
     # AI Assistant relationships
     ai_requests = relationship("AIRequest", back_populates="brokerage", cascade="all, delete-orphan")
+    ai_requests_new = relationship("AIRequestNew", back_populates="brokerage", cascade="all, delete-orphan")
     rera_compliance_data = relationship("RERAComplianceData", back_populates="brokerage", cascade="all, delete-orphan")
     retention_analytics = relationship("RetentionAnalytic", back_populates="brokerage", cascade="all, delete-orphan")
     voice_requests = relationship("VoiceRequest", back_populates="brokerage", cascade="all, delete-orphan")

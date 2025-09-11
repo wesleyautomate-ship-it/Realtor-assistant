@@ -236,6 +236,97 @@ export const api = {
     }
   },
 
+  // Basic Chat API
+  sendMessage: async (message, sessionId = null) => {
+    try {
+      const payload = { message };
+      if (sessionId) {
+        payload.session_id = sessionId;
+      }
+      const response = await apiClient.post('/chat', payload);
+      return response.data;
+    } catch (error) {
+      throw createApiError(error);
+    }
+  },
+
+  // Session Management API
+  createSession: async () => {
+    try {
+      const response = await apiClient.post('/sessions');
+      return response.data;
+    } catch (error) {
+      throw createApiError(error);
+    }
+  },
+
+  getConversationHistory: async (sessionId) => {
+    try {
+      const response = await apiClient.get(`/conversation/${sessionId}`);
+      return response.data;
+    } catch (error) {
+      throw createApiError(error);
+    }
+  },
+
+  // Enhanced Conversation Management API
+  createNewConversation: async () => {
+    try {
+      const response = await apiClient.post('/sessions', {
+        title: null, // Will be auto-generated from first message
+        role: 'client'
+      });
+      return response.data;
+    } catch (error) {
+      throw createApiError(error);
+    }
+  },
+
+  getConversations: async () => {
+    try {
+      const response = await apiClient.get('/sessions');
+      return response.data;
+    } catch (error) {
+      throw createApiError(error);
+    }
+  },
+
+  getConversation: async (sessionId) => {
+    try {
+      const response = await apiClient.get(`/sessions/${sessionId}`);
+      return response.data;
+    } catch (error) {
+      throw createApiError(error);
+    }
+  },
+
+  updateConversation: async (sessionId, updates) => {
+    try {
+      const response = await apiClient.put(`/sessions/${sessionId}`, updates);
+      return response.data;
+    } catch (error) {
+      throw createApiError(error);
+    }
+  },
+
+  deleteConversation: async (sessionId) => {
+    try {
+      const response = await apiClient.delete(`/sessions/${sessionId}`);
+      return response.data;
+    } catch (error) {
+      throw createApiError(error);
+    }
+  },
+
+  clearConversation: async (sessionId) => {
+    try {
+      const response = await apiClient.post(`/sessions/${sessionId}/clear`);
+      return response.data;
+    } catch (error) {
+      throw createApiError(error);
+    }
+  },
+
   // Enhanced Chat API with Property Detection and Entity Detection
   sendMessageWithPropertyDetection: async (sessionId, message, fileUpload = null, detectEntities = true) => {
     try {
@@ -277,6 +368,264 @@ export const api = {
         throw new Error('Session ID is required for entity context fetching');
       }
       const response = await apiClient.get(`/sessions/${sessionId}/advanced/context/${entityType}/${entityId}`);
+      return response.data;
+    } catch (error) {
+      throw createApiError(error);
+    }
+  },
+
+  // ML Insights API
+  getMarketPredictions: async (area, propertyType, timeframe = '6m') => {
+    try {
+      const response = await apiClient.post('/ml-insights/market-predictions', {
+        area,
+        property_type: propertyType,
+        timeframe
+      });
+      return response.data;
+    } catch (error) {
+      throw createApiError(error);
+    }
+  },
+
+  getPropertyValuation: async (propertyData) => {
+    try {
+      const response = await apiClient.post('/ml-insights/property-valuation', propertyData);
+      return response.data;
+    } catch (error) {
+      throw createApiError(error);
+    }
+  },
+
+  getInvestmentOpportunities: async (criteria) => {
+    try {
+      const response = await apiClient.post('/ml-insights/investment-opportunities', criteria);
+      return response.data;
+    } catch (error) {
+      throw createApiError(error);
+    }
+  },
+
+  getMarketTrends: async (area, period = '1y') => {
+    try {
+      const response = await apiClient.get(`/ml-insights/market-trends?area=${encodeURIComponent(area)}&period=${period}`);
+      return response.data;
+    } catch (error) {
+      throw createApiError(error);
+    }
+  },
+
+  // Advanced Market Data API
+  getMarketOverview: async () => {
+    try {
+      const response = await apiClient.get('/market/overview');
+      return response.data;
+    } catch (error) {
+      throw createApiError(error);
+    }
+  },
+
+  getAreaAnalysis: async (areaName) => {
+    try {
+      const response = await apiClient.get(`/market/areas/${encodeURIComponent(areaName)}`);
+      return response.data;
+    } catch (error) {
+      throw createApiError(error);
+    }
+  },
+
+  getUsageAnalytics: async (period = '30d') => {
+    try {
+      const response = await apiClient.get(`/analytics/usage?period=${period}`);
+      return response.data;
+    } catch (error) {
+      throw createApiError(error);
+    }
+  },
+
+  getPerformanceAnalytics: async () => {
+    try {
+      const response = await apiClient.get('/analytics/performance');
+      return response.data;
+    } catch (error) {
+      throw createApiError(error);
+    }
+  },
+
+  // Property Detection API
+  detectPropertyFromImage: async (imageFile, sessionId = null) => {
+    try {
+      const formData = new FormData();
+      formData.append('image', imageFile);
+      if (sessionId) {
+        formData.append('session_id', sessionId);
+      }
+
+      const response = await apiClient.post('/property-detection/analyze-image', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      return response.data;
+    } catch (error) {
+      throw createApiError(error);
+    }
+  },
+
+  detectPropertyFromText: async (text, sessionId = null) => {
+    try {
+      const payload = { text };
+      if (sessionId) {
+        payload.session_id = sessionId;
+      }
+
+      const response = await apiClient.post('/property-detection/analyze-text', payload);
+      return response.data;
+    } catch (error) {
+      throw createApiError(error);
+    }
+  },
+
+  // Lead Nurturing API
+  getLeadNurturingCampaigns: async () => {
+    try {
+      const response = await apiClient.get('/nurturing/campaigns');
+      return response.data;
+    } catch (error) {
+      throw createApiError(error);
+    }
+  },
+
+  createNurturingCampaign: async (campaignData) => {
+    try {
+      const response = await apiClient.post('/nurturing/campaigns', campaignData);
+      return response.data;
+    } catch (error) {
+      throw createApiError(error);
+    }
+  },
+
+  getLeadScoring: async (contactId) => {
+    try {
+      const response = await apiClient.get(`/nurturing/lead-scoring/${contactId}`);
+      return response.data;
+    } catch (error) {
+      throw createApiError(error);
+    }
+  },
+
+  scheduleFollowUp: async (contactId, followUpData) => {
+    try {
+      const response = await apiClient.post(`/nurturing/follow-up/${contactId}`, followUpData);
+      return response.data;
+    } catch (error) {
+      throw createApiError(error);
+    }
+  },
+
+  getAutomatedFollowUps: async () => {
+    try {
+      const response = await apiClient.get('/nurturing/automated-follow-ups');
+      return response.data;
+    } catch (error) {
+      throw createApiError(error);
+    }
+  },
+
+  // Report Generation API
+  generateReport: async (reportType, parameters = {}) => {
+    try {
+      const response = await apiClient.post('/reports/generate', {
+        report_type: reportType,
+        parameters
+      });
+      return response.data;
+    } catch (error) {
+      throw createApiError(error);
+    }
+  },
+
+  getReportTemplates: async () => {
+    try {
+      const response = await apiClient.get('/reports/templates');
+      return response.data;
+    } catch (error) {
+      throw createApiError(error);
+    }
+  },
+
+  downloadReport: async (reportId) => {
+    try {
+      const response = await apiClient.get(`/reports/${reportId}/download`, {
+        responseType: 'blob'
+      });
+      return response.data;
+    } catch (error) {
+      throw createApiError(error);
+    }
+  },
+
+  // AI Request Management API
+  createAIRequest: async (requestData) => {
+    try {
+      const response = await apiClient.post('/ai-requests', requestData);
+      return response.data;
+    } catch (error) {
+      throw createApiError(error);
+    }
+  },
+
+  getAIRequests: async (status = null) => {
+    try {
+      const url = status ? `/ai-requests?status=${status}` : '/ai-requests';
+      const response = await apiClient.get(url);
+      return response.data;
+    } catch (error) {
+      throw createApiError(error);
+    }
+  },
+
+  getAIRequestStatus: async (requestId) => {
+    try {
+      const response = await apiClient.get(`/ai-requests/${requestId}/status`);
+      return response.data;
+    } catch (error) {
+      throw createApiError(error);
+    }
+  },
+
+  // Performance Monitoring API
+  getPerformanceMetrics: async () => {
+    try {
+      const response = await apiClient.get('/performance/metrics');
+      return response.data;
+    } catch (error) {
+      throw createApiError(error);
+    }
+  },
+
+  getCacheStats: async () => {
+    try {
+      const response = await apiClient.get('/performance/cache-stats');
+      return response.data;
+    } catch (error) {
+      throw createApiError(error);
+    }
+  },
+
+  // Feedback API
+  submitFeedback: async (feedbackData) => {
+    try {
+      const response = await apiClient.post('/feedback/submit', feedbackData);
+      return response.data;
+    } catch (error) {
+      throw createApiError(error);
+    }
+  },
+
+  getFeedbackSummary: async () => {
+    try {
+      const response = await apiClient.get('/feedback/summary');
       return response.data;
     } catch (error) {
       throw createApiError(error);

@@ -217,11 +217,54 @@ export const AppProvider = ({ children }) => {
       const token = localStorage.getItem('authToken');
       
       if (token) {
+        // Check if this is a demo token
+        if (token.startsWith('demo-token-')) {
+          // Handle demo token - restore user from localStorage
+          const demoRole = localStorage.getItem('demo-user-role') || 'agent';
+          const demoUsers = {
+            agent: {
+              id: 2,
+              email: 'laura@dubai-estate.com',
+              first_name: 'Laura',
+              last_name: 'Agent',
+              role: 'agent',
+              is_active: true,
+              email_verified: true
+            },
+            admin: {
+              id: 1,
+              email: 'admin@dubai-estate.com',
+              first_name: 'System',
+              last_name: 'Administrator',
+              role: 'admin',
+              is_active: true,
+              email_verified: true
+            },
+            employee: {
+              id: 3,
+              email: 'employee@dubai-estate.com',
+              first_name: 'Development',
+              last_name: 'Employee',
+              role: 'employee',
+              is_active: true,
+              email_verified: true
+            }
+          };
+          
+          const user = demoUsers[demoRole];
+          if (user) {
+            dispatch({ type: ACTIONS.SET_CURRENT_USER, payload: user });
+            dispatch({ type: ACTIONS.SET_LOADING, payload: false });
+            return;
+          }
+        }
+        
         // Check if token is already expired
         if (isTokenExpired(token)) {
           localStorage.removeItem('authToken');
           localStorage.removeItem('userId');
           localStorage.removeItem('userRole');
+          localStorage.removeItem('demo-user-role');
           dispatch({ type: ACTIONS.SET_CURRENT_USER, payload: null });
           dispatch({ type: ACTIONS.SET_LOADING, payload: false });
           return;
@@ -241,6 +284,7 @@ export const AppProvider = ({ children }) => {
           localStorage.removeItem('authToken');
           localStorage.removeItem('userId');
           localStorage.removeItem('userRole');
+          localStorage.removeItem('demo-user-role');
           dispatch({ type: ACTIONS.SET_CURRENT_USER, payload: null });
         }
       }
@@ -289,17 +333,27 @@ export const AppProvider = ({ children }) => {
       }
       
       dispatch({ type: ACTIONS.SET_LOADING, payload: true });
-      const response = await apiClient.get(`/sessions?page=${page}&limit=${limit}`);
+      const response = await apiClient.get('/sessions');
+      
+      // Handle different response formats
+      let conversations = [];
+      if (Array.isArray(response)) {
+        conversations = response;
+      } else if (response && response.sessions) {
+        conversations = response.sessions;
+      } else if (response && response.conversations) {
+        conversations = response.conversations;
+      }
       
       // Cache the result
       const cacheData = {
-        data: response,
+        data: { sessions: conversations },
         timestamp: Date.now()
       };
       localStorage.setItem(cacheKey, JSON.stringify(cacheData));
       
-      dispatch({ type: ACTIONS.SET_CONVERSATIONS, payload: response.sessions });
-      return response;
+      dispatch({ type: ACTIONS.SET_CONVERSATIONS, payload: conversations });
+      return { sessions: conversations };
     } catch (error) {
       console.error('Error fetching conversations:', error);
       const userMessage = handleApiError(error, 'session');
@@ -364,8 +418,8 @@ export const AppProvider = ({ children }) => {
     try {
       // Don't set global loading for conversation creation to avoid UI freezing
       const response = await apiClient.post('/sessions', {
-        title: "New Chat",
-        user_preferences: {}
+        title: null, // Will be auto-generated from first message
+        role: 'client'
       });
       const newConversation = response;
       
@@ -467,6 +521,7 @@ export const AppProvider = ({ children }) => {
     localStorage.removeItem('authToken');
     localStorage.removeItem('userId');
     localStorage.removeItem('userRole');
+    localStorage.removeItem('demo-user-role');
     dispatch({ type: ACTIONS.SET_CURRENT_USER, payload: null });
     dispatch({ type: ACTIONS.SET_CONVERSATIONS, payload: [] });
     dispatch({ type: ACTIONS.SET_CURRENT_SESSION, payload: null });

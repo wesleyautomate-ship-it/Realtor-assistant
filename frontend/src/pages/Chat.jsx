@@ -2,14 +2,10 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import {
   Box,
   Typography,
-  Paper,
   TextField,
   Button,
-  Card,
-  CardContent,
   IconButton,
   Avatar,
-  Chip,
   CircularProgress,
   Alert,
   Dialog,
@@ -17,18 +13,22 @@ import {
   DialogContent,
   DialogActions,
   Input,
-  Tooltip,
   Snackbar,
-  Grid,
   useMediaQuery,
   useTheme,
   Stack,
-  Skeleton,
   Fade,
-  Grow,
   Divider,
-  Fab,
-  Zoom,
+  Paper,
+  Chip,
+  Tooltip,
+  Drawer,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemText,
+  ListItemIcon,
+  Badge,
 } from '@mui/material';
 import {
   Send as SendIcon,
@@ -36,20 +36,21 @@ import {
   Person as PersonIcon,
   SmartToy as BotIcon,
   Close as CloseIcon,
-  Visibility as ViewIcon,
   Help as HelpIcon,
   Info as InfoIcon,
-  Tune as TuneIcon,
+  Mic as MicIcon,
+  MicOff as MicOffIcon,
+  MoreVert as MoreVertIcon,
+  Refresh as RefreshIcon,
+  Menu as MenuIcon,
+  Chat as ChatIcon,
+  Add as AddIcon,
+  History as HistoryIcon,
 } from '@mui/icons-material';
 import ReactMarkdown from 'react-markdown';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useAppContext } from '../context/AppContext';
 import { api } from '../utils/apiClient';
-import ContextualSidePanel from '../components/chat/ContextualSidePanel';
-import PropertyCard from '../components/chat/PropertyCard';
-import ContentPreviewCard from '../components/chat/ContentPreviewCard';
-import PropertyDetectionCard from '../components/property/PropertyDetectionCard';
-import DocumentProcessingCard from '../components/document/DocumentProcessingCard';
 
 const Chat = () => {
   const theme = useTheme();
@@ -59,9 +60,9 @@ const Chat = () => {
   const { sessionId } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
-  const { currentUser, setCurrentSessionId } = useAppContext();
+  const { currentUser, setCurrentSessionId, conversations, createNewConversation } = useAppContext();
   
-  // Existing state
+  // State management
   const [messages, setMessages] = useState([]);
   const [inputMessage, setInputMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -70,63 +71,30 @@ const Chat = () => {
   const [uploadedFile, setUploadedFile] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'info' });
+  const [isRecording, setIsRecording] = useState(false);
+  const [showHelp, setShowHelp] = useState(false);
+  const [propertyDetectionEnabled, setPropertyDetectionEnabled] = useState(true);
+  const [detectedProperties, setDetectedProperties] = useState([]);
+  
+  // Session panel state
+  const [sessionPanelOpen, setSessionPanelOpen] = useState(!isMobile);
+  const [isCreatingChat, setIsCreatingChat] = useState(false);
+  
   const messagesEndRef = useRef(null);
   const [isNearBottom, setIsNearBottom] = useState(true);
 
-  // Phase 3B: New state for contextual features
-  const [detectedEntities, setDetectedEntities] = useState([]);
-  const [contextPanelVisible, setContextPanelVisible] = useState(!isMobile);
-  const [entityDetectionLoading, setEntityDetectionLoading] = useState(false);
-  const [contextData, setContextData] = useState({});
-  const [contextLoadingStates, setContextLoadingStates] = useState({});
-  
-  // Enhanced property detection state
-  const [detectedProperty, setDetectedProperty] = useState(null);
-  const [documentProcessingResult, setDocumentProcessingResult] = useState(null);
-  const [propertyDetectionLoading, setPropertyDetectionLoading] = useState(false);
-
-  // Contextual help examples
+  // Help examples for mobile-first design with property detection
   const helpExamples = [
-    {
-      title: "Property Search",
-      examples: [
-        "Show me 2-bedroom apartments in Dubai Marina under 3M AED",
-        "Find villas in Palm Jumeirah with 4+ bedrooms",
-        "What properties are available in Downtown Dubai?",
-      ]
-    },
-    {
-      title: "Market Analysis",
-      examples: [
-        "What's the current market trend in Palm Jumeirah?",
-        "Show me price trends for apartments in Dubai Marina",
-        "What are the hot areas in Dubai right now?",
-      ]
-    },
-    {
-      title: "Investment Advice",
-      examples: [
-        "Calculate ROI for a 2M AED apartment in Dubai Marina",
-        "What's the best investment strategy for Dubai real estate?",
-        "Compare rental yields across different areas",
-      ]
-    },
-    {
-      title: "Document Analysis",
-      examples: [
-        "Analyze this property document for key details",
-        "Extract important information from this contract",
-        "Summarize the main points from this market report",
-      ]
-    },
-    {
-      title: "Property Detection",
-      examples: [
-        "Create a CMA for 413 Collective Tower",
-        "Generate market report for Business Bay apartments",
-        "Analyze property in Dubai Marina building",
-      ]
-    }
+    "Show me 2-bedroom apartments in Dubai Marina under 3M AED",
+    "What's the current market trend in Palm Jumeirah?",
+    "Calculate ROI for a 2M AED apartment in Dubai Marina",
+    "Find villas in Palm Jumeirah with 4+ bedrooms",
+    "What are the hot areas in Dubai right now?",
+    "Compare rental yields across different areas",
+    "Analyze this property image for market value",
+    "Detect property details from this description",
+    "Generate market analysis report for Dubai Marina",
+    "Create investment opportunity analysis"
   ];
 
   useEffect(() => {
@@ -134,24 +102,19 @@ const Chat = () => {
       setCurrentSessionId(sessionId);
       fetchConversationHistory();
     } else if (!sessionId) {
-      // If no session ID, create a new conversation
       createNewSession();
     }
   }, [sessionId, setCurrentSessionId]);
 
-  // Handle prepopulated prompt from navigation state
   useEffect(() => {
     if (location.state?.prepopulatedPrompt && sessionId) {
       setInputMessage(location.state.prepopulatedPrompt);
-      // Clear the state to prevent re-triggering
       navigate(location.pathname, { replace: true, state: {} });
     }
   }, [location.state, sessionId, navigate]);
 
-  // Separate effect to handle session creation
   useEffect(() => {
     if (!sessionId && currentUser) {
-      // Only create new session if we have a current user and no session ID
       createNewSession();
     }
   }, [currentUser, sessionId]);
@@ -162,159 +125,115 @@ const Chat = () => {
     }
   }, [messages, isNearBottom]);
 
-  // Phase 3B: Effect to detect entities when new AI messages arrive
-  useEffect(() => {
-    const lastMessage = messages[messages.length - 1];
-    if (lastMessage && lastMessage.type === 'ai' && lastMessage.content) {
-      detectEntitiesInMessage(lastMessage.content);
-    }
-  }, [messages]);
-
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
   const handleScroll = (event) => {
     const { scrollTop, scrollHeight, clientHeight } = event.target;
-    const threshold = 100; // pixels from bottom
+    const threshold = 100;
     const isNearBottomNow = scrollHeight - scrollTop - clientHeight < threshold;
     setIsNearBottom(isNearBottomNow);
   };
 
-  // Phase 3B: Entity detection function
-  const detectEntitiesInMessage = useCallback(async (messageContent) => {
-    try {
-      setEntityDetectionLoading(true);
-      const response = await api.detectEntities(messageContent, sessionId);
-      
-      if (response.entities && response.entities.length > 0) {
-        setDetectedEntities(prev => {
-          // Merge new entities with existing ones, avoiding duplicates
-          const existingIds = new Set(prev.map(e => e.id));
-          const newEntities = response.entities.filter(e => !existingIds.has(e.id));
-          return [...prev, ...newEntities];
-        });
-        
-        // Fetch context for new entities
-        fetchContextForEntities(response.entities);
-      }
-    } catch (error) {
-      console.error('Error detecting entities:', error);
-      // Don't show error to user for entity detection failures
-    } finally {
-      setEntityDetectionLoading(false);
-    }
-  }, [sessionId]);
-
-  // Phase 3B: Fetch context for entities
-  const fetchContextForEntities = useCallback(async (entities) => {
-    for (const entity of entities) {
-      try {
-        setContextLoadingStates(prev => ({ ...prev, [entity.id]: true }));
-        
-        const context = await api.fetchEntityContext(entity.type, entity.id, sessionId);
-        
-        setContextData(prev => ({
-          ...prev,
-          [entity.id]: context
-        }));
-      } catch (error) {
-        console.error(`Error fetching context for entity ${entity.id}:`, error);
-        setContextLoadingStates(prev => ({ ...prev, [entity.id]: false }));
-      } finally {
-        setContextLoadingStates(prev => ({ ...prev, [entity.id]: false }));
-      }
-    }
-  }, [sessionId]);
-
-  // Phase 3B: Handle entity click
-  const handleEntityClick = useCallback((entity) => {
-    // Add entity information to the chat input
-    const entityPrompt = `Tell me more about ${entity.name || entity.id} (${entity.type})`;
-    setInputMessage(entityPrompt);
-  }, []);
-
-  // Phase 3B: Handle context panel refresh
-  const handleContextRefresh = useCallback(() => {
-    if (detectedEntities.length > 0) {
-      fetchContextForEntities(detectedEntities);
-    }
-  }, [detectedEntities, fetchContextForEntities]);
-
   const createNewSession = async () => {
-    // Prevent multiple simultaneous session creation attempts
-    if (isLoading) {
-      console.log('Already loading, skipping session creation');
-      return;
-    }
+    if (isLoading || isCreatingChat) return;
 
     try {
-      setIsLoading(true);
-      const newSession = await api.createSession();
-      console.log('Created new session:', newSession);
-      navigate(`/chat/${newSession.session_id}`);
+      setIsCreatingChat(true);
+      const newConversation = await createNewConversation();
+      if (newConversation && newConversation.id) {
+        setCurrentSessionId(newConversation.id);
+        navigate(`/chat/${newConversation.id}`);
+        setMessages([]);
+        setError(null);
+        if (isMobile) {
+          setSessionPanelOpen(false);
+        }
+      } else {
+        throw new Error('Failed to create new conversation');
+      }
     } catch (error) {
       console.error('Error creating new session:', error);
-      const errorMessage = error.message || 'An error occurred';
-      setError(errorMessage);
+      setError('Failed to create new chat session. Please try again.');
       setSnackbar({
         open: true,
-        message: errorMessage,
+        message: 'Failed to create new chat session. Please try again.',
         severity: 'error',
       });
     } finally {
-      setIsLoading(false);
+      setIsCreatingChat(false);
     }
   };
 
-  const fetchConversationHistory = async () => {
-    // Prevent fetching with undefined sessionId
-    if (!sessionId || sessionId === 'undefined') {
-      console.log('No valid session ID available, skipping conversation history fetch');
-      return;
+  // Handle session selection
+  const handleSessionSelect = (selectedSessionId) => {
+    if (selectedSessionId !== sessionId) {
+      navigate(`/chat/${selectedSessionId}`);
+      if (isMobile) {
+        setSessionPanelOpen(false);
+      }
     }
+  };
+
+  // Format conversation title
+  const getConversationTitle = (conversation) => {
+    if (conversation.title) return conversation.title;
+    if (conversation.messages && conversation.messages.length > 0) {
+      const firstMessage = conversation.messages[0];
+      return firstMessage.content.substring(0, 50) + (firstMessage.content.length > 50 ? '...' : '');
+    }
+    return `Chat ${conversation.id}`;
+  };
+
+  // Format conversation time
+  const getConversationTime = (conversation) => {
+    if (conversation.updated_at) {
+      const date = new Date(conversation.updated_at);
+      const now = new Date();
+      const diffInHours = (now - date) / (1000 * 60 * 60);
+      
+      if (diffInHours < 1) {
+        return 'Just now';
+      } else if (diffInHours < 24) {
+        return `${Math.floor(diffInHours)}h ago`;
+      } else if (diffInHours < 168) { // 7 days
+        return `${Math.floor(diffInHours / 24)}d ago`;
+      } else {
+        return date.toLocaleDateString();
+      }
+    }
+    return 'Unknown';
+  };
+
+  const fetchConversationHistory = async () => {
+    if (!sessionId || sessionId === 'undefined') return;
 
     try {
       setIsLoading(true);
       const response = await api.getConversationHistory(sessionId);
       
-      // Convert API response format to frontend format and ensure proper ordering
       const convertedMessages = (response.messages || []).map(msg => ({
         id: msg.id,
-        type: msg.role === 'user' ? 'user' : 'ai', // Convert 'role' to 'type'
-        content: msg.content || '', // Ensure content is never undefined
+        type: msg.role === 'user' ? 'user' : 'ai',
+        content: msg.content || '',
         timestamp: msg.timestamp,
         interactive: msg.interactive || false,
         suggestions: msg.suggestions || [],
         context_used: msg.context_used || [],
-        // Phase 3B: Add rich content support
-        rich_content: msg.rich_content || null,
-        entities_detected: msg.entities_detected || [],
       }));
       
-      // Sort messages by timestamp to ensure proper order
       const sortedMessages = convertedMessages.sort((a, b) => 
         new Date(a.timestamp) - new Date(b.timestamp)
       );
       
       setMessages(sortedMessages);
-      
-      // Phase 3B: Extract entities from all messages
-      const allEntities = sortedMessages
-        .filter(msg => msg.entities_detected && msg.entities_detected.length > 0)
-        .flatMap(msg => msg.entities_detected);
-      
-      if (allEntities.length > 0) {
-        setDetectedEntities(allEntities);
-        fetchContextForEntities(allEntities);
-      }
     } catch (error) {
       console.error('Error fetching conversation history:', error);
-      const errorMessage = error.message || 'An error occurred';
-      setError(errorMessage);
+      setError(error.message || 'An error occurred');
       setSnackbar({
         open: true,
-        message: errorMessage,
+        message: error.message || 'An error occurred',
         severity: 'error',
       });
     } finally {
@@ -337,21 +256,12 @@ const Chat = () => {
     setIsLoading(true);
 
     try {
-      // Try to detect property information from the message
-      setPropertyDetectionLoading(true);
-      try {
-        const propertyDetection = await api.detectProperty(inputMessage);
-        if (propertyDetection && propertyDetection.confidence > 0.3) {
-          setDetectedProperty(propertyDetection);
-        }
-      } catch (detectionError) {
-        console.log('Property detection failed:', detectionError);
-        // Don't show error to user, just continue with normal chat
-      } finally {
-        setPropertyDetectionLoading(false);
+      // First, try property detection if enabled
+      let propertyDetectionResult = null;
+      if (propertyDetectionEnabled) {
+        propertyDetectionResult = await handlePropertyDetection(inputMessage);
       }
 
-      // Send message with enhanced property detection and entity detection
       const response = await api.sendMessageWithPropertyDetection(sessionId, inputMessage, uploadedFile, true);
       
       const aiMessage = {
@@ -362,24 +272,16 @@ const Chat = () => {
         interactive: response.interactive || false,
         suggestions: response.suggestions || [],
         context_used: response.context_used || [],
-        // Phase 3B: Add rich content support
-        rich_content: response.rich_content || null,
-        entities_detected: response.entities_detected || [],
-        // Enhanced property detection
-        detected_property: response.detected_property || null,
-        building_specific_data: response.building_specific_data || null,
       };
 
       setMessages(prev => [...prev, aiMessage]);
       setUploadedFile(null);
-      setDocumentProcessingResult(null);
     } catch (error) {
       console.error('Error sending message:', error);
-      const errorMessage = error.message || 'An error occurred';
-      setError(errorMessage);
+      setError(error.message || 'An error occurred');
       setSnackbar({
         open: true,
-        message: errorMessage,
+        message: error.message || 'An error occurred',
         severity: 'error',
       });
     } finally {
@@ -393,11 +295,24 @@ const Chat = () => {
 
     setUploading(true);
     try {
-      // First upload the file
-      const uploadResponse = await api.uploadFile(file, sessionId);
+      // Check if it's an image file for property detection
+      const isImage = file.type.startsWith('image/');
       
-      // Then process the document for property information
-      const processingResponse = await api.processDocument(file, sessionId);
+      if (isImage && propertyDetectionEnabled) {
+        // Use property detection API for images
+        const detectionResult = await api.detectPropertyFromImage(file, sessionId);
+        
+        if (detectionResult.properties && detectionResult.properties.length > 0) {
+          setDetectedProperties(detectionResult.properties);
+          setSnackbar({
+            open: true,
+            message: `Detected ${detectionResult.properties.length} property(ies) in image!`,
+            severity: 'success',
+          });
+        }
+      }
+
+      const uploadResponse = await api.uploadFile(file, sessionId);
       
       setUploadedFile({
         id: uploadResponse.file_id,
@@ -405,26 +320,39 @@ const Chat = () => {
         size: file.size,
       });
       
-      // Store document processing results
-      setDocumentProcessingResult(processingResponse);
-      
       setUploadDialogOpen(false);
       setSnackbar({
         open: true,
-        message: 'File uploaded and processed successfully!',
+        message: 'File uploaded successfully!',
         severity: 'success',
       });
     } catch (error) {
       console.error('Error uploading file:', error);
-      const errorMessage = error.message || 'An error occurred';
       setSnackbar({
         open: true,
-        message: errorMessage,
+        message: error.message || 'An error occurred',
         severity: 'error',
       });
     } finally {
       setUploading(false);
     }
+  };
+
+  const handlePropertyDetection = async (message) => {
+    if (!propertyDetectionEnabled) return;
+
+    try {
+      const detectionResult = await api.detectPropertyFromText(message, sessionId);
+      
+      if (detectionResult.properties && detectionResult.properties.length > 0) {
+        setDetectedProperties(detectionResult.properties);
+        return detectionResult;
+      }
+    } catch (error) {
+      console.error('Error detecting properties:', error);
+    }
+    
+    return null;
   };
 
   const handleInteractiveAction = (suggestion) => {
@@ -435,591 +363,627 @@ const Chat = () => {
     setSnackbar({ ...snackbar, open: false });
   };
 
-  // Enhanced property detection handlers
-  const handlePropertyClick = (property) => {
-    const propertyPrompt = `Tell me more about ${property.building_name || property.address} in ${property.community || 'Dubai'}`;
-    setInputMessage(propertyPrompt);
-  };
-
-  const handlePropertyViewDetails = (property) => {
-    // Navigate to property details or show in modal
-    console.log('View property details:', property);
-    setSnackbar({
-      open: true,
-      message: 'Property details feature coming soon!',
-      severity: 'info',
-    });
-  };
-
-  const handleDocumentUseInChat = (extractedProperty) => {
-    if (extractedProperty && extractedProperty.building_name) {
-      const documentPrompt = `Create a CMA for ${extractedProperty.building_name} in ${extractedProperty.community || 'Dubai'}`;
-      setInputMessage(documentPrompt);
-    }
-  };
-
-  const handleDocumentView = (processingResult) => {
-    console.log('View document:', processingResult);
-    setSnackbar({
-      open: true,
-      message: 'Document viewer feature coming soon!',
-      severity: 'info',
-    });
-  };
-
-  // Phase 3B: Render rich content components
-  const renderRichContent = (richContent) => {
-    if (!richContent) return null;
-
-    switch (richContent.type) {
-      case 'property':
-        return (
-          <Box sx={{ mt: 2 }}>
-            <PropertyCard 
-              property={richContent.data}
-              onView={() => handleEntityClick({ type: 'property', id: richContent.data.id, name: richContent.data.address })}
-              onFavorite={() => console.log('Favorite property:', richContent.data.id)}
-              onShare={() => console.log('Share property:', richContent.data.id)}
-            />
-          </Box>
-        );
-      
-      case 'document':
-      case 'report':
-        return (
-          <Box sx={{ mt: 2 }}>
-            <ContentPreviewCard 
-              content={richContent.data}
-              type={richContent.type}
-              onView={() => handleEntityClick({ type: 'document', id: richContent.data.id, name: richContent.data.title })}
-              onDownload={() => console.log('Download document:', richContent.data.id)}
-              onShare={() => console.log('Share document:', richContent.data.id)}
-            />
-          </Box>
-        );
-      
-      default:
-        return null;
-    }
-  };
-
-  // Message Bubble Component
+  // Modern Message Bubble Component
   const MessageBubble = ({ message }) => {
     const isUser = message.type === 'user';
 
     return (
-      <Box sx={{ display: 'flex', justifyContent: isUser ? 'flex-end' : 'flex-start', mb: 2 }}>
-        <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 1, maxWidth: '80%' }}>
-          {!isUser && (
-            <Avatar sx={{ bgcolor: 'secondary.main', width: 32, height: 32 }}>
-              <BotIcon />
-            </Avatar>
-          )}
-          
-          <Card sx={{ 
-            bgcolor: isUser ? 'primary.main' : 'background.paper', 
-            color: isUser ? 'primary.contrastText' : 'text.primary',
-            border: 1, 
-            borderColor: 'divider',
-            maxWidth: '100%'
+      <Fade in={true} timeout={300}>
+        <Box sx={{ 
+          display: 'flex', 
+          justifyContent: isUser ? 'flex-end' : 'flex-start', 
+          mb: 2,
+          px: isMobile ? 2 : 3
+        }}>
+          <Box sx={{ 
+            display: 'flex', 
+            alignItems: 'flex-start', 
+            gap: 1, 
+            maxWidth: isMobile ? '90%' : '80%',
+            flexDirection: isUser ? 'row-reverse' : 'row'
           }}>
-            <CardContent sx={{ py: 2, px: 2 }}>
-              {isUser ? (
-                <Typography variant="body1">
-                  {message.content}
-                </Typography>
-              ) : (
-                <Box>
-                  {/* Phase 3B: Render rich content if available */}
-                  {message.rich_content && renderRichContent(message.rich_content)}
-                  
-                  {/* Enhanced property detection display */}
-                  {message.detected_property && (
-                    <Box sx={{ mt: 2 }}>
-                      <PropertyDetectionCard
-                        detectedProperty={message.detected_property}
-                        onPropertyClick={handlePropertyClick}
-                        onViewDetails={handlePropertyViewDetails}
-                        showActions={true}
-                      />
-                    </Box>
-                  )}
-                  
-                  {/* Building-specific data display */}
-                  {message.building_specific_data && (
-                    <Box sx={{ mt: 2 }}>
-                      <Alert severity="info" sx={{ mb: 2 }}>
-                        <Typography variant="body2">
-                          <strong>Building-Specific Analysis:</strong> This report includes data from {message.building_specific_data.comparable_count || 0} comparable properties in the same building.
-                        </Typography>
-                      </Alert>
-                    </Box>
-                  )}
-                  
-                  {/* Regular markdown content */}
-                  <ReactMarkdown
-                    components={{
-                      h1: ({ children }) => (
-                        <Typography variant="h4" sx={{ mb: theme.spacing(1), fontWeight: 600 }}>
-                          {children}
-                        </Typography>
-                      ),
-                      h2: ({ children }) => (
-                        <Typography variant="h5" sx={{ mb: theme.spacing(1), fontWeight: 600 }}>
-                          {children}
-                        </Typography>
-                      ),
-                      h3: ({ children }) => (
-                        <Typography variant="h6" sx={{ mb: theme.spacing(1), fontWeight: 600 }}>
-                          {children}
-                        </Typography>
-                      ),
-                      p: ({ children }) => (
-                        <Typography variant="body1" sx={{ mb: theme.spacing(1), lineHeight: 1.6 }}>
-                          {children}
-                        </Typography>
-                      ),
-                      ul: ({ children }) => (
-                        <Box component="ul" sx={{ pl: 2, mb: 1 }}>
-                          {children}
-                        </Box>
-                      ),
-                      ol: ({ children }) => (
-                        <Box component="ol" sx={{ pl: 2, mb: 1 }}>
-                          {children}
-                        </Box>
-                      ),
-                      li: ({ children }) => (
-                        <Typography component="li" variant="body1" sx={{ mb: 0.5, lineHeight: 1.6 }}>
-                          {children}
-                        </Typography>
-                      ),
-                      strong: ({ children }) => (
-                        <Typography component="span" sx={{ fontWeight: 700, color: 'primary.main', backgroundColor: 'primary.50', px: 0.5, borderRadius: 0.5 }}>
-                          {children}
-                        </Typography>
-                      ),
-                      em: ({ children }) => (
-                        <Typography component="span" sx={{ fontStyle: 'italic', color: 'text.secondary' }}>
-                          {children}
-                        </Typography>
-                      ),
-                      code: ({ children }) => (
-                        <Typography
-                          component="code"
-                          sx={{
-                            bgcolor: 'grey.100',
-                            px: 1,
-                            py: 0.5,
-                            borderRadius: 1,
-                            fontFamily: 'monospace',
-                            fontSize: '0.875rem',
-                            border: '1px solid',
-                            borderColor: 'grey.300'
-                          }}
-                        >
-                          {children}
-                        </Typography>
-                      ),
-                      blockquote: ({ children }) => (
-                        <Box
-                          sx={{
-                            borderLeft: 4,
-                            borderColor: 'primary.main',
-                            pl: 2,
-                            ml: 0,
-                            my: 1.5,
-                            bgcolor: 'primary.50',
-                            py: 1.5,
-                            borderRadius: 1,
-                            boxShadow: 1
-                          }}
-                        >
-                          {children}
-                        </Box>
-                      ),
-                      table: ({ children }) => (
-                        <Box
-                          component="table"
-                          sx={{
-                            width: '100%',
-                            borderCollapse: 'collapse',
-                            my: 2,
-                            border: '1px solid',
-                            borderColor: 'grey.300',
-                            borderRadius: 1,
-                            overflow: 'hidden'
-                          }}
-                        >
-                          {children}
-                        </Box>
-                      ),
-                      th: ({ children }) => (
-                        <Box
-                          component="th"
-                          sx={{
-                            bgcolor: 'primary.main',
-                            color: 'primary.contrastText',
-                            p: 1,
-                            textAlign: 'left',
-                            fontWeight: 600,
-                            border: '1px solid',
-                            borderColor: 'grey.300'
-                          }}
-                        >
-                          {children}
-                        </Box>
-                      ),
-                      td: ({ children }) => (
-                        <Box
-                          component="td"
-                          sx={{
-                            p: 1,
-                            border: '1px solid',
-                            borderColor: 'grey.300',
-                            bgcolor: 'background.paper'
-                          }}
-                        >
-                          {children}
-                        </Box>
-                      )
-                    }}
-                  >
+            {!isUser && (
+              <Avatar sx={{ 
+                bgcolor: 'primary.main', 
+                width: 32, 
+                height: 32,
+                boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+              }}>
+                <BotIcon fontSize="small" />
+              </Avatar>
+            )}
+            
+            <Paper sx={{ 
+              bgcolor: isUser ? 'primary.main' : 'background.paper', 
+              color: isUser ? 'primary.contrastText' : 'text.primary',
+              border: 1, 
+              borderColor: isUser ? 'primary.main' : 'divider',
+              borderRadius: 3,
+              maxWidth: '100%',
+              boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
+              overflow: 'hidden'
+            }}>
+              <Box sx={{ p: 2 }}>
+                {isUser ? (
+                  <Typography variant="body1" sx={{ lineHeight: 1.5 }}>
                     {message.content}
-                  </ReactMarkdown>
-
-                  {/* Interactive Elements */}
-                  {message.interactive && message.suggestions && (
-                    <Box sx={{ mt: theme.spacing(2) }}>
-                      <Typography variant="subtitle2" sx={{ mb: theme.spacing(1) }}>
-                        Quick Actions:
-                      </Typography>
-                      <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
-                        {message.suggestions.map((suggestion, index) => (
-                          <Button
-                            key={index}
-                            size="small"
-                            variant="outlined"
-                            onClick={() => handleInteractiveAction(suggestion)}
-                            startIcon={<ViewIcon />}
+                  </Typography>
+                ) : (
+                  <Box>
+                    <ReactMarkdown
+                      components={{
+                        h1: ({ children }) => (
+                          <Typography variant="h6" sx={{ mb: 1, fontWeight: 600 }}>
+                            {children}
+                          </Typography>
+                        ),
+                        h2: ({ children }) => (
+                          <Typography variant="subtitle1" sx={{ mb: 1, fontWeight: 600 }}>
+                            {children}
+                          </Typography>
+                        ),
+                        h3: ({ children }) => (
+                          <Typography variant="subtitle2" sx={{ mb: 1, fontWeight: 600 }}>
+                            {children}
+                          </Typography>
+                        ),
+                        p: ({ children }) => (
+                          <Typography variant="body1" sx={{ mb: 1, lineHeight: 1.6 }}>
+                            {children}
+                          </Typography>
+                        ),
+                        ul: ({ children }) => (
+                          <Box component="ul" sx={{ pl: 2, mb: 1 }}>
+                            {children}
+                          </Box>
+                        ),
+                        ol: ({ children }) => (
+                          <Box component="ol" sx={{ pl: 2, mb: 1 }}>
+                            {children}
+                          </Box>
+                        ),
+                        li: ({ children }) => (
+                          <Typography component="li" variant="body1" sx={{ mb: 0.5, lineHeight: 1.6 }}>
+                            {children}
+                          </Typography>
+                        ),
+                        strong: ({ children }) => (
+                          <Typography component="span" sx={{ fontWeight: 700, color: 'primary.main' }}>
+                            {children}
+                          </Typography>
+                        ),
+                        code: ({ children }) => (
+                          <Typography
+                            component="code"
+                            sx={{
+                              bgcolor: 'grey.100',
+                              px: 1,
+                              py: 0.5,
+                              borderRadius: 1,
+                              fontFamily: 'monospace',
+                              fontSize: '0.875rem',
+                            }}
                           >
-                            {suggestion}
-                          </Button>
-                        ))}
-                      </Box>
-                    </Box>
-                  )}
+                            {children}
+                          </Typography>
+                        ),
+                      }}
+                    >
+                      {message.content}
+                    </ReactMarkdown>
 
-                  {/* Context Used */}
-                  {message.context_used && message.context_used.length > 0 && (
-                    <Box sx={{ mt: 2, pt: 2, borderTop: 1, borderColor: 'divider' }}>
-                      <Typography variant="caption" color="text.secondary">
-                        Sources used:
-                      </Typography>
-                      <Box sx={{ display: 'flex', gap: 0.5, flexWrap: 'wrap', mt: 0.5 }}>
-                        {message.context_used.map((source, index) => (
-                          <Chip
-                            key={index}
-                            label={source.source}
-                            size="small"
-                            variant="outlined"
-                          />
-                        ))}
+                    {/* Interactive Elements */}
+                    {message.interactive && message.suggestions && (
+                      <Box sx={{ mt: 2 }}>
+                        <Typography variant="caption" color="text.secondary" sx={{ mb: 1, display: 'block' }}>
+                          Quick Actions:
+                        </Typography>
+                        <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
+                          {message.suggestions.map((suggestion, index) => (
+                            <Chip
+                              key={index}
+                              label={suggestion}
+                              size="small"
+                              variant="outlined"
+                              onClick={() => handleInteractiveAction(suggestion)}
+                              sx={{ 
+                                cursor: 'pointer',
+                                '&:hover': {
+                                  bgcolor: 'primary.light',
+                                  color: 'primary.contrastText'
+                                }
+                              }}
+                            />
+                          ))}
+                        </Stack>
                       </Box>
-                    </Box>
-                  )}
-                </Box>
-              )}
-              
-              <Typography variant="caption" color="text.secondary" sx={{ mt: 1, display: 'block' }}>
-                {(() => {
-                  // Parse the UTC timestamp from the database
-                  // The database stores UTC timestamps without timezone info
-                  // So we need to explicitly treat them as UTC
-                  const timestampStr = message.timestamp;
-                  let utcDate;
-                  
-                  // Handle different timestamp formats with proper type checking
-                  if (timestampStr && typeof timestampStr === 'string') {
-                    if (timestampStr.includes('T')) {
-                      // ISO format with T
-                      utcDate = new Date(timestampStr);
+                    )}
+
+                    {/* Context Used */}
+                    {message.context_used && message.context_used.length > 0 && (
+                      <Box sx={{ mt: 2, pt: 2, borderTop: 1, borderColor: 'divider' }}>
+                        <Typography variant="caption" color="text.secondary" sx={{ mb: 1, display: 'block' }}>
+                          Sources:
+                        </Typography>
+                        <Stack direction="row" spacing={0.5} flexWrap="wrap" useFlexGap>
+                          {message.context_used.map((source, index) => (
+                            <Chip
+                              key={index}
+                              label={source.source}
+                              size="small"
+                              variant="outlined"
+                              sx={{ fontSize: '0.7rem' }}
+                            />
+                          ))}
+                        </Stack>
+                      </Box>
+                    )}
+                  </Box>
+                )}
+                
+                <Typography variant="caption" color="text.secondary" sx={{ mt: 1, display: 'block', opacity: 0.7 }}>
+                  {(() => {
+                    const timestampStr = message.timestamp;
+                    let utcDate;
+                    
+                    if (timestampStr && typeof timestampStr === 'string') {
+                      if (timestampStr.includes('T')) {
+                        utcDate = new Date(timestampStr);
+                      } else {
+                        utcDate = new Date(timestampStr + 'Z');
+                      }
+                    } else if (timestampStr instanceof Date) {
+                      utcDate = timestampStr;
                     } else {
-                      // PostgreSQL format: "2025-08-31 11:32:22.114730"
-                      // Add 'Z' to indicate UTC timezone
-                      utcDate = new Date(timestampStr + 'Z');
+                      utcDate = new Date();
                     }
-                  } else if (timestampStr instanceof Date) {
-                    // If it's already a Date object
-                    utcDate = timestampStr;
-                  } else {
-                    // Fallback to current time if timestamp is invalid
-                    utcDate = new Date();
-                  }
-                  
-                  return utcDate.toLocaleTimeString();
-                })()}
-              </Typography>
-            </CardContent>
-          </Card>
+                    
+                    return utcDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                  })()}
+                </Typography>
+              </Box>
+            </Paper>
+          </Box>
         </Box>
-      </Box>
+      </Fade>
     );
   };
 
-  // Contextual Help Component
-  const ContextualHelp = () => (
-    <Card sx={{ mb: 3, bgcolor: 'primary.light', color: 'primary.contrastText' }}>
-      <CardContent>
-        <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-          <HelpIcon sx={{ mr: theme.spacing(1) }} />
-          <Typography variant="h6">Need help? Try these examples:</Typography>
+  // Session Panel Component
+  const SessionPanel = () => (
+    <Drawer
+      variant={isMobile ? "temporary" : "persistent"}
+      open={sessionPanelOpen}
+      onClose={() => setSessionPanelOpen(false)}
+      sx={{
+        '& .MuiDrawer-paper': {
+          width: 280,
+          bgcolor: '#2d2d44',
+          borderRight: '1px solid #3a3a5c',
+          color: 'white',
+        },
+      }}
+    >
+      <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+        {/* Header */}
+        <Box sx={{ 
+          p: 2, 
+          borderBottom: '1px solid #3a3a5c',
+          display: 'flex', 
+          alignItems: 'center', 
+          justifyContent: 'space-between' 
+        }}>
+          <Typography variant="h6" sx={{ fontWeight: 600, color: 'white' }}>
+            Chat History
+          </Typography>
+          {isMobile && (
+            <IconButton onClick={() => setSessionPanelOpen(false)} size="small" sx={{ color: 'white' }}>
+              <CloseIcon />
+            </IconButton>
+          )}
         </Box>
-        <Grid container spacing={2}>
-          {helpExamples.map((category, index) => (
-            <Grid item xs={12} sm={6} key={index}>
-              <Typography variant="subtitle1" sx={{ mb: 1, fontWeight: 600 }}>
-                {category.title}
+
+        {/* New Chat Button */}
+        <Box sx={{ p: 2 }}>
+          <Button
+            fullWidth
+            variant="contained"
+            startIcon={isCreatingChat ? <CircularProgress size={16} /> : <AddIcon />}
+            onClick={createNewSession}
+            disabled={isCreatingChat}
+            sx={{
+              bgcolor: '#1976d2',
+              color: 'white',
+              borderRadius: 2,
+              py: 1.5,
+              textTransform: 'none',
+              fontWeight: 600,
+              '&:hover': {
+                bgcolor: '#1565c0',
+              },
+              '&:disabled': {
+                bgcolor: '#3a3a5c',
+                color: '#b0b0b0',
+              },
+            }}
+          >
+            New Chat
+          </Button>
+        </Box>
+
+        {/* Conversations List */}
+        <Box sx={{ flex: 1, overflow: 'auto' }}>
+          {conversations.length === 0 ? (
+            <Box sx={{ p: 2, textAlign: 'center' }}>
+              <HistoryIcon sx={{ fontSize: 48, color: '#b0b0b0', mb: 1 }} />
+              <Typography variant="body2" sx={{ color: '#b0b0b0' }}>
+                No conversations yet
               </Typography>
-              <Stack spacing={1}>
-                {category.examples.map((example, exampleIndex) => (
-                  <Button
-                    key={exampleIndex}
-                    variant="outlined"
-                    size="small"
-                    onClick={() => setInputMessage(example)}
-                    sx={{ 
-                      justifyContent: 'flex-start', 
-                      textAlign: 'left',
-                      color: 'inherit',
-                      borderColor: 'rgba(255,255,255,0.3)',
+            </Box>
+          ) : (
+            <List sx={{ p: 0 }}>
+              {conversations.map((conversation) => (
+                <ListItem key={conversation.id} disablePadding>
+                  <ListItemButton
+                    onClick={() => handleSessionSelect(conversation.id)}
+                    selected={conversation.id === sessionId}
+                    sx={{
+                      px: 2,
+                      py: 1.5,
+                      '&.Mui-selected': {
+                        bgcolor: '#3a3a5c',
+                        '&:hover': {
+                          bgcolor: '#4a4a6c',
+                        },
+                      },
                       '&:hover': {
-                        borderColor: 'rgba(255,255,255,0.5)',
-                        bgcolor: 'rgba(255,255,255,0.1)'
-                      }
+                        bgcolor: '#3a3a5c',
+                      },
                     }}
                   >
-                    {example}
-                  </Button>
-                ))}
-              </Stack>
-            </Grid>
-          ))}
-        </Grid>
-      </CardContent>
-    </Card>
+                    <ListItemIcon sx={{ minWidth: 40 }}>
+                      <ChatIcon sx={{ color: conversation.id === sessionId ? '#64b5f6' : '#b0b0b0' }} />
+                    </ListItemIcon>
+                    <ListItemText
+                      primary={
+                        <Typography 
+                          variant="body2" 
+                          sx={{ 
+                            color: 'white',
+                            fontWeight: conversation.id === sessionId ? 600 : 400,
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap',
+                          }}
+                        >
+                          {getConversationTitle(conversation)}
+                        </Typography>
+                      }
+                      secondary={
+                        <Typography 
+                          variant="caption" 
+                          sx={{ 
+                            color: '#b0b0b0',
+                            fontSize: '0.75rem',
+                          }}
+                        >
+                          {getConversationTime(conversation)}
+                        </Typography>
+                      }
+                    />
+                  </ListItemButton>
+                </ListItem>
+              ))}
+            </List>
+          )}
+        </Box>
+      </Box>
+    </Drawer>
+  );
+
+  // Mobile-First Help Component
+  const MobileHelp = () => (
+    <Paper sx={{ 
+      m: 2, 
+      p: 2, 
+      bgcolor: 'primary.light', 
+      color: 'primary.contrastText',
+      borderRadius: 3,
+      boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
+    }}>
+      <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+        <HelpIcon sx={{ mr: 1 }} />
+        <Typography variant="h6" sx={{ fontWeight: 600 }}>
+          Try these examples:
+        </Typography>
+      </Box>
+      <Stack spacing={1}>
+        {helpExamples.map((example, index) => (
+          <Button
+            key={index}
+            variant="outlined"
+            size="small"
+            onClick={() => setInputMessage(example)}
+            sx={{ 
+              justifyContent: 'flex-start', 
+              textAlign: 'left',
+              color: 'inherit',
+              borderColor: 'rgba(255,255,255,0.3)',
+              borderRadius: 2,
+              py: 1,
+              '&:hover': {
+                borderColor: 'rgba(255,255,255,0.5)',
+                bgcolor: 'rgba(255,255,255,0.1)'
+              }
+            }}
+          >
+            {example}
+          </Button>
+        ))}
+      </Stack>
+    </Paper>
   );
 
   return (
-    <Box sx={{ height: '100vh', display: 'flex', flexDirection: 'column' }}>
-      {/* Header */}
-      <Paper sx={{ p: 2, borderBottom: 1, borderColor: 'divider' }}>
-        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <Typography variant="h5" sx={{ fontWeight: 'bold' }}>
-            Dubai Real Estate AI Assistant
-          </Typography>
-          
-          {/* Phase 3B: Context Panel Toggle */}
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-            {(entityDetectionLoading || propertyDetectionLoading) && (
-              <CircularProgress size={20} />
-            )}
-            <Tooltip title={contextPanelVisible ? "Hide Context Panel" : "Show Context Panel"}>
+    <Box sx={{ 
+      height: '100vh', 
+      display: 'flex', 
+      flexDirection: 'column',
+      bgcolor: 'background.default'
+    }}>
+      {/* Session Panel */}
+      <SessionPanel />
+      {/* Modern Header */}
+      <Paper sx={{ 
+        p: 2, 
+        borderBottom: 1, 
+        borderColor: 'divider',
+        bgcolor: 'background.paper',
+        boxShadow: '0 2px 8px rgba(0,0,0,0.05)'
+      }}>
+        <Box sx={{ 
+          display: 'flex', 
+          alignItems: 'center', 
+          justifyContent: 'space-between',
+          maxWidth: '1200px',
+          mx: 'auto'
+        }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+            <Tooltip title="Chat History">
               <IconButton
-                onClick={() => setContextPanelVisible(!contextPanelVisible)}
-                color={contextPanelVisible ? "primary" : "default"}
+                onClick={() => setSessionPanelOpen(!sessionPanelOpen)}
+                color="primary"
+                size="small"
+                sx={{
+                  bgcolor: 'background.default',
+                  border: 1,
+                  borderColor: 'divider',
+                  '&:hover': {
+                    bgcolor: 'primary.light',
+                    color: 'primary.contrastText'
+                  }
+                }}
               >
-                <InfoIcon />
+                <MenuIcon />
+              </IconButton>
+            </Tooltip>
+            <Avatar sx={{ 
+              bgcolor: 'primary.main', 
+              width: 40, 
+              height: 40,
+              boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+            }}>
+              <BotIcon />
+            </Avatar>
+            <Box>
+              <Typography variant="h6" sx={{ fontWeight: 600, color: 'text.primary' }}>
+                Laura AI Assistant
+              </Typography>
+              <Typography variant="caption" color="text.secondary">
+                Your intelligent property assistant
+              </Typography>
+            </Box>
+          </Box>
+          
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <Tooltip title="Help">
+              <IconButton
+                onClick={() => setShowHelp(!showHelp)}
+                color={showHelp ? "primary" : "default"}
+                size="small"
+              >
+                <HelpIcon />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="New Chat">
+              <IconButton
+                onClick={createNewSession}
+                disabled={isLoading}
+                size="small"
+              >
+                <RefreshIcon />
               </IconButton>
             </Tooltip>
           </Box>
         </Box>
       </Paper>
 
-      {/* Main Content Area - Two Panel Layout */}
-      <Box sx={{ flex: 1, display: 'flex', overflow: 'hidden' }}>
-        {/* Chat Area */}
-        <Paper 
-          sx={{ 
-            flex: 1, 
-            display: 'flex', 
-            flexDirection: 'column',
-            overflow: 'hidden',
-            mr: contextPanelVisible && !isMobile ? 0 : 0
-          }}
-        >
-          {/* Messages Area */}
-          <Box sx={{ flex: 1, p: 3, overflow: 'auto' }} onScroll={handleScroll}>
-            {isLoading && messages.length === 0 ? (
-              <Box display="flex" justifyContent="center" alignItems="center" minHeight="200px">
-                <CircularProgress size={60} />
-              </Box>
-            ) : (
-              <>
-                {/* Show contextual help when no messages */}
-                {messages.length === 0 && <ContextualHelp />}
-                
-                {messages.map((message) => (
-                  <MessageBubble key={message.id} message={message} />
-                ))}
-                
-                {isLoading && (
-                  <Box sx={{ display: 'flex', justifyContent: 'flex-start', mb: 2 }}>
-                    <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 1 }}>
-                      <Avatar sx={{ bgcolor: 'secondary.main', width: 32, height: 32 }}>
-                        <BotIcon />
-                      </Avatar>
-                      <Card sx={{ bgcolor: 'background.paper', border: 1, borderColor: 'divider' }}>
-                        <CardContent sx={{ py: 2, px: 2 }}>
-                          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                            <CircularProgress size={16} />
-                            <Typography variant="body2" color="text.secondary">
-                              AI is thinking...
-                            </Typography>
-                          </Box>
-                        </CardContent>
-                      </Card>
-                    </Box>
+      {/* Main Chat Area */}
+      <Box sx={{ 
+        flex: 1, 
+        display: 'flex', 
+        flexDirection: 'column',
+        overflow: 'hidden',
+        ml: !isMobile && sessionPanelOpen ? '280px' : 0,
+        transition: 'margin-left 0.3s ease',
+      }}>
+        {/* Messages Area */}
+        <Box sx={{ 
+          flex: 1, 
+          overflow: 'auto',
+          bgcolor: 'background.default'
+        }} onScroll={handleScroll}>
+          {isLoading && messages.length === 0 ? (
+            <Box display="flex" justifyContent="center" alignItems="center" minHeight="200px">
+              <CircularProgress size={60} />
+            </Box>
+          ) : (
+            <>
+              {/* Show help when no messages */}
+              {messages.length === 0 && <MobileHelp />}
+              
+              {messages.map((message) => (
+                <MessageBubble key={message.id} message={message} />
+              ))}
+              
+              {isLoading && (
+                <Box sx={{ display: 'flex', justifyContent: 'flex-start', mb: 2, px: isMobile ? 2 : 3 }}>
+                  <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 1 }}>
+                    <Avatar sx={{ 
+                      bgcolor: 'primary.main', 
+                      width: 32, 
+                      height: 32,
+                      boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+                    }}>
+                      <BotIcon fontSize="small" />
+                    </Avatar>
+                    <Paper sx={{ 
+                      bgcolor: 'background.paper', 
+                      border: 1, 
+                      borderColor: 'divider',
+                      borderRadius: 3,
+                      boxShadow: '0 2px 8px rgba(0,0,0,0.08)'
+                    }}>
+                      <Box sx={{ p: 2, display: 'flex', alignItems: 'center', gap: 1 }}>
+                        <CircularProgress size={16} />
+                        <Typography variant="body2" color="text.secondary">
+                          AI is thinking...
+                        </Typography>
+                      </Box>
+                    </Paper>
                   </Box>
-                )}
-                
-                <div ref={messagesEndRef} />
-              </>
-            )}
-          </Box>
-
-          {/* Uploaded File Indicator */}
-          {uploadedFile && (
-            <Box sx={{ px: 3, py: 1, bgcolor: 'primary.light', color: 'primary.contrastText' }}>
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                <AttachFileIcon fontSize="small" />
-                <Typography variant="body2">
-                  File attached: {uploadedFile.name}
-                </Typography>
-                <IconButton
-                  size="small"
-                  onClick={() => {
-                    setUploadedFile(null);
-                    setDocumentProcessingResult(null);
-                  }}
-                  sx={{ color: 'inherit' }}
-                >
-                  <CloseIcon fontSize="small" />
-                </IconButton>
-              </Box>
-            </Box>
+                </Box>
+              )}
+              
+              <div ref={messagesEndRef} />
+            </>
           )}
+        </Box>
 
-          {/* Document Processing Results */}
-          {documentProcessingResult && (
-            <Box sx={{ px: 3, py: 2 }}>
-              <DocumentProcessingCard
-                processingResult={documentProcessingResult}
-                onViewDocument={handleDocumentView}
-                onUseInChat={handleDocumentUseInChat}
-                showActions={true}
-              />
-            </Box>
-          )}
-
-          {/* Property Detection Results */}
-          {detectedProperty && (
-            <Box sx={{ px: 3, py: 2 }}>
-              <PropertyDetectionCard
-                detectedProperty={detectedProperty}
-                onPropertyClick={handlePropertyClick}
-                onViewDetails={handlePropertyViewDetails}
-                showActions={true}
-              />
-            </Box>
-          )}
-
-          {/* Input Area */}
-          <Box sx={{ p: 3, borderTop: 1, borderColor: 'divider' }}>
-            <Box sx={{ display: 'flex', gap: 2, alignItems: 'flex-end' }}>
-              <TextField
-                fullWidth
-                placeholder="Ask about Dubai real estate..."
-                value={inputMessage}
-                onChange={(e) => setInputMessage(e.target.value)}
-                onKeyPress={(e) => e.key === 'Enter' && !e.shiftKey && sendMessage()}
-                variant="outlined"
+        {/* Uploaded File Indicator */}
+        {uploadedFile && (
+          <Box sx={{ 
+            px: 2, 
+            py: 1, 
+            bgcolor: 'primary.light', 
+            color: 'primary.contrastText',
+            borderTop: 1,
+            borderColor: 'divider'
+          }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+              <AttachFileIcon fontSize="small" />
+              <Typography variant="body2" sx={{ flex: 1 }}>
+                File attached: {uploadedFile.name}
+              </Typography>
+              <IconButton
                 size="small"
-                multiline
-                maxRows={4}
-                disabled={isLoading}
-              />
-              <Tooltip title="Attach file">
-                <IconButton
-                  onClick={() => setUploadDialogOpen(true)}
-                  disabled={isLoading}
-                  color="primary"
-                >
-                  <AttachFileIcon />
-                </IconButton>
-              </Tooltip>
-              <Button
-                variant="contained"
-                endIcon={<SendIcon />}
-                onClick={sendMessage}
-                disabled={!inputMessage.trim() || isLoading}
+                onClick={() => setUploadedFile(null)}
+                sx={{ color: 'inherit' }}
               >
-                Send
-              </Button>
+                <CloseIcon fontSize="small" />
+              </IconButton>
             </Box>
+          </Box>
+        )}
+
+        {/* Modern Input Area */}
+        <Paper sx={{ 
+          p: 2, 
+          borderTop: 1, 
+          borderColor: 'divider',
+          bgcolor: 'background.paper',
+          boxShadow: '0 -2px 8px rgba(0,0,0,0.05)'
+        }}>
+          <Box sx={{ 
+            display: 'flex', 
+            gap: 1, 
+            alignItems: 'flex-end',
+            maxWidth: '1200px',
+            mx: 'auto'
+          }}>
+            <TextField
+              fullWidth
+              placeholder="Ask Laura about Dubai real estate..."
+              value={inputMessage}
+              onChange={(e) => setInputMessage(e.target.value)}
+              onKeyPress={(e) => e.key === 'Enter' && !e.shiftKey && sendMessage()}
+              variant="outlined"
+              size="small"
+              multiline
+              maxRows={4}
+              disabled={isLoading}
+              sx={{
+                '& .MuiOutlinedInput-root': {
+                  borderRadius: 3,
+                  bgcolor: 'background.default',
+                  '&:hover': {
+                    '& .MuiOutlinedInput-notchedOutline': {
+                      borderColor: 'primary.main',
+                    },
+                  },
+                },
+              }}
+            />
+            <Tooltip title="Attach file">
+              <IconButton
+                onClick={() => setUploadDialogOpen(true)}
+                disabled={isLoading}
+                color="primary"
+                sx={{
+                  bgcolor: 'background.default',
+                  border: 1,
+                  borderColor: 'divider',
+                  '&:hover': {
+                    bgcolor: 'primary.light',
+                    color: 'primary.contrastText'
+                  }
+                }}
+              >
+                <AttachFileIcon />
+              </IconButton>
+            </Tooltip>
+            <Button
+              variant="contained"
+              endIcon={<SendIcon />}
+              onClick={sendMessage}
+              disabled={!inputMessage.trim() || isLoading}
+              sx={{
+                borderRadius: 3,
+                px: 3,
+                py: 1,
+                fontWeight: 600,
+                boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+                '&:hover': {
+                  boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+                },
+              }}
+            >
+              {isMobile ? '' : 'Send'}
+            </Button>
           </Box>
         </Paper>
-
-        {/* Phase 3B: Contextual Side Panel */}
-        {contextPanelVisible && !isMobile && (
-          <ContextualSidePanel
-            entities={detectedEntities}
-            conversationId={sessionId}
-            onEntityClick={handleEntityClick}
-            isVisible={contextPanelVisible}
-            onClose={() => setContextPanelVisible(false)}
-            onRefresh={handleContextRefresh}
-          />
-        )}
       </Box>
 
-      {/* Mobile Context Panel Toggle */}
-      {isMobile && (
-        <Zoom in={detectedEntities.length > 0}>
-          <Fab
-            color="primary"
-            aria-label="Context Panel"
-            sx={{ position: 'fixed', bottom: 16, right: 16 }}
-            onClick={() => setContextPanelVisible(!contextPanelVisible)}
-          >
-            <InfoIcon />
-          </Fab>
-        </Zoom>
-      )}
-
-      {/* Mobile Context Panel Overlay */}
-      {isMobile && contextPanelVisible && (
-        <Dialog
-          fullScreen
-          open={contextPanelVisible}
-          onClose={() => setContextPanelVisible(false)}
-        >
-          <ContextualSidePanel
-            entities={detectedEntities}
-            conversationId={sessionId}
-            onEntityClick={handleEntityClick}
-            isVisible={true}
-            onClose={() => setContextPanelVisible(false)}
-            onRefresh={handleContextRefresh}
-          />
-        </Dialog>
-      )}
-
       {/* File Upload Dialog */}
-      <Dialog open={uploadDialogOpen} onClose={() => setUploadDialogOpen(false)}>
+      <Dialog 
+        open={uploadDialogOpen} 
+        onClose={() => setUploadDialogOpen(false)}
+        maxWidth="sm"
+        fullWidth
+      >
         <DialogTitle>Upload File for Analysis</DialogTitle>
         <DialogContent>
-          <Typography variant="body2" color="text.secondary" sx={{ mb: theme.spacing(2) }}>
+          <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
             Upload a document to provide context for our conversation. Supported formats: PDF, DOCX, XLSX, TXT
           </Typography>
           <Input
@@ -1044,7 +1008,11 @@ const Chat = () => {
 
       {/* Error Alert */}
       {error && (
-        <Alert severity="error" sx={{ mb: theme.spacing(2) }} onClose={() => setError(null)}>
+        <Alert 
+          severity="error" 
+          sx={{ m: 2 }} 
+          onClose={() => setError(null)}
+        >
           {error}
         </Alert>
       )}
@@ -1054,7 +1022,7 @@ const Chat = () => {
         open={snackbar.open}
         autoHideDuration={6000}
         onClose={handleCloseSnackbar}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
       >
         <Alert onClose={handleCloseSnackbar} severity={snackbar.severity} sx={{ width: '100%' }}>
           {snackbar.message}

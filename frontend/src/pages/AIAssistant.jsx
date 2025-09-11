@@ -62,12 +62,12 @@ const AIAssistant = () => {
   const [deliverableContent, setDeliverableContent] = useState(null);
 
   const requestTypes = [
-    { value: 'cma', label: 'Comparative Market Analysis' },
-    { value: 'presentation', label: 'Listing Presentation' },
-    { value: 'marketing', label: 'Marketing Materials' },
-    { value: 'compliance', label: 'Compliance Documents' },
-    { value: 'follow_up', label: 'Client Follow-up' },
-    { value: 'general', label: 'General Request' }
+    { value: 'cma', label: 'Comparative Market Analysis (AI Generated)' },
+    { value: 'presentation', label: 'Listing Presentation (AI Generated)' },
+    { value: 'marketing', label: 'Marketing Materials (AI Generated)' },
+    { value: 'compliance', label: 'Compliance Documents (Human Review Required)' },
+    { value: 'follow_up', label: 'Client Follow-up (AI Generated)' },
+    { value: 'general', label: 'General Request (AI Generated)' }
   ];
 
   const priorities = [
@@ -81,9 +81,21 @@ const AIAssistant = () => {
     pending: 'default',
     processing: 'primary',
     ai_complete: 'info',
-    human_review: 'warning',
+    human_review: 'warning', // Only for contract-related requests
     completed: 'success',
     failed: 'error'
+  };
+
+  const getStatusDescription = (status) => {
+    const descriptions = {
+      pending: 'Request received',
+      processing: 'AI is generating content',
+      ai_complete: 'AI content ready for human review (contracts only)',
+      human_review: 'Under human expert review',
+      completed: 'Content ready for use',
+      failed: 'Generation failed'
+    };
+    return descriptions[status] || status;
   };
 
   useEffect(() => {
@@ -132,7 +144,7 @@ const AIAssistant = () => {
         })
       });
 
-      setSuccess('Request submitted successfully!');
+      setSuccess('AI is generating your content! Most requests will be ready instantly.');
       setRequestText('');
       loadRequests();
     } catch (err) {
@@ -288,7 +300,7 @@ const AIAssistant = () => {
             multiline
             rows={4}
             label="Describe your request"
-            placeholder="e.g., Create a CMA for 123 Sheikh Zayed Road, Dubai Marina"
+            placeholder="e.g., Generate a CMA for 123 Sheikh Zayed Road, Dubai Marina (AI will create this instantly)"
             value={requestText}
             onChange={(e) => setRequestText(e.target.value)}
             sx={{ mb: 2 }}

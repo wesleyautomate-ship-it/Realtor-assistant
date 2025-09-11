@@ -12,14 +12,25 @@ import SessionWarning from './components/SessionWarning';
 
 // Lazy load page components for better performance
 const Dashboard = React.lazy(() => import('./pages/Dashboard'));
+const AdminDashboard = React.lazy(() => import('./pages/AdminDashboard'));
+const RoleBasedDashboard = React.lazy(() => import('./components/RoleBasedDashboard'));
 const BrokerageDashboard = React.lazy(() => import('./pages/BrokerageDashboard'));
 const AIAssistant = React.lazy(() => import('./pages/AIAssistant'));
 const DeveloperDashboard = React.lazy(() => import('./pages/DeveloperDashboard'));
-const HubDashboard = React.lazy(() => import('./components/hub/HubDashboard'));
+const Hub = React.lazy(() => import('./pages/Hub'));
+const Compose = React.lazy(() => import('./pages/Compose'));
+const RequestDetail = React.lazy(() => import('./pages/RequestDetail'));
 const Chat = React.lazy(() => import('./pages/Chat'));
 const Properties = React.lazy(() => import('./pages/Properties'));
+const ProfilePage = React.lazy(() => import('./pages/ProfilePage'));
+const SettingsPage = React.lazy(() => import('./pages/SettingsPage'));
 const AdminFiles = React.lazy(() => import('./pages/AdminFiles'));
 const TeamManagement = React.lazy(() => import('./components/team/TeamManagement'));
+
+// New pages for mobile-first design
+const Contacts = React.lazy(() => import('./pages/Contacts'));
+const Documents = React.lazy(() => import('./pages/Documents'));
+const Reports = React.lazy(() => import('./pages/Reports'));
 
 // Loading fallback component
 const PageLoader = () => (
@@ -60,23 +71,108 @@ const App = () => {
             </ProtectedRoute>
           }
         >
-          <Route index element={<Navigate to="/hub" replace />} />
-          <Route 
-            path="hub" 
-            element={
-              <ErrorBoundary>
-                <Suspense fallback={<PageLoader />}>
-                  <HubDashboard />
-                </Suspense>
-              </ErrorBoundary>
-            } 
-          />
+          {/* Default route - redirect to dashboard */}
+          <Route index element={<Navigate to="/dashboard" replace />} />
+          
+          {/* Main Dashboard - Role-based routing */}
           <Route 
             path="dashboard" 
             element={
               <ErrorBoundary>
                 <Suspense fallback={<PageLoader />}>
-                  <Dashboard />
+                  <RoleBasedDashboard />
+                </Suspense>
+              </ErrorBoundary>
+            } 
+          />
+          
+          {/* Contacts/People Management */}
+          <Route 
+            path="contacts" 
+            element={
+              <ErrorBoundary>
+                <Suspense fallback={<PageLoader />}>
+                  <Contacts />
+                </Suspense>
+              </ErrorBoundary>
+            } 
+          />
+          
+          {/* Chat Interface */}
+          <Route 
+            path="chat" 
+            element={
+              <ErrorBoundary>
+                <Suspense fallback={<PageLoader />}>
+                  <Chat />
+                </Suspense>
+              </ErrorBoundary>
+            } 
+          />
+          <Route 
+            path="chat/:sessionId" 
+            element={
+              <ErrorBoundary>
+                <Suspense fallback={<PageLoader />}>
+                  <Chat />
+                </Suspense>
+              </ErrorBoundary>
+            } 
+          />
+          
+          {/* Documents Management */}
+          <Route 
+            path="documents" 
+            element={
+              <ErrorBoundary>
+                <Suspense fallback={<PageLoader />}>
+                  <Documents />
+                </Suspense>
+              </ErrorBoundary>
+            } 
+          />
+          
+          {/* Reports & Analytics */}
+          <Route 
+            path="reports" 
+            element={
+              <ErrorBoundary>
+                <Suspense fallback={<PageLoader />}>
+                  <Reports />
+                </Suspense>
+              </ErrorBoundary>
+            } 
+          />
+          
+          {/* Hub/List - AI Teams and Requests */}
+          <Route 
+            path="hub" 
+            element={
+              <ErrorBoundary>
+                <Suspense fallback={<PageLoader />}>
+                  <Hub />
+                </Suspense>
+              </ErrorBoundary>
+            } 
+          />
+          
+          {/* Additional existing routes */}
+          <Route 
+            path="compose" 
+            element={
+              <ErrorBoundary>
+                <Suspense fallback={<PageLoader />}>
+                  <Compose />
+                </Suspense>
+              </ErrorBoundary>
+            } 
+          />
+          <Route 
+            path="requests/:id" 
+            element={
+              <ErrorBoundary>
+                <Suspense fallback={<PageLoader />}>
+                  <RequestDetail />
                 </Suspense>
               </ErrorBoundary>
             } 
@@ -122,31 +218,31 @@ const App = () => {
             } 
           />
           <Route 
-            path="chat" 
-            element={
-              <ErrorBoundary>
-                <Suspense fallback={<PageLoader />}>
-                  <Chat />
-                </Suspense>
-              </ErrorBoundary>
-            } 
-          />
-          <Route 
-            path="chat/:sessionId" 
-            element={
-              <ErrorBoundary>
-                <Suspense fallback={<PageLoader />}>
-                  <Chat />
-                </Suspense>
-              </ErrorBoundary>
-            } 
-          />
-          <Route 
             path="properties" 
             element={
               <ErrorBoundary>
                 <Suspense fallback={<PageLoader />}>
                   <Properties />
+                </Suspense>
+              </ErrorBoundary>
+            } 
+          />
+          <Route 
+            path="profile" 
+            element={
+              <ErrorBoundary>
+                <Suspense fallback={<PageLoader />}>
+                  <ProfilePage />
+                </Suspense>
+              </ErrorBoundary>
+            } 
+          />
+          <Route 
+            path="settings" 
+            element={
+              <ErrorBoundary>
+                <Suspense fallback={<PageLoader />}>
+                  <SettingsPage />
                 </Suspense>
               </ErrorBoundary>
             } 
@@ -168,7 +264,7 @@ const App = () => {
         </Route>
 
         {/* Catch all route */}
-        <Route path="*" element={<Navigate to="/hub" replace />} />
+        <Route path="*" element={<Navigate to="/dashboard" replace />} />
       </Routes>
         </AppProvider>
       </ToastProvider>
