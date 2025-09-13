@@ -1033,7 +1033,7 @@ FORMAT: Return the complete message ready to send.
         try:
             with self.engine.connect() as conn:
                 result = conn.execute(text("""
-                    SELECT address, price, bedrooms, bathrooms, square_feet, property_type, description
+                    SELECT title, price_aed AS price, bedrooms, bathrooms, area_sqft, property_type, description, location
                     FROM properties 
                     WHERE id = :property_id
                 """), {"property_id": property_id})

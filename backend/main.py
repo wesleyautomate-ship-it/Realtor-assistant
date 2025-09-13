@@ -27,7 +27,6 @@ import json
 import google.generativeai as genai
 import chromadb
 from sqlalchemy import create_engine, Column, Integer, String, Numeric, Text, text
-from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 import uuid
 from datetime import datetime
@@ -229,6 +228,12 @@ app.add_middleware(
 # Include routers
 app.include_router(auth_router)
 app.include_router(property_router)
+try:
+    from routers.meta_router import router as meta_router
+    app.include_router(meta_router)
+    print("✅ Meta router (health/root) included successfully")
+except Exception as e:
+    print(f"⚠️ Meta router not included: {e}")
 app.include_router(secure_sessions_router)  # SECURE SESSIONS
 app.include_router(chat_sessions_router)  # CHAT SESSIONS
 app.include_router(chat_root_router)  # ROOT CHAT ENDPOINTS
@@ -335,7 +340,6 @@ include_rag_monitoring_routes(app)
 # Database setup
 engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-Base = declarative_base()
 
 # Initialize authentication database
 try:
@@ -376,30 +380,7 @@ except Exception as e:
 
 # Processing services moved to file_processing_router.py
 
-# Database models - Fixed to match our actual database schema
-class Property(Base):
-    __tablename__ = "properties"
-    
-    id = Column(Integer, primary_key=True, index=True)
-    address = Column(String(255), nullable=False, index=True)
-    price = Column(Numeric(12, 2))
-    bedrooms = Column(Integer)
-    bathrooms = Column(Numeric(3, 1))
-    square_feet = Column(Integer)
-    property_type = Column(String(100))
-    description = Column(Text)
-
-class Client(Base):
-    __tablename__ = "clients"
-    
-    id = Column(Integer, primary_key=True, index=True)
-    name = Column(String(255), nullable=False, index=True)
-    email = Column(String(255))
-    phone = Column(String(50))
-    budget_min = Column(Numeric(12, 2))
-    budget_max = Column(Numeric(12, 2))
-    preferred_location = Column(String(255))
-    requirements = Column(Text)
+# Inline ORM models removed. Use models from backend/models/* (shared Base) instead.
 
 # Initialize Improved RAG Service lazily
 rag_service = None
@@ -430,27 +411,7 @@ class FileUploadResponse(BaseModel):
     file_type: str
     file_size: int
 
-# Health check endpoint
-@app.get("/health")
-async def health_check():
-    """Health check endpoint for Docker"""
-    return {
-        "status": "healthy",
-        "timestamp": datetime.now().isoformat(),
-        "version": "2.0.0",
-        "blueprint_2_enabled": True
-    }
-
-# Root endpoint
-@app.get("/")
-async def root():
-    """Root endpoint"""
-    return {
-        "message": "Dubai Real Estate RAG Chat System API",
-        "version": "1.2.0",
-        "status": "running",
-        "docs": "/docs"
-    }
+# Meta (root/health) endpoints moved to routers/meta_router.py
 
 # Chat endpoint moved to chat_sessions_router.py
 
