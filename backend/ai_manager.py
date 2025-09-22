@@ -1033,7 +1033,7 @@ FORMAT: Return the complete message ready to send.
         try:
             with self.engine.connect() as conn:
                 result = conn.execute(text("""
-                    SELECT address, price, bedrooms, bathrooms, square_feet, property_type, description
+                    SELECT title, price_aed AS price, bedrooms, bathrooms, area_sqft, property_type, description, location
                     FROM properties 
                     WHERE id = :property_id
                 """), {"property_id": property_id})
@@ -1203,8 +1203,219 @@ FORMAT: Return the complete message ready to send.
             "follow_up_email",
             "market_report",
             "property_brochure",
-            "cma"
+            "cma",
+            "deal_structuring",
+            "listing_optimization",
+            "investment_analysis",
+            "legal_guidance"
         ]
+    
+    # ============================================================================
+    # ENHANCED REAL ESTATE AI FEATURES
+    # ============================================================================
+    
+    def generate_deal_structuring_analysis(self, deal_data: Dict[str, Any]) -> str:
+        """Generate AI-powered deal structuring analysis"""
+        try:
+            prompt = f"""
+            You are a Dubai real estate deal structuring expert. Analyze this deal and provide comprehensive guidance.
+            
+            **Deal Details:**
+            - Property: {deal_data.get('property_address', 'Unknown')}
+            - Price: AED {deal_data.get('price', 0):,.0f}
+            - Buyer Budget: AED {deal_data.get('buyer_budget', 0):,.0f}
+            - Seller Requirements: {deal_data.get('seller_requirements', 'Standard')}
+            - Timeline: {deal_data.get('timeline', 'Flexible')}
+            - Property Type: {deal_data.get('property_type', 'Unknown')}
+            
+            **Analysis Requirements:**
+            1. **Financial Analysis**: Payment structure, financing options, ROI calculations
+            2. **Negotiation Strategy**: Key negotiation points, leverage factors, win-win scenarios
+            3. **Risk Assessment**: Market risks, legal considerations, timeline risks
+            4. **Deal Structure**: Recommended payment plan, conditions, contingencies
+            5. **Next Steps**: Specific actions for buyer, seller, and agent
+            
+            Provide a comprehensive analysis with specific recommendations for Dubai real estate market.
+            """
+            
+            response = self.model.generate_content(prompt)
+            return response.text
+            
+        except Exception as e:
+            logger.error(f"Error generating deal structuring analysis: {e}")
+            return "Unable to generate deal structuring analysis at this time."
+    
+    def generate_listing_optimization_suggestions(self, listing_data: Dict[str, Any]) -> str:
+        """Generate AI-powered listing optimization suggestions"""
+        try:
+            prompt = f"""
+            You are a Dubai real estate listing optimization expert. Analyze this listing and provide optimization suggestions.
+            
+            **Listing Details:**
+            - Address: {listing_data.get('address', 'Unknown')}
+            - Current Price: AED {listing_data.get('price', 0):,.0f}
+            - Property Type: {listing_data.get('property_type', 'Unknown')}
+            - Bedrooms: {listing_data.get('bedrooms', 'N/A')}
+            - Bathrooms: {listing_data.get('bathrooms', 'N/A')}
+            - Size: {listing_data.get('size_sqft', 'N/A')} sq ft
+            - Days on Market: {listing_data.get('days_on_market', 'N/A')}
+            - Views: {listing_data.get('views', 'N/A')}
+            - Inquiries: {listing_data.get('inquiries', 'N/A')}
+            
+            **Optimization Areas:**
+            1. **Pricing Strategy**: Market analysis, competitive positioning, price adjustments
+            2. **Marketing Enhancement**: Description improvements, photo suggestions, staging advice
+            3. **Target Audience**: Buyer persona analysis, marketing channel recommendations
+            4. **Market Positioning**: Unique selling points, competitive advantages
+            5. **Performance Metrics**: Key metrics to track, improvement suggestions
+            
+            Provide specific, actionable recommendations for Dubai real estate market.
+            """
+            
+            response = self.model.generate_content(prompt)
+            return response.text
+            
+        except Exception as e:
+            logger.error(f"Error generating listing optimization suggestions: {e}")
+            return "Unable to generate listing optimization suggestions at this time."
+    
+    def generate_investment_analysis(self, investment_data: Dict[str, Any]) -> str:
+        """Generate AI-powered investment analysis"""
+        try:
+            prompt = f"""
+            You are a Dubai real estate investment analyst. Provide comprehensive investment analysis.
+            
+            **Investment Details:**
+            - Property: {investment_data.get('property_address', 'Unknown')}
+            - Purchase Price: AED {investment_data.get('purchase_price', 0):,.0f}
+            - Expected Rental: AED {investment_data.get('monthly_rent', 0):,.0f}/month
+            - Property Type: {investment_data.get('property_type', 'Unknown')}
+            - Area: {investment_data.get('area', 'Unknown')}
+            - Investment Type: {investment_data.get('investment_type', 'Buy-to-let')}
+            - Investment Horizon: {investment_data.get('investment_horizon', 'Long-term')}
+            
+            **Analysis Requirements:**
+            1. **ROI Analysis**: Rental yield, capital appreciation, total returns
+            2. **Market Analysis**: Area growth potential, demand trends, supply factors
+            3. **Risk Assessment**: Market risks, property-specific risks, mitigation strategies
+            4. **Financial Projections**: 5-year cash flow, exit strategy, tax implications
+            5. **Investment Recommendation**: Buy/Hold/Sell recommendation with rationale
+            
+            Focus on Dubai real estate market specifics including Golden Visa benefits, tax advantages, and market trends.
+            """
+            
+            response = self.model.generate_content(prompt)
+            return response.text
+            
+        except Exception as e:
+            logger.error(f"Error generating investment analysis: {e}")
+            return "Unable to generate investment analysis at this time."
+    
+    def generate_legal_guidance(self, legal_query: str, context: Dict[str, Any] = None) -> str:
+        """Generate AI-powered legal guidance for real estate matters"""
+        try:
+            context_str = ""
+            if context:
+                context_str = f"""
+                **Context:**
+                - Property: {context.get('property_address', 'N/A')}
+                - Transaction Type: {context.get('transaction_type', 'N/A')}
+                - Buyer/Seller Status: {context.get('buyer_seller_status', 'N/A')}
+                - Budget: AED {context.get('budget', 0):,.0f}
+                """
+            
+            prompt = f"""
+            You are a Dubai real estate legal expert. Provide guidance on this legal query.
+            
+            **Legal Query:** {legal_query}
+            {context_str}
+            
+            **Guidance Requirements:**
+            1. **Legal Framework**: Relevant UAE/Dubai laws and regulations
+            2. **RERA Compliance**: RERA requirements and procedures
+            3. **Documentation**: Required documents and legal processes
+            4. **Rights and Obligations**: Buyer/seller rights and responsibilities
+            5. **Risk Mitigation**: Legal risks and how to protect interests
+            6. **Next Steps**: Specific actions and professional referrals needed
+            
+            **Important:** Always recommend consulting with a qualified legal professional for specific legal advice.
+            Focus on Dubai real estate legal framework and RERA regulations.
+            """
+            
+            response = self.model.generate_content(prompt)
+            return response.text
+            
+        except Exception as e:
+            logger.error(f"Error generating legal guidance: {e}")
+            return "Unable to generate legal guidance at this time. Please consult with a qualified legal professional."
+    
+    def generate_property_valuation(self, property_data: Dict[str, Any]) -> str:
+        """Generate AI-powered property valuation analysis"""
+        try:
+            prompt = f"""
+            You are a Dubai real estate valuation expert. Provide comprehensive property valuation analysis.
+            
+            **Property Details:**
+            - Address: {property_data.get('address', 'Unknown')}
+            - Property Type: {property_data.get('property_type', 'Unknown')}
+            - Bedrooms: {property_data.get('bedrooms', 'N/A')}
+            - Bathrooms: {property_data.get('bathrooms', 'N/A')}
+            - Size: {property_data.get('size_sqft', 'N/A')} sq ft
+            - Age: {property_data.get('age', 'N/A')} years
+            - Condition: {property_data.get('condition', 'Unknown')}
+            - Amenities: {property_data.get('amenities', 'Standard')}
+            - Current Market Price: AED {property_data.get('current_price', 0):,.0f}
+            
+            **Valuation Analysis:**
+            1. **Market Comparison**: Comparable properties analysis, price per sq ft
+            2. **Location Assessment**: Area desirability, infrastructure, future development
+            3. **Property Condition**: Maintenance needs, renovation potential, value-add opportunities
+            4. **Market Trends**: Current market conditions, price trends, demand factors
+            5. **Valuation Range**: Conservative, realistic, and optimistic price estimates
+            6. **Investment Potential**: Rental yield, capital appreciation, exit strategy
+            
+            Provide specific valuation recommendations for Dubai real estate market.
+            """
+            
+            response = self.model.generate_content(prompt)
+            return response.text
+            
+        except Exception as e:
+            logger.error(f"Error generating property valuation: {e}")
+            return "Unable to generate property valuation at this time."
+    
+    def generate_market_insights(self, area: str, property_type: str = None) -> str:
+        """Generate AI-powered market insights for specific area"""
+        try:
+            property_type_str = f" for {property_type}" if property_type else ""
+            
+            prompt = f"""
+            You are a Dubai real estate market analyst. Provide comprehensive market insights for {area}{property_type_str}.
+            
+            **Market Analysis Requirements:**
+            1. **Current Market Conditions**: Price trends, inventory levels, demand patterns
+            2. **Area Development**: Infrastructure projects, new developments, master plans
+            3. **Investment Opportunities**: Emerging areas, value-add potential, timing
+            4. **Competitive Analysis**: Similar areas, price comparisons, advantages
+            5. **Future Outlook**: 2-5 year projections, growth drivers, risks
+            6. **Buyer/Seller Advice**: Market timing, pricing strategies, negotiation tips
+            
+            **Focus Areas:**
+            - Dubai-specific market dynamics
+            - RERA regulations and impact
+            - Golden Visa opportunities
+            - Rental market trends
+            - Off-plan vs. ready properties
+            
+            Provide actionable insights for real estate professionals and investors.
+            """
+            
+            response = self.model.generate_content(prompt)
+            return response.text
+            
+        except Exception as e:
+            logger.error(f"Error generating market insights: {e}")
+            return "Unable to generate market insights at this time."
     
     # Blueprint 2.0: HTML Document Generation Methods
     

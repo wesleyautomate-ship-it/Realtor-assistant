@@ -11,7 +11,6 @@ from sqlalchemy import (
     Numeric, Text, Boolean, DateTime, JSON, ForeignKey, Index,
     Float, Date, Time, ARRAY, LargeBinary
 )
-from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from datetime import datetime, timedelta
 from env_loader import load_env
@@ -21,7 +20,6 @@ load_env()
 # Database connection
 database_url = os.getenv('DATABASE_URL', 'postgresql://admin:password123@localhost:5432/real_estate_db')
 engine = create_engine(database_url)
-Base = declarative_base()
 
 def create_ml_insights_tables():
     """Create all Phase 4B ML insights database tables"""

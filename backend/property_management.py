@@ -475,6 +475,253 @@ async def get_property_locations():
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Database error: {str(e)}")
 
+# ============================================================================
+# AI-POWERED LISTING MANAGEMENT FEATURES
+# ============================================================================
+
+@router.post("/{property_id}/ai-optimize", tags=["Properties"])
+async def ai_optimize_listing(
+    property_id: int,
+    optimization_type: str = Query("all", description="Type of optimization: pricing, description, marketing, all"),
+    db: Session = Depends(get_db),
+    current_user = Depends(get_current_user)
+):
+    """AI-powered listing optimization"""
+    try:
+        # Get property details
+        property_query = "SELECT * FROM properties WHERE id = :property_id"
+        
+        with engine.connect() as conn:
+            result = conn.execute(text(property_query), {"property_id": property_id})
+            property_row = result.fetchone()
+            
+            if not property_row:
+                raise HTTPException(status_code=404, detail="Property not found")
+            
+            # Check authorization
+            if property_row.agent_id != current_user.id and current_user.role not in ['admin', 'manager']:
+                raise HTTPException(status_code=403, detail="Not authorized to optimize this listing")
+            
+            # Get AI model (you'll need to import and initialize this)
+            try:
+                from ai_manager import AIEnhancementManager
+                ai_manager = AIEnhancementManager(db_url, None)  # Initialize with your AI model
+            except ImportError:
+                raise HTTPException(status_code=500, detail="AI services not available")
+            
+            # Prepare property data for AI analysis
+            property_data = {
+                "address": property_row.location,
+                "price": float(property_row.price),
+                "property_type": property_row.property_type,
+                "bedrooms": property_row.bedrooms,
+                "bathrooms": property_row.bathrooms,
+                "size_sqft": float(property_row.area_sqft) if property_row.area_sqft else None,
+                "description": property_row.description
+            }
+            
+            optimization_results = {}
+            
+            if optimization_type in ["pricing", "all"]:
+                # AI pricing optimization
+                pricing_analysis = ai_manager.generate_listing_optimization_suggestions(property_data)
+                optimization_results["pricing_analysis"] = pricing_analysis
+            
+            if optimization_type in ["description", "all"]:
+                # AI description enhancement
+                enhanced_description = ai_manager.generate_content_by_type(
+                    "property_brochure", 
+                    property_details=property_data
+                )
+                optimization_results["enhanced_description"] = enhanced_description
+            
+            if optimization_type in ["marketing", "all"]:
+                # AI marketing suggestions
+                marketing_suggestions = ai_manager.generate_social_media_post(
+                    platform="instagram",
+                    topic=f"Property in {property_row.location}",
+                    key_points=[f"{property_row.bedrooms}BR", f"AED {property_row.price:,.0f}", property_row.property_type],
+                    audience="potential_buyers",
+                    call_to_action="Schedule a viewing"
+                )
+                optimization_results["marketing_suggestions"] = marketing_suggestions
+            
+            # Log the optimization
+            conn.execute(text("""
+                INSERT INTO listing_history 
+                (property_id, event_type, old_value, new_value, changed_by_agent_id, created_at)
+                VALUES (:property_id, 'ai_optimization', :old_value, :new_value, :changed_by_agent_id, NOW())
+            """), {
+                "property_id": property_id,
+                "old_value": f"Original listing",
+                "new_value": f"AI optimized - {optimization_type}",
+                "changed_by_agent_id": current_user.id
+            })
+            
+            conn.commit()
+            
+            return {
+                "success": True,
+                "property_id": property_id,
+                "optimization_type": optimization_type,
+                "results": optimization_results,
+                "message": f"Listing optimized successfully for {optimization_type}"
+            }
+            
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error optimizing listing: {str(e)}")
+
+@router.get("/{property_id}/ai-analysis", tags=["Properties"])
+async def get_ai_property_analysis(
+    property_id: int,
+    analysis_type: str = Query("comprehensive", description="Type of analysis: valuation, investment, market, comprehensive"),
+    db: Session = Depends(get_db),
+    current_user = Depends(get_current_user)
+):
+    """Get AI-powered property analysis"""
+    try:
+        # Get property details
+        property_query = "SELECT * FROM properties WHERE id = :property_id"
+        
+        with engine.connect() as conn:
+            result = conn.execute(text(property_query), {"property_id": property_id})
+            property_row = result.fetchone()
+            
+            if not property_row:
+                raise HTTPException(status_code=404, detail="Property not found")
+            
+            # Check authorization
+            if property_row.agent_id != current_user.id and current_user.role not in ['admin', 'manager']:
+                raise HTTPException(status_code=403, detail="Not authorized to view this analysis")
+            
+            # Get AI model
+            try:
+                from ai_manager import AIEnhancementManager
+                ai_manager = AIEnhancementManager(db_url, None)  # Initialize with your AI model
+            except ImportError:
+                raise HTTPException(status_code=500, detail="AI services not available")
+            
+            # Prepare property data
+            property_data = {
+                "address": property_row.location,
+                "price": float(property_row.price),
+                "property_type": property_row.property_type,
+                "bedrooms": property_row.bedrooms,
+                "bathrooms": property_row.bathrooms,
+                "size_sqft": float(property_row.area_sqft) if property_row.area_sqft else None,
+                "description": property_row.description
+            }
+            
+            analysis_results = {}
+            
+            if analysis_type in ["valuation", "comprehensive"]:
+                # Property valuation analysis
+                valuation_analysis = ai_manager.generate_property_valuation(property_data)
+                analysis_results["valuation"] = valuation_analysis
+            
+            if analysis_type in ["investment", "comprehensive"]:
+                # Investment analysis
+                investment_data = {
+                    "property_address": property_row.location,
+                    "purchase_price": float(property_row.price),
+                    "property_type": property_row.property_type,
+                    "area": property_row.location
+                }
+                investment_analysis = ai_manager.generate_investment_analysis(investment_data)
+                analysis_results["investment"] = investment_analysis
+            
+            if analysis_type in ["market", "comprehensive"]:
+                # Market insights
+                market_insights = ai_manager.generate_market_insights(property_row.location, property_row.property_type)
+                analysis_results["market_insights"] = market_insights
+            
+            return {
+                "success": True,
+                "property_id": property_id,
+                "analysis_type": analysis_type,
+                "property_data": property_data,
+                "analysis_results": analysis_results,
+                "generated_at": datetime.now().isoformat()
+            }
+            
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error generating analysis: {str(e)}")
+
+@router.post("/{property_id}/ai-pricing", tags=["Properties"])
+async def get_ai_pricing_recommendation(
+    property_id: int,
+    market_conditions: Dict[str, Any] = None,
+    db: Session = Depends(get_db),
+    current_user = Depends(get_current_user)
+):
+    """Get AI-powered pricing recommendations"""
+    try:
+        # Get property details
+        property_query = "SELECT * FROM properties WHERE id = :property_id"
+        
+        with engine.connect() as conn:
+            result = conn.execute(text(property_query), {"property_id": property_id})
+            property_row = result.fetchone()
+            
+            if not property_row:
+                raise HTTPException(status_code=404, detail="Property not found")
+            
+            # Check authorization
+            if property_row.agent_id != current_user.id and current_user.role not in ['admin', 'manager']:
+                raise HTTPException(status_code=403, detail="Not authorized to view pricing recommendations")
+            
+            # Get AI model
+            try:
+                from ai_manager import AIEnhancementManager
+                ai_manager = AIEnhancementManager(db_url, None)  # Initialize with your AI model
+            except ImportError:
+                raise HTTPException(status_code=500, detail="AI services not available")
+            
+            # Prepare listing data for pricing analysis
+            listing_data = {
+                "address": property_row.location,
+                "price": float(property_row.price),
+                "property_type": property_row.property_type,
+                "bedrooms": property_row.bedrooms,
+                "bathrooms": property_row.bathrooms,
+                "size_sqft": float(property_row.area_sqft) if property_row.area_sqft else None,
+                "days_on_market": 0,  # You might want to calculate this
+                "views": 0,  # You might want to track this
+                "inquiries": 0  # You might want to track this
+            }
+            
+            # Generate pricing optimization suggestions
+            pricing_analysis = ai_manager.generate_listing_optimization_suggestions(listing_data)
+            
+            # Generate market insights for pricing context
+            market_insights = ai_manager.generate_market_insights(property_row.location, property_row.property_type)
+            
+            return {
+                "success": True,
+                "property_id": property_id,
+                "current_price": float(property_row.price),
+                "pricing_analysis": pricing_analysis,
+                "market_insights": market_insights,
+                "recommendations": {
+                    "confidence_score": 85,  # You might want to calculate this
+                    "price_range": {
+                        "min": float(property_row.price) * 0.95,
+                        "max": float(property_row.price) * 1.05
+                    },
+                    "optimal_price": float(property_row.price) * 1.02
+                },
+                "generated_at": datetime.now().isoformat()
+            }
+            
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error generating pricing recommendations: {str(e)}")
+
 # --- Phase 1: Granular Data & Security Foundation ---
 
 @router.put("/{property_id}/status", tags=["Properties"])

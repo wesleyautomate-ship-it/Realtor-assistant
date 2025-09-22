@@ -94,5 +94,8 @@ fuzzywuzzy==0.18.0
 python-Levenshtein==0.21.1
 dateparser==1.2.0
 
+# MCP (Model Context Protocol) Integration
+fastapi-mcp>=0.3.0
+
 # System dependencies (for Docker)
 # curl is installed via apt-get in Dockerfile

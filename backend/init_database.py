@@ -4,7 +4,6 @@ Database initialization script to create all required tables
 
 import os
 from sqlalchemy import create_engine, text, MetaData, Table, Column, Integer, String, Numeric, Text, Boolean, DateTime
-from sqlalchemy.ext.declarative import declarative_base
 from datetime import datetime
 from env_loader import load_env
 
@@ -13,7 +12,6 @@ load_env()
 # Database connection
 database_url = os.getenv('DATABASE_URL', 'postgresql://admin:password123@localhost:5432/real_estate_db')
 engine = create_engine(database_url)
-Base = declarative_base()
 
 def check_table_schema(conn, table_name):
     """Check the schema of an existing table"""

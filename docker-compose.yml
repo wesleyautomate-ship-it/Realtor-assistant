@@ -1,42 +1,58 @@
+# Dubai Real Estate RAG Chat System - Enterprise Docker Compose
+# Production-ready multi-service deployment
+
+version: '3.8'
+
 services:
-  # PostgreSQL Database (Different port and database name)
-  postgres:
-    image: postgres:15
+  # PostgreSQL Database
+  db:
+    image: postgres:15-alpine
+    container_name: real_estate_db
     environment:
-      POSTGRES_DB: real_estate_db
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: password123
+      POSTGRES_DB: ${POSTGRES_DB:-real_estate_db}
+      POSTGRES_USER: ${POSTGRES_USER:-admin}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password123}
+      POSTGRES_INITDB_ARGS: "--encoding=UTF-8 --lc-collate=C --lc-ctype=C"
     ports:
-      - "5432:5432"  # Standard PostgreSQL port
+      - "${POSTGRES_PORT:-5432}:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ./backend/init_database.py:/docker-entrypoint-initdb.d/init_database.py:ro
+      - ./backend/app/infrastructure/db/migrations:/docker-entrypoint-initdb.d:ro
     networks:
       - rag-network
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U admin -d real_estate_db"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-admin} -d ${POSTGRES_DB:-real_estate_db}"]
       interval: 10s
       timeout: 5s
       retries: 5
+      start_period: 30s
+    restart: unless-stopped
 
-  # Redis Cache (Different port)
+  # Redis Cache & Message Broker
   redis:
     image: redis:7-alpine
+    container_name: real_estate_redis
+    command: redis-server --appendonly yes --requirepass ${REDIS_PASSWORD:-redis123}
     ports:
-      - "6379:6379"  # Standard Redis port
+      - "${REDIS_PORT:-6379}:6379"
+    volumes:
+      - redis_data:/data
     networks:
       - rag-network
     healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
+      test: ["CMD", "redis-cli", "--raw", "incr", "ping"]
       interval: 10s
       timeout: 5s
       retries: 5
+      start_period: 10s
+    restart: unless-stopped
 
-  # ChromaDB for document embeddings (Different port)
+  # ChromaDB Vector Database
   chromadb:
     image: chromadb/chroma:latest
+    container_name: real_estate_chromadb
     ports:
-      - "8002:8000"  # ChromaDB port
+      - "${CHROMA_PORT:-8002}:8000"
     volumes:
       - chroma_data:/chroma/chroma
     networks:
@@ -47,72 +63,179 @@ services:
       timeout: 10s
       retries: 5
       start_period: 40s
+    restart: unless-stopped
 
-  # FastAPI Backend
-  backend:
-    build: ./backend
+  # FastAPI Backend API
+  api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      target: production
+    container_name: real_estate_api
     ports:
-      - "8003:8001"  # Standard backend port
-    env_file:
-      - ./docker.env
+      - "${API_PORT:-8000}:8000"
     environment:
-      - DATABASE_URL=postgresql://admin:password123@postgres:5432/real_estate_db
-      - CHROMA_HOST=chromadb
-      - CHROMA_PORT=8000
+      # Database
+      - DATABASE_URL=postgresql://${POSTGRES_USER:-admin}:${POSTGRES_PASSWORD:-password123}@db:5432/${POSTGRES_DB:-real_estate_db}
+      
+      # Redis
+      - REDIS_URL=redis://:${REDIS_PASSWORD:-redis123}@redis:6379/0
       - REDIS_HOST=redis
       - REDIS_PORT=6379
-      - REDIS_URL=redis://redis:6379/0
-      - GOOGLE_API_KEY=AIzaSyAocEBBwmq_eZ1Dy5RT9S7Kkfyw8nNibmM
-      - SECRET_KEY=your-secret-key-change-in-production-make-it-long-and-random-123456789
-      - JWT_ALGORITHM=HS256
-      - ALGORITHM=HS256
-      - ACCESS_TOKEN_EXPIRE_MINUTES=30
-      - JWT_REFRESH_TOKEN_EXPIRE_DAYS=7
-      - BCRYPT_ROUNDS=12
+      
+      # ChromaDB
+      - CHROMA_HOST=chromadb
+      - CHROMA_PORT=8000
+      
+      # AI Services
+      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - AI_MODEL=${AI_MODEL:-gemini-1.5-flash}
+      
+      # Security
+      - SECRET_KEY=${SECRET_KEY}
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_ALGORITHM=${JWT_ALGORITHM:-HS256}
+      - ACCESS_TOKEN_EXPIRE_MINUTES=${ACCESS_TOKEN_EXPIRE_MINUTES:-30}
+      - JWT_REFRESH_TOKEN_EXPIRE_DAYS=${JWT_REFRESH_TOKEN_EXPIRE_DAYS:-7}
+      - BCRYPT_ROUNDS=${BCRYPT_ROUNDS:-12}
+      
+      # Server Configuration
       - HOST=0.0.0.0
-      - PORT=8001
-      - DEBUG=true
-      - AI_MODEL=gemini-1.5-flash
-      - CACHE_TTL=3600
-      - LOG_LEVEL=INFO
-      - MAX_WORKERS=4
-      - BATCH_SIZE=50
-      - RATE_LIMIT_REQUESTS_PER_MINUTE=60
-      - RATE_LIMIT_LOGIN_ATTEMPTS=5
-      - MAX_FILE_SIZE=10485760
-      - ENABLE_BLUEPRINT_2=true
-      - NURTURING_SCHEDULER_ENABLED=true
-      - DOCUMENT_GENERATION_ENABLED=true
+      - PORT=8000
+      - DEBUG=${DEBUG:-false}
+      - ENVIRONMENT=${ENVIRONMENT:-production}
+      
+      # Performance
+      - MAX_WORKERS=${MAX_WORKERS:-4}
+      - BATCH_SIZE=${BATCH_SIZE:-50}
+      - CACHE_TTL=${CACHE_TTL:-3600}
+      
+      # Rate Limiting
+      - RATE_LIMIT_REQUESTS_PER_MINUTE=${RATE_LIMIT_REQUESTS_PER_MINUTE:-60}
+      - RATE_LIMIT_LOGIN_ATTEMPTS=${RATE_LIMIT_LOGIN_ATTEMPTS:-5}
+      
+      # File Upload
+      - MAX_FILE_SIZE=${MAX_FILE_SIZE:-10485760}
+      
+      # Features
+      - ENABLE_BLUEPRINT_2=${ENABLE_BLUEPRINT_2:-true}
+      - NURTURING_SCHEDULER_ENABLED=${NURTURING_SCHEDULER_ENABLED:-true}
+      - DOCUMENT_GENERATION_ENABLED=${DOCUMENT_GENERATION_ENABLED:-true}
+      
+      # Logging
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
     depends_on:
-      postgres:
+      db:
         condition: service_healthy
       redis:
         condition: service_healthy
       chromadb:
         condition: service_started
     volumes:
-       - ./backend:/app
-       - backend_logs:/app/logs
-       - backend_uploads:/app/uploads
+      - backend_logs:/app/logs
+      - backend_uploads:/app/uploads
     networks:
       - rag-network
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "python", "-c", "import requests; requests.get('http://localhost:8001/health', timeout=5)"]
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
       interval: 30s
       timeout: 10s
       retries: 3
       start_period: 40s
 
-  # React Frontend
-  frontend:
-    build: ./frontend
-    ports:
-      - "3000:3000"  # Standard frontend port
+  # Celery Worker for Background Tasks
+  worker:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      target: production
+    container_name: real_estate_worker
+    command: celery -A app.infrastructure.queue.celery_app worker --loglevel=info --concurrency=2
     environment:
-      - REACT_APP_API_URL=http://localhost:8003
+      # Same environment as API
+      - DATABASE_URL=postgresql://${POSTGRES_USER:-admin}:${POSTGRES_PASSWORD:-password123}@db:5432/${POSTGRES_DB:-real_estate_db}
+      - REDIS_URL=redis://:${REDIS_PASSWORD:-redis123}@redis:6379/0
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - CHROMA_HOST=chromadb
+      - CHROMA_PORT=8000
+      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - AI_MODEL=${AI_MODEL:-gemini-1.5-flash}
+      - SECRET_KEY=${SECRET_KEY}
+      - JWT_SECRET=${JWT_SECRET}
+      - DEBUG=${DEBUG:-false}
+      - ENVIRONMENT=${ENVIRONMENT:-production}
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
     depends_on:
-      backend:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      chromadb:
+        condition: service_started
+    volumes:
+      - backend_logs:/app/logs
+      - backend_uploads:/app/uploads
+    networks:
+      - rag-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "celery", "-A", "app.infrastructure.queue.celery_app", "inspect", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Celery Beat Scheduler
+  scheduler:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      target: production
+    container_name: real_estate_scheduler
+    command: celery -A app.infrastructure.queue.celery_app beat --loglevel=info
+    environment:
+      # Same environment as API
+      - DATABASE_URL=postgresql://${POSTGRES_USER:-admin}:${POSTGRES_PASSWORD:-password123}@db:5432/${POSTGRES_DB:-real_estate_db}
+      - REDIS_URL=redis://:${REDIS_PASSWORD:-redis123}@redis:6379/0
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - CHROMA_HOST=chromadb
+      - CHROMA_PORT=8000
+      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - SECRET_KEY=${SECRET_KEY}
+      - JWT_SECRET=${JWT_SECRET}
+      - DEBUG=${DEBUG:-false}
+      - ENVIRONMENT=${ENVIRONMENT:-production}
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - backend_logs:/app/logs
+    networks:
+      - rag-network
+    restart: unless-stopped
+
+  # React Frontend (Optional - for full stack deployment)
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: real_estate_frontend
+    ports:
+      - "${FRONTEND_PORT:-3000}:3000"
+    environment:
+      - REACT_APP_API_URL=http://localhost:${API_PORT:-8000}
+      - REACT_APP_ENVIRONMENT=${ENVIRONMENT:-production}
+    depends_on:
+      api:
         condition: service_healthy
     volumes:
       - ./frontend:/app
@@ -120,41 +243,45 @@ services:
     networks:
       - rag-network
     restart: unless-stopped
+    profiles:
+      - frontend
 
-  # Test Runner Service (for Blueprint 2.0 testing)
-  test-runner:
-    build: ./backend
-    env_file:
-      - ./docker.env
-    environment:
-      - DATABASE_URL=postgresql://admin:password123@postgres:5432/real_estate_db
-      - CHROMA_HOST=chromadb
-      - CHROMA_PORT=8000
-      - REDIS_HOST=redis
-      - REDIS_PORT=6379
-      - GOOGLE_API_KEY=AIzaSyAocEBBwmq_eZ1Dy5RT9S7Kkfyw8nNibmM
-      # Reelly API removed
-      - SECRET_KEY=332534d98fbf5ea7b5251e8078506a45
-      - ENABLE_BLUEPRINT_2=true
-    depends_on:
-      postgres:
-        condition: service_healthy
-      backend:
-        condition: service_healthy
+  # Nginx Reverse Proxy (Optional - for production)
+  nginx:
+    image: nginx:alpine
+    container_name: real_estate_nginx
+    ports:
+      - "${NGINX_PORT:-80}:80"
+      - "${NGINX_SSL_PORT:-443}:443"
     volumes:
-      - ./backend:/app
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./ssl:/etc/nginx/ssl:ro
+    depends_on:
+      - api
+      - frontend
     networks:
       - rag-network
-    command: ["python", "test_blueprint_2.py"]
+    restart: unless-stopped
     profiles:
-      - test
+      - production
 
+# Named volumes for data persistence
 volumes:
   postgres_data:
+    driver: local
+  redis_data:
+    driver: local
   chroma_data:
+    driver: local
   backend_logs:
+    driver: local
   backend_uploads:
+    driver: local
 
+# Custom network for service communication
 networks:
   rag-network:
     driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16

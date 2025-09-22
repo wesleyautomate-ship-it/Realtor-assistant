@@ -369,7 +369,7 @@ async def get_agent_performance_metrics(
         logging.error(f"Error getting agent performance metrics: {e}")
         raise HTTPException(status_code=500, detail=f"Failed to get performance metrics: {str(e)}")
 
-@ml_insights_router.get("/analytics/market-performance")
+@ml_insights_router.get("/analytics/market-performance", operation_id="get_market_analysis")
 async def get_market_performance_indicators(
     location: str = "Dubai",
     property_type: str = "all",

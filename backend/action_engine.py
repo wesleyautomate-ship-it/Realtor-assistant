@@ -22,7 +22,7 @@ db_url = os.getenv('DATABASE_URL', 'postgresql://admin:password123@localhost:543
 engine = create_engine(db_url)
 
 class ActionEngine:
-    """Enhanced action engine for proactive lead nurturing"""
+    """Enhanced action engine for proactive lead nurturing and real estate operations"""
     
     def __init__(self, ai_model=None):
         self.ai_model = ai_model
@@ -37,6 +37,11 @@ class ActionEngine:
             logger.warning(f"⚠️ Celery tasks not available: {e}")
             self.execute_ai_command_task = None
             self.get_task_status_task = None
+        
+        # Enhanced real estate specific features
+        self.follow_up_channels = ['email', 'sms', 'whatsapp', 'phone', 'in_person']
+        self.nurture_statuses = ['New', 'Contacted', 'Qualified', 'Nurturing', 'Hot', 'Warm', 'Cold', 'Closed']
+        self.interaction_types = ['email', 'call', 'sms', 'whatsapp', 'meeting', 'viewing', 'note', 'follow_up']
     
     def get_follow_up_context(self, lead_id: int) -> Dict[str, Any]:
         """
@@ -418,4 +423,322 @@ Suggestion:
             summary += f". Last interaction was {history[0]['interaction_type']} on {history[0]['created_at'][:10]}"
         
         return summary
+    
+    # ============================================================================
+    # ENHANCED FOLLOW-UP AND CONTACT MANAGEMENT METHODS
+    # ============================================================================
+    
+    def create_contact(self, contact_data: Dict[str, Any]) -> Dict[str, Any]:
+        """Create a new contact with enhanced lead scoring"""
+        try:
+            with engine.connect() as conn:
+                # Calculate initial lead score
+                lead_score = self._calculate_lead_score(contact_data)
+                
+                # Insert contact
+                result = conn.execute(text("""
+                    INSERT INTO leads 
+                    (name, email, phone, status, budget_min, budget_max, preferred_areas, 
+                     property_type, lead_score, agent_id, created_at, updated_at)
+                    VALUES (:name, :email, :phone, :status, :budget_min, :budget_max, 
+                           :preferred_areas, :property_type, :lead_score, :agent_id, NOW(), NOW())
+                    RETURNING id
+                """), {
+                    'name': contact_data.get('name'),
+                    'email': contact_data.get('email'),
+                    'phone': contact_data.get('phone'),
+                    'status': contact_data.get('status', 'new'),
+                    'budget_min': contact_data.get('budget_min'),
+                    'budget_max': contact_data.get('budget_max'),
+                    'preferred_areas': json.dumps(contact_data.get('preferred_areas', [])),
+                    'property_type': contact_data.get('property_type'),
+                    'lead_score': lead_score,
+                    'agent_id': contact_data.get('agent_id', 1)
+                })
+                
+                contact_id = result.fetchone()[0]
+                conn.commit()
+                
+                # Log initial interaction
+                self.log_interaction(contact_id, 'initial_contact', 'Contact created', contact_data.get('agent_id', 1))
+                
+                return {
+                    "success": True,
+                    "contact_id": contact_id,
+                    "lead_score": lead_score,
+                    "message": "Contact created successfully"
+                }
+                
+        except Exception as e:
+            logger.error(f"Error creating contact: {e}")
+            return {"error": f"Failed to create contact: {str(e)}"}
+    
+    def update_contact(self, contact_id: int, update_data: Dict[str, Any]) -> Dict[str, Any]:
+        """Update contact information and recalculate lead score"""
+        try:
+            with engine.connect() as conn:
+                # Get current contact data
+                current_result = conn.execute(text("""
+                    SELECT name, email, phone, budget_min, budget_max, preferred_areas, 
+                           property_type, lead_score
+                    FROM leads WHERE id = :contact_id
+                """), {'contact_id': contact_id})
+                
+                current_data = current_result.fetchone()
+                if not current_data:
+                    return {"error": "Contact not found"}
+                
+                # Merge current data with updates
+                updated_data = {
+                    'name': update_data.get('name', current_data.name),
+                    'email': update_data.get('email', current_data.email),
+                    'phone': update_data.get('phone', current_data.phone),
+                    'budget_min': update_data.get('budget_min', current_data.budget_min),
+                    'budget_max': update_data.get('budget_max', current_data.budget_max),
+                    'preferred_areas': update_data.get('preferred_areas', 
+                                                      json.loads(current_data.preferred_areas) if current_data.preferred_areas else []),
+                    'property_type': update_data.get('property_type', current_data.property_type)
+                }
+                
+                # Recalculate lead score
+                new_lead_score = self._calculate_lead_score(updated_data)
+                
+                # Update contact
+                conn.execute(text("""
+                    UPDATE leads 
+                    SET name = :name, email = :email, phone = :phone, 
+                        budget_min = :budget_min, budget_max = :budget_max,
+                        preferred_areas = :preferred_areas, property_type = :property_type,
+                        lead_score = :lead_score, updated_at = NOW()
+                    WHERE id = :contact_id
+                """), {
+                    'contact_id': contact_id,
+                    'name': updated_data['name'],
+                    'email': updated_data['email'],
+                    'phone': updated_data['phone'],
+                    'budget_min': updated_data['budget_min'],
+                    'budget_max': updated_data['budget_max'],
+                    'preferred_areas': json.dumps(updated_data['preferred_areas']),
+                    'property_type': updated_data['property_type'],
+                    'lead_score': new_lead_score
+                })
+                
+                conn.commit()
+                
+                return {
+                    "success": True,
+                    "contact_id": contact_id,
+                    "new_lead_score": new_lead_score,
+                    "message": "Contact updated successfully"
+                }
+                
+        except Exception as e:
+            logger.error(f"Error updating contact: {e}")
+            return {"error": f"Failed to update contact: {str(e)}"}
+    
+    def get_contact_details(self, contact_id: int) -> Dict[str, Any]:
+        """Get comprehensive contact details with interaction history"""
+        try:
+            with engine.connect() as conn:
+                # Get contact details
+                contact_result = conn.execute(text("""
+                    SELECT id, name, email, phone, status, budget_min, budget_max, 
+                           preferred_areas, property_type, lead_score, nurture_status,
+                           last_contacted_at, next_follow_up_at, notes, created_at
+                    FROM leads WHERE id = :contact_id
+                """), {'contact_id': contact_id})
+                
+                contact_row = contact_result.fetchone()
+                if not contact_row:
+                    return {"error": "Contact not found"}
+                
+                # Get interaction history
+                history_result = conn.execute(text("""
+                    SELECT id, interaction_type, content, created_at, scheduled_for
+                    FROM lead_history 
+                    WHERE lead_id = :contact_id 
+                    ORDER BY created_at DESC 
+                    LIMIT 10
+                """), {'contact_id': contact_id})
+                
+                interactions = []
+                for row in history_result.fetchall():
+                    interactions.append({
+                        "id": row.id,
+                        "interaction_type": row.interaction_type,
+                        "content": row.content,
+                        "created_at": row.created_at.isoformat() if row.created_at else None,
+                        "scheduled_for": row.scheduled_for.isoformat() if row.scheduled_for else None
+                    })
+                
+                return {
+                    "contact_id": contact_row.id,
+                    "name": contact_row.name,
+                    "email": contact_row.email,
+                    "phone": contact_row.phone,
+                    "status": contact_row.status,
+                    "budget_min": float(contact_row.budget_min) if contact_row.budget_min else None,
+                    "budget_max": float(contact_row.budget_max) if contact_row.budget_max else None,
+                    "preferred_areas": json.loads(contact_row.preferred_areas) if contact_row.preferred_areas else [],
+                    "property_type": contact_row.property_type,
+                    "lead_score": float(contact_row.lead_score) if contact_row.lead_score else 0,
+                    "nurture_status": contact_row.nurture_status,
+                    "last_contacted_at": contact_row.last_contacted_at.isoformat() if contact_row.last_contacted_at else None,
+                    "next_follow_up_at": contact_row.next_follow_up_at.isoformat() if contact_row.next_follow_up_at else None,
+                    "notes": contact_row.notes,
+                    "created_at": contact_row.created_at.isoformat() if contact_row.created_at else None,
+                    "interactions": interactions
+                }
+                
+        except Exception as e:
+            logger.error(f"Error getting contact details: {e}")
+            return {"error": f"Failed to get contact details: {str(e)}"}
+    
+    def schedule_follow_up_enhanced(self, contact_id: int, follow_up_data: Dict[str, Any]) -> Dict[str, Any]:
+        """Enhanced follow-up scheduling with multiple channels and AI suggestions"""
+        try:
+            with engine.connect() as conn:
+                # Get contact details for context
+                contact_details = self.get_contact_details(contact_id)
+                if "error" in contact_details:
+                    return contact_details
+                
+                # Generate AI-powered follow-up suggestions
+                ai_suggestions = self._generate_follow_up_suggestions(contact_details, follow_up_data)
+                
+                # Schedule follow-up
+                follow_up_date = follow_up_data.get('scheduled_date')
+                channel = follow_up_data.get('channel', 'email')
+                message = follow_up_data.get('message', '')
+                
+                # Add to lead history
+                conn.execute(text("""
+                    INSERT INTO lead_history 
+                    (lead_id, agent_id, interaction_type, content, scheduled_for, created_at)
+                    VALUES (:lead_id, :agent_id, :interaction_type, :content, :scheduled_for, NOW())
+                """), {
+                    'lead_id': contact_id,
+                    'agent_id': follow_up_data.get('agent_id', 1),
+                    'interaction_type': f'follow_up_{channel}',
+                    'content': message,
+                    'scheduled_for': follow_up_date
+                })
+                
+                # Update lead's next follow-up date
+                conn.execute(text("""
+                    UPDATE leads 
+                    SET next_follow_up_at = :follow_up_date, 
+                        updated_at = NOW()
+                    WHERE id = :contact_id
+                """), {
+                    'follow_up_date': follow_up_date,
+                    'contact_id': contact_id
+                })
+                
+                conn.commit()
+                
+                return {
+                    "success": True,
+                    "contact_id": contact_id,
+                    "scheduled_date": follow_up_date.isoformat() if follow_up_date else None,
+                    "channel": channel,
+                    "ai_suggestions": ai_suggestions,
+                    "message": f"Follow-up scheduled for {follow_up_date.strftime('%B %d, %Y at %I:%M %p') if follow_up_date else 'TBD'}"
+                }
+                
+        except Exception as e:
+            logger.error(f"Error scheduling enhanced follow-up: {e}")
+            return {"error": f"Failed to schedule follow-up: {str(e)}"}
+    
+    def _calculate_lead_score(self, contact_data: Dict[str, Any]) -> float:
+        """Calculate lead score based on contact data"""
+        score = 0.0
+        
+        # Budget scoring (0-40 points)
+        budget_min = contact_data.get('budget_min', 0)
+        budget_max = contact_data.get('budget_max', 0)
+        if budget_max > 0:
+            if budget_max >= 5000000:  # 5M+ AED
+                score += 40
+            elif budget_max >= 3000000:  # 3M+ AED
+                score += 30
+            elif budget_max >= 1000000:  # 1M+ AED
+                score += 20
+            elif budget_max >= 500000:  # 500K+ AED
+                score += 10
+        
+        # Property type scoring (0-20 points)
+        property_type = contact_data.get('property_type', '').lower()
+        if 'villa' in property_type or 'penthouse' in property_type:
+            score += 20
+        elif 'apartment' in property_type:
+            score += 15
+        elif 'townhouse' in property_type:
+            score += 10
+        
+        # Preferred areas scoring (0-20 points)
+        preferred_areas = contact_data.get('preferred_areas', [])
+        premium_areas = ['downtown dubai', 'palm jumeirah', 'dubai marina', 'business bay']
+        if any(area.lower() in premium_areas for area in preferred_areas):
+            score += 20
+        elif len(preferred_areas) > 0:
+            score += 10
+        
+        # Contact completeness (0-20 points)
+        if contact_data.get('email') and contact_data.get('phone'):
+            score += 20
+        elif contact_data.get('email') or contact_data.get('phone'):
+            score += 10
+        
+        return min(score, 100.0)  # Cap at 100
+    
+    def _generate_follow_up_suggestions(self, contact_details: Dict[str, Any], follow_up_data: Dict[str, Any]) -> Dict[str, Any]:
+        """Generate AI-powered follow-up suggestions"""
+        if not self.ai_model:
+            return {"suggestions": ["Consider reaching out to maintain engagement"]}
+        
+        try:
+            prompt = f"""
+            Generate personalized follow-up suggestions for a real estate lead.
+            
+            **Contact Details:**
+            - Name: {contact_details.get('name', 'Unknown')}
+            - Budget: AED {contact_details.get('budget_min', 0):,.0f} - {contact_details.get('budget_max', 0):,.0f}
+            - Property Type: {contact_details.get('property_type', 'Unknown')}
+            - Preferred Areas: {', '.join(contact_details.get('preferred_areas', []))}
+            - Lead Score: {contact_details.get('lead_score', 0)}
+            - Last Contacted: {contact_details.get('last_contacted_at', 'Never')}
+            
+            **Follow-up Context:**
+            - Channel: {follow_up_data.get('channel', 'email')}
+            - Scheduled Date: {follow_up_data.get('scheduled_date', 'TBD')}
+            
+            Provide 3-5 specific, actionable follow-up suggestions including:
+            1. Personalized message content
+            2. Best time to contact
+            3. Recommended next steps
+            4. Property suggestions if applicable
+            5. Follow-up frequency recommendations
+            
+            Format as JSON with keys: message_suggestions, timing_recommendations, next_steps, property_suggestions, follow_up_frequency
+            """
+            
+            response = self.ai_model.generate_content(prompt)
+            # Parse AI response and return structured suggestions
+            return {
+                "ai_generated": True,
+                "suggestions": response.text,
+                "generated_at": datetime.now().isoformat()
+            }
+            
+        except Exception as e:
+            logger.error(f"Error generating AI follow-up suggestions: {e}")
+            return {
+                "ai_generated": False,
+                "suggestions": [
+                    "Send personalized email with new property listings",
+                    "Schedule a call to discuss requirements",
+                    "Share market insights for their preferred areas"
+                ]
+            }
 

@@ -27,7 +27,6 @@ import json
 import google.generativeai as genai
 import chromadb
 from sqlalchemy import create_engine, Column, Integer, String, Numeric, Text, text
-from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 import uuid
 from datetime import datetime
@@ -48,6 +47,7 @@ from action_engine import ActionEngine
 
 # Import chat sessions router
 from chat_sessions_router import router as chat_sessions_router, root_router as chat_root_router
+
 
 # Import all models to ensure SQLAlchemy can discover them
 try:
@@ -99,6 +99,12 @@ try:
 except Exception as e:
     print(f"⚠️ Documents router not loaded: {e}")
     documents_router = None
+
+# Real Estate Core Features are now integrated into existing modules
+# - Enhanced action_engine.py for contact management and follow-ups
+# - Enhanced ai_manager.py for AI-powered content generation
+# - Enhanced property_management.py for AI-powered listing management
+# - Enhanced task_manager.py for real estate-specific task management
 
 try:
     from nurturing_router import router as nurturing_router
@@ -202,6 +208,24 @@ from config.settings import (
     validate_settings, IS_PRODUCTION
 )
 
+# Import MCP configuration
+try:
+    from mcp_config import create_mcp_server, mount_mcp_server, get_mcp_tools_info
+    print("✅ MCP configuration loaded successfully")
+    MCP_AVAILABLE = True
+except ImportError as e:
+    print(f"⚠️ MCP configuration not available: {e}")
+    MCP_AVAILABLE = False
+
+# Import Voice MCP configuration
+try:
+    from voice_mcp_config import create_voice_mcp_server, mount_voice_mcp_server, get_voice_mcp_tools_info
+    print("✅ Voice MCP configuration loaded successfully")
+    VOICE_MCP_AVAILABLE = True
+except ImportError as e:
+    print(f"⚠️ Voice MCP configuration not available: {e}")
+    VOICE_MCP_AVAILABLE = False
+
 # Validate settings
 if not validate_settings():
     print("❌ Critical settings validation failed")
@@ -229,6 +253,12 @@ app.add_middleware(
 # Include routers
 app.include_router(auth_router)
 app.include_router(property_router)
+try:
+    from routers.meta_router import router as meta_router
+    app.include_router(meta_router)
+    print("✅ Meta router (health/root) included successfully")
+except Exception as e:
+    print(f"⚠️ Meta router not included: {e}")
 app.include_router(secure_sessions_router)  # SECURE SESSIONS
 app.include_router(chat_sessions_router)  # CHAT SESSIONS
 app.include_router(chat_root_router)  # ROOT CHAT ENDPOINTS
@@ -325,17 +355,70 @@ try:
     print("✅ Database enhancement router loaded successfully")
 except ImportError as e:
     print(f"⚠️ Database enhancement router not available: {e}")
-    print("✅ ML WebSocket router included successfully")
-else:
-    print("⚠️ ML Insights router not included")
+
+# Import voice processing router
+try:
+    from routers.voice_processing_router import router as voice_processing_router
+    app.include_router(voice_processing_router)  # VOICE PROCESSING ENDPOINTS
+    print("✅ Voice processing router loaded successfully")
+except ImportError as e:
+    print(f"⚠️ Voice processing router not available: {e}")
+    voice_processing_router = None
+
+# Real Estate Core Features are now integrated into existing routers
+# No separate router needed - features are available through:
+# - /properties/* endpoints for AI-powered listing management
+# - /leads/* endpoints for enhanced contact management
+# - /ai/* endpoints for content generation and analysis
 
 # Include admin routes
 include_rag_monitoring_routes(app)
 
+# Initialize MCP Server (Model Context Protocol)
+mcp_server = None
+if MCP_AVAILABLE:
+    try:
+        mcp_server = create_mcp_server(app)
+        mount_mcp_server(mcp_server)
+        print("✅ MCP server initialized and mounted successfully")
+        print(f"🌐 MCP server available at: http://localhost:8003/mcp")
+        
+        # Log MCP tools information
+        mcp_info = get_mcp_tools_info()
+        print(f"📋 MCP Server: {mcp_info['server_name']}")
+        print(f"📋 Available MCP tools: {mcp_info['total_included_operations']} operations")
+        print(f"📋 Included tags: {', '.join(mcp_info['included_tags'])}")
+        
+    except Exception as e:
+        print(f"❌ Failed to initialize MCP server: {e}")
+        mcp_server = None
+else:
+    print("⚠️ MCP server not initialized - fastapi-mcp not available")
+
+# Initialize Voice MCP Server
+voice_mcp_server = None
+if VOICE_MCP_AVAILABLE:
+    try:
+        voice_mcp_server = create_voice_mcp_server(app)
+        mount_voice_mcp_server(voice_mcp_server)
+        print("✅ Voice MCP server initialized and mounted successfully")
+        print(f"🎤 Voice MCP server available at: http://localhost:8004/voice-mcp")
+        
+        # Log Voice MCP tools information
+        voice_mcp_info = get_voice_mcp_tools_info()
+        print(f"🎤 Voice MCP Server: {voice_mcp_info['server_name']}")
+        print(f"🎤 Available Voice MCP tools: {voice_mcp_info['total_voice_operations']} operations")
+        print(f"🎤 Voice included tags: {', '.join(voice_mcp_info['included_tags'])}")
+        
+    except Exception as e:
+        print(f"❌ Failed to initialize Voice MCP server: {e}")
+        voice_mcp_server = None
+else:
+    print("⚠️ Voice MCP server not initialized - fastapi-mcp not available")
+
 # Database setup
 engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-Base = declarative_base()
 
 # Initialize authentication database
 try:
@@ -376,30 +459,7 @@ except Exception as e:
 
 # Processing services moved to file_processing_router.py
 
-# Database models - Fixed to match our actual database schema
-class Property(Base):
-    __tablename__ = "properties"
-    
-    id = Column(Integer, primary_key=True, index=True)
-    address = Column(String(255), nullable=False, index=True)
-    price = Column(Numeric(12, 2))
-    bedrooms = Column(Integer)
-    bathrooms = Column(Numeric(3, 1))
-    square_feet = Column(Integer)
-    property_type = Column(String(100))
-    description = Column(Text)
-
-class Client(Base):
-    __tablename__ = "clients"
-    
-    id = Column(Integer, primary_key=True, index=True)
-    name = Column(String(255), nullable=False, index=True)
-    email = Column(String(255))
-    phone = Column(String(50))
-    budget_min = Column(Numeric(12, 2))
-    budget_max = Column(Numeric(12, 2))
-    preferred_location = Column(String(255))
-    requirements = Column(Text)
+# Inline ORM models removed. Use models from backend/models/* (shared Base) instead.
 
 # Initialize Improved RAG Service lazily
 rag_service = None
@@ -430,27 +490,7 @@ class FileUploadResponse(BaseModel):
     file_type: str
     file_size: int
 
-# Health check endpoint
-@app.get("/health")
-async def health_check():
-    """Health check endpoint for Docker"""
-    return {
-        "status": "healthy",
-        "timestamp": datetime.now().isoformat(),
-        "version": "2.0.0",
-        "blueprint_2_enabled": True
-    }
-
-# Root endpoint
-@app.get("/")
-async def root():
-    """Root endpoint"""
-    return {
-        "message": "Dubai Real Estate RAG Chat System API",
-        "version": "1.2.0",
-        "status": "running",
-        "docs": "/docs"
-    }
+# Meta (root/health) endpoints moved to routers/meta_router.py
 
 # Chat endpoint moved to chat_sessions_router.py
 
@@ -672,6 +712,56 @@ async def get_user_agenda(current_user: User = Depends(get_current_user)):
     except Exception as e:
         print(f"Error getting user agenda: {e}")
         raise HTTPException(status_code=500, detail="Error retrieving agenda")
+
+# MCP Server Information Endpoint
+@app.get("/mcp/info", tags=["mcp"])
+async def get_mcp_info():
+    """Get information about the MCP server and available tools"""
+    if not MCP_AVAILABLE or not mcp_server:
+        return {
+            "status": "unavailable",
+            "message": "MCP server is not available",
+            "reason": "fastapi-mcp not installed or failed to initialize"
+        }
+    
+    try:
+        mcp_info = get_mcp_tools_info()
+        return {
+            "status": "available",
+            "server_name": mcp_info["server_name"],
+            "base_url": mcp_info["base_url"],
+            "mount_path": mcp_info["mount_path"],
+            "mcp_endpoint": f"{mcp_info['base_url']}{mcp_info['mount_path']}",
+            "included_tags": mcp_info["included_tags"],
+            "excluded_tags": mcp_info["excluded_tags"],
+            "included_operations": mcp_info["included_operations"],
+            "total_tools": mcp_info["total_included_operations"],
+            "description": "Laura AI Real Estate Assistant MCP Server - Exposes real estate tools for AI model interaction"
+        }
+    except Exception as e:
+        return {
+            "status": "error",
+            "message": f"Error retrieving MCP information: {str(e)}"
+        }
+
+# MCP Server Health Check
+@app.get("/mcp/health", tags=["mcp"])
+async def mcp_health_check():
+    """Health check for MCP server"""
+    if not MCP_AVAILABLE or not mcp_server:
+        return {
+            "status": "unhealthy",
+            "mcp_available": False,
+            "message": "MCP server not available"
+        }
+    
+    return {
+        "status": "healthy",
+        "mcp_available": True,
+        "server_name": "Laura AI Real Estate MCP Server",
+        "endpoint": "http://localhost:8003/mcp",
+        "timestamp": datetime.now().isoformat()
+    }
 
 # Simple WebSocket endpoint for notifications
 @app.websocket("/ws/notifications/{user_id}")

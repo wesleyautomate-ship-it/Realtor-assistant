@@ -1015,7 +1015,7 @@ async def get_conversation_history(session_id: str):
         raise HTTPException(status_code=500, detail=str(e))
 
 # Root level chat endpoint (for frontend compatibility)
-@root_router.post("/chat", response_model=ChatResponse)
+@root_router.post("/chat", response_model=ChatResponse, operation_id="process_chat_message")
 async def chat_with_rag(
     request: ChatRequest,
     current_user: User = Depends(get_current_user)

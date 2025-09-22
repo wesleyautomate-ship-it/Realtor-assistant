@@ -139,7 +139,7 @@ async def get_market_trends():
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to fetch market trends: {str(e)}")
 
-@root_router.get("/properties")
+@root_router.get("/properties", operation_id="search_properties")
 async def get_properties():
     """Get all properties from the database"""
     try:
