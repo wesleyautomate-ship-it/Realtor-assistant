@@ -1,13 +1,13 @@
 """
-Dubai Real Estate RAG Chat System - Backend API (CLEAN ARCHITECTURE VERSION)
+PropertyPro AI - Backend API (Clean Architecture)
 
-This FastAPI application provides a comprehensive backend for the Dubai Real Estate
-RAG (Retrieval-Augmented Generation) chat system with clean architecture principles.
+This FastAPI application provides the single canonical backend for PropertyPro AI,
+an intelligent real estate assistant designed for a mobile-first experience.
 
 📚 API Documentation:
-- Interactive API docs: http://localhost:8001/docs
-- ReDoc documentation: http://localhost:8001/redoc
-- OpenAPI schema: http://localhost:8001/openapi.json
+- Interactive API docs: http://localhost:8000/docs
+- ReDoc documentation:    http://localhost:8000/redoc
+- OpenAPI schema:         http://localhost:8000/openapi.json
 
 🔐 Security Features:
 - User authentication with JWT tokens
@@ -150,6 +150,20 @@ except ImportError as e:
     documents_router = None
 
 try:
+    from app.api.v1.health_router import router as health_v1_router
+    print("✅ Health v1 router loaded")
+except ImportError as e:
+    print(f"⚠️ Health v1 router not loaded: {e}")
+    health_v1_router = None
+
+try:
+    from app.api.v1.auth_router import router as auth_v1_router
+    print("✅ Auth v1 router loaded")
+except ImportError as e:
+    print(f"⚠️ Auth v1 router not loaded: {e}")
+    auth_v1_router = None
+
+try:
     from app.api.v1.nurturing_router import router as nurturing_router
     print("✅ Nurturing router loaded")
 except ImportError as e:
@@ -247,11 +261,11 @@ except ImportError as e:
 # Get settings
 settings = get_settings()
 
-# Create FastAPI app
+# Create FastAPI app (single canonical API)
 app = FastAPI(
-    title="Dubai Real Estate RAG Chat System",
-    description="AI-powered real estate assistant with clean architecture",
-    version="2.0.0",
+    title="PropertyPro AI",
+    description="Mobile-first intelligent real estate assistant (Clean Architecture)",
+    version="1.0.0",
     docs_url="/docs",
     redoc_url="/redoc"
 )
@@ -324,6 +338,14 @@ if documents_router:
     app.include_router(documents_router, prefix="/api/documents", tags=["Documents"])
     print("✅ Documents router included")
 
+if health_v1_router:
+    app.include_router(health_v1_router, prefix="/api/v1", tags=["Health"]) 
+    print("✅ Health v1 router included at /api/v1/health")
+
+if auth_v1_router:
+    app.include_router(auth_v1_router, prefix="/api/v1", tags=["Authentication"])
+    print("✅ Auth v1 router included at /api/v1/auth")
+
 if nurturing_router:
     app.include_router(nurturing_router, prefix="/api/nurturing", tags=["Nurturing"])
     print("✅ Nurturing router included")
@@ -384,7 +406,8 @@ async def health_check():
     return {
         "status": "healthy",
         "timestamp": datetime.now().isoformat(),
-        "version": "2.0.0",
+        "version": "1.0.0",
+        "service": "PropertyPro AI Backend",
         "architecture": "clean"
     }
 
@@ -393,12 +416,12 @@ async def health_check():
 async def root():
     """Root endpoint"""
     return {
-        "message": "Dubai Real Estate RAG Chat System - Clean Architecture",
-        "version": "2.0.0",
+        "message": "PropertyPro AI - Mobile-first intelligent real estate assistant",
+        "version": "1.0.0",
         "docs": "/docs",
         "health": "/health"
     }
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8001)
+    uvicorn.run(app, host="0.0.0.0", port=8000)

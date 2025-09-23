@@ -304,6 +304,11 @@ seed: ## Seed database with sample data
 	docker-compose exec api python -c "from app.infrastructure.integrations.populate_postgresql import seed_database; seed_database()"
 	@echo "✅ Database seeded with sample data"
 
+seed-properties: ## Seed demo properties (dev-only)
+	@echo "🌱 Seeding demo properties (dev-only)..."
+	docker-compose exec api python -m app.infrastructure.db.seed_properties
+	@echo "✅ Demo properties seeded"
+
 # =============================================================================
 # QUICK COMMANDS
 # =============================================================================

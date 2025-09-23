@@ -3,17 +3,15 @@ from sqlalchemy import create_engine, text
 from typing import List, Optional, Dict, Any
 from pydantic import BaseModel
 import os
-from env_loader import load_env
 from sqlalchemy.orm import Session
-from auth.middleware import get_current_user
-from auth.database import get_db
+from app.core.middleware import get_current_user
+from app.core.database import get_db
+from app.core.settings import DATABASE_URL as SETTINGS_DATABASE_URL
 
-load_env()
-
-router = APIRouter(prefix="/properties", tags=["properties"])
+router = APIRouter(prefix="", tags=["properties"])
 
 # Database connection
-database_url = os.getenv('DATABASE_URL', 'postgresql://postgres:password@localhost:5432/real_estate')
+database_url = SETTINGS_DATABASE_URL
 engine = create_engine(database_url)
 
 class PropertySearchRequest(BaseModel):

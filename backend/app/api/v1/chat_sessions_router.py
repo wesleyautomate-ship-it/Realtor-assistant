@@ -428,12 +428,11 @@ def get_ai_manager():
     """Get AI manager instance"""
     try:
         from ai_manager import AIEnhancementManager
-        from app.core.settings import GOOGLE_API_KEY, AI_MODEL
-        import google.generativeai as genai
-        
-        genai.configure(api_key=GOOGLE_API_KEY)
-        model = genai.GenerativeModel(AI_MODEL)
-        return AIEnhancementManager(DATABASE_URL, model)
+        # Use provider abstraction to support OpenAI or Gemini based on env
+        from ai_provider import get_ai_provider
+
+        provider = get_ai_provider()
+        return AIEnhancementManager(DATABASE_URL, provider)
     except Exception as e:
         print(f"Error initializing AI manager: {e}")
         return None

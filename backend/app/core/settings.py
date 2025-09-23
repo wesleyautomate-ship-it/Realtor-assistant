@@ -26,8 +26,9 @@ CHROMA_PORT = int(os.getenv("CHROMA_PORT", "8002"))
 # Google AI Configuration
 GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
 if not GOOGLE_API_KEY:
-    GOOGLE_API_KEY = "AIzaSyAocEBBwmq_eZ1Dy5RT9S7Kkfyw8nNibmM"
-    print("⚠️  Using fallback API key - set GOOGLE_API_KEY in .env for production")
+    # Do not provide any fallback key. In development we warn; in production
+    # validation should fail fast via validate_settings().
+    print("⚠️  GOOGLE_API_KEY not set. Some AI features will be disabled until configured.")
 
 # Reelly API removed
 
@@ -36,7 +37,7 @@ AI_MODEL = os.getenv("AI_MODEL", "gemini-1.5-flash")
 
 # Server Configuration
 HOST = os.getenv("HOST", "0.0.0.0")
-PORT = int(os.getenv("PORT", "8001"))
+PORT = int(os.getenv("PORT", "8000"))
 DEBUG = os.getenv("DEBUG", "False").lower() == "true"
 
 # CORS Configuration

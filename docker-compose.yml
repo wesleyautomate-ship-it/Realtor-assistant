@@ -1,13 +1,12 @@
-# Dubai Real Estate RAG Chat System - Enterprise Docker Compose
-# Production-ready multi-service deployment
-
-version: '3.8'
+# PropertyPro AI - Docker Compose
+# Production-ready multi-service deployment for the canonical backend
 
 services:
   # PostgreSQL Database
   db:
     image: postgres:15-alpine
-    container_name: real_estate_db
+    container_name: propertypro_db
+
     environment:
       POSTGRES_DB: ${POSTGRES_DB:-real_estate_db}
       POSTGRES_USER: ${POSTGRES_USER:-admin}
@@ -19,7 +18,8 @@ services:
       - postgres_data:/var/lib/postgresql/data
       - ./backend/app/infrastructure/db/migrations:/docker-entrypoint-initdb.d:ro
     networks:
-      - rag-network
+      - propertypro-network
+
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-admin} -d ${POSTGRES_DB:-real_estate_db}"]
       interval: 10s
@@ -31,14 +31,13 @@ services:
   # Redis Cache & Message Broker
   redis:
     image: redis:7-alpine
-    container_name: real_estate_redis
+    container_name: propertypro_redis
+
     command: redis-server --appendonly yes --requirepass ${REDIS_PASSWORD:-redis123}
-    ports:
-      - "${REDIS_PORT:-6379}:6379"
     volumes:
       - redis_data:/data
     networks:
-      - rag-network
+      - propertypro-network
     healthcheck:
       test: ["CMD", "redis-cli", "--raw", "incr", "ping"]
       interval: 10s
@@ -50,13 +49,14 @@ services:
   # ChromaDB Vector Database
   chromadb:
     image: chromadb/chroma:latest
-    container_name: real_estate_chromadb
+    container_name: propertypro_chromadb
+
     ports:
       - "${CHROMA_PORT:-8002}:8000"
     volumes:
       - chroma_data:/chroma/chroma
     networks:
-      - rag-network
+      - propertypro-network
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/api/v1/heartbeat"]
       interval: 30s
@@ -65,33 +65,34 @@ services:
       start_period: 40s
     restart: unless-stopped
 
-  # FastAPI Backend API
+  # FastAPI Backend API (single canonical app: app/main.py)
   api:
+
     build:
       context: ./backend
       dockerfile: Dockerfile
       target: production
-    container_name: real_estate_api
+    container_name: propertypro_api
+
     ports:
       - "${API_PORT:-8000}:8000"
     environment:
       # Database
       - DATABASE_URL=postgresql://${POSTGRES_USER:-admin}:${POSTGRES_PASSWORD:-password123}@db:5432/${POSTGRES_DB:-real_estate_db}
-      
+
       # Redis
       - REDIS_URL=redis://:${REDIS_PASSWORD:-redis123}@redis:6379/0
       - REDIS_HOST=redis
       - REDIS_PORT=6379
-      
+
       # ChromaDB
       - CHROMA_HOST=chromadb
       - CHROMA_PORT=8000
-      
+
       # AI Services
-      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
       - OPENAI_API_KEY=${OPENAI_API_KEY}
-      - AI_MODEL=${AI_MODEL:-gemini-1.5-flash}
-      
+      - OPENAI_MODEL=${OPENAI_MODEL:-gpt-4o-mini}
+
       # Security
       - SECRET_KEY=${SECRET_KEY}
       - JWT_SECRET=${JWT_SECRET}
@@ -99,30 +100,30 @@ services:
       - ACCESS_TOKEN_EXPIRE_MINUTES=${ACCESS_TOKEN_EXPIRE_MINUTES:-30}
       - JWT_REFRESH_TOKEN_EXPIRE_DAYS=${JWT_REFRESH_TOKEN_EXPIRE_DAYS:-7}
       - BCRYPT_ROUNDS=${BCRYPT_ROUNDS:-12}
-      
+
       # Server Configuration
       - HOST=0.0.0.0
       - PORT=8000
       - DEBUG=${DEBUG:-false}
       - ENVIRONMENT=${ENVIRONMENT:-production}
-      
+
       # Performance
       - MAX_WORKERS=${MAX_WORKERS:-4}
       - BATCH_SIZE=${BATCH_SIZE:-50}
       - CACHE_TTL=${CACHE_TTL:-3600}
-      
+
       # Rate Limiting
       - RATE_LIMIT_REQUESTS_PER_MINUTE=${RATE_LIMIT_REQUESTS_PER_MINUTE:-60}
       - RATE_LIMIT_LOGIN_ATTEMPTS=${RATE_LIMIT_LOGIN_ATTEMPTS:-5}
-      
+
       # File Upload
       - MAX_FILE_SIZE=${MAX_FILE_SIZE:-10485760}
-      
+
       # Features
       - ENABLE_BLUEPRINT_2=${ENABLE_BLUEPRINT_2:-true}
       - NURTURING_SCHEDULER_ENABLED=${NURTURING_SCHEDULER_ENABLED:-true}
       - DOCUMENT_GENERATION_ENABLED=${DOCUMENT_GENERATION_ENABLED:-true}
-      
+
       # Logging
       - LOG_LEVEL=${LOG_LEVEL:-INFO}
     depends_on:
@@ -136,7 +137,7 @@ services:
       - backend_logs:/app/logs
       - backend_uploads:/app/uploads
     networks:
-      - rag-network
+      - propertypro-network
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
@@ -151,7 +152,8 @@ services:
       context: ./backend
       dockerfile: Dockerfile
       target: production
-    container_name: real_estate_worker
+    container_name: propertypro_worker
+
     command: celery -A app.infrastructure.queue.celery_app worker --loglevel=info --concurrency=2
     environment:
       # Same environment as API
@@ -161,9 +163,8 @@ services:
       - REDIS_PORT=6379
       - CHROMA_HOST=chromadb
       - CHROMA_PORT=8000
-      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
       - OPENAI_API_KEY=${OPENAI_API_KEY}
-      - AI_MODEL=${AI_MODEL:-gemini-1.5-flash}
+      - OPENAI_MODEL=${OPENAI_MODEL:-gpt-4o-mini}
       - SECRET_KEY=${SECRET_KEY}
       - JWT_SECRET=${JWT_SECRET}
       - DEBUG=${DEBUG:-false}
@@ -180,7 +181,7 @@ services:
       - backend_logs:/app/logs
       - backend_uploads:/app/uploads
     networks:
-      - rag-network
+      - propertypro-network
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "celery", "-A", "app.infrastructure.queue.celery_app", "inspect", "ping"]
@@ -195,7 +196,8 @@ services:
       context: ./backend
       dockerfile: Dockerfile
       target: production
-    container_name: real_estate_scheduler
+    container_name: propertypro_scheduler
+
     command: celery -A app.infrastructure.queue.celery_app beat --loglevel=info
     environment:
       # Same environment as API
@@ -205,7 +207,6 @@ services:
       - REDIS_PORT=6379
       - CHROMA_HOST=chromadb
       - CHROMA_PORT=8000
-      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
       - OPENAI_API_KEY=${OPENAI_API_KEY}
       - SECRET_KEY=${SECRET_KEY}
       - JWT_SECRET=${JWT_SECRET}
@@ -220,28 +221,22 @@ services:
     volumes:
       - backend_logs:/app/logs
     networks:
-      - rag-network
+      - propertypro-network
     restart: unless-stopped
 
-  # React Frontend (Optional - for full stack deployment)
+  # Web Frontend (built and served entirely in Docker via Nginx)
   frontend:
     build:
-      context: ./frontend
+      context: "./frontend mockup"
       dockerfile: Dockerfile
-    container_name: real_estate_frontend
-    ports:
-      - "${FRONTEND_PORT:-3000}:3000"
-    environment:
-      - REACT_APP_API_URL=http://localhost:${API_PORT:-8000}
-      - REACT_APP_ENVIRONMENT=${ENVIRONMENT:-production}
+    container_name: propertypro_frontend
     depends_on:
       api:
         condition: service_healthy
-    volumes:
-      - ./frontend:/app
-      - /app/node_modules
+    ports:
+      - "${FRONTEND_PORT:-3000}:80"
     networks:
-      - rag-network
+      - propertypro-network
     restart: unless-stopped
     profiles:
       - frontend
@@ -249,7 +244,8 @@ services:
   # Nginx Reverse Proxy (Optional - for production)
   nginx:
     image: nginx:alpine
-    container_name: real_estate_nginx
+    container_name: propertypro_nginx
+
     ports:
       - "${NGINX_PORT:-80}:80"
       - "${NGINX_SSL_PORT:-443}:443"
@@ -260,10 +256,32 @@ services:
       - api
       - frontend
     networks:
-      - rag-network
+      - propertypro-network
     restart: unless-stopped
     profiles:
       - production
+
+  # End-to-end tests (runs Playwright inside Docker, targets the frontend)
+  e2e:
+    image: mcr.microsoft.com/playwright:v1.47.2-jammy
+    container_name: propertypro_e2e
+    working_dir: /app
+    depends_on:
+      frontend:
+        condition: service_started
+    networks:
+      - propertypro-network
+    volumes:
+      - "./frontend mockup:/app"
+    environment:
+      - CI=1
+      - HOME=/tmp
+    entrypoint: ["bash","-lc"]
+    command: >-
+      "npm ci || npm install && npx playwright install --with-deps &&
+      npx playwright test --config=playwright.docker.config.ts --reporter=line"
+    profiles:
+      - frontend
 
 # Named volumes for data persistence
 volumes:
@@ -280,8 +298,5 @@ volumes:
 
 # Custom network for service communication
 networks:
-  rag-network:
+  propertypro-network:
     driver: bridge
-    ipam:
-      config:
-        - subnet: 172.20.0.0/16

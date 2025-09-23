@@ -2,7 +2,7 @@
 Database connection and session management for authentication
 """
 
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker, Session
 from sqlalchemy.pool import StaticPool
 from contextlib import contextmanager
@@ -14,13 +14,22 @@ from app.core.settings import DATABASE_URL
 logger = logging.getLogger(__name__)
 
 # Create database engine with better connection management
-engine = create_engine(
-    DATABASE_URL,
-    poolclass=StaticPool,
-    pool_pre_ping=True,
-    pool_recycle=3600,  # Recycle connections every hour
-    echo=False  # Set to True for SQL debugging
-)
+# Use StaticPool only for SQLite (primarily tests). For Postgres and others,
+# fall back to default QueuePool.
+if DATABASE_URL.startswith("sqlite"):
+    engine = create_engine(
+        DATABASE_URL,
+        poolclass=StaticPool,
+        connect_args={"check_same_thread": False} if ":memory:" in DATABASE_URL or DATABASE_URL.startswith("sqlite:///") else {},
+        echo=False,
+    )
+else:
+    engine = create_engine(
+        DATABASE_URL,
+        pool_pre_ping=True,
+        pool_recycle=3600,  # Recycle connections every hour
+        echo=False  # Set to True for SQL debugging
+    )
 
 # Create session factory
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
@@ -85,7 +94,7 @@ def init_db():
 
 def init_default_data():
     """
-    Initialize default roles and permissions
+    Initialize default data
     """
     from .models import Role, Permission, User
     from .utils import hash_password
@@ -182,13 +191,13 @@ def init_default_data():
     finally:
         db.close()
 
-def check_db_connection():
+def check_db_connection() -> bool:
     """
     Check database connection
     """
     try:
         with get_db_context() as db:
-            db.execute("SELECT 1")
+            db.execute(text("SELECT 1"))
         return True
     except Exception as e:
         logger.error(f"Database connection failed: {e}")

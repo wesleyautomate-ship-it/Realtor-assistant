@@ -232,7 +232,6 @@ $RECYCLE.BIN/
 
 # Project specific
 uploads/
-data/
 backups/
 archive/
 ssl/

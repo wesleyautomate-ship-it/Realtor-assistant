@@ -1,20 +1,12 @@
 """
-Dubai Real Estate RAG Chat System - Backend API (SECURE VERSION)
+DEPRECATED ENTRYPOINT
+=====================
 
-This FastAPI application provides a comprehensive backend for the Dubai Real Estate
-RAG (Retrieval-Augmented Generation) chat system with proper user authentication
-and role-based access control.
+This file previously served as an alternative backend entrypoint. The project has
+now consolidated to a single canonical API at `backend/app/main.py` for PropertyPro AI.
 
-📚 API Documentation:
-- Interactive API docs: http://localhost:8001/docs
-- ReDoc documentation: http://localhost:8001/redoc
-- OpenAPI schema: http://localhost:8001/openapi.json
-
-🔐 Security Features:
-- User authentication with JWT tokens
-- Role-based access control (RBAC)
-- User data isolation
-- Secure session management
+Please use `app/main.py` as the authoritative application entrypoint. This file remains
+temporarily for backward compatibility, but will be removed in a future cleanup.
 """
 
 from fastapi import FastAPI, HTTPException, UploadFile, File, Form, Depends, WebSocket
