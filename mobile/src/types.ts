@@ -15,8 +15,8 @@ export interface AIContentResponse {
 }
 
 // Mobile UI Types (mirroring frontend mockup)
-export type View = 'dashboard' | 'tasks' | 'chat' | 'properties' | 'content' | 'analytics';
-export type ActionId = 'marketing' | 'social' | 'contacts' | 'playwright' | 'properties' | 'content' | 'analytics';
+export type View = 'dashboard' | 'tasks' | 'chat' | 'properties' | 'content' | 'analytics' | 'workflows';
+export type ActionId = 'workflows' | 'marketing' | 'social' | 'contacts' | 'playwright' | 'properties' | 'content' | 'analytics';
 
 export interface Task {
   id: string;

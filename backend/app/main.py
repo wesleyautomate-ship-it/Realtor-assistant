@@ -1,4 +1,4 @@
-"""
+﻿"""
 PropertyPro AI - Backend API (Clean Architecture)
 
 This FastAPI application provides the single canonical backend for PropertyPro AI,
@@ -248,6 +248,42 @@ except ImportError as e:
     print(f"⚠️ Admin knowledge router not loaded: {e}")
     admin_knowledge_router = None
 
+# Import AURA routers from clean architecture
+try:
+    from app.api.v1.marketing_automation_router import router as marketing_automation_router
+    print("✅ Marketing automation router loaded")
+except ImportError as e:
+    print(f"⚠️ Marketing automation router not loaded: {e}")
+    marketing_automation_router = None
+
+try:
+    from app.api.v1.cma_reports_router import router as cma_reports_router
+    print("✅ CMA reports router loaded")
+except ImportError as e:
+    print(f"⚠️ CMA reports router not loaded: {e}")
+    cma_reports_router = None
+
+try:
+    from app.api.v1.social_media_router import router as social_media_router
+    print("✅ Social media router loaded")
+except ImportError as e:
+    print(f"⚠️ Social media router not loaded: {e}")
+    social_media_router = None
+
+try:
+    from app.api.v1.analytics_router import router as analytics_router
+    print("✅ Analytics router loaded")
+except ImportError as e:
+    print(f"⚠️ Analytics router not loaded: {e}")
+    analytics_router = None
+
+try:
+    from app.api.v1.workflows_router import router as workflows_router
+    print("✅ Workflows router loaded")
+except ImportError as e:
+    print(f"⚠️ Workflows router not loaded: {e}")
+    workflows_router = None
+
 # Import models from clean architecture
 try:
     from app.domain.listings.brokerage_models import *
@@ -394,6 +430,27 @@ if admin_knowledge_router:
     app.include_router(admin_knowledge_router, prefix="/api/admin/knowledge", tags=["Admin Knowledge"])
     print("✅ Admin knowledge router included")
 
+# Include AURA routers
+if marketing_automation_router:
+    app.include_router(marketing_automation_router, tags=["AURA Marketing"])
+    print("✅ Marketing automation router included at /api/v1/marketing")
+
+if cma_reports_router:
+    app.include_router(cma_reports_router, tags=["AURA CMA"])
+    print("✅ CMA reports router included at /api/v1/cma")
+
+if social_media_router:
+    app.include_router(social_media_router, tags=["AURA Social"])
+    print("✅ Social media router included at /api/v1/social")
+
+if analytics_router:
+    app.include_router(analytics_router, tags=["AURA Analytics"])
+    print("✅ Analytics router included at /api/v1/analytics")
+
+if workflows_router:
+    app.include_router(workflows_router, tags=["AURA Workflows"])
+    print("✅ Workflows router included at /api/v1/workflows")
+
 # Include RAG monitoring routes
 if include_rag_monitoring_routes:
     include_rag_monitoring_routes(app)
@@ -425,3 +482,4 @@ async def root():
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)
+

@@ -26,19 +26,22 @@ role_permissions = Table(
     'role_permissions',
     Base.metadata,
     Column('role_id', Integer, ForeignKey('roles.id'), primary_key=True),
-    Column('permission_id', Integer, ForeignKey('permissions.id'), primary_key=True)
+    Column('permission_id', Integer, ForeignKey('permissions.id'), primary_key=True),
+    extend_existing=True
 )
 
 user_roles = Table(
     'user_roles',
     Base.metadata,
     Column('user_id', Integer, ForeignKey('users.id'), primary_key=True),
-    Column('role_id', Integer, ForeignKey('roles.id'), primary_key=True)
+    Column('role_id', Integer, ForeignKey('roles.id'), primary_key=True),
+    extend_existing=True
 )
 
 class User(Base):
     """User model for authentication and authorization"""
     __tablename__ = "users"
+    __table_args__ = {"extend_existing": True}
     
     id = Column(Integer, primary_key=True, index=True)
     email = Column(String(255), unique=True, nullable=False, index=True)
@@ -95,6 +98,7 @@ class User(Base):
 class UserSession(Base):
     """User session model for tracking active sessions"""
     __tablename__ = "user_sessions"
+    __table_args__ = {"extend_existing": True}
     
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
@@ -120,6 +124,7 @@ class UserSession(Base):
 class Permission(Base):
     """Permission model for fine-grained access control"""
     __tablename__ = "permissions"
+    __table_args__ = {"extend_existing": True}
     
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String(100), unique=True, nullable=False, index=True)
@@ -137,6 +142,7 @@ class Permission(Base):
 class Role(Base):
     """Role model for role-based access control"""
     __tablename__ = "roles"
+    __table_args__ = {"extend_existing": True}
     
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String(100), unique=True, nullable=False, index=True)
@@ -162,6 +168,7 @@ class Role(Base):
 class AuditLog(Base):
     """Audit log model for security event tracking"""
     __tablename__ = "audit_logs"
+    __table_args__ = {"extend_existing": True}
     
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey("users.id"), nullable=True)

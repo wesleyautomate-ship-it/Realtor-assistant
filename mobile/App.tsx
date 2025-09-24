@@ -8,6 +8,7 @@ import ChatScreen from './src/screens/ChatScreen';
 import AnalyticsScreen from './src/screens/AnalyticsScreen';
 import PropertiesScreen from './src/screens/PropertiesScreen';
 import ContentScreen from './src/screens/ContentScreen';
+import WorkflowsScreen from './src/screens/WorkflowsScreen';
 
 import BottomNav from './src/components/BottomNav';
 import CommandCenter from './src/components/CommandCenter';
@@ -21,6 +22,7 @@ export default function App() {
 
   const onActionClick = (id: ActionId) => {
     // Map action ids to top-level views where applicable
+    if (id === 'workflows') return setCurrentView('workflows');
     if (id === 'properties') return setCurrentView('properties');
     if (id === 'content') return setCurrentView('content');
     if (id === 'analytics') return setCurrentView('analytics');
@@ -48,6 +50,8 @@ export default function App() {
         return <ContentScreen />;
       case 'analytics':
         return <AnalyticsScreen />;
+      case 'workflows':
+        return <WorkflowsScreen onNavigate={setCurrentView} />;
       default:
         return <DashboardScreen onActionClick={onActionClick} onNavigate={setCurrentView} actions={ACTION_ITEMS} />;
     }

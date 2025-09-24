@@ -10,12 +10,10 @@ dist/
 downloads/
 eggs/
 .eggs/
+# Ignore generic lib directories but keep frontend/src/lib tracked
 lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
+!frontend/src/lib/
+!frontend/src/lib/**
 *.egg-info/
 .installed.cfg
 *.egg

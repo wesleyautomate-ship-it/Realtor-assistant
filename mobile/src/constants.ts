@@ -1,13 +1,14 @@
-import { ActionId, Task } from './types';
+﻿import { ActionId, Task } from './types';
 
 export const ACTION_ITEMS: { id: ActionId; title: string; icon?: string }[] = [
+  { id: 'workflows', title: 'AURA Workflows' },
   { id: 'marketing', title: 'Marketing' },
   { id: 'social', title: 'Social Media' },
-  { id: 'contacts', title: 'Contacts' },
-  { id: 'playwright', title: 'Playwright' },
+  { id: 'analytics', title: 'Analytics' },
   { id: 'properties', title: 'Properties' },
   { id: 'content', title: 'Content' },
-  { id: 'analytics', title: 'Analytics' },
+  { id: 'contacts', title: 'Contacts' },
+  { id: 'playwright', title: 'Playwright' },
 ];
 
 export const MOCK_TASKS: Task[] = [
@@ -48,3 +49,4 @@ export const MOCK_PROPERTIES = [
     image: undefined as string | undefined,
   },
 ];
+

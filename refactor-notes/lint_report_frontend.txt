@@ -1,0 +1,4 @@
+﻿=== Frontend Lint (npm run lint) ===
+Directory 'frontend/' not found; skipping lint.
+=== Frontend Type Check ===
+Directory 'frontend/' not found; skipping type-check.
