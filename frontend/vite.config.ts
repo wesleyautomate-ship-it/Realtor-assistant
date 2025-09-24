@@ -21,8 +21,9 @@ export default defineConfig(({ mode }) => {
           '@theme': path.resolve(__dirname, './src/theme'),
           '@assets': path.resolve(__dirname, './src/assets'),
           '@mock-data': path.resolve(__dirname, './src/mock-data'),
+          'react-native': 'react-native-web',
         },
-        extensions: ['.mobile.tsx', '.mobile.ts', '.tsx', '.ts', '.jsx', '.js']
+        extensions: ['.web.tsx', '.web.ts', '.mobile.tsx', '.mobile.ts', '.tsx', '.ts', '.jsx', '.js']
       },
       server: {
         host: '0.0.0.0',

@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
-import { ACTION_ITEMS } from '../constants';
+import { ACTION_ITEMS } from "../constants.tsx";
 
 interface Props {
   onClose: () => void;
