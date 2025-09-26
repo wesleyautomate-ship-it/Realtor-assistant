@@ -227,7 +227,7 @@ services:
   # Web Frontend (built and served entirely in Docker via Nginx)
   frontend:
     build:
-      context: "./frontend mockup"
+      context: "./frontend"
       dockerfile: Dockerfile
     container_name: propertypro_frontend
     depends_on:
@@ -272,7 +272,7 @@ services:
     networks:
       - propertypro-network
     volumes:
-      - "./frontend mockup:/app"
+      - "./frontend:/app"
     environment:
       - CI=1
       - HOME=/tmp

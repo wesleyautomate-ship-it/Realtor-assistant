@@ -1,9 +1,9 @@
-﻿# PropertyPro AI Setup & Deployment Guide
+# PropertyPro AI Setup & Deployment Guide
 ## Complete AURA Integration - Development to Production
 
-**Version**: 1.0  
-**Last Updated**: September 24, 2025  
-**Status**: ✅ Production Ready
+**Version**: 2.0  
+**Last Updated**: September 26, 2025  
+**Status**: 🚧 Gamma-2 In Progress (Design System & Mobile Rollout)
 
 ---
 
@@ -12,11 +12,16 @@
 This comprehensive guide covers the complete setup and deployment process for PropertyPro AI with full AURA integration. From local development to production deployment, this guide ensures a smooth setup experience for both backend and frontend components.
 
 ### **What You'll Set Up**
-- ✅ **AURA Backend**: 95+ API endpoints with enterprise-grade workflow automation
-- ✅ **React Native Frontend**: Mobile-first app with complete AURA integration
-- ✅ **Database**: PostgreSQL with comprehensive AURA schema
-- ✅ **AI Services**: OpenAI integration with advanced orchestration
-- ✅ **Monitoring**: Health checks, logging, and performance tracking
+- ✅ **Backend (FastAPI)**: Production-ready AURA orchestration with PostgreSQL schema
+- ✅ **Frontend (React + React Native Web)**: Alpha/Beta deliverables including Property, CRM, Marketing, Strategy, Packages modules
+- ✅ **AI Services**: OpenAI integration wired for content generation and automation
+- ✅ **Monitoring**: Health checks, logging, and baseline dashboards
+- 🚧 **Design System & Mobile Variants**: Gamma-2 tokens (`frontend/src/theme/`) and `.mobile.tsx` rollouts now in progress
+
+### **Current Release Track (September 26, 2025)**
+- ✅ **Alpha/Beta:** Property, CRM, Marketing, Strategy, Packages, Transactions modules implemented with Zustand stores and AURA workflows.
+- 🚧 **Gamma-2 (YOU ARE HERE):** Implementing theme tokens, thumb-friendly mobile variants, and PropertyPro branding polish.
+- 🔜 **Gamma-1/Alpha-2 Handoff:** AI/voice enhancements, analytics deep-dive, and live FastAPI integration will continue once design/mobile groundwork is complete.
 
 ---
 

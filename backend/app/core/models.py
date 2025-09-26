@@ -8,7 +8,9 @@ from sqlalchemy.sql import func
 from datetime import datetime
 import uuid
 
-from models import Base
+from sqlalchemy.ext.declarative import declarative_base
+
+Base = declarative_base()
 
 # Import Brokerage model to resolve relationship
 try:

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import BottomNav from '@components/BottomNav';
 import CommandCenter from '@components/CommandCenter';
 import DashboardView from '@components/DashboardView';
+import PropertiesScreen from '@screens/PropertiesScreen';
 import TasksView from '@components/TasksView';
 import ChatView from '@components/ChatView';
 import ProfileView from '@components/ProfileView';
@@ -10,6 +11,10 @@ import MarketingView from '@components/MarketingView';
 import SocialMediaView from '@components/SocialMediaView';
 import ContactManagementView from '@components/ContactManagementView';
 import PlaywrightTestView from '@components/PlaywrightTestView';
+import TransactionsView from '@components/TransactionsView';
+import StrategyView from '@components/StrategyView';
+import PackagesView from '@components/PackagesView';
+
 import { View, ActionId, Task } from '@/types';
 import { ACTION_ITEMS, MOCK_TASKS } from '@/constants.tsx';
 
@@ -37,6 +42,8 @@ const App: React.FC = () => {
                 return <ChatView />;
             case 'profile':
                 return <ProfileView />;
+            case 'properties':
+                return <PropertiesScreen />;
             default:
                 return <DashboardView onActionClick={handleActionClick} onRequestClick={() => {}} />;
         }
@@ -52,8 +59,14 @@ const App: React.FC = () => {
                 return <MarketingView onBack={handleBackFromFeature} />;
             case 'social':
                 return <SocialMediaView onBack={handleBackFromFeature} />;
+            case 'strategy':
+                return <StrategyView onBack={handleBackFromFeature} />;
+            case 'packages':
+                return <PackagesView onBack={handleBackFromFeature} />;
             case 'contacts':
                 return <ContactManagementView onBack={handleBackFromFeature} />;
+            case 'transactions':
+                return <TransactionsView onBack={handleBackFromFeature} />;
             case 'playwright':
                 return <PlaywrightTestView onBack={handleBackFromFeature} />;
             default:
@@ -74,10 +87,10 @@ const App: React.FC = () => {
                         <div className="flex-grow overflow-hidden">
                             {renderView()}
                         </div>
-                        <BottomNav 
-                            activeView={currentView} 
+                        <BottomNav
+                            activeView={currentView}
                             onNavigate={setCurrentView}
-                            onOpenCommandCenter={() => setCommandCenterOpen(true)} 
+                            onOpenCommandCenter={() => setCommandCenterOpen(true)}
                         />
                         {isCommandCenterOpen && <CommandCenter onClose={() => setCommandCenterOpen(false)} />}
                     </>

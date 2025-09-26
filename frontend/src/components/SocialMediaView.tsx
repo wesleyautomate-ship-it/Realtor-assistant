@@ -1,4 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
+import SocialTemplates, { type SocialTemplate } from './SocialTemplates';
+import PostScheduler from './PostScheduler';
+import PlatformConnections from './PlatformConnections';
+import SocialCampaigns from './SocialCampaigns';
+import { socialMediaApi } from '../services/socialMediaApi';
+import { usePropertyStore } from '../store/propertyStore';
 
 // Array of social media categories for the UI
 const socialCategories = [
@@ -26,6 +32,42 @@ const SocialMediaView: React.FC<{ onBack: () => void; }> = ({ onBack }) => {
     const [activeTab, setActiveTab] = useState<'audio' | 'text'>('text');
     const [isLoading, setIsLoading] = useState(false);
     const [generatedPost, setGeneratedPost] = useState<GeneratedPost | null>(null);
+    const brandPurple = '#7c3aed';
+    const [selectedTemplate, setSelectedTemplate] = useState<SocialTemplate | null>(null);
+
+    // Auto-populate from property store (Beta-1)
+    const propertyStore = usePropertyStore();
+    const property = useMemo(() => {
+        const items: any[] = (propertyStore as any)?.items || [];
+        return Array.isArray(items) && items.length > 0 ? items[0] : null;
+    }, [propertyStore]);
+
+    const defaultCaption = useMemo(() => {
+        const addr = property?.address || 'a great property';
+        switch (selectedCategory) {
+            case 'just-listed':
+                return `Just Listed! ${addr} ${property?.beds ? `· ${property.beds} bed` : ''} ${property?.baths ? `· ${property.baths} bath` : ''} ${property?.sqft ? `· ${property.sqft.toLocaleString()} sqft` : ''}`.trim();
+            case 'open-house':
+                return `Open House at ${addr} — Join us this weekend!`;
+            case 'just-sold':
+                return `Just Sold! ${addr} — Congratulations to our clients!`;
+            default:
+                return instructions;
+        }
+    }, [selectedCategory, property, instructions]);
+
+    const defaultImageUrl = useMemo(() => {
+        return property?.imageUrl || 'https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=1200&q=80';
+    }, [property]);
+
+    const handlePostNow = async (payload: { caption: string; imageUrl?: string; platforms: ('facebook' | 'instagram' | 'linkedin')[] }) => {
+        await socialMediaApi.postNow(payload);
+        // Optionally show a toast in future
+    };
+
+    const handleSchedule = async (payload: { caption: string; imageUrl?: string; platforms: ('facebook' | 'instagram' | 'linkedin')[]; scheduledAt: string }) => {
+        await socialMediaApi.schedule(payload);
+    };
 
     // Simulate generating a social media post
     const handleGenerate = () => {
@@ -70,6 +112,12 @@ const SocialMediaView: React.FC<{ onBack: () => void; }> = ({ onBack }) => {
                             </button>
                         ))}
                     </div>
+                </div>
+
+                {/* Templates & Connections */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                    <SocialTemplates brandColor={brandPurple} onSelect={setSelectedTemplate} />
+                    <PlatformConnections />
                 </div>
 
                 {/* Step 2: Provide Instructions */}
@@ -122,6 +170,20 @@ const SocialMediaView: React.FC<{ onBack: () => void; }> = ({ onBack }) => {
                         '✨ Generate Post with AI'
                     )}
                 </button>
+
+                {/* Scheduling & Campaign Coordination */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                    <PostScheduler
+                        defaultCaption={defaultCaption}
+                        defaultImageUrl={defaultImageUrl}
+                        onPostNow={handlePostNow}
+                        onSchedule={handleSchedule}
+                    />
+                    <SocialCampaigns
+                        selectedTemplate={selectedTemplate}
+                        property={property ? { title: property.title, address: property.address, price: property.price, beds: property.beds, baths: property.baths, sqft: property.sqft, imageUrl: property.imageUrl } : null}
+                    />
+                </div>
 
                 {/* Step 4: Display Result */}
                 {generatedPost && (

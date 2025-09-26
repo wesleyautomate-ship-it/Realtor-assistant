@@ -1,5 +1,10 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React, { useMemo, useState } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import CMAGenerator from '../components/analytics/CMAGenerator';
+import PerformanceMetrics from '../components/analytics/PerformanceMetrics';
+import MarketInsights from '../components/analytics/MarketInsights';
+import { usePropertyStore, selectProperties } from '../store/propertyStore';
+import { DateRange, filterByDateRange } from '../utils/analyticsUtils';
 
 const KPIS = [
   { label: 'Market Activity', value: 87, color: '#10B981' },
@@ -15,9 +20,35 @@ const TRENDING = [
 ];
 
 export default function AnalyticsScreen() {
+  const properties = usePropertyStore(selectProperties);
+  const [rangeKey, setRangeKey] = useState<'7d' | '30d' | '90d' | 'ytd'>('30d');
+
+  const range: DateRange | undefined = useMemo(() => {
+    const end = new Date();
+    const start = new Date();
+    if (rangeKey === '7d') start.setDate(end.getDate() - 7);
+    else if (rangeKey === '30d') start.setDate(end.getDate() - 30);
+    else if (rangeKey === '90d') start.setDate(end.getDate() - 90);
+    else {
+      start.setMonth(0, 1);
+      start.setHours(0, 0, 0, 0);
+    }
+    return { start, end };
+  }, [rangeKey]);
+
+  const filtered = useMemo(() => filterByDateRange(properties as any, range), [properties, range]);
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Analytics</Text>
+
+      <View style={styles.filters}>
+        {(['7d','30d','90d','ytd'] as const).map(k => (
+          <TouchableOpacity key={k} onPress={() => setRangeKey(k)} style={[styles.filterChip, rangeKey === k && styles.filterActive]}>
+            <Text style={[styles.filterText, rangeKey === k && styles.filterTextActive]}>{k.toUpperCase()}</Text>
+          </TouchableOpacity>
+        ))}
+      </View>
 
       <View style={styles.kpis}>
         {KPIS.map(k => (
@@ -28,18 +59,13 @@ export default function AnalyticsScreen() {
         ))}
       </View>
 
-      <Text style={styles.sectionTitle}>Trending Areas</Text>
-      <View style={{ gap: 8 }}>
-        {TRENDING.map(t => (
-          <View key={t.name} style={styles.trendRow}>
-            <Text style={styles.trendName}>{t.name}</Text>
-            <Text style={styles.trendMeta}>{t.price} AED/sqft</Text>
-            <Text style={[styles.trendChange, { color: t.trend === 'up' ? '#10B981' : '#EF4444' }]}>
-              {t.change}%
-            </Text>
-          </View>
-        ))}
-      </View>
+      <PerformanceMetrics />
+      <View style={{ height: 12 }} />
+      <MarketInsights />
+      <View style={{ height: 12 }} />
+      <CMAGenerator />
+
+      <Text style={styles.sectionCaption}>Filtered properties: {filtered.length}</Text>
     </View>
   );
 }
@@ -56,4 +82,10 @@ const styles = StyleSheet.create({
   trendName: { flex: 1, color: '#111827', fontWeight: '700' },
   trendMeta: { color: '#6B7280' },
   trendChange: { fontWeight: '800' },
+  filters: { flexDirection: 'row', gap: 8, marginBottom: 12 },
+  filterChip: { paddingHorizontal: 10, paddingVertical: 6, borderRadius: 999, borderWidth: 1, borderColor: '#0891b2' },
+  filterActive: { backgroundColor: '#0891b2' },
+  filterText: { color: '#0891b2', fontWeight: '700' },
+  filterTextActive: { color: '#fff' },
+  sectionCaption: { marginTop: 12, color: '#334155' }
 });

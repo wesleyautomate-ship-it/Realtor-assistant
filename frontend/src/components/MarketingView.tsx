@@ -1,14 +1,19 @@
-﻿import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
-interface GeneratedContent {
-    id: string;
-    type: string;
-    title: string;
-    content: string;
-    status: 'generated' | 'approved' | 'published';
-    createdAt: string;
-}
+    import MarketingTemplates from './MarketingTemplates';
+    import PostcardTemplates from './PostcardTemplates';
+    import EmailCampaigns from './EmailCampaigns';
+    import CampaignAnalytics from './CampaignAnalytics';
+    import { usePropertyStore } from '../store/propertyStore';
 
+    interface GeneratedContent {
+        id: string;
+        type: string;
+        title: string;
+        content: string;
+        status: 'generated' | 'approved' | 'published';
+        createdAt: string;
+    }
 // AURA-inspired property selection interfaces
 interface Property {
     id: string;
@@ -51,6 +56,42 @@ const MarketingView: React.FC<{ onBack: () => void; }> = ({ onBack }) => {
         { id: '4', title: 'Review Results', description: 'Approve and use your content', status: 'pending' }
     ]);
     
+    // Beta-1 property store integration (auto-populate when available)
+    const propertyStore = usePropertyStore();
+    const [displayedProperties, setDisplayedProperties] = useState<Property[]>([]);
+    const brandPurple = '#7c3aed';
+    const [selectedTemplateId, setSelectedTemplateId] = useState<string | null>(null);
+
+    useEffect(() => {
+        try {
+            // Attempt to fetch properties when component mounts
+            // @ts-ignore Optional chaining for robustness
+            if (propertyStore.fetch?.status === 'idle' || !propertyStore.fetch?.lastUpdated) {
+                propertyStore.fetchProperties().catch(() => {});
+            }
+        } catch {}
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    useEffect(() => {
+        const items: any[] = (propertyStore as any)?.items || [];
+        if (Array.isArray(items) && items.length > 0) {
+            const mapped: Property[] = items.map((p: any) => ({
+                id: String(p.id),
+                address: p.address || p.title || 'Property',
+                price: typeof p.price === 'number' ? `$${p.price.toLocaleString()}` : (p.price || '$0'),
+                beds: p.beds ?? 0,
+                baths: p.baths ?? 0,
+                sqft: p.sqft ?? 0,
+                image: p.imageUrl || 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=400&h=300&fit=crop',
+                status: p.status || 'active',
+            }));
+            setDisplayedProperties(mapped);
+        } else {
+            setDisplayedProperties(sampleProperties);
+        }
+    }, [propertyStore]);
+
     // AURA-inspired sample properties
     const sampleProperties: Property[] = [
         {

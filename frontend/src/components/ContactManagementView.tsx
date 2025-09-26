@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
+import { useClientStore, selectClients } from '../store';
+import LeadScoring from './LeadScoring';
 
 interface Contact {
   id: string;
@@ -29,8 +31,23 @@ const ContactManagementView: React.FC<{ onBack: () => void; }> = ({ onBack }) =>
   const [selectedContact, setSelectedContact] = useState<Contact | null>(null);
   const [showAddContact, setShowAddContact] = useState(false);
 
-  // Mock data for contacts
-  const [contacts] = useState<Contact[]>([
+  // Integrate with clientStore
+  const storeClients = useClientStore(selectClients);
+  const contacts: Contact[] = useMemo(() => storeClients.map(c => ({
+    id: String(c.id),
+    name: c.name,
+    email: c.email || '',
+    phone: c.phone || '',
+    status: (c.status === 'converted' ? 'client' : (['hot','warm','cold'].includes(c.status as any) ? c.status as any : 'warm')),
+    lastContact: c.lastContactedAt || '',
+    nextFollowUp: '',
+    leadScore: c.leadScore || 0,
+    notes: c.notes || '',
+    tags: []
+  })), [storeClients]);
+
+  // Fallback demo data if store is empty (keeps existing UX during initial load)
+  const [demoContacts] = useState<Contact[]>([
     {
       id: '1',
       name: 'Sarah Johnson',
@@ -204,7 +221,7 @@ const ContactManagementView: React.FC<{ onBack: () => void; }> = ({ onBack }) =>
             </div>
 
             <div className="grid gap-4">
-              {contacts.map((contact) => (
+              {(contacts.length ? contacts : demoContacts).map((contact) => (
                 <div key={contact.id} className="bg-white rounded-lg border p-4 hover:shadow-md transition-shadow">
                   <div className="flex justify-between items-start">
                     <div className="flex-1">
@@ -213,9 +230,9 @@ const ContactManagementView: React.FC<{ onBack: () => void; }> = ({ onBack }) =>
                         <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(contact.status)}`}>
                           {contact.status.toUpperCase()}
                         </span>
-                        <span className={`text-sm font-medium ${getLeadScoreColor(contact.leadScore)}`}>
-                          Score: {contact.leadScore}
-                        </span>
+                        <div className="w-40">
+                          <LeadScoring score={contact.leadScore} />
+                        </div>
                       </div>
                       <div className="text-sm text-gray-600 space-y-1">
                         <p>{contact.email}</p>

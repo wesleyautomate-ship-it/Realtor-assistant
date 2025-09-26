@@ -25,6 +25,9 @@ const BottomNav: React.FC<Props> = ({ activeView, onNavigate, onOpenCommandCente
       <TouchableOpacity onPress={() => onNavigate('chat')} style={styles.item}>
         <Text style={[styles.label, activeView === 'chat' && styles.active]}>Chat</Text>
       </TouchableOpacity>
+      <TouchableOpacity onPress={() => onNavigate('properties')} style={styles.item}>
+        <Text style={[styles.label, activeView === 'properties' && styles.active]}>Properties</Text>
+      </TouchableOpacity>
       <TouchableOpacity onPress={() => onNavigate('analytics')} style={styles.item}>
         <Text style={[styles.label, activeView === 'analytics' && styles.active]}>Analytics</Text>
       </TouchableOpacity>

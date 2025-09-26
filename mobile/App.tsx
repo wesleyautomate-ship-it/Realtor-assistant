@@ -9,6 +9,7 @@ import AnalyticsScreen from './src/screens/AnalyticsScreen';
 import PropertiesScreen from './src/screens/PropertiesScreen';
 import ContentScreen from './src/screens/ContentScreen';
 import WorkflowsScreen from './src/screens/WorkflowsScreen';
+import TransactionsScreen from './src/screens/TransactionsScreen';
 
 import BottomNav from './src/components/BottomNav';
 import CommandCenter from './src/components/CommandCenter';
@@ -26,6 +27,7 @@ export default function App() {
     if (id === 'properties') return setCurrentView('properties');
     if (id === 'content') return setCurrentView('content');
     if (id === 'analytics') return setCurrentView('analytics');
+    if (id === 'transactions') return setCurrentView('transactions');
     // For now, other actions return to dashboard placeholder sections
     setCurrentView('dashboard');
   };
@@ -52,6 +54,8 @@ export default function App() {
         return <AnalyticsScreen />;
       case 'workflows':
         return <WorkflowsScreen onNavigate={setCurrentView} />;
+      case 'transactions':
+        return <TransactionsScreen />;
       default:
         return <DashboardScreen onActionClick={onActionClick} onNavigate={setCurrentView} actions={ACTION_ITEMS} />;
     }

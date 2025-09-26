@@ -22,7 +22,11 @@ from pydantic import BaseModel
 from typing import List, Union, Dict, Any, Optional
 import os
 import json
-import google.generativeai as genai
+try:
+    import google.generativeai as genai
+except ImportError:
+    print("⚠️ Google Generative AI not available - AI features disabled")
+    genai = None
 import chromadb
 from sqlalchemy import create_engine, Column, Integer, String, Numeric, Text, text
 from sqlalchemy.ext.declarative import declarative_base
@@ -48,6 +52,20 @@ try:
 except ImportError as e:
     print(f"⚠️ Property management router not loaded: {e}")
     property_router = None
+
+try:
+    from app.api.v1.clients_router import router as clients_router
+    print("✅ Clients router loaded")
+except ImportError as e:
+    print(f"⚠️ Clients router not loaded: {e}")
+    clients_router = None
+
+try:
+    from app.api.v1.transactions_router import router as transactions_router
+    print("✅ Transactions router loaded")
+except ImportError as e:
+    print(f"⚠️ Transactions router not loaded: {e}")
+    transactions_router = None
 
 try:
     from app.api.v1.chat_sessions_router import router as chat_sessions_router, root_router as chat_root_router
@@ -271,6 +289,13 @@ except ImportError as e:
     social_media_router = None
 
 try:
+    from app.api.v1.task_orchestration_router import router as task_orchestration_router
+    print("✅ Task orchestration router loaded")
+except ImportError as e:
+    print(f"⚠️ Task orchestration router not loaded: {e}")
+    task_orchestration_router = None
+
+try:
     from app.api.v1.analytics_router import router as analytics_router
     print("✅ Analytics router loaded")
 except ImportError as e:
@@ -321,6 +346,14 @@ print("\n🚀 Including routers...")
 if property_router:
     app.include_router(property_router, prefix="/api/properties", tags=["Properties"])
     print("✅ Property router included")
+
+if clients_router:
+    app.include_router(clients_router, tags=["Clients"])
+    print("✅ Clients router included at /api/v1/clients")
+
+if transactions_router:
+    app.include_router(transactions_router, tags=["Transactions"])
+    print("✅ Transactions router included at /api/v1/transactions")
 
 if chat_sessions_router:
     app.include_router(chat_sessions_router, prefix="/api/chat", tags=["Chat"])
@@ -450,6 +483,10 @@ if analytics_router:
 if workflows_router:
     app.include_router(workflows_router, tags=["AURA Workflows"])
     print("✅ Workflows router included at /api/v1/workflows")
+
+if task_orchestration_router:
+    app.include_router(task_orchestration_router, tags=["AI Task Orchestration"])
+    print("✅ Task orchestration router included at /api/v1/orchestration")
 
 # Include RAG monitoring routes
 if include_rag_monitoring_routes:

@@ -8,12 +8,14 @@ const StrategyIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-
 const ContactManagementIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-emerald-900" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg>;
 const TransactionsIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-fuchsia-900" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0" /></svg>;
 const PlaywrightIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-orange-900" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9v-9m0-9v9" /></svg>;
+const PackagesIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-teal-900" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M3 7l9-4 9 4-9 4-9-4zm0 6l9 4 9-4M3 7v6m18-6v6" /></svg>;
 
 export const ACTION_ITEMS: ActionItem[] = [
     { id: 'marketing', title: 'Marketing', subtitle: 'Reach the Right Audience', color: 'bg-red-100', icon: <MarketingIcon /> },
     { id: 'analytics', title: 'Data & Analytics', subtitle: 'Make Informed Decisions', color: 'bg-indigo-100', icon: <AnalyticsIcon /> },
     { id: 'social', title: 'Social Media', subtitle: 'Amplify Your Presence', color: 'bg-amber-100', icon: <SocialIcon /> },
     { id: 'strategy', title: 'Strategy', subtitle: 'Plan for Success', color: 'bg-teal-100', icon: <StrategyIcon /> },
+    { id: 'packages', title: 'Packages', subtitle: 'Automate Multi-Step Work', color: 'bg-teal-100', icon: <PackagesIcon /> },
     { id: 'contacts', title: 'Contact Management', subtitle: 'Optimize Client Retention', color: 'bg-emerald-100', icon: <ContactManagementIcon /> },
     { id: 'transactions', title: 'Transactions', subtitle: 'Manage workflow', color: 'bg-fuchsia-100', icon: <TransactionsIcon /> },
     { id: 'playwright', title: 'UI/UX Testing', subtitle: 'Test & Validate Interface', color: 'bg-orange-100', icon: <PlaywrightIcon /> },
@@ -74,4 +76,52 @@ export const MOCK_TASKS: Task[] = [
         priority: 'Low',
         isCompleted: false,
     },
+];
+
+// Transactions mock data (used by TransactionsView)
+export const MOCK_TRANSACTIONS = [
+  {
+    id: 'tx-1',
+    propertyId: 'p-1',
+    clientId: 'client-1',
+    status: 'in_progress',
+    offerAmount: 1800000,
+    salePrice: 1850000,
+    createdAt: '2025-09-01T10:00:00Z',
+    updatedAt: '2025-09-15T14:30:00Z',
+    expectedClosingDate: '2025-10-15',
+    notes: 'Client is a first-time homebuyer. Pre-approved for 80% financing.',
+    agentId: 'agent-1',
+    milestones: [
+      { id: 'm-1', type: 'offer_submitted', title: 'Offer Submitted', description: 'Initial offer submitted to seller', dueDate: '2025-09-01', completed: true, completedAt: '2025-09-01T15:30:00Z' },
+      { id: 'm-2', type: 'offer_accepted', title: 'Offer Accepted', description: 'Seller accepted the offer with counter', dueDate: '2025-09-05', completed: true, completedAt: '2025-09-04T11:20:00Z' },
+      { id: 'm-3', type: 'contract_signed', title: 'Contract Signed', description: 'Both parties signed the purchase agreement', dueDate: '2025-09-10', completed: true, completedAt: '2025-09-09T16:45:00Z' },
+      { id: 'm-4', type: 'inspection', title: 'Property Inspection', description: 'Schedule and complete property inspection', dueDate: '2025-09-20', completed: false },
+      { id: 'm-5', type: 'appraisal', title: 'Appraisal', description: 'Lender appraisal scheduled', dueDate: '2025-09-25', completed: false },
+      { id: 'm-6', type: 'financing_approved', title: 'Financing Approved', description: 'Final mortgage approval from bank', dueDate: '2025-10-05', completed: false },
+      { id: 'm-7', type: 'closing', title: 'Closing', description: 'Final closing and key handover', dueDate: '2025-10-15', completed: false },
+      { id: 'm-8', type: 'possession', title: 'Possession', description: 'Client takes possession of property', dueDate: '2025-10-16', completed: false }
+    ],
+    documents: [
+      { id: 'doc-1', name: 'Purchase Agreement.pdf', type: 'contract', url: '#', uploadedAt: '2025-09-10T14:30:00Z', size: 245678 },
+      { id: 'doc-2', name: 'Disclosure Form.pdf', type: 'disclosure', url: '#', uploadedAt: '2025-09-11T10:15:00Z', size: 187654 }
+    ]
+  },
+  {
+    id: 'tx-2',
+    propertyId: 'p-2',
+    clientId: 'client-2',
+    status: 'pending_approval',
+    offerAmount: 12000000,
+    createdAt: '2025-09-10T09:30:00Z',
+    updatedAt: '2025-09-12T16:45:00Z',
+    expectedClosingDate: '2025-11-30',
+    notes: 'Luxury property with custom upgrades. Client is an investor from overseas.',
+    agentId: 'agent-1',
+    milestones: [
+      { id: 'm-21', type: 'offer_submitted', title: 'Offer Submitted', description: 'Initial offer submitted to seller', dueDate: '2025-09-12', completed: true, completedAt: '2025-09-12T11:20:00Z' },
+      { id: 'm-22', type: 'offer_accepted', title: 'Offer Accepted', description: 'Waiting for seller response', dueDate: '2025-09-17', completed: false }
+    ],
+    documents: []
+  }
 ];
